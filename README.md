@@ -5,6 +5,9 @@ MonoGame.Aseprite is an extension for [MonoGame Framework](http://www.monogame.n
 
 ![](https://i.imgur.com/lksiazd.gif)
 
+## Current Release Download
+You can find the current release download here https://gitlab.com/manbeardgames/monogame-aseprite/tags/version-1.0
+
 ## Usage
 The following is a brief explination of how to use this in your MonoGame project. 
 [**For a more detailed explination, including images, please check the wiki**](https://gitlab.com/manbeardgames/monogame-aseprite/wikis/home)  
