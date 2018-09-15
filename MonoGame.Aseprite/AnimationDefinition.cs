@@ -1,15 +1,46 @@
-﻿using Microsoft.Xna.Framework;
+﻿//--------------------------------------------------------------------------------
+//  AnimationDefinition
+//  Defines the animations to be used by an AnimatedSprite
+//--------------------------------------------------------------------------------
+//
+//                              License
+//  
+//    Copyright(c) 2018 Chris Whitley
+//
+//    Permission is hereby granted, free of charge, to any person obtaining a copy
+//    of this software and associated documentation files (the "Software"), to deal
+//    in the Software without restriction, including without limitation the rights
+//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//    copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//
+//    The above copyright notice and this permission notice shall be included in
+//    all copies or substantial portions of the Software.
+//
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//    THE SOFTWARE.
+//--------------------------------------------------------------------------------
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGame.Aseprite
 {
     public class AnimationDefinition
     {
+        /// <summary>
+        ///     The colleciton of defined aniamtions
+        /// </summary>
         public Dictionary<string, Animation> Animations { get; private set; }
+
+        /// <summary>
+        ///     The collection of defined frames used by the animations
+        /// </summary>
         public List<Frame> Frames { get; private set; }
 
         /// <summary>
@@ -181,11 +212,24 @@ namespace MonoGame.Aseprite
     }
 
 
-
+    /// <summary>
+    ///     Represents the definition of an animation
+    /// </summary>
     public struct Animation
     {
+        /// <summary>
+        ///     The name of the animation
+        /// </summary>
         public string name;
+
+        /// <summary>
+        ///     The starting frame
+        /// </summary>
         public int from;
+
+        /// <summary>
+        ///     The ending frame
+        /// </summary>
         public int to;
 
         public Animation(string name, int from, int to)
@@ -196,9 +240,19 @@ namespace MonoGame.Aseprite
         }
     }
 
+    /// <summary>
+    ///     Represents the definition of a frame
+    /// </summary>
     public struct Frame
     {
+        /// <summary>
+        ///     Defines the area within the spritesheet that the frame is in
+        /// </summary>
         public Rectangle frame;
+
+        /// <summary>
+        ///     The amount of time in millisecons the frame should be displayed
+        /// </summary>
         public int duration;
 
         public Frame(int x, int y, int width, int height, int duration)
