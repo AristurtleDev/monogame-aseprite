@@ -63,6 +63,9 @@ namespace MonoGame.Aseprite.Demo
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+            //  Inilize the Draw utilit so we can draw the hollow rectangles
+            Utils.Draw.Initilize(GraphicsDevice);
         }
 
         /// <summary>

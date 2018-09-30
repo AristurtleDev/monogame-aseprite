@@ -34,6 +34,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Aseprite.Demo.Utils;
 
 namespace MonoGame.Aseprite.Demo
 {
@@ -48,6 +49,8 @@ namespace MonoGame.Aseprite.Demo
         ///     The current direction the player is moving
         /// </summary>
         Vector2 _currentDirection = Vector2.UnitY;
+
+
         
 
 
@@ -158,6 +161,35 @@ namespace MonoGame.Aseprite.Demo
         public void Render(SpriteBatch spriteBatch)
         {
             this._sprite.Render(spriteBatch);
+
+            //  Get the slice rectangle for the current frame.  The name passed
+            //  must be the same as the name of the slice in Aseprite
+            var bodyHitBox = this._sprite.GetCurrentFrameSlice("body-hit-box");
+            var hatHitBox = this._sprite.GetCurrentFrameSlice("hat-hit-box");
+            var footHitBox = this._sprite.GetCurrentFrameSlice("foot-on-ground-hitbox");
+
+            //  Check if there is a value. We have to check since the return above is a nullable Rectangle.
+            //  If it doesn't have a value, that means there was no SliceKey defined for the current frame of
+            //  animation for the slice
+            if(bodyHitBox.HasValue)
+            {
+                //  If you want to use the same colors you used in Aseprite for the color of the slice
+                //  you can retrive that like this
+                Color sliceColor = this._sprite.GetSliceColor("body-hit-box");
+                spriteBatch.DrawHollowRectangle(bodyHitBox.Value, sliceColor);
+            }
+
+            if(hatHitBox.HasValue)
+            {
+                Color sliceColor = this._sprite.GetSliceColor("hat-hit-box");
+                spriteBatch.DrawHollowRectangle(hatHitBox.Value, sliceColor);
+            }
+
+            if(footHitBox.HasValue)
+            {
+                Color sliceColor = this._sprite.GetSliceColor("foot-on-ground-hitbox");
+                spriteBatch.DrawHollowRectangle(footHitBox.Value, sliceColor);
+            }
         }
     }
 }

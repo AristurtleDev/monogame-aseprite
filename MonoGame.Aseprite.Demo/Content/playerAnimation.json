@@ -147,7 +147,7 @@
  "meta": {
   "app": "http://www.aseprite.org/",
   "version": "1.2.9-x64",
-  "image": "C:\\Users\\Dart\\Desktop\\gamedev\\projects\\MonoGame Utilities\\MonoGame.Aseprite\\MonoGame.Aseprite.Demo\\Content\\player.png",
+  "image": "C:\\Users\\Dart\\Desktop\\development\\repos\\monogame\\MonoGame.Aseprite\\MonoGame.Aseprite.Demo\\Content\\player.png",
   "format": "RGBA8888",
   "size": { "w": 256, "h": 256 },
   "scale": "1",
@@ -165,6 +165,9 @@
    { "name": "Character", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
+   { "name": "body-hit-box", "color": "#ff0000ff", "keys": [{ "frame": 0, "bounds": {"x": 12, "y": 39, "w": 40, "h": 14 } }, { "frame": 1, "bounds": {"x": 12, "y": 39, "w": 40, "h": 14 } }, { "frame": 2, "bounds": {"x": 12, "y": 39, "w": 40, "h": 14 } }, { "frame": 3, "bounds": {"x": 12, "y": 39, "w": 40, "h": 14 } }, { "frame": 4, "bounds": {"x": 12, "y": 39, "w": 40, "h": 14 } }, { "frame": 5, "bounds": {"x": 12, "y": 39, "w": 40, "h": 14 } }, { "frame": 6, "bounds": {"x": 12, "y": 39, "w": 34, "h": 14 } }, { "frame": 7, "bounds": {"x": 12, "y": 39, "w": 34, "h": 14 } }, { "frame": 8, "bounds": {"x": 12, "y": 39, "w": 34, "h": 14 } }, { "frame": 9, "bounds": {"x": 12, "y": 39, "w": 34, "h": 14 } }, { "frame": 10, "bounds": {"x": 12, "y": 39, "w": 34, "h": 14 } }, { "frame": 11, "bounds": {"x": 18, "y": 39, "w": 34, "h": 14 } }, { "frame": 12, "bounds": {"x": 18, "y": 39, "w": 34, "h": 14 } }, { "frame": 13, "bounds": {"x": 18, "y": 39, "w": 34, "h": 14 } }, { "frame": 14, "bounds": {"x": 18, "y": 39, "w": 34, "h": 14 } }, { "frame": 15, "bounds": {"x": 18, "y": 39, "w": 34, "h": 14 } }] },
+   { "name": "hat-hit-box", "color": "#f7a547ff", "keys": [{ "frame": 0, "bounds": {"x": 14, "y": 7, "w": 36, "h": 18 } }, { "frame": 1, "bounds": {"x": 14, "y": 7, "w": 36, "h": 18 } }, { "frame": 2, "bounds": {"x": 14, "y": 7, "w": 36, "h": 18 } }, { "frame": 3, "bounds": {"x": 14, "y": 7, "w": 36, "h": 18 } }, { "frame": 4, "bounds": {"x": 14, "y": 7, "w": 36, "h": 18 } }, { "frame": 5, "bounds": {"x": 14, "y": 7, "w": 36, "h": 18 } }, { "frame": 6, "bounds": {"x": 10, "y": 7, "w": 44, "h": 19 } }, { "frame": 7, "bounds": {"x": 10, "y": 7, "w": 44, "h": 19 } }, { "frame": 8, "bounds": {"x": 10, "y": 7, "w": 44, "h": 19 } }, { "frame": 9, "bounds": {"x": 10, "y": 7, "w": 44, "h": 19 } }, { "frame": 10, "bounds": {"x": 10, "y": 7, "w": 44, "h": 19 } }, { "frame": 11, "bounds": {"x": 10, "y": 7, "w": 45, "h": 19 } }, { "frame": 12, "bounds": {"x": 10, "y": 7, "w": 45, "h": 19 } }, { "frame": 13, "bounds": {"x": 10, "y": 7, "w": 45, "h": 19 } }, { "frame": 14, "bounds": {"x": 10, "y": 7, "w": 45, "h": 19 } }, { "frame": 15, "bounds": {"x": 10, "y": 7, "w": 45, "h": 19 } }] },
+   { "name": "foot-on-ground-hitbox", "color": "#f3ce52ff", "keys": [{ "frame": 1, "bounds": {"x": 35, "y": 53, "w": 14, "h": 5 } }, { "frame": 2, "bounds": {"x": 16, "y": 53, "w": 13, "h": 5 } }, { "frame": 4, "bounds": {"x": 35, "y": 53, "w": 13, "h": 5 } }, { "frame": 5, "bounds": {"x": 16, "y": 53, "w": 13, "h": 5 } }, { "frame": 7, "bounds": {"x": 12, "y": 53, "w": 9, "h": 5 } }, { "frame": 8, "bounds": {"x": 21, "y": 53, "w": 13, "h": 5 } }, { "frame": 9, "bounds": {"x": 12, "y": 53, "w": 9, "h": 5 } }, { "frame": 10, "bounds": {"x": 21, "y": 53, "w": 13, "h": 5 } }, { "frame": 12, "bounds": {"x": 43, "y": 53, "w": 9, "h": 5 } }, { "frame": 13, "bounds": {"x": 30, "y": 53, "w": 13, "h": 5 } }, { "frame": 14, "bounds": {"x": 43, "y": 53, "w": 9, "h": 5 } }, { "frame": 15, "bounds": {"x": 30, "y": 53, "w": 13, "h": 5 } }] }
   ]
  }
 }
