@@ -1,6 +1,6 @@
 ﻿//--------------------------------------------------------------------------------
 //  RenderDefinition
-//  Defines various propertie used by the Sprite class during rendering
+//  Defines various properties used by the Sprite class during rendering
 //--------------------------------------------------------------------------------
 //
 //                              License
@@ -30,6 +30,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite
 {
+    /// <summary>
+    ///     Defines various properties used by the Sprite class during rendering
+    /// </summary>
     public class RenderDefinition
     {
         /// <summary>
@@ -67,6 +70,9 @@ namespace MonoGame.Aseprite
         /// </summary>
         public float LayerDepth { get; set; }
 
+        /// <summary>
+        ///     Creates a new <see cref="RenderDefinition"/> instance
+        /// </summary>
         public RenderDefinition()
         {
             //  Define default values

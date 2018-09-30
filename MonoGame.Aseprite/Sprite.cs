@@ -31,6 +31,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite
 {
+    /// <summary>
+    ///     Simple sprite classed used for managing and rendering a Texture2D
+    /// </summary>
     public class Sprite
     {
         /// <summary>
@@ -106,8 +109,7 @@ namespace MonoGame.Aseprite
         /// <summary>
         ///     Renders the Sprite
         /// </summary>
-        /// <param name="gameTime"></param>
-        /// <param name="spriteBatch"></param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use when rendering</param>
         public virtual void Render(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(

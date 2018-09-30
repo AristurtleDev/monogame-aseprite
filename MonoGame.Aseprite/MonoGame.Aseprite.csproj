@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MonoGame.Aseprite.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,7 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderDefinition.cs" />
     <Compile Include="Sprite.cs" />
-    <Compile Include="SpriteReader.cs" />
+    <Compile Include="AnimationDefinitionReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

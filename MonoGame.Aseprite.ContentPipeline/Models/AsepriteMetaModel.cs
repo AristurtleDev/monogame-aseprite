@@ -71,5 +71,10 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     Layers used in the image
         /// </summary>
         public List<AsepriteLayerModel> layers;
+
+        /// <summary>
+        ///     Sices defined for the animations
+        /// </summary>
+        public List<AsepriteSliceModel> slices;
     }
 }

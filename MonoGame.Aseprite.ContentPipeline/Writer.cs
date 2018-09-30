@@ -27,7 +27,6 @@
 //--------------------------------------------------------------------------------
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using System.IO;
 
 using TWrite = MonoGame.Aseprite.ContentPipeline.Models.AsepriteModel;
 
@@ -75,6 +74,41 @@ namespace MonoGame.Aseprite.ContentPipeline
 
                 //  write the ending (to) frame
                 output.Write(value.meta.frameTags[i].to);
+            }
+
+            //  Write how many slice definitions there are in total
+            output.Write(value.meta.slices.Count);
+
+            //  Write the data about the slices
+            for(int i = 0; i < value.meta.slices.Count; i++)
+            {
+                //  Write the name of the slice
+                output.Write(value.meta.slices[i].name);
+
+                //  Write the color of the slice
+                output.Write(value.meta.slices[i].color);
+
+                //  Write how many keys there are for the slice
+                output.Write(value.meta.slices[i].keys.Count);
+
+                //  Write the data about the keys for the slice
+                for(int j = 0; j < value.meta.slices[i].keys.Count; j++)
+                {
+                    //  write the frame for the slice
+                    output.Write(value.meta.slices[i].keys[j].frame);
+
+                    //  write the key x-coordinate
+                    output.Write(value.meta.slices[i].keys[j].bounds.x);
+
+                    //  write the key y-coordinate
+                    output.Write(value.meta.slices[i].keys[j].bounds.y);
+
+                    //  write the key width
+                    output.Write(value.meta.slices[i].keys[j].bounds.w);
+
+                    //  write the key height
+                    output.Write(value.meta.slices[i].keys[j].bounds.h);
+                }
             }
         }
 

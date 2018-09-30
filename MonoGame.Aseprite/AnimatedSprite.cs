@@ -1,7 +1,7 @@
 ﻿//--------------------------------------------------------------------------------
 //  AnimatedSprite
 //  A Sprite which makes use of AnimationDefintion in order to provied animations
-//  of the sprite from a tilesheet
+//  of the sprite from a spritesheet
 //--------------------------------------------------------------------------------
 //
 //                              License
@@ -34,6 +34,10 @@ using System.Linq;
 
 namespace MonoGame.Aseprite
 {
+    /// <summary>
+    ///     A <see cref="Sprite"/> which makes use of <see cref="AnimationDefinition"/> in order
+    ///     to provide aniamtions of hte sprite form a spritesheet.
+    /// </summary>
     public class AnimatedSprite : Sprite
     {
 
@@ -119,7 +123,10 @@ namespace MonoGame.Aseprite
         #endregion Constructors
 
 
-
+        /// <summary>
+        ///     Updates this
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             if(this.Animating)
@@ -206,6 +213,83 @@ namespace MonoGame.Aseprite
             {
                 throw new ArgumentOutOfRangeException($"No animation exists with the given name {animationName}");
             }
+        }
+
+        /// <summary>
+        ///     Gets the defined color of the slice with the given name
+        /// </summary>
+        /// <param name="sliceName">The name of the slice</param>
+        /// <returns>
+        ///     The color of the slice
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice name provided does not exist in the animation definitions slice dictionary
+        /// </exception>
+        public Color GetSliceColor(string sliceName)
+        {
+            //  Ensure we have a slice defined with the given name
+            if(this._animationDefinition.Slices.ContainsKey(sliceName))
+            {
+                //  Return the color of the slice
+                return this._animationDefinition.Slices[sliceName].color;
+            }
+            else
+            {
+                //  No slice exists with the given name, throw error
+                throw new ArgumentException($"The animation definition does not contain a slice definition with the name {sliceName}");
+            }
+            
+        }
+
+        /// <summary>
+        ///     Get the Rectangle definition of the slice at the current frame of 
+        ///     animation, if there is a slice key defined for the frame
+        /// </summary>
+        /// <param name="sliceName">The name of the slice</param>
+        /// <returns>
+        ///     A Rectangle definition of the frame slice, at the xy-coordinate of
+        ///     this sprite.  If no slice key exists for the current frame, 
+        ///     null is returned.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice name provided does not exist in the animation definitions slice dictionary
+        /// </exception>
+        public Rectangle? GetCurrentFrameSlice(string sliceName)
+        {
+            //  Ensure that we have a slice defined with the given name
+            if (this._animationDefinition.Slices.ContainsKey(sliceName))
+            {
+                //  Get the slice
+                Slice slice = this._animationDefinition.Slices[sliceName];
+
+                //  Ensure we have a slice key at the current animation frame index
+                if(slice.keys.ContainsKey(CurrentFrameIndex))
+                {
+                    //  Get the slice key
+                    SliceKey sliceKey = slice.keys[CurrentFrameIndex];
+
+                    //  Get the rectangle that represents the bounds of the slicekey
+                    Rectangle rect = sliceKey.bounds;
+
+                    //  Update the xy-coordinate of the rect to match the positional data of this sprite
+                    rect.X += (int)this.Position.X;
+                    rect.Y += (int)this.Position.Y;
+
+                    //  return the rectangle
+                    return rect;
+                }
+                else
+                {
+                    //  There is no slicekey for the current frame index, so we return null
+                    return null;
+                }
+            }
+            else
+            {
+                //  No slice exists with the given name, throw error
+                throw new ArgumentException($"The animation definition does not contain a slice definition with the name {sliceName}");
+            }
+            
         }
         #endregion Helper Methods
 
@@ -333,6 +417,137 @@ namespace MonoGame.Aseprite
         public void AddFrames(params Frame[] frames)
         {
             this._animationDefinition.AddFrames(frames);
+        }
+
+        /// <summary>
+        ///     Adds the given <see cref="Slice"/> to the collection of slices
+        /// </summary>
+        /// <param name="slice">The <see cref="Slice"/> to add</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        /// </exception>
+        public void AddSlice(Slice slice)
+        {
+            this._animationDefinition.AddSlice(slice);
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="Slice"/> with the given name and keys
+        ///     and adds it to the collection of slices
+        /// </summary>
+        /// <param name="name">The name of the <see cref="Slice"/></param>
+        /// <param name="keys">The collection of <see cref="SliceKey"/> for the slice</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        /// </exception>
+        public void AddSlice(string name, Dictionary<int, SliceKey> keys)
+        {
+            this._animationDefinition.AddSlice(name, keys);
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="Slice"/> with the given name and keys
+        ///     and adds it to the collection of slices
+        /// </summary>
+        /// <param name="name">The name of the <see cref="Slice"/></param>
+        /// <param name="keys">The collection of <see cref="SliceKey"/> for the slice</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        /// </exception>
+        public void AddSlice(string name, IEnumerable<SliceKey> keys)
+        {
+            this._animationDefinition.AddSlice(name, keys);
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="Slice"/> with the given name and keys
+        ///     and adds it to the collection of slices
+        /// </summary>
+        /// <param name="name">The name of the <see cref="Slice"/></param>
+        /// <param name="keys">The collection of <see cref="SliceKey"/> for the slice</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        /// </exception>
+        public void AddSlice(string name, params SliceKey[] keys)
+        {
+            this._animationDefinition.AddSlice(name, keys);
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="Slice"/> with the given name and keys
+        ///     and adds it to the collection of slices
+        /// </summary>
+        /// <param name="name">The name of the <see cref="Slice"/></param>
+        /// <param name="color">The color of the <see cref="Slice"/></param>
+        /// <param name="keys">The collection of <see cref="SliceKey"/> for the slice</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        /// </exception>
+        public void AddSlice(string name, Color color, Dictionary<int, SliceKey> keys)
+        {
+            this._animationDefinition.AddSlice(name, color, keys);
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="Slice"/> with the given name and keys
+        ///     and adds it to the collection of slices
+        /// </summary>
+        /// <param name="name">The name of the <see cref="Slice"/></param>
+        /// <param name="color">The color of the <see cref="Slice"/></param>
+        /// <param name="keys">The collection of <see cref="SliceKey"/> for the slice</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        /// </exception>
+        public void AddSlice(string name, Color color, IEnumerable<SliceKey> keys)
+        {
+            this._animationDefinition.AddSlice(name, color, keys);
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="Slice"/> with the given name and keys
+        ///     and adds it to the collection of slices
+        /// </summary>
+        /// <param name="name">The name of the <see cref="Slice"/></param>
+        /// <param name="color">The color of the <see cref="Slice"/></param>
+        /// <param name="keys">The collection of <see cref="SliceKey"/> for the slice</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        /// </exception>
+        public void AddSlice(string name, Color color, params SliceKey[] keys)
+        {
+            this._animationDefinition.AddSlice(name, color, keys);
+        }
+
+        /// <summary>
+        ///     Adds the give collection of <see cref="Slice"/> structures to the collection
+        /// </summary>
+        /// <param name="slices">The <see cref="Slice"/> structures to add</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        ///     or if any of the slices in the given collection have the same name
+        /// </exception>
+        public void AddSlices(IEnumerable<Slice> slices)
+        {
+            foreach(Slice slice in slices)
+            {
+                this._animationDefinition.AddSlice(slice);
+            }
+        }
+
+        /// <summary>
+        ///     Adds the give collection of <see cref="Slice"/> structures to the collection
+        /// </summary>
+        /// <param name="slices">The <see cref="Slice"/> structures to add</param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the slice collection already contains a slice with the same name
+        ///     or if any of the slices in the given collection have the same name
+        /// </exception>
+        public void AddSlices(params Slice[] slices)
+        {
+            foreach(Slice slice in slices)
+            {
+                this._animationDefinition.AddSlice(slice);
+            }
         }
         #endregion AnimationDefinition Utilities
 
