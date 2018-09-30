@@ -5,19 +5,29 @@ MonoGame.Aseprite is an extension for [MonoGame Framework](http://www.monogame.n
 
 ![](https://i.imgur.com/lksiazd.gif)
 
-## Current Release Download
-You can find the current release download here https://gitlab.com/manbeardgames/monogame-aseprite/tags/version-1.0
+## Getting Started
+MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed inot your existing MonOGame project using NuGet Package Manger in Visual Studio.  You can also use the following commands to install it.
+
+**Package Manager**  
+```PM> Install-Package MonoGame.Aseprite -Version 1.0.0 ```
+
+**.Net CLI**  
+```> dotnet add package MonoGame.Aseprite --version 1.0.0 ```  
+
+
+Once you've added the NuGet package, you'll also need to add a reference to **MonoGame.Aseprite.ContentPipeline.dll** in the Content Pipeline Tool.  This file can be found in the "/packages/MonoGame.Aseprite.1.0.0/content" folder in the root directory of your project folder after installing the NuGet package.
+
+For more information on doing this, check out this [wiki page](https://gitlab.com/manbeardgames/monogame-aseprite/wikis/downloading-and-adding-references)
 
 ## Usage
 The following is a brief explination of how to use this in your MonoGame project. 
 [**For a more detailed explination, including images, please check the wiki**](https://gitlab.com/manbeardgames/monogame-aseprite/wikis/home)  
 
-* In your MonoGame project, add a reference to the MonoGame.Aseprite.dll
-* In the MonoGame Content Pipeline tool for your project, add a reference to MonoGame.Aseprite.ContentPipeline.dll
 * Export your spritesheet from Aseprite
     * Select Array for meta information not Hash
     * Frame Tags must be checked
-    * Trim and Padding is currently not supported
+    * Slices must be checked
+    * Trim and Padding is currently not supported. These must be unchecked.
 * Add the exported spritesheet and associated .json file from Aseprite to your project using the MonoGame Pipeline Tool
     * The spritesheet can be imported normally using the Texture importer and processor
     * For the .json file, use the Aseprite Animation Importer and the Aseprite Animation Processor
@@ -40,10 +50,13 @@ The following is a brief explination of how to use this in your MonoGame project
     AnimatedSprite animatedSprite = new AnimatedSprite(spriteSheet, animationDefinition);
     ```
 
+## What Next?
+* Check out the [wiki](https://gitlab.com/manbeardgames/monogame-aseprite/wikis)
+* Read about [using slices](https://gitlab.com/manbeardgames/monogame-aseprite/wikis/using-slices-from-aseprite) if you plan to do that
+* Submit an [issue on GitLab](https://gitlab.com/manbeardgames/monogame-aseprite/issues)
+* Hit me up on [Twitter @manbeardgames](https://www.twitter.com/manbeardgames) if you have questions
 
 
-## Notes
-This project is a example of how I did this. You should definitly fork this and modify it to suit your project.
 
 ## License
 Copyright(c) 2018 Chris Whitley
