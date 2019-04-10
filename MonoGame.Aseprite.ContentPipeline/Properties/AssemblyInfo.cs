@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MonoGame.Aseprite.ContentPipeline")]
 [assembly: AssemblyProduct("MonoGame.Aseprite.ContentPipeline")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyDescription("Content Pipeline Extension for MonoGame to importer Aseprite .json file to use with MonoGame.Aseprite")]
+[assembly: AssemblyCompany("ManBeardGames")]
+[assembly: AssemblyCopyright("Christopher Whitley ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
