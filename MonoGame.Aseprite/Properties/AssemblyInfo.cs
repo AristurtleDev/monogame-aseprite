@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("Extension for MonoGame Framework to import the .json file produced by Aseprite using the content pipeline, with a collection of classes to support rending the animation.")]
 [assembly: AssemblyCompany("ManBeardGames")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Christopher Whitley ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
