@@ -70,7 +70,11 @@ namespace MonoGame.Aseprite
                 int h = input.ReadInt32();
 
                 //  Read the duration value
-                int duration = input.ReadInt32();
+                //  Aseprite exports the millisecond value, but we need
+                //  to know the total seconds so we can compare with 
+                //  GameTime.TotalSeconds as is standard when getting delta
+                //  time in MonoGame
+                float duration = input.ReadInt32() / 1000.0f;
 
                 //  Create a frame
                 Frame frame = new Frame(x, y, w, h, duration);

@@ -46,7 +46,7 @@ namespace MonoGame.Aseprite
         ///     frames of animations for this animated sprite
         /// </summary>
         private AnimationDefinition _animationDefinition;
-        
+
         /// <summary>
         ///     The current <see cref="Animation"/> that is being played
         /// </summary>
@@ -56,7 +56,7 @@ namespace MonoGame.Aseprite
         ///     The current <see cref="Frame"/> in the animation
         /// </summary>
         public Frame CurrentFrame { get; private set; }
-        
+
         /// <summary>
         ///     The index of the current <see cref="Frame"/>
         /// </summary>
@@ -101,13 +101,13 @@ namespace MonoGame.Aseprite
         /// </summary>
         /// <param name="texture">The spritesheet texture containing all frames of animation</param>
         /// <param name="animationDefinition">The <see cref="AnimationDefinition"/> to use</param>
-        public AnimatedSprite(Texture2D texture, AnimationDefinition animationDefinition):base(texture)
+        public AnimatedSprite(Texture2D texture, AnimationDefinition animationDefinition) : base(texture)
         {
-            this._animationDefinition = animationDefinition;
-            Play(this._animationDefinition.Animations.First().Key);
-            this.CurrentAnimation = this._animationDefinition.Animations.First().Value;
-            this.CurrentFrame = this._animationDefinition.Frames[this.CurrentAnimation.from];
-            this.FrameTimer = this.CurrentFrame.duration;
+            _animationDefinition = animationDefinition;
+            Play(_animationDefinition.Animations.First().Key);
+            CurrentAnimation = _animationDefinition.Animations.First().Value;
+            CurrentFrame = _animationDefinition.Frames[CurrentAnimation.from];
+            FrameTimer = CurrentFrame.duration;
         }
 
         /// <summary>
@@ -116,9 +116,9 @@ namespace MonoGame.Aseprite
         /// <param name="texture">The spritesheet texture containing all frames of animation</param>
         /// <param name="animationDefinition">The <see cref="AnimationDefinition"/> to use</param>
         /// <param name="position"></param>
-        public AnimatedSprite(Texture2D texture, AnimationDefinition animationDefinition, Vector2 position):this(texture, animationDefinition)
+        public AnimatedSprite(Texture2D texture, AnimationDefinition animationDefinition, Vector2 position) : this(texture, animationDefinition)
         {
-            this.Position = position;
+            Position = position;
         }
         #endregion Constructors
 
@@ -126,50 +126,57 @@ namespace MonoGame.Aseprite
         /// <summary>
         ///     Updates this
         /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime)
+        /// <param name="deltaTime">
+        ///     The amount of time, in seconds, that have passed since
+        ///     the last update.  Usually gathered from GameTime.ElapsedTime.TotalSeconds
+        /// </param>
+        public override void Update(float deltaTime)
         {
-            if(this.Animating)
+            if (Animating)
             {
-
-                if(this.FrameTimer == this.CurrentFrame.duration)
+                //  Using an epsilon of 0.0001 to check for equality between
+                //  the Framtimer (double) and duration (float).  This is to handle
+                //  edge cases where precision loss in the float may cause this to
+                //  skip.
+                if (Math.Abs(FrameTimer - CurrentFrame.duration) < 0.0001)
                 {
                     //  We're at the beginning of the frame so invoke the
                     //  Action
-                    this.OnFrameBegin?.Invoke();
+                    OnFrameBegin?.Invoke();
                 }
 
                 //  Decrement the frame timer
-                this.FrameTimer -= gameTime.ElapsedGameTime.TotalMilliseconds;
+                FrameTimer -= deltaTime;
 
                 //  Check if we need to move on to the next frame
-                if(this.FrameTimer <= 0)
+                if (FrameTimer <= 0)
                 {
                     //  We're now at the end of a frame, so invoke the action
-                    this.OnFrameEnd?.Invoke();
+                    OnFrameEnd?.Invoke();
 
                     //  Increment the frame index
-                    this.CurrentFrameIndex += 1;
+                    CurrentFrameIndex += 1;
 
                     //  Check that we are still within the bounds of the animations frames
-                    if(this.CurrentFrameIndex > this.CurrentAnimation.to)
+                    if (CurrentFrameIndex > CurrentAnimation.to)
                     {
                         //  Loop back to the beginning of the animations frame
-                        this.CurrentFrameIndex = this.CurrentAnimation.from;
+                        CurrentFrameIndex = CurrentAnimation.from;
 
                         //  Since we looped, invoke the loop aciton
-                        this.OnAnimationLoop?.Invoke();
+                        OnAnimationLoop?.Invoke();
                     }
 
                     //  Set the CurrentFrame
-                    this.CurrentFrame = this._animationDefinition.Frames[this.CurrentFrameIndex];
+                    CurrentFrame = _animationDefinition.Frames[CurrentFrameIndex];
 
                     //  Set the Duration
-                    this.FrameTimer = this.CurrentFrame.duration;
+                    FrameTimer = (double)CurrentFrame.duration;
 
                 }
             }
         }
+
 
         /// <summary>
         ///     Renders to the screen
@@ -178,9 +185,9 @@ namespace MonoGame.Aseprite
         public override void Render(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
-                texture: this.Texture,
-                position: this.Position,
-                sourceRectangle: this.CurrentFrame.frame,
+                texture: Texture,
+                position: Position,
+                sourceRectangle: CurrentFrame.frame,
                 color: RenderDefinition.Color,
                 rotation: RenderDefinition.Rotation,
                 origin: RenderDefinition.Origin,
@@ -199,15 +206,15 @@ namespace MonoGame.Aseprite
         {
             //  If the current animation that is playing is the same as the
             //  name provided, just return back
-            if (this.CurrentAnimation.name == animationName) { return; }
+            if (CurrentAnimation.name == animationName) { return; }
 
-            if (this._animationDefinition.Animations.ContainsKey(animationName))
+            if (_animationDefinition.Animations.ContainsKey(animationName))
             {
-                this.CurrentAnimation = this._animationDefinition.Animations[animationName];
-                this.CurrentFrameIndex = this.CurrentAnimation.from;
-                this.CurrentFrame = this._animationDefinition.Frames[this.CurrentFrameIndex];
-                this.FrameTimer = this.CurrentFrame.duration;
-                this.Animating = true;
+                CurrentAnimation = _animationDefinition.Animations[animationName];
+                CurrentFrameIndex = CurrentAnimation.from;
+                CurrentFrame = _animationDefinition.Frames[CurrentFrameIndex];
+                FrameTimer = CurrentFrame.duration;
+                Animating = true;
             }
             else
             {
@@ -228,17 +235,17 @@ namespace MonoGame.Aseprite
         public Color GetSliceColor(string sliceName)
         {
             //  Ensure we have a slice defined with the given name
-            if(this._animationDefinition.Slices.ContainsKey(sliceName))
+            if (_animationDefinition.Slices.ContainsKey(sliceName))
             {
                 //  Return the color of the slice
-                return this._animationDefinition.Slices[sliceName].color;
+                return _animationDefinition.Slices[sliceName].color;
             }
             else
             {
                 //  No slice exists with the given name, throw error
                 throw new ArgumentException($"The animation definition does not contain a slice definition with the name {sliceName}");
             }
-            
+
         }
 
         /// <summary>
@@ -257,13 +264,13 @@ namespace MonoGame.Aseprite
         public Rectangle? GetCurrentFrameSlice(string sliceName)
         {
             //  Ensure that we have a slice defined with the given name
-            if (this._animationDefinition.Slices.ContainsKey(sliceName))
+            if (_animationDefinition.Slices.ContainsKey(sliceName))
             {
                 //  Get the slice
-                Slice slice = this._animationDefinition.Slices[sliceName];
+                Slice slice = _animationDefinition.Slices[sliceName];
 
                 //  Ensure we have a slice key at the current animation frame index
-                if(slice.keys.ContainsKey(CurrentFrameIndex))
+                if (slice.keys.ContainsKey(CurrentFrameIndex))
                 {
                     //  Get the slice key
                     SliceKey sliceKey = slice.keys[CurrentFrameIndex];
@@ -272,8 +279,8 @@ namespace MonoGame.Aseprite
                     Rectangle rect = sliceKey.bounds;
 
                     //  Update the xy-coordinate of the rect to match the positional data of this sprite
-                    rect.X += (int)this.Position.X;
-                    rect.Y += (int)this.Position.Y;
+                    rect.X += (int)Position.X;
+                    rect.Y += (int)Position.Y;
 
                     //  return the rectangle
                     return rect;
@@ -289,7 +296,7 @@ namespace MonoGame.Aseprite
                 //  No slice exists with the given name, throw error
                 throw new ArgumentException($"The animation definition does not contain a slice definition with the name {sliceName}");
             }
-            
+
         }
         #endregion Helper Methods
 
@@ -309,7 +316,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddAnimation(Animation animation)
         {
-            this._animationDefinition.AddAnimation(animation);
+            _animationDefinition.AddAnimation(animation);
         }
 
 
@@ -330,7 +337,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddAnimation(string name, int from, int to)
         {
-           this._animationDefinition.AddAnimation(new Animation(name, from, to));
+            _animationDefinition.AddAnimation(new Animation(name, from, to));
         }
 
 
@@ -348,7 +355,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddAnimations(IEnumerable<Animation> animations)
         {
-            this._animationDefinition.AddAnimations(animations);
+            _animationDefinition.AddAnimations(animations);
         }
         /// <summary>
         ///     Adds the given <see cref="Animation"/> values to the animation dictionary
@@ -364,16 +371,16 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddAnimations(params Animation[] animations)
         {
-            this._animationDefinition.AddAnimations(animations);
+            _animationDefinition.AddAnimations(animations);
         }
-        
+
         /// <summary>
         ///     Adds the given <see cref="Frame"/> to the colleciton of frames
         /// </summary>
         /// <param name="frame">The <see cref="Frame"/> to add</param>
         public void AddFrame(Frame frame)
         {
-            this._animationDefinition.AddFrame(frame);
+            _animationDefinition.AddFrame(frame);
         }
 
         /// <summary>
@@ -381,10 +388,10 @@ namespace MonoGame.Aseprite
         ///     on the given values
         /// </summary>
         /// <param name="sourceRectangle">The source rectangle that the frame describes</param>
-        /// <param name="duration">The amount of time in milliseconds the frame should be displayed</param>
-        public void AddFrame(Rectangle sourceRectangle, int duration)
+        /// <param name="duration">The amount of time in seconds the frame should be displayed</param>
+        public void AddFrame(Rectangle sourceRectangle, float duration)
         {
-            this._animationDefinition.AddFrame(new Frame(sourceRectangle, duration));
+            _animationDefinition.AddFrame(new Frame(sourceRectangle, duration));
         }
 
         /// <summary>
@@ -395,10 +402,10 @@ namespace MonoGame.Aseprite
         /// <param name="y">The y-coordinate position of the source rectangle for the frame</param>
         /// <param name="width">The width of the source rectangle for the frame</param>
         /// <param name="height">The height of the source rectangle for the frame</param>
-        /// <param name="duration">The amount of time in milliseconds the farme shoudl be displayed</param>
-        public void AddFrame(int x, int y, int width, int height, int duration)
+        /// <param name="duration">The amount of time in seconds the farme shoudl be displayed</param>
+        public void AddFrame(int x, int y, int width, int height, float duration)
         {
-            this._animationDefinition.AddFrame(new Frame(x, y, width, height, duration));
+            _animationDefinition.AddFrame(new Frame(x, y, width, height, duration));
         }
 
         /// <summary>
@@ -407,7 +414,7 @@ namespace MonoGame.Aseprite
         /// <param name="frames">The collection of <see cref="Frame"/> values to add</param>
         public void AddFrames(IEnumerable<Frame> frames)
         {
-            this._animationDefinition.AddFrames(frames);
+            _animationDefinition.AddFrames(frames);
         }
 
         /// <summary>
@@ -416,7 +423,7 @@ namespace MonoGame.Aseprite
         /// <param name="frames">The <see cref="Frame"/> values to add</param>
         public void AddFrames(params Frame[] frames)
         {
-            this._animationDefinition.AddFrames(frames);
+            _animationDefinition.AddFrames(frames);
         }
 
         /// <summary>
@@ -428,7 +435,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlice(Slice slice)
         {
-            this._animationDefinition.AddSlice(slice);
+            _animationDefinition.AddSlice(slice);
         }
 
         /// <summary>
@@ -442,7 +449,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlice(string name, Dictionary<int, SliceKey> keys)
         {
-            this._animationDefinition.AddSlice(name, keys);
+            _animationDefinition.AddSlice(name, keys);
         }
 
         /// <summary>
@@ -456,7 +463,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlice(string name, IEnumerable<SliceKey> keys)
         {
-            this._animationDefinition.AddSlice(name, keys);
+            _animationDefinition.AddSlice(name, keys);
         }
 
         /// <summary>
@@ -470,7 +477,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlice(string name, params SliceKey[] keys)
         {
-            this._animationDefinition.AddSlice(name, keys);
+            _animationDefinition.AddSlice(name, keys);
         }
 
         /// <summary>
@@ -485,7 +492,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlice(string name, Color color, Dictionary<int, SliceKey> keys)
         {
-            this._animationDefinition.AddSlice(name, color, keys);
+            _animationDefinition.AddSlice(name, color, keys);
         }
 
         /// <summary>
@@ -500,7 +507,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlice(string name, Color color, IEnumerable<SliceKey> keys)
         {
-            this._animationDefinition.AddSlice(name, color, keys);
+            _animationDefinition.AddSlice(name, color, keys);
         }
 
         /// <summary>
@@ -515,7 +522,7 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlice(string name, Color color, params SliceKey[] keys)
         {
-            this._animationDefinition.AddSlice(name, color, keys);
+            _animationDefinition.AddSlice(name, color, keys);
         }
 
         /// <summary>
@@ -528,9 +535,9 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlices(IEnumerable<Slice> slices)
         {
-            foreach(Slice slice in slices)
+            foreach (Slice slice in slices)
             {
-                this._animationDefinition.AddSlice(slice);
+                _animationDefinition.AddSlice(slice);
             }
         }
 
@@ -544,9 +551,9 @@ namespace MonoGame.Aseprite
         /// </exception>
         public void AddSlices(params Slice[] slices)
         {
-            foreach(Slice slice in slices)
+            foreach (Slice slice in slices)
             {
-                this._animationDefinition.AddSlice(slice);
+                _animationDefinition.AddSlice(slice);
             }
         }
         #endregion AnimationDefinition Utilities

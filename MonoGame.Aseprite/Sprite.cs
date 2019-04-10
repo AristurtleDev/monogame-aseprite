@@ -104,7 +104,19 @@ namespace MonoGame.Aseprite
         ///     Updates the sprite
         /// </summary>
         /// <param name="gameTime"></param>
-        public virtual void Update(GameTime gameTime) { }
+        public virtual void Update(GameTime gameTime)
+        {
+            Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+        }
+
+        /// <summary>
+        ///     Updates the sprite
+        /// </summary>
+        /// <param name="deltaTime">
+        ///     The amount of time in seconds that has passed since the last update.
+        ///     This value should come from GameTime.ElapsedGameTime.TotalSeconds
+        /// </param>
+        public virtual void Update(float deltaTime) { }
 
         /// <summary>
         ///     Renders the Sprite

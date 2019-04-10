@@ -190,8 +190,8 @@ namespace MonoGame.Aseprite
         ///     on the given values
         /// </summary>
         /// <param name="sourceRectangle">The source rectangle that the frame describes</param>
-        /// <param name="duration">The amount of time in milliseconds the frame should be displayed</param>
-        public void AddFrame(Rectangle sourceRectangle, int duration)
+        /// <param name="duration">The amount of time in seconds the frame should be displayed</param>
+        public void AddFrame(Rectangle sourceRectangle, float duration)
         {
             this.AddFrame(new Frame(sourceRectangle, duration));
         }
@@ -204,8 +204,8 @@ namespace MonoGame.Aseprite
         /// <param name="y">The y-coordinate position of the source rectangle for the frame</param>
         /// <param name="width">The width of the source rectangle for the frame</param>
         /// <param name="height">The height of the source rectangle for the frame</param>
-        /// <param name="duration">The amount of time in milliseconds the farme shoudl be displayed</param>
-        public void AddFrame(int x, int y, int width, int height, int duration)
+        /// <param name="duration">The amount of time in seconds the farme shoudl be displayed</param>
+        public void AddFrame(int x, int y, int width, int height, float duration)
         {
             this.AddFrame(new Frame(x, y, width, height, duration));
         }
@@ -382,9 +382,9 @@ namespace MonoGame.Aseprite
         public Rectangle frame;
 
         /// <summary>
-        ///     The amount of time in millisecons the frame should be displayed
+        ///     The amount of time in secondss the frame should be displayed
         /// </summary>
-        public int duration;
+        public float duration;
 
         /// <summary>
         ///     Creates a new <see cref="Frame"/> structure
@@ -393,8 +393,8 @@ namespace MonoGame.Aseprite
         /// <param name="y">The y-coordinate position of the frame</param>
         /// <param name="width">The width of the frame</param>
         /// <param name="height">The height of the frame</param>
-        /// <param name="duration">The amount of time in milliseconds the frame should be displayed</param>
-        public Frame(int x, int y, int width, int height, int duration)
+        /// <param name="duration">The amount of time in seconds the frame should be displayed</param>
+        public Frame(int x, int y, int width, int height, float duration)
         {
             this.frame = new Rectangle(x, y, width, height);
             this.duration = duration;
@@ -404,8 +404,8 @@ namespace MonoGame.Aseprite
         ///     Creates a new <see cref="Frame"/> structure
         /// </summary>
         /// <param name="frame">The <see cref="Rectangle"/> definition of the frame, defining the xy-coordinate and the width and height</param>
-        /// <param name="duration">The amount of time in milliseconds the frame should be displayed</param>
-        public Frame(Rectangle frame, int duration)
+        /// <param name="duration">The amount of time in seconds the frame should be displayed</param>
+        public Frame(Rectangle frame, float duration)
         {
             this.frame = frame;
             this.duration = duration;

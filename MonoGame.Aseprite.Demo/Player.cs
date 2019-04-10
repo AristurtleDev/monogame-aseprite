@@ -103,7 +103,18 @@ namespace MonoGame.Aseprite.Demo
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
+            //  Update the sprite by passing in your GameTime object
             _sprite.Update(gameTime);
+
+            // ------------------------------------------------------------------
+            //  Can also pass in delta time if you're using that instead
+            //  
+            //  float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //  _sprite.Update(deltaTime);
+            //
+            // ------------------------------------------------------------------
+
+
             UpdateInput(gameTime);
         }
 

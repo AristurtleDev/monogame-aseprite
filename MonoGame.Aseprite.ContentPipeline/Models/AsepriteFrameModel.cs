@@ -61,8 +61,15 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         public AsepriteSizeModel sourceSize { get; set; }
 
         /// <summary>
-        ///     The amount of time in milliseconds that the frame should be displayed
+        ///     The amount of time in seconds that the frame should be displayed
         /// </summary>
+        /// <remarks>
+        ///     For the actual frame in MonoGame.Aseprite.AnimationDefinition.Frame
+        ///     the duration is a float. However, Aseprite exports durations in int values
+        ///     that are the total milliseconds.  We're going to use int here to import properly
+        ///     but we'll divide by 1000 during the content writer so that we can read in 
+        ///     the total seconds value in game
+        /// </remarks>
         public int duration { get; set; }
     }
 }
