@@ -3,7 +3,7 @@
 MonoGame.Aseprite is an extension for [MonoGame Framework](http://www.monogame.net) to import the .json file produced by [Aseprite](http://www.aseprite.org) using the content pipeline, with a collection of classes to support rending the animation.
 
 
-![](https://i.imgur.com/lksiazd.gif)
+![](https://github.com/manbeardgames/monogame-aseprite/blob/master/docs/images/preview.gif)
 
 ## Getting Started
 MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed inot your existing MonOGame project using NuGet Package Manger in Visual Studio.  You can also use the following commands to install it.
@@ -17,11 +17,11 @@ MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be install
 
 Once you've added the NuGet package, you'll also need to add a reference to **MonoGame.Aseprite.ContentPipeline.dll** in the Content Pipeline Tool.  This file can be found in the "/packages/MonoGame.Aseprite.1.0.0/content" folder in the root directory of your project folder after installing the NuGet package.
 
-For more information on doing this, check out this [wiki page](https://gitlab.com/manbeardgames/monogame-aseprite/wikis/downloading-and-adding-references)
+For more information on doing this, check out this [wiki page](https://github.com/manbeardgames/monogame-aseprite/wiki/downloading-and-adding-references)
 
 ## Usage
 The following is a brief explination of how to use this in your MonoGame project. 
-[**For a more detailed explination, including images, please check the wiki**](https://gitlab.com/manbeardgames/monogame-aseprite/wikis/home)  
+[**For a more detailed explination, including images, please check the wiki**](https://github.com/manbeardgames/monogame-aseprite/wiki)  
 
 * Export your spritesheet from Aseprite
     * Select Array for meta information not Hash
@@ -51,9 +51,9 @@ The following is a brief explination of how to use this in your MonoGame project
     ```
 
 ## What Next?
-* Check out the [wiki](https://gitlab.com/manbeardgames/monogame-aseprite/wikis)
-* Read about [using slices](https://gitlab.com/manbeardgames/monogame-aseprite/wikis/using-slices-from-aseprite) if you plan to do that
-* Submit an [issue on GitLab](https://gitlab.com/manbeardgames/monogame-aseprite/issues)
+* Check out the [wiki](https://github.com/manbeardgames/monogame-aseprite/wiki)
+* Read about [using slices](https://github.com/manbeardgames/monogame-aseprite/wiki/using-slices-from-aseprite) if you plan to do that
+* Submit an [issue on GitLab](https://github.com/manbeardgames/monogame-aseprite/issues)
 * Hit me up on [Twitter @manbeardgames](https://www.twitter.com/manbeardgames) if you have questions
 
 
