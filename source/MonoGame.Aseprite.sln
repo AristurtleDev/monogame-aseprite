@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Demo", "MonoGame.Aseprite.Demo\MonoGame.Aseprite.Demo.csproj", "{E913F2A2-68AE-4DEE-80FD-9C0DCD5F2B03}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.ContentPipeline", "MonoGame.Aseprite.ContentPipeline\MonoGame.Aseprite.ContentPipeline.csproj", "{A1A1143F-DA9B-4FBC-B13C-7879E27BC92C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{B4DA3FC8-8A5F-4B08-91F3-0D35724D3F58}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E913F2A2-68AE-4DEE-80FD-9C0DCD5F2B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E913F2A2-68AE-4DEE-80FD-9C0DCD5F2B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E913F2A2-68AE-4DEE-80FD-9C0DCD5F2B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E913F2A2-68AE-4DEE-80FD-9C0DCD5F2B03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1A1143F-DA9B-4FBC-B13C-7879E27BC92C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1A1143F-DA9B-4FBC-B13C-7879E27BC92C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1A1143F-DA9B-4FBC-B13C-7879E27BC92C}.Release|Any CPU.ActiveCfg = Release|Any CPU
