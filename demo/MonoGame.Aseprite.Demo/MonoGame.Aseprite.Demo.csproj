@@ -49,6 +49,9 @@
     <Compile Include="Utils\Draw.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Aseprite, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Aseprite.1.1.0\lib\net45\MonoGame.Aseprite.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
@@ -106,12 +109,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.manifest" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonoGame.Aseprite\MonoGame.Aseprite.csproj">
-      <Project>{b4da3fc8-8a5f-4b08-91f3-0d35724d3f58}</Project>
-      <Name>MonoGame.Aseprite</Name>
-    </ProjectReference>
+    <Content Include="MonoGame.Aseprite.ContentPipeline.dll" />
+    <Content Include="Newtonsoft.Json.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
