@@ -3,7 +3,7 @@
 MonoGame.Aseprite is an extension for [MonoGame Framework](http://www.monogame.net) to import the .json file produced by [Aseprite](http://www.aseprite.org) using the content pipeline, with a collection of classes to support rending the animation.
 
 
-![](https://github.com/manbeardgames/monogame-aseprite/blob/master/docs/images/preview.gif)
+![](https://github.com/manbeardgames/repository-images/blob/master/monogame-aseprite/readme/preview.gif)
 
 ## Getting Started
 MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed inot your existing MonOGame project using NuGet Package Manger in Visual Studio.  You can also use the following commands to install it.
