@@ -53,7 +53,7 @@ The following is a brief explination of how to use this in your MonoGame project
 ## What Next?
 * Check out the [wiki](https://github.com/manbeardgames/monogame-aseprite/wiki)
 * Read about [using slices](https://github.com/manbeardgames/monogame-aseprite/wiki/using-slices-from-aseprite) if you plan to do that
-* Submit an [issue on GitLab](https://github.com/manbeardgames/monogame-aseprite/issues)
+* Submit an [issue on GitHub](https://github.com/manbeardgames/monogame-aseprite/issues)
 * Hit me up on [Twitter @manbeardgames](https://www.twitter.com/manbeardgames) if you have questions
 
 
