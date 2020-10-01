@@ -43,10 +43,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Importer.cs" />
+    <Compile Include="AsepriteImporter.cs" />
     <Compile Include="Models\AsepriteSliceKeyModel.cs" />
     <Compile Include="Models\AsepriteSliceModel.cs" />
-    <Compile Include="Processor.cs" />
+    <Compile Include="AsepriteProcessor.cs" />
     <Compile Include="Models\AsepriteFrameModel.cs" />
     <Compile Include="Models\AsepriteFrameTagModel.cs" />
     <Compile Include="Models\AsepriteLayerModel.cs" />

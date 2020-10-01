@@ -31,8 +31,8 @@ using TInput = System.String;
 
 namespace MonoGame.Aseprite.ContentPipeline
 {
-    [ContentImporter(".json", DisplayName = "Aseprite Animation Importer", DefaultProcessor = "Processor")]
-    public class Importer : ContentImporter<TInput>
+    [ContentImporter(".json", DisplayName = "Aseprite Animation Importer", DefaultProcessor = "AsepriteProcessor")]
+    public class AsepriteImporter : ContentImporter<TInput>
     {
 
         public override TInput Import(string filename, ContentImporterContext context)
