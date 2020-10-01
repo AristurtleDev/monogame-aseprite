@@ -1,4 +1,8 @@
 ﻿//--------------------------------------------------------------------------------
+//  AsepriteRectangleModel
+//  Model used while deseralizing the Aseprite .json file to represent
+//  a rectangle with an xy-coordinate and a (w)idth and (h)eight
+//--------------------------------------------------------------------------------
 //
 //                              License
 //  
@@ -22,23 +26,28 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //    THE SOFTWARE.
 //--------------------------------------------------------------------------------
-using System;
-
-namespace MonoGame.Aseprite.Demo
+namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    /// <summary>
-    /// The main class.
-    /// </summary>
-    public static class Program
+    public class AsepriteRectangleModel
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///     The top-left x-coordinate position of the rectangle
         /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            using (var game = new Game1())
-                game.Run();
-        }
+        public int x { get; set; }
+
+        /// <summary>
+        ///     The top-left y-coordinate position of the rectangel
+        /// </summary>
+        public int y { get; set; }
+
+        /// <summary>
+        ///     The width of the rectangle
+        /// </summary>
+        public int w { get; set; }
+
+        /// <summary>
+        ///     The height of the rectangle
+        /// </summary>
+        public int h { get; set; }
     }
 }
