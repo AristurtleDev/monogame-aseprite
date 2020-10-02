@@ -9,15 +9,14 @@ MonoGame.Aseprite is an extension for [MonoGame Framework](http://www.monogame.n
 MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed inot your existing MonOGame project using NuGet Package Manger in Visual Studio.  You can also use the following commands to install it.
 
 **Package Manager**  
-```PM> Install-Package MonoGame.Aseprite -Version 1.1.0 ```
+```PM> Install-Package MonoGame.Aseprite -Version 1.2.2 ```
 
 **.Net CLI**  
-```> dotnet add package MonoGame.Aseprite --version 1.1.0 ```  
+```> dotnet add package MonoGame.Aseprite --version 1.2.2 ``` 
 
 
-Once you've added the NuGet package, you'll also need to add a reference to **MonoGame.Aseprite.ContentPipeline.dll** in the Content Pipeline Tool.  This file can be found in the "/packages/MonoGame.Aseprite.1.0.0/content" folder in the root directory of your project folder after installing the NuGet package.
+Once you've added the NuGet package, you'll also need to add a reference to **MonoGame.Aseprite.ContentPipeline.dll** in the Content Pipeline Tool.  The location of this file after downloading the NuGet package is dependent on which version of MonoGame you are using.  Please refer to the following [wiki page](https://github.com/manbeardgames/monogame-aseprite/wiki/downloading-and-adding-references) for information on doing this.
 
-For more information on doing this, check out this [wiki page](https://github.com/manbeardgames/monogame-aseprite/wiki/downloading-and-adding-references)
 
 ## Usage
 The following is a brief explination of how to use this in your MonoGame project. 

@@ -5,12 +5,12 @@
 /intermediateDir:obj/$(Platform)
 /platform:DesktopGL
 /config:
-/profile:HiDef
+/profile:Reach
 /compress:False
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\packages\MonoGame.Aseprite.1.1.0\content\MonoGame.Aseprite.ContentPipeline.dll
+/reference:..\..\..\..\..\..\..\.nuget\packages\monogame.aseprite\1.2.1\contentFiles\cs\netstandard2.0\MonoGame.Aseprite.ContentPipeline.References\MonoGame.Aseprite.ContentPipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -27,7 +27,7 @@
 /build:player.png
 
 #begin playerAnimation.json
-/importer:Importer
+/importer:AsepriteImporter
 /processor:Processor
 /build:playerAnimation.json
 
