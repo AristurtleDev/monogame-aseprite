@@ -61,6 +61,7 @@ namespace MonoGame.Aseprite.Demo
         {
             AsepriteImportResult aseprite = content.Load<AsepriteImportResult>("sokoban_player");
             _sprite = new AnimatedSprite(aseprite, Position);
+            _sprite.RenderDefinition.Scale = new Vector2(3.0f, 3.0f);
             //AnimationDefinition animationDefinition = content.Load<AnimationDefinition>("playerAnimation");
             //Texture2D texture = content.Load<Texture2D>("player");
             //_sprite = new AnimatedSprite(texture, animationDefinition, this.Position);

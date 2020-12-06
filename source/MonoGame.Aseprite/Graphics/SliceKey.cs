@@ -23,58 +23,80 @@
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite
+namespace MonoGame.Aseprite.Graphics
 {
     /// <summary>
-    ///     Represnets the frame specific informaiton for a slice
+    ///     Represents the frame specific boundry infromation for a slice.
     /// </summary>
     public struct SliceKey
     {
         /// <summary>
-        ///     The frame this is for
+        ///     The index of the frame that this slicekey is valid for.
         /// </summary>
-        public int frame;
+        public int Frame;
 
         /// <summary>
-        ///     The <see cref="Rectangle"/> defintion of this
+        ///     A rectangle that describes the bounds of this slicekey.
         /// </summary>
-        public Rectangle bounds;
+        public Rectangle Bounds;
 
         /// <summary>
         ///     Creates a new <see cref="SliceKey"/> structure
         /// </summary>
-        /// <param name="frame">The frame this is for</param>
-        /// <param name="bounds">The <see cref="Rectangle"/> definition of this</param>
+        /// <param name="frame">
+        ///     The index of the frame that this slicekey is valid for.
+        /// </param>
+        /// <param name="bounds">
+        ///     A rectangle that describes the bounds of this slicekey.
+        /// </param>
         public SliceKey(int frame, Rectangle bounds)
         {
-            this.frame = frame;
-            this.bounds = bounds;
+            Frame = frame;
+            Bounds = bounds;
         }
 
         /// <summary>
         ///     Creates a new <see cref="SliceKey"/> structure
         /// </summary>
-        /// <param name="frame">The frame this is for</param>
-        /// <param name="location">A <see cref="Point"/> to describe the xy-coordinate position of the bounds</param>
-        /// <param name="size">A <see cref="Point"/> to describe the width and height of the bounds</param>
+        /// <param name="frame">
+        ///     The index of the frame that this slicekey is valid for.
+        /// </param>
+        /// <param name="location">
+        ///     A Point instance that descrbies the top-left xy-coordinate position of the bounds
+        ///     of this slicekey.
+        /// </param>
+        /// <param name="size">
+        ///     A Point instance that descrbies the width and height, in pixels, of the bounds
+        ///     of the slicekey.
+        /// </param>
         public SliceKey(int frame, Point location, Point size)
         {
-            this.frame = frame;
-            this.bounds = new Rectangle(location, size);
+            Frame = frame;
+            Bounds = new Rectangle(location, size);
         }
 
         /// <summary>
         ///     Creates a new <see cref="SliceKey"/> structure
         /// </summary>
-        /// <param name="frame">The frame this is for</param>
-        /// <param name="x">The x-coordinate position of the bounds</param>
-        /// <param name="y">The y-coordinate position of the bounds</param>
-        /// <param name="width">The width of the bounds</param>
-        /// <param name="height">The height of the bounds</param>
+        /// <param name="frame">
+        ///     The index of the frame that this slicekey is valid for.
+        /// </param>
+        /// <param name="x">
+        ///     The top-left x-coordinate position of hte bounds of this slicekey.
+        /// </param>
+        /// <param name="y">
+        ///     The top-left y-coordinate position of the bounds of this slicekey.
+        /// </param>
+        /// <param name="width">
+        ///     The width, in pixels, of the bounds of this slicekey.
+        /// </param>
+        /// <param name="height">
+        ///     The height, in pixels, of the bounds of this slicekey.
+        /// </param>
         public SliceKey(int frame, int x, int y, int width, int height)
         {
-            this.frame = frame;
-            this.bounds = new Rectangle(x, y, width, height);
+            Frame = frame;
+            Bounds = new Rectangle(x, y, width, height);
         }
     }
 }

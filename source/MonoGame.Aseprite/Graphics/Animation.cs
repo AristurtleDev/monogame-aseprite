@@ -21,55 +21,46 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-using MonoGame.Aseprite.ContentPipeline.Serialization;
-
-namespace MonoGame.Aseprite.ContentPipeline.Models
+namespace MonoGame.Aseprite.Graphics
 {
-    public class AsepriteSliceChunk : AsepriteChunk
+    /// <summary>
+    ///     Represents the definition of an animation
+    /// </summary>
+    public struct Animation
     {
         /// <summary>
-        ///     Gets the total number of keys contained within this slice.
+        ///     The name of this animation.
         /// </summary>
-        public int TotalKeys { get; private set; }
+        public string Name;
 
         /// <summary>
-        ///     Gets the <see cref="AsepriteSliceFlags"/> value that indicates if
-        ///     this slice has 9-patch and/or pivot data in its keys.
+        ///     The index of the frame that this animation starts on.
+        ///     The starting frame
         /// </summary>
-        public AsepriteSliceFlags Flags { get; private set; }
+        public int From;
 
         /// <summary>
-        ///     Gets the name of this slice.
+        ///     The index of the frame that this animation ends on.
         /// </summary>
-        public string Name { get; private set; }
+        public int To;
 
         /// <summary>
-        ///     Gets the <see cref="AsepriteSliceKey"/> instances that belong to this slice.
+        ///     Creates a new <see cref="Animation"/> structure
         /// </summary>
-        public AsepriteSliceKey[] Keys { get; private set; }
-
-        /// <summary>
-        ///     Creates a new <see cref="AsepriteSliceChunk"/> instance.
-        /// </summary>
-        /// <param name="reader">
-        ///     The <see cref="AsepriteReader"/> instance being used to read the
-        ///     Aseprite file.
+        /// <param name="name">
+        ///     The name of this animation.
         /// </param>
-        public AsepriteSliceChunk(AsepriteReader reader)
+        /// <param name="from">
+        ///     The index of the frame that this animation starts on.
+        /// </param>
+        /// <param name="to">
+        ///     The index of the frame that this animation ends on.
+        /// </param>
+        public Animation(string name, int from, int to)
         {
-            TotalKeys = (int)reader.ReadDWORD();
-            Flags = (AsepriteSliceFlags)reader.ReadDWORD();
-
-            //  Per ase file spec, ignore the next DWORD, it's "reserved"
-            _ = reader.ReadDWORD();
-
-            Name = reader.ReadString();
-
-            Keys = new AsepriteSliceKey[TotalKeys];
-            for (int i = 0; i < TotalKeys; i++)
-            {
-                Keys[i] = new AsepriteSliceKey(reader, Flags);
-            }
+            Name = name;
+            From = from;
+            To = to;
         }
     }
 }

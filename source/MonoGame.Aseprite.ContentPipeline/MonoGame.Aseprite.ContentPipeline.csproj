@@ -1,10 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DocumentationFile />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="ThirdParty\StbImageWriteSharp\generation\**" />
+    <Compile Remove="ThirdParty\StbImageWriteSharp\tests\**" />
+    <EmbeddedResource Remove="ThirdParty\StbImageWriteSharp\generation\**" />
+    <EmbeddedResource Remove="ThirdParty\StbImageWriteSharp\tests\**" />
+    <None Remove="ThirdParty\StbImageWriteSharp\generation\**" />
+    <None Remove="ThirdParty\StbImageWriteSharp\tests\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ThirdParty\StbImageWriteSharp\.git" />
+    <None Remove="ThirdParty\StbImageWriteSharp\.gitattributes" />
+    <None Remove="ThirdParty\StbImageWriteSharp\.gitignore" />
+    <None Remove="ThirdParty\StbImageWriteSharp\appveyor.yml" />
+    <None Remove="ThirdParty\StbImageWriteSharp\build_all.bat" />
+    <None Remove="ThirdParty\StbImageWriteSharp\README.md" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641">
       <PrivateAssets>All</PrivateAssets>

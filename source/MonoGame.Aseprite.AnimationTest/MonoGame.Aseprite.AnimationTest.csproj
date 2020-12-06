@@ -22,13 +22,29 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\slime_32x32.aseprite" Link="slime_32x32.aseprite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\adventurer-bow.aseprite" Link="adventurer-bow.aseprite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\adventurer.aseprite" Link="adventurer.aseprite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\adventurer_duplicate_test.aseprite" Link="adventurer_duplicate_test.aseprite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\source\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
+    <ProjectReference Include="..\MonoGame.Aseprite.ContentPipeline\MonoGame.Aseprite.ContentPipeline.csproj" />
+    <ProjectReference Include="..\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------ */
 
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
@@ -50,11 +51,11 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         /// </summary>
         public byte Alpha { get; private set; }
 
-        /// <summary>
-        ///     Gets a monogame compatible Color that represents
-        ///     the color of this palette entry.
-        /// </summary>
-        public Color Color { get; private set; }
+        /////////////// <summary>
+        ///////////////     Gets a monogame compatible Color that represents
+        ///////////////     the color of this palette entry.
+        /////////////// </summary>
+        ////////////public Color Color { get; private set; }
 
         /// <summary>
         ///     Gets the name of this palette color if it has a name.
@@ -83,7 +84,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             Blue = reader.ReadByte();
             Alpha = reader.ReadByte();
 
-            Color = new Color(Utils.BytesToPacked(Red, Green, Blue, Alpha));
+            //////////Color = new Color(Utils.BytesToPacked(Red, Green, Blue, Alpha));
 
 
             //  If the HasName flag is present, we need to read the string value, however

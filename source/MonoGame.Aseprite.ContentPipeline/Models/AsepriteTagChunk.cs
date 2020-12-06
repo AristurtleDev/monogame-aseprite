@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------ */
 
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
@@ -44,9 +45,24 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         public AsepriteLoopDirection Direction { get; private set; }
 
         /// <summary>
-        ///     Gets the color value for this tag.
+        ///     Gets the Red color value for this tag.
         /// </summary>
-        public Color Color { get; private set; }
+        public byte ColorR { get; private set; }
+
+        /// <summary>
+        ///     Gets the Green color value for this tag.
+        /// </summary>
+        public byte ColorG { get; private set; }
+
+        /// <summary>
+        ///     Gets the Blue color value for this tag.
+        /// </summary>
+        public byte ColorB { get; private set; }
+
+        ///////////// <summary>
+        /////////////     Gets the color value for this tag.
+        ///////////// </summary>
+        //////////public Color Color { get; private set; }
 
         /// <summary>
         ///     Gets the name of this tag.
@@ -69,8 +85,11 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             //  Per ase file spec, ignore next 8 bytes, they are reserved for future use
             reader.Ignore(8);
 
-            byte[] colorData = reader.ReadBytes(3);
-            Color = new Color(colorData[0], colorData[1], colorData[2]);
+            ColorR = reader.ReadByte();
+            ColorG = reader.ReadByte();
+            ColorB = reader.ReadByte();
+            ////////////byte[] colorData = reader.ReadBytes(3);
+            ////////////Color = new Color(colorData[0], colorData[1], colorData[2]);
 
             //  Per ase file spec, ignore next byte, it's just an extra one set to zero
             reader.Ignore(1);

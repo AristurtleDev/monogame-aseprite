@@ -28,6 +28,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
     public interface IAsepriteUserData
     {
         string UserDataText { get; }
-        Color UserDataColor { get; }
+        byte[] UserDataColor { get; }
+        ////////Color UserDataColor { get; }
     }
 }

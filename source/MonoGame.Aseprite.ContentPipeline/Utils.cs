@@ -30,6 +30,15 @@ namespace MonoGame.Aseprite.ContentPipeline
 {
     public static class Utils
     {
+        public static Color[] ToColorArray(this uint[] packedValues)
+        {
+            Color[] result = new Color[packedValues.Length];
+            for(int i = 0; i < packedValues.Length; i++)
+            {
+                result[i] = UINTToColor(packedValues[i]);
+            }
+            return result;
+        }
         public static uint ColorToUINT(Color color)
         {
             return DocColor.rgba(color.R, color.G, color.B, color.A);
@@ -96,6 +105,45 @@ namespace MonoGame.Aseprite.ContentPipeline
                 default:
                     throw new Exception("Unknown blend mode");
             }
+
+            
+        }
+
+        public static uint Crc32(byte[] bytes)
+        {
+            
+            uint[] table = new uint[256];
+            uint poly = 0xEDB88320;
+            uint temp = 0;
+
+            for(uint i = 0; i < table.Length; i++)
+            {
+                temp = i;
+
+                for(int j = 8; j > 0; j--)
+                {
+                    if((temp & 1) == 1)
+                    {
+                        temp = (uint)((temp >> 1) ^ poly);
+                    }
+                    else
+                    {
+                        temp = temp >> 1;
+                    }
+                }
+
+                table[i] = temp;
+            }
+
+            uint crc = 0xFFFFFFFF;
+
+            for(int i = 0; i < bytes.Length; i++)
+            {
+                byte index = (byte)(((crc) & 0xFF) ^ bytes[i]);
+                crc = (uint)((crc >> 8) ^ table[index]);
+            }
+
+            return ~crc;
         }
     }
 }

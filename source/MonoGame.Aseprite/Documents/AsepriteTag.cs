@@ -22,65 +22,45 @@
 ------------------------------------------------------------------------------ */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite
+namespace MonoGame.Aseprite.Documents
 {
     /// <summary>
-    ///     Defines various properties used by the Sprite class during rendering
+    ///     A class that provides the information about an animation tag
+    ///     for an <see cref="AsepriteDocument"/>.
     /// </summary>
-    public class RenderDefinition
+    public sealed class AsepriteTag
     {
         /// <summary>
-        ///     The source rectangle to use when rendering
+        ///     Gets the name of the animation.
         /// </summary>
-        public Rectangle? SourceRectangle { get; set; }
+        public string Name { get; internal set; }
 
         /// <summary>
-        ///     The color to use when rendering
+        ///     Gets the starting frame of the animation.
         /// </summary>
-        public Color Color { get; set; }
+        public int From { get; internal set; }
 
         /// <summary>
-        ///     The amount of rotation to apply when rendering
+        ///     Gets the ending frame of the animation.
         /// </summary>
-        public float Rotation { get; set; }
+        public int To { get; internal set; }
 
         /// <summary>
-        ///     The xy-coordinate to use as the origin point when rendering
+        ///     Gets the color of the animation as defined as the
+        ///     tag color in Asperite.
         /// </summary>
-        public Vector2 Origin { get; set; }
+        public Color Color { get; internal set; }
 
         /// <summary>
-        ///     The xy-values for how much to scale the image when rendering
+        ///     A value that indicates the direction the animation is played in.
+        ///     0 = Forward, 1 = Reverse, 2 = Ping Pong.
         /// </summary>
-        public Vector2 Scale { get; set; }
+        public AsepriteTagDirection Direction { get; internal set; }
 
         /// <summary>
-        ///     The SpriteEffects to use when rendering
+        ///     Creates a new <see cref="AsepriteTag"/> instance.
         /// </summary>
-        public SpriteEffects SpriteEffect { get; set; }
-
-        /// <summary>
-        ///     The layer depth to render at
-        /// </summary>
-        public float LayerDepth { get; set; }
-
-        /// <summary>
-        ///     Creates a new <see cref="RenderDefinition"/> instance
-        /// </summary>
-        public RenderDefinition()
-        {
-            //  Define default values
-            this.SourceRectangle = null;
-            this.Color = Color.White;
-            this.Rotation = 0.0f;
-            this.Origin = Vector2.Zero;
-            this.Scale = Vector2.One;
-            this.SpriteEffect = SpriteEffects.None;
-            this.LayerDepth = 0.0f;
-        }
-
-
+        internal AsepriteTag() { }
     }
 }

@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.ContentPipeline.Serialization;
 using MonoGame.Aseprite.ContentPipeline.ThirdParty.Pixman;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
@@ -241,73 +242,73 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             reader.LastChunkRead = slice;
         }
 
-        /// <summary>
-        ///     Flattens all <see cref="AsepriteCelChunk"/> instances within
-        ///     this frame into a single array of color data.
-        /// </summary>
-        public void FlattenCels()
-        {
-            Pixels = new Color[File.Header.Width * File.Header.Height];
+        ///// <summary>
+        /////     Flattens all <see cref="AsepriteCelChunk"/> instances within
+        /////     this frame into a single array of color data.
+        ///// </summary>
+        //public void FlattenCels()
+        //{
+        //    Pixels = new Color[File.Header.Width * File.Header.Height];
+          
 
-            for (int c = 0; c < Cels.Count; c++)
-            {
-                AsepriteCelChunk cel = Cels[c];
-                if (cel.LinkedCel != null)
-                {
-                    cel = cel.LinkedCel;
-                }
-                AsepriteLayerChunk layer = File.Layers[cel.LayerIndex];
+        //    for (int c = 0; c < Cels.Count; c++)
+        //    {
+        //        AsepriteCelChunk cel = Cels[c];
+        //        if (cel.LinkedCel != null)
+        //        {
+        //            cel = cel.LinkedCel;
+        //        }
+        //        AsepriteLayerChunk layer = File.Layers[cel.LayerIndex];
 
-                //  Only continue processing if the layer is visible
-                if ((layer.Flags & AsepriteLayerFlags.Visible) != 0)
-                {
-                    //if (Cels[c].LayerIndex == 0)
-                    //{
-                    //    //  This is the first cel in the layer, so we can just copy over
-                    //    //  the pixel data straight out
-                    //    for (int p = 0; p < cel.Pixels.Length; p++)
-                    //    {
-                    //        Pixels[p] = new Color(cel.Pixels[p]);
-                    //    }
-                    //}
+        //        //  Only continue processing if the layer is visible
+        //        if ((layer.Flags & AsepriteLayerFlags.Visible) != 0)
+        //        {
+                   
+        //            byte opacity = Combine32.MUL_UN8(cel.Opacity, layer.Opacity);
 
-                    byte opacity = Combine32.MUL_UN8(cel.Opacity, layer.Opacity);
+        //            for (int p = 0; p < cel.Pixels.Length; p++)
+        //            {
+        //                int x = (p % cel.Width) + cel.X;
+        //                int y = (p / cel.Width) + cel.Y;
+        //                int index = y * File.Header.Width + x;
 
-                    for (int p = 0; p < cel.Pixels.Length; p++)
-                    {
-                        int x = (p % cel.Width) + cel.X;
-                        int y = (p / cel.Width) + cel.Y;
-                        int index = y * File.Header.Width + x;
+        //                if (index < 0 || index >= Pixels.Length) { continue; }
 
 
-                        //  TODO: Test this with using Pixels[index].PackedValue instead.
-                        uint backdrop = Utils.ColorToUINT(Pixels[index]);
-                        uint src = cel.Pixels[p];
+        //                //  TODO: Test this with using Pixels[index].PackedValue instead.
+        //                uint backdrop = Utils.ColorToUINT(Pixels[index]);
+        //                uint src = cel.Pixels[p];
 
-                        //  TODO: I don't like checking the layer index here, find a better
-                        //  way to do this please.
-                        if (cel.LayerIndex == 0)
-                        {
-                            byte r = ThirdParty.Aseprite.DocColor.rgba_getr(cel.Pixels[p]);
-                            byte g = ThirdParty.Aseprite.DocColor.rgba_getg(cel.Pixels[p]);
-                            byte b = ThirdParty.Aseprite.DocColor.rgba_getb(cel.Pixels[p]);
-                            byte a = ThirdParty.Aseprite.DocColor.rgba_geta(cel.Pixels[p]);
-                            Pixels[index] = Color.FromNonPremultiplied(r, g, b, a);
-                            //Pixels[index] = new Color(cel.Pixels[p]);
-                        }
-                        else
-                        {
+        //                //  TODO: I don't like checking the layer index here, find a better
+        //                //  way to do this please.
+        //                if (cel.LayerIndex == 1111110)
+        //                {
+        //                    byte r = ThirdParty.Aseprite.DocColor.rgba_getr(cel.Pixels[p]);
+        //                    byte g = ThirdParty.Aseprite.DocColor.rgba_getg(cel.Pixels[p]);
+        //                    byte b = ThirdParty.Aseprite.DocColor.rgba_getb(cel.Pixels[p]);
+        //                    byte a = ThirdParty.Aseprite.DocColor.rgba_geta(cel.Pixels[p]);
 
-                            Func<uint, uint, int, uint> blender = Utils.GetBlendFunction(layer.BlendMode);
+        //                    //  Super important that we use Color.FromNonPremultipled here.
+        //                    //  MonoGame by default used BlendState.AlphaBlend in the
+        //                    //  SpriteBatch.Begin() call.  AlphaBlend expects the colors to
+        //                    //  be premultiplied; otherwise the resulting render is wonky.
+        //                    //  So we'll premultiply it here so we support the default
+        //                    //  implementation in MonoGame.
+        //                    Pixels[index] = Color.FromNonPremultiplied(r, g, b, a);
+        //                }
+        //                else
+        //                {
 
-                            uint blendedColor = blender.Invoke(backdrop, src, opacity);
+        //                    Func<uint, uint, int, uint> blender = Utils.GetBlendFunction(layer.BlendMode);
+
+        //                    uint blendedColor = blender.Invoke(backdrop, src, opacity);
 
 
-                            Pixels[index] = new Color(blendedColor);
-                        }
-                    }
-                }
-            }
-        }
+        //                    Pixels[index] = new Color(blendedColor);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

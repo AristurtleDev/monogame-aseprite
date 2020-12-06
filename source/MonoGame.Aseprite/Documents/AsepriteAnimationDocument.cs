@@ -21,31 +21,28 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.ContentPipeline.Models;
+using System.Collections.Generic;
 
-namespace MonoGame.Aseprite.ContentPipeline
+namespace MonoGame.Aseprite.Documents
 {
-    [ContentProcessor(DisplayName = "Aseprite Processor")]
-    class AsepriteProcessor : ContentProcessor<AsepriteImporterResult, AsepriteProcessorResult>
+    /// <summary>
+    ///     A class that provides the informaiton imported from an Aseprite file
+    ///     through the content pipeline, that contains defined animation tags.
+    /// </summary>
+    public sealed class AsepriteAnimationDocument : AsepriteDocument
     {
-        public override AsepriteProcessorResult Process(AsepriteImporterResult input, ContentProcessorContext context)
+        /// <summary>
+        ///     Gets the collection of defined animations, with the dictionary key
+        ///     being the name of the animation.
+        /// </summary>
+        public Dictionary<string, AsepriteTag> Tags { get; internal set; }
+
+        /// <summary>
+        ///     Creates a new <see cref="AsepriteAnimationDocument"/> instance.
+        /// </summary>
+        internal AsepriteAnimationDocument() : base()
         {
-            //  Read the aseprite document from the stream.
-            AsepriteDocument doc;
-            using (MemoryStream stream = new MemoryStream(input.Data))
-            {
-                using (AsepriteReader reader = new AsepriteReader(stream))
-                {
-                    doc = new AsepriteDocument(reader);;
-                }
-            }
-
-
-            //  Convert the document into a format thats easier to ingest and return it.
-            AsepriteProcessorResult result = new AsepriteProcessorResult(doc);
-            return result;
+            Tags = new Dictionary<string, AsepriteTag>();
         }
     }
 }

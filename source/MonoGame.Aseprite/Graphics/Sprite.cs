@@ -24,7 +24,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite
+namespace MonoGame.Aseprite.Graphics
 {
     /// <summary>
     ///     Simple sprite classed used for managing and rendering a Texture2D
@@ -32,19 +32,19 @@ namespace MonoGame.Aseprite
     public class Sprite
     {
         /// <summary>
-        ///     The texture used to when rendering
+        ///     Gets the Texture2D used when rendering.
         /// </summary>
-        public Texture2D Texture { get; set; }
+        public Texture2D Texture { get; private set; }
 
         /// <summary>
-        ///     The xy-coordinate position
+        ///     Gets the top-left xy-coordinate position.
         /// </summary>
         public Vector2 Position { get; set; }
 
         /// <summary>
-        ///     The width of the sprite
+        ///     Gets the width, in pixels.
         /// </summary>
-        public int Width
+        public virtual int Width
         {
             get
             {
@@ -54,9 +54,9 @@ namespace MonoGame.Aseprite
         }
 
         /// <summary>
-        ///     The height of the sprite
+        ///     Gets the height, in pixels.
         /// </summary>
-        public int Height
+        public virtual int Height
         {
             get
             {
@@ -66,75 +66,123 @@ namespace MonoGame.Aseprite
         }
 
         /// <summary>
-        ///     The <see cref="RenderDefinition"/> used during rendering
+        ///     Gets or Sets the bounds of the source rectangle to use
+        ///     when rendering. Defines the area within the <see cref="Texture"/>
+        ///     that is rendered.
         /// </summary>
-        public RenderDefinition RenderDefinition { get; set; }
+        public Rectangle SourceRectangle { get; set; }
 
-        #region Constructors
+        /// <summary>
+        ///     Gets or Sets the color mask to use when rendering.
+        /// </summary>
+        public Color Color { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets the amount of rotation to apply when rendering.
+        /// </summary>
+        public float Rotation { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets the xy-coordinate to use as the origin point
+        ///     when rendering.
+        /// </summary>
+        public Vector2 Origin { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets the x and y scale values too apply when rendering.
+        /// </summary>
+        public Vector2 Scale { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the SpriteEffects to use when rendering.
+        /// </summary>
+        public SpriteEffects SpriteEffect { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets the layer depth to set when rendering.
+        /// </summary>
+        public float LayerDepth { get; set; }
+
+        /// <summary>
+        ///     Creates a new instance.
+        /// </summary>
         internal Sprite()
         {
             Position = Vector2.Zero;
-            RenderDefinition = new RenderDefinition();
-        }
-        /// <summary>
-        ///     Creates a new instance
-        /// </summary>
-        /// <param name="texture">The texture to use</param>
-        public Sprite(Texture2D texture)
-        {
-            Texture = texture;
-            Position = Vector2.Zero;
-            RenderDefinition = new RenderDefinition();
+
+            SourceRectangle = new Rectangle();
+            Color = Color.White;
+            Rotation = 0.0f;
+            Origin = Vector2.Zero;
+            Scale = Vector2.One;
+            SpriteEffect = SpriteEffects.None;
+            LayerDepth = 0.0f;
         }
 
         /// <summary>
         ///     Creates a new instance
         /// </summary>
-        /// <param name="texture">The texture to use</param>
-        /// <param name="position">The position to render at</param>
+        /// <param name="texture">
+        ///     The Texture2D used when rendering.
+        /// </param>
+        public Sprite(Texture2D texture) : this()
+        {
+            Texture = texture;
+            SourceRectangle = texture.Bounds;
+        }
+
+        /// <summary>
+        ///     Creates a new instance
+        /// </summary>
+        /// <param name="texture">
+        ///     The Texture2D used when rendering.
+        /// </param>
+        /// <param name="position">
+        ///     The xy-coordinate position to render this sprite at.
+        /// </param>
         public Sprite(Texture2D texture, Vector2 position) : this(texture)
         {
             Position = position;
         }
-        #endregion
 
-
-        #region Update and Render
         /// <summary>
-        ///     Updates the sprite
+        ///     Updates this instance.
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">
+        ///     Snapshot of the current game timeing values.
+        /// </param>
         public virtual void Update(GameTime gameTime)
         {
             Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         /// <summary>
-        ///     Updates the sprite
+        ///     Updates this instance.
         /// </summary>
         /// <param name="deltaTime">
-        ///     The amount of time in seconds that has passed since the last update.
+        ///     The amount of time, in seconds, that has passed since the last update.
         ///     This value should come from GameTime.ElapsedGameTime.TotalSeconds
         /// </param>
         public virtual void Update(float deltaTime) { }
 
         /// <summary>
-        ///     Renders the Sprite
+        ///     Renders this instance.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use when rendering</param>
+        /// <param name="spriteBatch">
+        ///     The SpriteBatch instance to use when rendering.
+        /// </param>
         public virtual void Render(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
                 texture: Texture,
                 position: Position,
-                sourceRectangle: RenderDefinition.SourceRectangle,
-                color: RenderDefinition.Color,
-                rotation: RenderDefinition.Rotation,
-                origin: RenderDefinition.Origin,
-                scale: RenderDefinition.Scale,
-                effects: RenderDefinition.SpriteEffect,
-                layerDepth: RenderDefinition.LayerDepth);
+                sourceRectangle: SourceRectangle,
+                color: Color,
+                rotation: Rotation,
+                origin: Origin,
+                scale: Scale,
+                effects: SpriteEffect,
+                layerDepth: LayerDepth);
         }
-        #endregion
     }
 }

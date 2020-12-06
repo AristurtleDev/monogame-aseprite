@@ -21,12 +21,31 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-namespace MonoGame.Aseprite.ContentPipeline
+namespace MonoGame.Aseprite.Documents
 {
-    public class AsepriteImporterResult
+    /// <summary>
+    ///     Values that define the direction in which a the animation
+    ///     defined by an <see cref="AsepriteTag"/> should be played.
+    /// </summary>
+    public enum AsepriteTagDirection
     {
-        public byte[] Data { get; internal set; }
-        internal AsepriteImporterResult() { }
+        /// <summary>
+        ///     The animation shoudl be played in a forward direction from
+        ///     the starting frame to the ending frame.
+        /// </summary>
+        Forward = 0,
 
+        /// <summary>
+        ///     The aniamtion should be played in a reverse direction from
+        ///     the ending frame to the starting frame.
+        /// </summary>
+        Reverse = 1,
+
+        /// <summary>
+        ///     The animation should ping pong the direciton played; First it should
+        ///     play forward from the starting frame to the ending frame, then it should
+        ///     play in reverse from the ending frame to the starting frame.
+        /// </summary>
+        PingPing = 2
     }
 }

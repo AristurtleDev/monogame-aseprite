@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------ */
 
 using System.IO;
-using System.Reflection;
 using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace MonoGame.Aseprite.ContentPipeline
@@ -30,9 +29,35 @@ namespace MonoGame.Aseprite.ContentPipeline
     [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite Importer", DefaultProcessor = "AsepriteProcessor")]
     public class AsepriteImporter : ContentImporter<AsepriteImporterResult>
     {
+        /// <summary>
+        ///     Import method that can be used without the content pipeline.
+        /// </summary>
+        /// <param name="filename">
+        ///     The fully qualified path to the file in which to import.
+        /// </param>
+        /// <returns>
+        ///     A new <see cref="AsepriteImporterResult"/> instance containing the
+        ///     results of the import.
+        /// </returns>
+        public AsepriteImporterResult Import(string filename) => Import(filename, null);
+
+
+        /// <summary>
+        ///     Import method that is called by the content pipeline.
+        ///
+        ///     IF NOT USING THE CONTENT PIPELINE THEN THE OTHER Import(string)
+        ///     OVERLOAD SHOULD BE USED.
+        /// </summary>
+        /// <param name="filename">
+        ///     The fully qualifie dpath to the file in which to import.
+        /// </param>
+        /// <param name="context">
+        ///     A <see cref="ContentImporterContext"/> instance provided by the content pipeline.
+        /// </param>
+        /// <returns></returns>
         public override AsepriteImporterResult Import(string filename, ContentImporterContext context)
         {
-            
+
             AsepriteImporterResult result = new AsepriteImporterResult();
             result.Data = File.ReadAllBytes(filename);
             return result;

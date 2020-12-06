@@ -23,46 +23,63 @@
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite
+namespace MonoGame.Aseprite.Graphics
 {
     /// <summary>
-    ///     Represents the definition of a frame
+    ///     A frame is the rectangluar area within the spritesheet that describes a single
+    ///     frame of an animation and the duration in which that frame should be rendered.
     /// </summary>
     public struct Frame
     {
         /// <summary>
-        ///     Defines the area within the spritesheet that the frame is in
+        ///     Defines the rectanglular bounds within the spritesheet that should be.
+        ///     rendered for for this frame.
         /// </summary>
-        public Rectangle frame;
+        public Rectangle Bounds;
 
         /// <summary>
-        ///     The amount of time in secondss the frame should be displayed
+        ///     The amount of time, in seconds, this frame should be displayed.
         /// </summary>
-        public float duration;
+        public float Duration;
 
         /// <summary>
-        ///     Creates a new <see cref="Frame"/> structure
+        ///     Creates a new <see cref="Frame"/> instance.
         /// </summary>
-        /// <param name="x">The x-coordinate position of the frame</param>
-        /// <param name="y">The y-coordinate position of the frame</param>
-        /// <param name="width">The width of the frame</param>
-        /// <param name="height">The height of the frame</param>
-        /// <param name="duration">The amount of time in seconds the frame should be displayed</param>
+        /// <param name="x">
+        ///     The top-left x-coordinate position of the frame relative to the spritesheet.
+        /// </param>a
+        /// <param name="y">
+        ///     The top-left y-coordinate position of the frame relative to the spritesheet.
+        /// </param>
+        /// <param name="width">
+        ///     The width, in pixels, of the frame.
+        /// </param>
+        /// <param name="height">
+        ///     The height, in pixels, of the frame.
+        /// </param>
+        /// <param name="duration">
+        ///     The amount of time, in seconds, the frame should be displayed.
+        /// </param>
         public Frame(int x, int y, int width, int height, float duration)
         {
-            this.frame = new Rectangle(x, y, width, height);
-            this.duration = duration;
+            Bounds = new Rectangle(x, y, width, height);
+            Duration = duration;
         }
 
         /// <summary>
         ///     Creates a new <see cref="Frame"/> structure
         /// </summary>
-        /// <param name="frame">The <see cref="Rectangle"/> definition of the frame, defining the xy-coordinate and the width and height</param>
-        /// <param name="duration">The amount of time in seconds the frame should be displayed</param>
-        public Frame(Rectangle frame, float duration)
+        /// <param name="bounds">
+        ///     A <see cref="Rectangle"/> instance that describes the bounds of the frame relative
+        ///     to the spritesheet.
+        /// </param>
+        /// <param name="duration">
+        ///     The amount of time, in seconds, the frame should be displayed.
+        /// </param>
+        public Frame(Rectangle bounds, float duration)
         {
-            this.frame = frame;
-            this.duration = duration;
+            Bounds = bounds;
+            Duration = duration;
         }
     }
 }

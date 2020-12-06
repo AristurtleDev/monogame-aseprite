@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------ */
 
 using System.Collections.Generic;
+using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
@@ -48,12 +49,12 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                 Frames.Add(new AsepriteFrame(this, reader));
             }
 
-            //  Flatten all cels in each frame so that they provide
-            //  a single array of pixel data for the image the contain.
-            for (int i = 0; i < Frames.Count; i++)
-            {
-                Frames[i].FlattenCels();
-            }
+            ////////  Flatten all cels in each frame so that they provide
+            ////////  a single array of pixel data for the image the contain.
+            //////for (int i = 0; i < Frames.Count; i++)
+            //////{
+            //////    Frames[i].FlattenCels();
+            //////}
         }
     }
 }

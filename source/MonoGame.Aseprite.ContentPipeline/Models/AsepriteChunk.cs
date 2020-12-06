@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------ */
 
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
@@ -32,10 +33,12 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         /// </summary>
         public string UserDataText { get; private set; }
 
-        /// <summary>
-        ///     Gets the color set for this instance.
-        /// </summary>
-        public Color UserDataColor { get; private set; }
+        public byte[] UserDataColor { get; private set; }
+
+        /////////// <summary>
+        ///////////     Gets the color set for this instance.
+        /////////// </summary>
+        ////////public Color UserDataColor { get; private set; }
 
         /// <summary>
         ///     Gets a value that indicates if this chunk has a valid value
@@ -68,11 +71,16 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
 
             if ((flags & AsepriteUserDataFlags.HasColor) != 0)
             {
-                UserDataColor = Color.FromNonPremultiplied(
-                    r: reader.ReadByte(),
-                    g: reader.ReadByte(),
-                    b: reader.ReadByte(),
-                    a: reader.ReadByte());
+                UserDataColor = new byte[4];
+                UserDataColor[0] = reader.ReadByte();
+                UserDataColor[1] = reader.ReadByte();
+                UserDataColor[2] = reader.ReadByte();
+                UserDataColor[3] = reader.ReadByte();
+                ////////UserDataColor = Color.FromNonPremultiplied(
+                ////////    r: reader.ReadByte(),
+                ////////    g: reader.ReadByte(),
+                ////////    b: reader.ReadByte(),
+                ////////    a: reader.ReadByte());
             }
         }
     }

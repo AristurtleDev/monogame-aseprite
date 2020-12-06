@@ -25,10 +25,10 @@ using System.IO;
 using System.Text;
 using MonoGame.Aseprite.ContentPipeline.Models;
 
-namespace MonoGame.Aseprite.ContentPipeline
+namespace MonoGame.Aseprite.ContentPipeline.Serialization
 {
     /// <summary>
-    ///     A <see cref="BinaryReader"/> implementations used for reading the contents
+    ///     A <see cref="BinaryReader"/> implementation used for reading the contents
     ///     of a .ase/.aseprite file.
     /// </summary>
     public class AsepriteReader : BinaryReader

@@ -21,6 +21,8 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
+using MonoGame.Aseprite.ContentPipeline.Serialization;
+
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
     public class AsepriteLayerChunk : AsepriteChunk

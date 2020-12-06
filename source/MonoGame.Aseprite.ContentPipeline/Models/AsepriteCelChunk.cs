@@ -25,6 +25,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
@@ -151,6 +152,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
 
                 //  Convert the [byte, byte, byte, byte] pixel data into
                 //  packed uint[] values
+                //  TODO: This only works for RGB Mode
                 Pixels = new uint[Width * Height];
                 for (int i = 0, b = 0; i < Pixels.Length; i++, b += 4)
                 {

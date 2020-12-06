@@ -21,39 +21,36 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-namespace MonoGame.Aseprite
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+
+namespace MonoGame.Aseprite.Documents
 {
-    /// <summary>
-    ///     Represents the definition of an animation
-    /// </summary>
-    public struct Animation
+    public sealed class AsepriteSlice
     {
         /// <summary>
-        ///     The name of the animation
+        ///     Gets the name of the slice.
         /// </summary>
-        public string name;
+        public string Name { get; internal set; }
 
         /// <summary>
-        ///     The starting frame
+        ///     Gets the color of the slice.
         /// </summary>
-        public int from;
+        public Color Color { get; internal set; }
 
         /// <summary>
-        ///     The ending frame
+        ///     Gets the key-value pair dictionary of <see cref="AsepriteSliceKey"/>
+        ///     instance for this slice. The frame in which the <see cref="AsepriteSliceKey"/>
+        ///     is valid on is the key and the instance itself is the value.
         /// </summary>
-        public int to;
+        public Dictionary<int, AsepriteSliceKey> SliceKeys { get; internal set; }
 
         /// <summary>
-        ///     Creates a new <see cref="Animation"/> structure
+        ///     Creates a new <see cref="AsepriteSlice"/> instance.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        public Animation(string name, int from, int to)
+        internal AsepriteSlice()
         {
-            this.name = name;
-            this.from = from;
-            this.to = to;
+            SliceKeys = new Dictionary<int, AsepriteSliceKey>();
         }
     }
 }

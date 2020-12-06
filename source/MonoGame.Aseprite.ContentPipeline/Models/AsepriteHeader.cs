@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------ */
 
 using System;
+using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {

@@ -21,55 +21,44 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-using MonoGame.Aseprite.ContentPipeline.Serialization;
-
-namespace MonoGame.Aseprite.ContentPipeline.Models
+namespace MonoGame.Aseprite.Documents
 {
-    public class AsepriteSliceChunk : AsepriteChunk
+    /// <summary>
+    ///     A class that provides the bounds an duration of a single
+    ///     frame for an <see cref="AsepriteDocument"/>.
+    /// </summary>
+    public sealed class AsepriteFrame
     {
         /// <summary>
-        ///     Gets the total number of keys contained within this slice.
+        ///     Gets the top-left x-coordinate position of the frame relative
+        ///     to the top-left of the texture.
         /// </summary>
-        public int TotalKeys { get; private set; }
+        public int X { get; internal set; }
 
         /// <summary>
-        ///     Gets the <see cref="AsepriteSliceFlags"/> value that indicates if
-        ///     this slice has 9-patch and/or pivot data in its keys.
+        ///     Gets the top-left y-coordinate position of the frame relative
+        ///     to the top-left of the texture.
         /// </summary>
-        public AsepriteSliceFlags Flags { get; private set; }
+        public int Y { get; internal set; }
 
         /// <summary>
-        ///     Gets the name of this slice.
+        ///     Gets the width, in pixels, of the frame.
         /// </summary>
-        public string Name { get; private set; }
+        public int Width { get; internal set; }
 
         /// <summary>
-        ///     Gets the <see cref="AsepriteSliceKey"/> instances that belong to this slice.
+        ///     Gets the height, in pixels, of the frame.
         /// </summary>
-        public AsepriteSliceKey[] Keys { get; private set; }
+        public int Height { get; internal set; }
 
         /// <summary>
-        ///     Creates a new <see cref="AsepriteSliceChunk"/> instance.
+        ///     Gets the duration, in seconds, of the frame.
         /// </summary>
-        /// <param name="reader">
-        ///     The <see cref="AsepriteReader"/> instance being used to read the
-        ///     Aseprite file.
-        /// </param>
-        public AsepriteSliceChunk(AsepriteReader reader)
-        {
-            TotalKeys = (int)reader.ReadDWORD();
-            Flags = (AsepriteSliceFlags)reader.ReadDWORD();
+        public float Duration { get; internal set; }
 
-            //  Per ase file spec, ignore the next DWORD, it's "reserved"
-            _ = reader.ReadDWORD();
-
-            Name = reader.ReadString();
-
-            Keys = new AsepriteSliceKey[TotalKeys];
-            for (int i = 0; i < TotalKeys; i++)
-            {
-                Keys[i] = new AsepriteSliceKey(reader, Flags);
-            }
-        }
+        /// <summary>
+        ///     Creates a <see cref="AsepriteFrame"/>
+        /// </summary>
+        internal AsepriteFrame() { }
     }
 }

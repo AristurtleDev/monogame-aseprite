@@ -17,5 +17,7 @@
 #begin ../../../../sokoban_player.aseprite
 /importer:AsepriteImporter
 /processor:AsepriteProcessor
+/processorParam:SheetType=Packed
+/processorParam:SheetOptions=MergeDuplicates, IgnoreEmpty
 /build:../../../../sokoban_player.aseprite;sokoban_player.aseprite
 
