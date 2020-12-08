@@ -26,16 +26,63 @@ using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    public class AsepriteDocument
+    /// <summary>
+    ///     A class that describes an Aseprite file document.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite File Spec documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
+    public sealed class AsepriteDocument
     {
-        public AsepriteHeader Header { get; internal set; }
-        public List<AsepriteFrame> Frames { get; internal set; }
-        public List<AsepriteSliceChunk> Slices { get; internal set; }
-        public List<AsepriteTagChunk> Tags { get; internal set; }
-        public List<AsepriteLayerChunk> Layers { get; internal set; }
+        /// <summary>
+        ///     Gets the <see cref="AsepriteHeader"/> instance of the
+        ///     document.
+        /// </summary>
+        public AsepriteHeader Header { get; private set; }
+
+        /// <summary>
+        ///     Gets a collection of all <see cref="AsepriteFrame"/> instances
+        ///     found within the document.
+        /// </summary>
+        public List<AsepriteFrame> Frames { get; private set; }
+
+        /// <summary>
+        ///     Gets a collection of all <see cref="AsepriteSliceChunk"/> instances
+        ///     found within the document.
+        /// </summary>
+        public List<AsepriteSliceChunk> Slices { get; private set; }
+
+        /// <summary>
+        ///     Gets a collection of all <see cref="AsepriteTagChunk"/> instances
+        ///     found within the doucment.
+        /// </summary>
+        public List<AsepriteTagChunk> Tags { get; private set; }
+
+        /// <summary>
+        ///     Gets a collectin of all <see cref="AsepriteLayerChunk"/> instances
+        ///     found within the document.
+        /// </summary>
+        public List<AsepriteLayerChunk> Layers { get; private set; }
+
+        /// <summary>
+        ///     Gets the <see cref="AsepritePaletteChunk"/> instance found within
+        ///     the document.
+        /// </summary>
         public AsepritePaletteChunk Palette { get; internal set; }
 
-        public AsepriteDocument(AsepriteReader reader)
+        /// <summary>
+        ///     Creates a new <see cref="AsepriteDocument"/> instance.
+        /// </summary>
+        /// <param name="reader">
+        ///     The <see cref="AsepriteReader"/> instance being used to
+        ///     read the Aseprite document file.
+        /// </param>
+        internal AsepriteDocument(AsepriteReader reader)
         {
             Frames = new List<AsepriteFrame>();
             Slices = new List<AsepriteSliceChunk>();
@@ -48,13 +95,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             {
                 Frames.Add(new AsepriteFrame(this, reader));
             }
-
-            ////////  Flatten all cels in each frame so that they provide
-            ////////  a single array of pixel data for the image the contain.
-            //////for (int i = 0; i < Frames.Count; i++)
-            //////{
-            //////    Frames[i].FlattenCels();
-            //////}
         }
     }
 }

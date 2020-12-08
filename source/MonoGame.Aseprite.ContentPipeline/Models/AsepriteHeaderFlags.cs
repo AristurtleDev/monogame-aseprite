@@ -25,9 +25,24 @@ using System;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides the values for the flags set in the Aseprtie header.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite Header Flags documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#header">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     [Flags]
     public enum AsepriteHeaderFlags
     {
+        /// <summary>
+        ///     When this flag is set, it indicates that all layers have a
+        ///     valid opacity value.
+        /// </summary>
         HasOpacity = 1
     }
 }

@@ -25,7 +25,19 @@ using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    public class AsepriteLayerChunk : AsepriteChunk
+    /// <summary>
+    ///     Provides the values found inside a Layer chunk in an Aseprite file.
+    /// </summary>
+    /// <remarks>
+    ///     A layer chunk contains data such as name, opacity, and blend mode.
+    ///     <para>
+    ///         Aseprite Layer Chunk documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#layer-chunk-0x2004">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
+    public sealed class AsepriteLayerChunk : AsepriteChunk
     {
         /// <summary>
         ///     Gets the <see cref="AsepriteLayerFlags"/> that have been
@@ -62,25 +74,14 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         /// </summary>
         public string Name { get; private set; }
 
-
         /// <summary>
         ///     Creates a new <see cref="AsepriteLayerChunk"/> instance.
-        /// </summary>
-        /// <param name="reader"></param>
-        public AsepriteLayerChunk(AsepriteReader reader)
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        ///     Reads the data for this <see cref="AsepriteLayerChunk"/> from the
-        ///     provided <see cref="AsepriteReader"/> instance.
         /// </summary>
         /// <param name="reader">
         ///     The <see cref="AsepriteReader"/> instance being used to read the
         ///     Aseprite file.
         /// </param>
-        private void Read(AsepriteReader reader)
+        internal AsepriteLayerChunk(AsepriteReader reader)
         {
             //  Read the flags that are set for this layer.
             Flags = (AsepriteLayerFlags)reader.ReadWORD();

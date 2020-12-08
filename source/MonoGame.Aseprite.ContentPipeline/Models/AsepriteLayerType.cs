@@ -23,9 +23,27 @@
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides the values that describe the type of a layer.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite Chunk Types documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#layer-chunk-0x2004">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     public enum AsepriteLayerType
     {
+        /// <summary>
+        ///     Describes a normal layer with no children.
+        /// </summary>
         Normal = 0,
+
+        /// <summary>
+        ///     Describes a group layer that has children.
+        /// </summary>
         Group = 1
     }
 }

@@ -24,14 +24,18 @@
 using System.IO;
 using Microsoft.Xna.Framework.Content.Pipeline;
 
-namespace MonoGame.Aseprite.ContentPipeline
+namespace MonoGame.Aseprite.ContentPipeline.Importers
 {
-    [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite Importer", DefaultProcessor = "AsepriteProcessor")]
-    public class AsepriteImporter : ContentImporter<AsepriteImporterResult>
+    [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite Document Importer", DefaultProcessor = "AsepriteDocumentProcessor")]
+    public class AsepriteDocumentImporter : ContentImporter<AsepriteImporterResult>
     {
         /// <summary>
         ///     Import method that can be used without the content pipeline.
         /// </summary>
+        /// <remarks>
+        ///     This overload should only be used when importing an Aseprite file outside
+        ///     of the Content Pipeline Tool.
+        /// </remarks>
         /// <param name="filename">
         ///     The fully qualified path to the file in which to import.
         /// </param>
@@ -43,11 +47,12 @@ namespace MonoGame.Aseprite.ContentPipeline
 
 
         /// <summary>
-        ///     Import method that is called by the content pipeline.
-        ///
-        ///     IF NOT USING THE CONTENT PIPELINE THEN THE OTHER Import(string)
-        ///     OVERLOAD SHOULD BE USED.
+        ///     Import method that is called by the content pipeline.        
         /// </summary>
+        /// <remarks>
+        ///     If you are using the importer without the assistance of the Content Pipeline Tool,
+        ///     then the other Import(string) overload should be used instead.
+        /// </remarks>
         /// <param name="filename">
         ///     The fully qualifie dpath to the file in which to import.
         /// </param>

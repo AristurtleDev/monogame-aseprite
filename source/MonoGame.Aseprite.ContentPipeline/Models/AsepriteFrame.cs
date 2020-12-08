@@ -23,13 +23,23 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.ContentPipeline.Serialization;
-using MonoGame.Aseprite.ContentPipeline.ThirdParty.Pixman;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    public class AsepriteFrame
+    /// <summary>
+    ///     Provides the values found inside a Frame within in an Aseprite file.
+    /// </summary>
+    /// <remarks>
+    ///     A frame within Aseprite is comprised of multiple chunks
+    ///     <para>
+    ///         Aseprite Frame documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#frames">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
+    public sealed class AsepriteFrame
     {
         /// <summary>
         ///     Gets a reference to the <see cref="AsepriteDocument"/> this
@@ -38,7 +48,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         public AsepriteDocument File { get; private set; }
 
         /// <summary>
-        ///     Gets the duration, milliseconds, of this frame.
+        ///     Gets the duration, in milliseconds, of this frame.
         /// </summary>
         public int Duration { get; private set; }
 
@@ -47,13 +57,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     that make up the image for this frame.
         /// </summary>
         public List<AsepriteCelChunk> Cels { get; private set; }
-
-        /// <summary>
-        ///     Gets a MonoGame compatible array of Color instances that
-        ///     represent the final image of this frame. Array contains all
-        ///     pixels in image from top to bottom, read left to right.
-        /// </summary>
-        public Color[] Pixels { get; private set; }
 
         /// <summary>
         ///     Creates a new <see cref="AsepriteFrame"/> instance.
@@ -65,7 +68,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     The <see cref="AsepriteReader"/> instance being used to read the
         ///     Aseprite file.
         /// </param>
-        public AsepriteFrame(AsepriteDocument file, AsepriteReader reader)
+        internal AsepriteFrame(AsepriteDocument file, AsepriteReader reader)
         {
             Cels = new List<AsepriteCelChunk>();
 
@@ -96,6 +99,9 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             //  value instad.
             int totalChunks = newChunkCount == 0 ? oldChunkCount : (int)newChunkCount;
 
+            //  A value indicating if the new palette chunk was found. When it is found
+            //  then we can skip reading the old palette chunk.
+            bool newPaletteChunkFound = false;
             for (int i = 0; i < totalChunks; i++)
             {
                 long chunkStart = reader.BaseStream.Position;
@@ -103,6 +109,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                 long chunkEnd = chunkStart + chunkSize;
 
                 AsepriteChunkType chunkType = (AsepriteChunkType)reader.ReadWORD();
+                System.Diagnostics.Debug.WriteLine($"Chunk Type: {chunkType}");
 
                 switch (chunkType)
                 {
@@ -115,8 +122,19 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                     case AsepriteChunkType.Tags:
                         ReadTagChunk(reader);
                         break;
+                    case AsepriteChunkType.OldPaletteA:
+                        if (newPaletteChunkFound)
+                        {
+                            reader.BaseStream.Position = chunkEnd;
+                        }
+                        else
+                        {
+                            ReadOldPalleteAChunk(reader);
+                        }
+                        break;
                     case AsepriteChunkType.Palette:
                         ReadPaletteChunk(reader);
+                        newPaletteChunkFound = true;
                         break;
                     case AsepriteChunkType.UserData:
                         ReadUserDataChunk(reader);
@@ -124,7 +142,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                     case AsepriteChunkType.Slice:
                         ReadSliceChunk(reader);
                         break;
-                    case AsepriteChunkType.OldPaletteA:     //  Ignore
                     case AsepriteChunkType.OldPaletteB:     //  Ignore
                     case AsepriteChunkType.CelExtra:        //  Ignore
                     case AsepriteChunkType.ColorProfile:    //  Ignore
@@ -208,7 +225,14 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         /// </param>
         private void ReadPaletteChunk(AsepriteReader reader)
         {
-            AsepritePaletteChunk palette = new AsepritePaletteChunk(reader);
+            AsepritePaletteChunk palette = new AsepritePaletteChunk(reader, true);
+            File.Palette = palette;
+            reader.LastChunkRead = palette;
+        }
+
+        private void ReadOldPalleteAChunk(AsepriteReader reader)
+        {
+            AsepritePaletteChunk palette = new AsepritePaletteChunk(reader, false);
             File.Palette = palette;
             reader.LastChunkRead = palette;
         }
@@ -241,74 +265,5 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             File.Slices.Add(slice);
             reader.LastChunkRead = slice;
         }
-
-        ///// <summary>
-        /////     Flattens all <see cref="AsepriteCelChunk"/> instances within
-        /////     this frame into a single array of color data.
-        ///// </summary>
-        //public void FlattenCels()
-        //{
-        //    Pixels = new Color[File.Header.Width * File.Header.Height];
-          
-
-        //    for (int c = 0; c < Cels.Count; c++)
-        //    {
-        //        AsepriteCelChunk cel = Cels[c];
-        //        if (cel.LinkedCel != null)
-        //        {
-        //            cel = cel.LinkedCel;
-        //        }
-        //        AsepriteLayerChunk layer = File.Layers[cel.LayerIndex];
-
-        //        //  Only continue processing if the layer is visible
-        //        if ((layer.Flags & AsepriteLayerFlags.Visible) != 0)
-        //        {
-                   
-        //            byte opacity = Combine32.MUL_UN8(cel.Opacity, layer.Opacity);
-
-        //            for (int p = 0; p < cel.Pixels.Length; p++)
-        //            {
-        //                int x = (p % cel.Width) + cel.X;
-        //                int y = (p / cel.Width) + cel.Y;
-        //                int index = y * File.Header.Width + x;
-
-        //                if (index < 0 || index >= Pixels.Length) { continue; }
-
-
-        //                //  TODO: Test this with using Pixels[index].PackedValue instead.
-        //                uint backdrop = Utils.ColorToUINT(Pixels[index]);
-        //                uint src = cel.Pixels[p];
-
-        //                //  TODO: I don't like checking the layer index here, find a better
-        //                //  way to do this please.
-        //                if (cel.LayerIndex == 1111110)
-        //                {
-        //                    byte r = ThirdParty.Aseprite.DocColor.rgba_getr(cel.Pixels[p]);
-        //                    byte g = ThirdParty.Aseprite.DocColor.rgba_getg(cel.Pixels[p]);
-        //                    byte b = ThirdParty.Aseprite.DocColor.rgba_getb(cel.Pixels[p]);
-        //                    byte a = ThirdParty.Aseprite.DocColor.rgba_geta(cel.Pixels[p]);
-
-        //                    //  Super important that we use Color.FromNonPremultipled here.
-        //                    //  MonoGame by default used BlendState.AlphaBlend in the
-        //                    //  SpriteBatch.Begin() call.  AlphaBlend expects the colors to
-        //                    //  be premultiplied; otherwise the resulting render is wonky.
-        //                    //  So we'll premultiply it here so we support the default
-        //                    //  implementation in MonoGame.
-        //                    Pixels[index] = Color.FromNonPremultiplied(r, g, b, a);
-        //                }
-        //                else
-        //                {
-
-        //                    Func<uint, uint, int, uint> blender = Utils.GetBlendFunction(layer.BlendMode);
-
-        //                    uint blendedColor = blender.Invoke(backdrop, src, opacity);
-
-
-        //                    Pixels[index] = new Color(blendedColor);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
     }
 }

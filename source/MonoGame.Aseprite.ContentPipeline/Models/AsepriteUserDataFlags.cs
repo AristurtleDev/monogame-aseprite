@@ -25,10 +25,30 @@ using System;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides the values for the flags set in an Aseprite chunk
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite User Data Flags documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#user-data-chunk-0x2020">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     [Flags]
     public enum AsepriteUserDataFlags
     {
+        /// <summary>
+        ///     When this flag is set, describes that the chunk has valid
+        ///     user data text.
+        /// </summary>
         HasText = 1,
+
+        /// <summary>
+        ///     When this flag is set, describes that the chunk has valid
+        ///     user data color.
+        /// </summary>
         HasColor = 2
     }
 }

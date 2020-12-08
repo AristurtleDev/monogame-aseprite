@@ -23,10 +23,38 @@
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides values that describe the color depth mode
+    ///     used within the Aseprite file.
+    /// </summary>
+    /// <remarks>
+    ///     The actual values used in the Aseprite file are 8, 16, and 32
+    ///     for "bits" per pixel.  However we use 1, 2, and 4 "bytes" per pixel instead.
+    ///     <para>
+    ///         Aseprite Color Depth Mode Values documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#header">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     public enum AsepriteColorDepth
     {
-        Indexed = 1,    //  8 bits per pixel
-        Grayscale = 2,  //  16 bits per pixel
-        RGBA = 4        //  32 bits per pixel.
+        /// <summary>
+        ///     Describes an Indexed color depth mode of 1 byte
+        ///     per pixel (or 8 bits per pixel).
+        /// </summary>
+        Indexed = 1,
+
+        /// <summary>
+        ///     Describes a Grayscale color dpeth mode of 2 bytes
+        ///     per pixel (or 16 bits per pixel).
+        /// </summary>
+        Grayscale = 2,
+
+        /// <summary>
+        ///     Descrbies a RGBA color depth mode of 4 bytes per
+        ///     pixel (or 32 bits per pixel).
+        /// </summary>
+        RGBA = 4
     }
 }

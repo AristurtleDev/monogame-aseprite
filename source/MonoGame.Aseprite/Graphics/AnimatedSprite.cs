@@ -136,7 +136,6 @@ namespace MonoGame.Aseprite.Graphics
 
         /// <summary>
         ///     Creates a new <see cref="AnimatedSprite"/> instance.
-        ///     Creates a new instance
         /// </summary>
         /// <param name="texture">
         ///     A Texture2D that is the spritesheet containing all frames of all
@@ -152,7 +151,6 @@ namespace MonoGame.Aseprite.Graphics
 
         /// <summary>
         ///     Creates a new <see cref="AnimatedSprite"/> instance.
-        ///     Creates a new instance
         /// </summary>
         /// <param name="texture">
         ///     A Texture2D that is the spritesheet containing all frames of all
@@ -166,7 +164,27 @@ namespace MonoGame.Aseprite.Graphics
             Position = position;
         }
 
-        public AnimatedSprite(AsepriteAnimationDocument aseprite, Vector2 position)
+        /// <summary>
+        ///     Creates a new <see cref="AnimatedSprite"/> instance.
+        /// </summary>
+        /// <param name="aseprite">
+        ///     An <see cref="AsepriteDocument"/> instace created by
+        ///     importing from the content pipeline.
+        /// </param>
+        public AnimatedSprite(AsepriteDocument aseprite)
+            : this(aseprite, Vector2.Zero) { }
+
+        /// <summary>
+        ///     Creates a new <see cref="AnimatedSprite"/> instance.
+        /// </summary>
+        /// <param name="aseprite">
+        ///     An <see cref="AsepriteDocument"/> instace created by
+        ///     importing from the content pipeline.
+        /// </param>
+        /// <param name="position">
+        ///     The top-left xy-coordinate position.
+        /// </param>
+        public AnimatedSprite(AsepriteDocument aseprite, Vector2 position)
             : this(aseprite.Texture, position)
         {
 

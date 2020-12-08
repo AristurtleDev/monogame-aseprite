@@ -21,28 +21,39 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-using System.Collections.Generic;
-
-namespace MonoGame.Aseprite.Documents
+namespace MonoGame.Aseprite.ContentPipeline.Processors
 {
     /// <summary>
-    ///     A class that provides the informaiton imported from an Aseprite file
-    ///     through the content pipeline, that contains defined animation tags.
+    ///     Defines the values of an Aseprite frame that has been
+    ///     processed and is ready to be written out.
     /// </summary>
-    public sealed class AsepriteAnimationDocument : AsepriteDocument
+    public struct ProcessedFrame
     {
         /// <summary>
-        ///     Gets the collection of defined animations, with the dictionary key
-        ///     being the name of the animation.
+        ///     The x-coordinate position of the frame relative
+        ///     to the final color data.
         /// </summary>
-        public Dictionary<string, AsepriteTag> Tags { get; internal set; }
+        public int X;
 
         /// <summary>
-        ///     Creates a new <see cref="AsepriteAnimationDocument"/> instance.
+        ///     The y-coordinate position of the frame relative
+        ///     to the final color data.
         /// </summary>
-        internal AsepriteAnimationDocument() : base()
-        {
-            Tags = new Dictionary<string, AsepriteTag>();
-        }
+        public int Y;
+
+        /// <summary>
+        ///     The width, in pixels, of the frame.
+        /// </summary>
+        public int Width;
+
+        /// <summary>
+        ///     The height, in pixels, of the frame.
+        /// </summary>
+        public int Height;
+
+        /// <summary>
+        ///     The duration, in seconds, of the frame.
+        /// </summary>
+        public int Duration;
     }
 }

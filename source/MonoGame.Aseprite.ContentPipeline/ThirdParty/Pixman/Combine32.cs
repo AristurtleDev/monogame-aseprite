@@ -40,7 +40,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- */
+ ------------------------------------------------------------------------------ */
 
 
 //------------------------------------------------------------
@@ -72,11 +72,6 @@ namespace MonoGame.Aseprite.ContentPipeline.ThirdParty.Pixman
         public const uint AG_MASK = 0xff00ff00;
         public const uint RB_ONE_HALF = 0x800080;
         public const uint RB_MASK_PLUS_ONE = 0x10000100;
-
-        static uint ALPHA_8(uint x) => ((x) >> A_SHIFT);
-        static uint RED_8(uint x) => (((x) >> R_SHIFT) & MASK);
-        static uint GREEN_8(uint x) => (((x) >> G_SHIFT) & MASK);
-        static uint BLUE_8(uint x) => ((x) & MASK);
 
         public static byte MUL_UN8(uint8_t a, uint8_t b)
         {

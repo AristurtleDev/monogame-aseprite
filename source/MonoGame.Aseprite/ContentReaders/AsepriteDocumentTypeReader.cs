@@ -30,15 +30,15 @@ using MonoGame.Aseprite.Documents;
 namespace MonoGame.Aseprite.ContentReaders
 {
     /// <summary>
-    ///     ContentTypeReader used to import a new <see cref="AsepriteAnimationDocument"/>
+    ///     ContentTypeReader used to import a new <see cref="AsepriteDocument"/>
     ///     instance from the content pipeline.
     /// </summary>
-    public class AsepriteContentTypeReader : ContentTypeReader<AsepriteAnimationDocument>
+    public class AsepriteDocumentTypeReader : ContentTypeReader<AsepriteDocument>
     {
         /// <summary>
         ///     Given a valid byte[] that represents the contents of the aserptie file
         ///     import from MonoGame.Aseprite.ContentPipeline, reads the content and
-        ///     returns a new <see cref="AsepriteAnimationDocument"/> instance.
+        ///     returns a new <see cref="AsepriteDocument"/> instance.
         /// </summary>
         /// <param name="input">
         ///     The binary file contents of the aseprite file import created by
@@ -48,11 +48,11 @@ namespace MonoGame.Aseprite.ContentReaders
         ///     The GraphicsDevice instance used for rendering.
         /// </param>
         /// <returns>
-        ///     A new <see cref="AsepriteAnimationDocument"/> instance.
+        ///     A new <see cref="AsepriteDocument"/> instance.
         /// </returns>
-        public AsepriteAnimationDocument Read(byte[] input, GraphicsDevice graphicsDevice)
+        public AsepriteDocument Read(byte[] input, GraphicsDevice graphicsDevice)
         {
-            AsepriteAnimationDocument result;
+            AsepriteDocument result;
 
             using (MemoryStream stream = new MemoryStream(input))
             {
@@ -66,7 +66,7 @@ namespace MonoGame.Aseprite.ContentReaders
         }
 
         /// <summary>
-        ///     Allows the ContentPipline to read a new <see cref="AsepriteAnimationDocument"/>.
+        ///     Allows the ContentPipline to read a new <see cref="AsepriteDocument"/>.
         /// </summary>
         /// <param name="input">
         ///     The ContentReader instance provided by the ContentManager.
@@ -75,20 +75,20 @@ namespace MonoGame.Aseprite.ContentReaders
         ///     An existing instnace of the content being read.
         /// </param>
         /// <returns>
-        ///     A new <see cref="AsepriteAnimationDocument"/> instance.
+        ///     A new <see cref="AsepriteDocument"/> instance.
         /// </returns>
-        protected override AsepriteAnimationDocument Read(ContentReader input, AsepriteAnimationDocument existingInstance)
+        protected override AsepriteDocument Read(ContentReader input, AsepriteDocument existingInstance)
         {
             return ReadInternal(input, input.GetGraphicsDevice(), existingInstance);
         }
 
         /// <summary>
-        ///     Reads the <see cref="AsepriteAnimationDocument"/> from the base stream
+        ///     Reads the <see cref="AsepriteDocument"/> from the base stream
         ///     of the reader provided.
         /// </summary>
         /// <param name="input">
         ///     A BinaryReader instance who's base stream contains the content of the
-        ///     <see cref="AsepriteAnimationDocument"/> being read.
+        ///     <see cref="AsepriteDocument"/> being read.
         /// </param>
         /// <param name="graphicsDevice">
         ///     The GraphicsDevice instance used for rendering.
@@ -99,17 +99,18 @@ namespace MonoGame.Aseprite.ContentReaders
         /// <returns>
         ///     A new <see cref="AsepriteAnimationDocument"/> instance.
         /// </returns>
-        private AsepriteAnimationDocument ReadInternal(BinaryReader input, GraphicsDevice device, AsepriteAnimationDocument existingInstance)
+        private AsepriteDocument ReadInternal(BinaryReader input, GraphicsDevice device, AsepriteDocument existingInstance)
         {
             if (existingInstance != null)
             {
                 return existingInstance;
             }
 
-            AsepriteAnimationDocument result = new AsepriteAnimationDocument();
-
-            result.TextureWidth = input.ReadInt32();
-            result.TextureHeight = input.ReadInt32();
+            AsepriteDocument result = new AsepriteDocument
+            {
+                TextureWidth = input.ReadInt32(),
+                TextureHeight = input.ReadInt32()
+            };
 
             int totalPixels = input.ReadInt32();
             Color[] colorData = new Color[totalPixels];
@@ -152,6 +153,7 @@ namespace MonoGame.Aseprite.ContentReaders
                     Name = input.ReadString(),
                     From = input.ReadInt32(),
                     To = input.ReadInt32(),
+                    Direction = (AsepriteTagDirection)input.ReadInt32()
                 };
 
                 //  Adjustment for reading color due to using BinaryWriter insetad  of ContentWriter.

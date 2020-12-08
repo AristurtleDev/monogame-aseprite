@@ -21,37 +21,29 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-namespace MonoGame.Aseprite.ContentPipeline.Models
+namespace MonoGame.Aseprite.ContentPipeline.Processors
 {
     /// <summary>
-    ///     Provieds the values for the type of cel
+    ///     Defines the values for the type of spritesheet to
+    ///     create when processing an Aseprite file.
     /// </summary>
-    /// <remarks>
-    ///     The Cel type descrbies how the pixel data within the cel chunk is provided.
-    ///     <para>
-    ///         Aseprite Cel Type Values documentation: 
-    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#cel-chunk-0x2005">
-    ///             Click to view.
-    ///         </a>
-    ///     </para>
-    /// </remarks>
-    public enum AsepriteCelType
+    public enum ProcessorSheetType
     {
         /// <summary>
-        ///     Cel contains raw pixel data.
+        ///     Describes a horizontal spritesheet with only 1 column
+        ///     and as many rows as there are frames.
         /// </summary>
-        Raw = 0,
+        HorizontalStrip = 0,
 
         /// <summary>
-        ///     Cel is linked to another cel and the linked cel's data
-        ///     should be used instead.
+        ///     Describes a vertical spritesheet with only 1 row and
+        ///     as many columns as there are frames.
         /// </summary>
-        Linked = 1,
+        VerticalStrip = 1,
 
         /// <summary>
-        ///     Cel contains compressed data and needs to be decompressed
-        ///     before reading it.
+        ///     Descrbies a packed spritesheet.
         /// </summary>
-        Compressed = 2
+        Packed = 2
     }
 }

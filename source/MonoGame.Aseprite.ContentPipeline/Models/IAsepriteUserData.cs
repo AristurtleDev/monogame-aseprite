@@ -21,14 +21,22 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-using Microsoft.Xna.Framework;
-
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     A simple interface that defines the values for user data
+    ///     from a chunk in an Aseprite file.
+    /// </summary>
     public interface IAsepriteUserData
     {
+        /// <summary>
+        ///     Gets the text defined in the user data chunk.
+        /// </summary>
         string UserDataText { get; }
+
+        /// <summary>
+        ///     Gets the color defined in teh user data chunk.
+        /// </summary>
         byte[] UserDataColor { get; }
-        ////////Color UserDataColor { get; }
     }
 }

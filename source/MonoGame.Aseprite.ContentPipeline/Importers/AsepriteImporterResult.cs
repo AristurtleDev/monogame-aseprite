@@ -21,37 +21,23 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-namespace MonoGame.Aseprite.ContentPipeline.Models
+namespace MonoGame.Aseprite.ContentPipeline.Importers
 {
     /// <summary>
-    ///     Provieds the values for the type of cel
+    ///     Provides the data from importing an Aseprite document file.
     /// </summary>
-    /// <remarks>
-    ///     The Cel type descrbies how the pixel data within the cel chunk is provided.
-    ///     <para>
-    ///         Aseprite Cel Type Values documentation: 
-    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#cel-chunk-0x2005">
-    ///             Click to view.
-    ///         </a>
-    ///     </para>
-    /// </remarks>
-    public enum AsepriteCelType
+    public sealed class AsepriteImporterResult
     {
         /// <summary>
-        ///     Cel contains raw pixel data.
+        ///     The binary encoded contents of the Aseprite document
+        ///     that was imported.
         /// </summary>
-        Raw = 0,
+        public byte[] Data { get; internal set; }
 
         /// <summary>
-        ///     Cel is linked to another cel and the linked cel's data
-        ///     should be used instead.
+        ///     Creates a new <see cref="AsepriteImporterResult"/> instance.
         /// </summary>
-        Linked = 1,
+        internal AsepriteImporterResult() { }
 
-        /// <summary>
-        ///     Cel contains compressed data and needs to be decompressed
-        ///     before reading it.
-        /// </summary>
-        Compressed = 2
     }
 }

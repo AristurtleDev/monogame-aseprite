@@ -25,9 +25,24 @@ using System;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides the values for the flags set in the Aseprtie palette color entry.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite Palette Color Entry Flags documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#palette-chunk-0x2019">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     [Flags]
     public enum AsepritePaletteFlags
     {
+        /// <summary>
+        ///     When this flag is set, describes that the palette color entry
+        ///     has a valid name value.
+        /// </summary>
         HasName = 1
     }
 }

@@ -23,10 +23,37 @@
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides the values that describe the direction of an Aseprite
+    ///     animation tag.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite Loop Direction documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#tags-chunk-0x2018">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     public enum AsepriteLoopDirection
     {
+        /// <summary>
+        ///     Describes an animation tag that plays in a forward direction from
+        ///     the starting frame to the ending frame.
+        /// </summary>
         Forward = 0,
+
+        /// <summary>
+        ///     Describes an animation tag that plays in a reverse direction from
+        ///     the ending frame to the starting frame.
+        /// </summary>
         Reverse = 1,
+
+        /// <summary>
+        ///     Describes an animation tag that plays first in a forward direction from
+        ///     the starting frame to the ending frame, then plays in a reverse direction
+        ///     from the ending frame to the starting frame.
+        /// </summary>
         PingPong = 2
     }
 }

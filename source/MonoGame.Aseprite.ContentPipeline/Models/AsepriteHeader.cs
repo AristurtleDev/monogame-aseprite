@@ -26,6 +26,17 @@ using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides the values found inside the Header of an Aseprite File.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite Header documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#header">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     public sealed class AsepriteHeader
     {
         private readonly AsepriteHeaderFlags _flags;
@@ -34,13 +45,13 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     Gets the <see cref="AsepriteColorDepth"/> value that indicates
         ///     the color depth mode used.
         /// </summary>
-        internal AsepriteColorDepth ColorDepth { get; private set; }
+        public AsepriteColorDepth ColorDepth { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating if the <see cref="AsepriteLayerChunk"/>
         ///     instances will have a valid opacity value.
         /// </summary>
-        internal bool HasOpacity => (_flags & AsepriteHeaderFlags.HasOpacity) != 0;
+        public bool HasOpacity => (_flags & AsepriteHeaderFlags.HasOpacity) != 0;
 
         /// <summary>
         ///     Gets the palette entiry index which represents the transparent
@@ -48,24 +59,23 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     when the <see cref="ColorDepth"/> is value is
         ///     <see cref="AsepriteColorDepth.Indexed"/>
         /// </summary>
-        internal byte TransparentIndex { get; private set; }
-
+        public byte TransparentIndex { get; private set; }
 
         /// <summary>
         ///     Gets the total number of frames contained within the
         ///     Aseprite file.
         /// </summary>
-        public int FrameCount { get; internal set; }
+        public int FrameCount { get; private set; }
 
         /// <summary>
         ///     Gets the width, in pixels, of the canvas.
         /// </summary>
-        public int Width { get; internal set; }
+        public int Width { get; private set; }
 
         /// <summary>
         ///     Gets the height, in pixels, of the canvas.
         /// </summary>
-        public int Height { get; internal set; }
+        public int Height { get; private set; }
 
         /// <summary>
         ///     Gets the total number of colors.
@@ -79,7 +89,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     The <see cref="AsepriteReader"/> instance being used to read the
         ///     Aseprite file.
         /// </param>
-        public AsepriteHeader(AsepriteReader reader)
+        internal AsepriteHeader(AsepriteReader reader)
         {
             //  Get the basestream position of the reader
             long headerStart = reader.BaseStream.Position;

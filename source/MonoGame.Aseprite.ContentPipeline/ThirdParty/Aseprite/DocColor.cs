@@ -40,9 +40,12 @@ using uint8_t = System.Byte;
 
 namespace MonoGame.Aseprite.ContentPipeline.ThirdParty.Aseprite
 {
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable IDE0051 // Remove unused private members
     public static class DocColor
     {
         public const uint32_t rgba_r_shift = 0;
+
         public const uint32_t rgba_g_shift = 8;
         public const uint32_t rgba_b_shift = 16;
         public const uint32_t rgba_a_shift = 24;
@@ -96,9 +99,11 @@ namespace MonoGame.Aseprite.ContentPipeline.ThirdParty.Aseprite
         #region Grayscale
         const uint16_t graya_v_shift = 0;
         const uint16_t graya_a_shift = 8;
-
+        
         const uint16_t graya_v_mask = 0x00ff;
+
         const uint16_t graya_a_mask = 0xff00;
+
 
         public static uint8_t graya_getv(uint16_t c)
         {
@@ -121,4 +126,6 @@ namespace MonoGame.Aseprite.ContentPipeline.ThirdParty.Aseprite
         }
         #endregion Grayscale
     }
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE1006 // Naming Styles
 }

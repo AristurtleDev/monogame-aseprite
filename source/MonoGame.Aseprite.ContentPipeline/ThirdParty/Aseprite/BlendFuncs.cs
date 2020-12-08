@@ -33,15 +33,13 @@
 //  made for cpp-to-c# conventions.
 // ------------------------------------------------------------------------
 using System;
-
-
 using static MonoGame.Aseprite.ContentPipeline.ThirdParty.Aseprite.DocColor;
 using static MonoGame.Aseprite.ContentPipeline.ThirdParty.Pixman.Combine32;
 
 //  To make things simpler to port the code over, we'll use the typedefs as 
 //  defined and used in aseprite
 //  Color is defined as a uint32_t
-//  https://github.com/aseprite/aseprite/blob/60c54a32423aceaf25502ccb6fca58ed5c8af146/src/doc/color.h#L18
+//  https://github.com/aseprite/aseprite/blob/master/src/doc/color.h#L18
 using color_t = System.UInt32;
 using uint32_t = System.UInt32;
 using uint8_t = System.Byte;

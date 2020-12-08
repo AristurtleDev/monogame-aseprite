@@ -24,16 +24,15 @@
 using System.ComponentModel;
 using System.IO;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using MonoGame.Aseprite.ContentPipeline.Importers;
 using MonoGame.Aseprite.ContentPipeline.Models;
-using MonoGame.Aseprite.ContentPipeline.Processors.Animation;
 using MonoGame.Aseprite.ContentPipeline.Serialization;
 
-namespace MonoGame.Aseprite.ContentPipeline.Processors.Animation
+namespace MonoGame.Aseprite.ContentPipeline.Processors
 {
     [ContentProcessor(DisplayName = "Aseprite Animation Processor")]
-    public class AnimationProcessor : ContentProcessor<AsepriteImporterResult, AnimationProcessorResult>
+    public sealed class AsepriteDocumentProcessor : ContentProcessor<AsepriteImporterResult, AsepriteDocumentProcessorResult>
     {
-
         /// <summary>
         ///     Gets or Sets a value indicating the way in which the final sprite sheet
         ///     should be generated. 
@@ -99,45 +98,47 @@ namespace MonoGame.Aseprite.ContentPipeline.Processors.Animation
         /// <summary>
         ///     Process method that can be used without the content pipeline.
         /// </summary>
+        /// <remarks>
+        ///     This overload should only be used when processing the import results of
+        ///     an Aseprite file outside of the Content Pipeline Tool.
+        /// </remarks>
         /// <param name="input">
         ///     The <see cref="AsepriteImporterResult"/> instance created as part
         ///     of the import process.
         /// </param>
         /// <returns>
-        ///     A new <see cref="AnimationProcessorResult"/> instance containing the result
+        ///     A new <see cref="AsepriteDocumentProcessorResult"/> instance containing the result
         ///     of the processing.
         /// </returns>
-        public AnimationProcessorResult Process(AsepriteImporterResult input) => Process(input, null);
-
+        public AsepriteDocumentProcessorResult Process(AsepriteImporterResult input) => Process(input, null);
 
         /// <summary>
         ///     Proces method that is called by the content pipeline.
-        ///
-        ///     IF NOT USING THE CONTENT PIPELINE THEN THE OTHER Process(AsepriteImporterResult)
-        ///     OVERLOAD SHOULD BE USED.
         /// </summary>
+        /// <remarks>
+        ///     If you are using this processor without the assistance of the Content Pipeline Tool,
+        ///     then the other Process(AsepriteImporterResult) overload should be used instead.
+        /// </remarks>
         /// <param name="input">
         ///     The <see cref="AsepriteImporterResult"/> instance created as part
         ///     of the import process.
         /// </param>
         /// <param name="context"></param>
         /// <returns>
-        ///     A new <see cref="AnimationProcessorResult"/> instance containing the result
+        ///     A new <see cref="AsepriteDocumentProcessorResult"/> instance containing the result
         ///     of the processing.
         /// </returns>
-        public override AnimationProcessorResult Process(AsepriteImporterResult input, ContentProcessorContext context)
+        public override AsepriteDocumentProcessorResult Process(AsepriteImporterResult input, ContentProcessorContext context)
         {
-            AnimationProcessorOptions options = new AnimationProcessorOptions
-            {
-                BorderPadding = this.BorderPadding,
-                IgnoreEmptyFrames = this.IgnoreEmptyFrames,
-                InnerPadding = this.InnerPadding,
-                MergeDuplicateFrames = this.MergeDuplicateFrames,
-                OnlyVisibleLayers = this.OnlyVisibleLayers,
-                OutputSpriteSheet = this.OutputSpriteSheet,
-                SheetType = this.SheetType,
-                Spacing = this.Spacing
-            };
+            AsepriteDocumentProcessorOptions options = new AsepriteDocumentProcessorOptions();
+            options.BorderPadding = BorderPadding;
+            options.IgnoreEmptyFrames = IgnoreEmptyFrames;
+            options.InnerPadding = InnerPadding;
+            options.MergeDuplicateFrames = MergeDuplicateFrames;
+            options.OnlyVisibleLayers = OnlyVisibleLayers;
+            options.OutputSpriteSheet = OutputSpriteSheet;
+            options.SheetType = SheetType;
+            options.Spacing = Spacing;
 
             //  Read the aseprite document from the stream.
             AsepriteDocument doc;
@@ -150,7 +151,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Processors.Animation
             }
 
             //  Convert the document into an AnimationProcessorResult.
-            AnimationProcessorResult result = new AnimationProcessorResult(doc, options);
+            AsepriteDocumentProcessorResult result = new AsepriteDocumentProcessorResult(doc, options);
             return result;
         }
     }

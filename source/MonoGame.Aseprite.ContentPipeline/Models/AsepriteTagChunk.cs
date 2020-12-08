@@ -21,12 +21,25 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    public class AsepriteTagChunk : AsepriteChunk
+    /// <summary>
+    ///     Provides the values found inside a Tag chunk in an Aseprite file.
+    /// </summary>
+    /// <remarks>
+    ///     A Tag chunk describes the starting and ending frame of a tagged animation
+    ///     in the Aseprite file, and the direction in which the animation playes.
+    ///     The color of the tag is also made available for use.
+    ///     <para>
+    ///         Aseprite Tag Chunk documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#tags-chunk-0x2018">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
+    public sealed class AsepriteTagChunk : AsepriteChunk
     {
         /// <summary>
         ///     Gets the index of the frame this tag starts on.
@@ -59,11 +72,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         /// </summary>
         public byte ColorB { get; private set; }
 
-        ///////////// <summary>
-        /////////////     Gets the color value for this tag.
-        ///////////// </summary>
-        //////////public Color Color { get; private set; }
-
         /// <summary>
         ///     Gets the name of this tag.
         /// </summary>
@@ -76,7 +84,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     The <see cref="AsepriteReader"/> instance being used to read the
         ///     Aseprite file.
         /// </param>
-        public AsepriteTagChunk(AsepriteReader reader)
+        internal AsepriteTagChunk(AsepriteReader reader)
         {
             From = reader.ReadWORD();
             To = reader.ReadWORD();
@@ -88,8 +96,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             ColorR = reader.ReadByte();
             ColorG = reader.ReadByte();
             ColorB = reader.ReadByte();
-            ////////////byte[] colorData = reader.ReadBytes(3);
-            ////////////Color = new Color(colorData[0], colorData[1], colorData[2]);
 
             //  Per ase file spec, ignore next byte, it's just an extra one set to zero
             reader.Ignore(1);

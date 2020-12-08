@@ -31,15 +31,40 @@ namespace MonoGame.Aseprite.Graphics
     /// </summary>
     public class Sprite
     {
+        //  Holds the top-left xy-coordiante position value.
+        private Vector2 _position;
+
         /// <summary>
         ///     Gets the Texture2D used when rendering.
         /// </summary>
         public Texture2D Texture { get; private set; }
 
         /// <summary>
-        ///     Gets the top-left xy-coordinate position.
+        ///     Gets or Sets the top-left xy-coordinate position.
         /// </summary>
-        public Vector2 Position { get; set; }
+        public Vector2 Position
+        {
+            get { return _position; }
+            set { _position = value; }
+        }
+
+        /// <summary>
+        ///     Gets or Sets the top-left x-coordinate position of the sprite.
+        /// </summary>
+        public float X
+        {
+            get { return _position.X; }
+            set { _position.X = value; }
+        }
+
+        /// <summary>
+        ///     Gets or Sets the top-left y-coordinate position of the sprite.
+        /// </summary>
+        public float Y
+        {
+            get { return _position.Y; }
+            set { _position.Y = value; }
+        }
 
         /// <summary>
         ///     Gets the width, in pixels.
@@ -127,6 +152,7 @@ namespace MonoGame.Aseprite.Graphics
         /// </param>
         public Sprite(Texture2D texture) : this()
         {
+            Position = Vector2.Zero;
             Texture = texture;
             SourceRectangle = texture.Bounds;
         }

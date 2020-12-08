@@ -25,7 +25,20 @@ using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    public class AsepriteSliceChunk : AsepriteChunk
+    /// <summary>
+    ///     Provides the values found inside a Slice chunk in an Aseprite file.
+    /// </summary>
+    /// <remarks>
+    ///     A slice chunk is made up of a collection of <see cref="AsepriteSliceKey"/>
+    ///     instances that describe the bounds of the slice on a specific frame.
+    ///     <para>
+    ///         Aseprite Slice Chunk documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#slice-chunk-0x2022">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
+    public sealed class AsepriteSliceChunk : AsepriteChunk
     {
         /// <summary>
         ///     Gets the total number of keys contained within this slice.
@@ -55,7 +68,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     The <see cref="AsepriteReader"/> instance being used to read the
         ///     Aseprite file.
         /// </param>
-        public AsepriteSliceChunk(AsepriteReader reader)
+        internal AsepriteSliceChunk(AsepriteReader reader)
         {
             TotalKeys = (int)reader.ReadDWORD();
             Flags = (AsepriteSliceFlags)reader.ReadDWORD();

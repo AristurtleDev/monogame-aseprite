@@ -64,12 +64,19 @@ namespace MonoGame.Aseprite.Documents
         public Dictionary<string, AsepriteSlice> Slices { get; internal set; }
 
         /// <summary>
+        ///     Gets the collection of defined animations, with the dictionary key
+        ///     being the name of the animation.
+        /// </summary>
+        public Dictionary<string, AsepriteTag> Tags { get; internal set; }
+
+        /// <summary>
         ///     Creates a new <see cref="AsepriteDocument"/> instance.
         /// </summary>
         internal AsepriteDocument()
         {
             Frames = new List<AsepriteFrame>();
             Slices = new Dictionary<string, AsepriteSlice>();
+            Tags = new Dictionary<string, AsepriteTag>();
         }
 
         /// <summary>

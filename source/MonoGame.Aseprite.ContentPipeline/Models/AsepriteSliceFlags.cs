@@ -25,10 +25,30 @@ using System;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     Provides the values for the flags set in an Aseprite slice chunk
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Aseprite Slice Flags documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#slice-chunk-0x2022">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     [Flags]
     public enum AsepriteSliceFlags
     {
+        /// <summary>
+        ///     When this flag is set, descrbies that the slice contains valid
+        ///     ninepatch data.
+        /// </summary>
         HasNinePatch = 1,
+
+        /// <summary>
+        ///     When this flag is set, descrbies that the slice contains valid
+        ///     pivot data.
+        /// </summary>
         HasPivot = 2
     }
 }

@@ -25,7 +25,20 @@ using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    public class AsepriteSliceKey
+    /// <summary>
+    ///     Provides the values for a slice key in an Aseprite file.
+    /// </summary>
+    /// <remarks>
+    ///     A slice key defines the rectangular bounds of a slice during a
+    ///     specific frame of animation.
+    ///     <para>
+    ///         Aseprite Slice Key documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#slice-chunk-0x2022">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
+    public sealed class AsepriteSliceKey
     {
         /// <summary>
         ///     Gets the frame that this slice key is valid starting
@@ -102,7 +115,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     The <see cref="AsepriteSliceFlags"/> value of the slice this
         ///     slice key belongs to.
         /// </param>
-        public AsepriteSliceKey(AsepriteReader reader, AsepriteSliceFlags flags)
+        internal AsepriteSliceKey(AsepriteReader reader, AsepriteSliceFlags flags)
         {
             Frame = (int)reader.ReadDWORD();
             X = reader.ReadLONG();

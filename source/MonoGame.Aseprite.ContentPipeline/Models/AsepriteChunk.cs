@@ -21,24 +21,35 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
+    /// <summary>
+    ///     A base class to use for all Aseprite chunk types.
+    /// </summary>
+    /// <remarks>
+    ///     Not all chunks will have an associated UserData chunk to read for. To
+    ///     determine if an instance of this will have UserData, the <see cref="HasUserDataColor"/>
+    ///     and <see cref="HasUserDataText"/> properties are supplied.
+    ///     <para>
+    ///         Aseprite User Data Chunk documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#user-data-chunk-0x2020">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
     public abstract class AsepriteChunk : IAsepriteUserData
     {
         /// <summary>
-        ///     Gets the text set for this instance
+        ///     Gets the text set for this chunk in the user data.
         /// </summary>
         public string UserDataText { get; private set; }
 
+        /// <summary>
+        ///     Gets the color set for this chunk in the user data.
+        /// </summary>
         public byte[] UserDataColor { get; private set; }
-
-        /////////// <summary>
-        ///////////     Gets the color set for this instance.
-        /////////// </summary>
-        ////////public Color UserDataColor { get; private set; }
 
         /// <summary>
         ///     Gets a value that indicates if this chunk has a valid value
@@ -60,7 +71,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     The <see cref="AsepriteReader"/> instance being used to read the
         ///     Aseprite file.
         /// </param>
-        public void ReadUserData(AsepriteReader reader)
+        internal void ReadUserData(AsepriteReader reader)
         {
             AsepriteUserDataFlags flags = (AsepriteUserDataFlags)reader.ReadDWORD();
 
@@ -76,11 +87,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                 UserDataColor[1] = reader.ReadByte();
                 UserDataColor[2] = reader.ReadByte();
                 UserDataColor[3] = reader.ReadByte();
-                ////////UserDataColor = Color.FromNonPremultiplied(
-                ////////    r: reader.ReadByte(),
-                ////////    g: reader.ReadByte(),
-                ////////    b: reader.ReadByte(),
-                ////////    a: reader.ReadByte());
             }
         }
     }

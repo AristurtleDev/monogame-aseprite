@@ -21,12 +21,41 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-namespace MonoGame.Aseprite.ContentPipeline
-{
-    public class AsepriteImporterResult
-    {
-        public byte[] Data { get; internal set; }
-        internal AsepriteImporterResult() { }
+using Microsoft.Xna.Framework;
 
+namespace MonoGame.Aseprite.ContentPipeline.Processors
+{
+    /// <summary>
+    ///     Defines the values of an Aseprite animation that has been
+    ///     processed and is ready to be written out.
+    /// </summary>
+    public struct ProcessedAnimation
+    {
+        /// <summary>
+        ///     The name of the animation.
+        /// </summary>
+        public string Name;
+
+        /// <summary>
+        ///     The starting frame of the animation.
+        /// </summary>
+        public int From;
+
+        /// <summary>
+        ///     The ending frame of the animation.
+        /// </summary>
+        public int To;
+
+        /// <summary>
+        ///     The color of the animation as defined as the
+        ///     tag color in Asperite.
+        /// </summary>
+        public Color Color;
+
+        /// <summary>
+        ///     A value that indicates the direction the animation is played in.
+        ///     0 = Forward, 1 = Reverse, 2 = Ping Pong.
+        /// </summary>
+        public int Direction;
     }
 }

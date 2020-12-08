@@ -29,7 +29,19 @@ using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Models
 {
-    public class AsepriteCelChunk : AsepriteChunk
+    /// <summary>
+    ///     Provides the values found inside a Cel chunk in an Aseprite file.
+    /// </summary>
+    /// <remarks>
+    ///     A Cel in Aseprite contains the pixel data for a single layer within a single frame.
+    ///     <para>
+    ///         Aseprite Cel Chunk documentation: 
+    ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#cel-chunk-0x2005">
+    ///             Click to view.
+    ///         </a>
+    ///     </para>
+    /// </remarks>
+    public sealed class AsepriteCelChunk : AsepriteChunk
     {
         /// <summary>
         ///     Gets the index of the <see cref="AsepriteLayerChunk"/> that this
@@ -60,6 +72,10 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         /// </summary>
         public AsepriteCelType CelType { get; private set; }
 
+        /// <summary>
+        ///     Gets the <see cref="AsepriteCelChunk"/> this one is linked
+        ///     to if marked as linked in the Aspeirte file.
+        /// </summary>
         public AsepriteCelChunk LinkedCel { get; private set; }
 
         /// <summary>
@@ -95,7 +111,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         /// <param name="dataSize">
         ///     The total byte size of the data for this cel chunk.
         /// </param>
-        public AsepriteCelChunk(AsepriteReader reader, AsepriteFrame frame, int dataSize)
+        internal AsepriteCelChunk(AsepriteReader reader, AsepriteFrame frame, int dataSize)
         {
             //  We need to cache the position of the reader before reading any data so we can
             //  calculate the amount of data to read later for the pixel info.
@@ -129,7 +145,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                 }
                 else
                 {
-
                     //  For compressed, we need to deflate the buffer. First, we'll put it in a
                     //  memory stream to work with
                     MemoryStream compressedStream = new MemoryStream(buffer);
@@ -150,13 +165,41 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                     }
                 }
 
-                //  Convert the [byte, byte, byte, byte] pixel data into
-                //  packed uint[] values
-                //  TODO: This only works for RGB Mode
                 Pixels = new uint[Width * Height];
-                for (int i = 0, b = 0; i < Pixels.Length; i++, b += 4)
+                if (frame.File.Header.ColorDepth == AsepriteColorDepth.RGBA)
                 {
-                    Pixels[i] = Utils.BytesToPacked(PixelData[b], PixelData[b + 1], PixelData[b + 2], PixelData[b + 3]);
+                    for (int i = 0, b = 0; i < Pixels.Length; i++, b += 4)
+                    {
+                        Pixels[i] = Utils.BytesToPacked(PixelData[b], PixelData[b + 1], PixelData[b + 2], PixelData[b + 3]);
+                    }
+                }
+                else if(frame.File.Header.ColorDepth == AsepriteColorDepth.Grayscale)
+                {
+                    for(int i = 0, b = 0; i < Pixels.Length; i++, b += 2)
+                    {
+                        Pixels[i] = Utils.BytesToPacked(PixelData[b], PixelData[b], PixelData[b], PixelData[b + 1]);
+                    }
+                }
+                else if(frame.File.Header.ColorDepth == AsepriteColorDepth.Indexed)
+                {
+                    for(int i = 0; i < Pixels.Length; i++)
+                    {
+                        int paletteIndex = PixelData[i];
+                        if (paletteIndex == frame.File.Header.TransparentIndex)
+                        {
+                            Pixels[i] = Utils.BytesToPacked(0, 0, 0, 0);
+                        }
+                        else
+                        {
+                            AsepritePaletteColor paletteColor = frame.File.Palette.Colors[paletteIndex];
+                            Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(paletteColor.PackedValue);
+                            Pixels[i] = Utils.BytesToPacked(paletteColor.Red, paletteColor.Green, paletteColor.Blue, paletteColor.Alpha);
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Unrecognized color depth mode. {frame.File.Header.ColorDepth}");
                 }
             }
             else if (CelType == AsepriteCelType.Linked)
@@ -165,7 +208,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
 
                 //  Get a refrence to the cel this cel is linked to. 
                 LinkedCel = frame.File.Frames[linkedFrame].Cels
-                                                  .FirstOrDefault(c => c.LayerIndex == LayerIndex);
+                                                          .FirstOrDefault(c => c.LayerIndex == LayerIndex);
             }
         }
     }
