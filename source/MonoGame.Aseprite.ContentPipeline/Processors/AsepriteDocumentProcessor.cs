@@ -30,7 +30,7 @@ using MonoGame.Aseprite.ContentPipeline.Serialization;
 
 namespace MonoGame.Aseprite.ContentPipeline.Processors
 {
-    [ContentProcessor(DisplayName = "Aseprite Animation Processor")]
+    [ContentProcessor(DisplayName = "Aseprite Document Processor")]
     public sealed class AsepriteDocumentProcessor : ContentProcessor<AsepriteImporterResult, AsepriteDocumentProcessorResult>
     {
         /// <summary>
