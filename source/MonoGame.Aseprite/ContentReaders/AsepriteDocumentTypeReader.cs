@@ -21,6 +21,7 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
+using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -79,7 +80,21 @@ namespace MonoGame.Aseprite.ContentReaders
         /// </returns>
         protected override AsepriteDocument Read(ContentReader input, AsepriteDocument existingInstance)
         {
+#if NET45
+            GraphicsDeviceManager gdManager = input.ContentManager.ServiceProvider.GetService(typeof(IGraphicsDeviceManager)) as GraphicsDeviceManager;
+
+            if(gdManager == null)
+            {
+                throw new Exception("A GraphicsDeviceManager service could not be found");
+            }
+            else
+            {
+                return ReadInternal(input, gdManager.GraphicsDevice, existingInstance);
+            }
+
+#elif NETSTANDARD2_0
             return ReadInternal(input, input.GetGraphicsDevice(), existingInstance);
+#endif
         }
 
         /// <summary>
