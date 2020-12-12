@@ -89,13 +89,6 @@ namespace MonoGame.Aseprite.ContentPipeline.Processors
         public int InnerPadding { get; set; } = 0;
 
         /// <summary>
-        ///     Gets or Sets the fully qualified path to output the generated
-        ///     spritesheet texture to.
-        /// </summary>
-        [DisplayName("Output Spritesheet")]
-        public string OutputSpriteSheet { get; set; } = string.Empty;
-
-        /// <summary>
         ///     Process method that can be used without the content pipeline.
         /// </summary>
         /// <remarks>
@@ -130,15 +123,16 @@ namespace MonoGame.Aseprite.ContentPipeline.Processors
         /// </returns>
         public override AsepriteDocumentProcessorResult Process(AsepriteImporterResult input, ContentProcessorContext context)
         {
-            AsepriteDocumentProcessorOptions options = new AsepriteDocumentProcessorOptions();
-            options.BorderPadding = BorderPadding;
-            options.IgnoreEmptyFrames = IgnoreEmptyFrames;
-            options.InnerPadding = InnerPadding;
-            options.MergeDuplicateFrames = MergeDuplicateFrames;
-            options.OnlyVisibleLayers = OnlyVisibleLayers;
-            options.OutputSpriteSheet = OutputSpriteSheet;
-            options.SheetType = SheetType;
-            options.Spacing = Spacing;
+            AsepriteDocumentProcessorOptions options = new AsepriteDocumentProcessorOptions
+            {
+                BorderPadding = BorderPadding,
+                IgnoreEmptyFrames = IgnoreEmptyFrames,
+                InnerPadding = InnerPadding,
+                MergeDuplicateFrames = MergeDuplicateFrames,
+                OnlyVisibleLayers = OnlyVisibleLayers,
+                SheetType = SheetType,
+                Spacing = Spacing
+            };
 
             //  Read the aseprite document from the stream.
             AsepriteDocument doc;

@@ -37,7 +37,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Processors
     {
         //  The Aseprite doucment that was created form the initial
         //  processing of the Aseprite file.
-        private AsepriteDocument _document;
+        private readonly AsepriteDocument _document;
 
         /// <summary>
         ///     Gets an array of color data that represents the final packed
@@ -133,8 +133,20 @@ namespace MonoGame.Aseprite.ContentPipeline.Processors
                     From = tag.From,
                     To = tag.To,
                     Name = tag.Name,
-                    Color = Color.FromNonPremultiplied(tag.ColorR, tag.ColorG, tag.ColorB, 255)
+                    Color = Color.FromNonPremultiplied(tag.ColorR, tag.ColorG, tag.ColorB, 255),
+                    Direction = (int)tag.Direction,
+                    IsOneShot = false
                 };
+
+                //  Check if the name of the tag contains the special key '[oneshot]'.
+                //  If it does, this is a user defined animation that should only play
+                //  once then freeze on the last frame in the animation
+                int index = animation.Name.LastIndexOf("[oneshot]");
+                if(index != -1)
+                {
+                    animation.Name = animation.Name.Substring(0, index);
+                    animation.IsOneShot = true;
+                }
 
                 Animations.Add(animation.Name, animation);
             }

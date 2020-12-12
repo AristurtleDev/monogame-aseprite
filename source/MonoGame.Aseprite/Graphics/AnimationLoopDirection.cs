@@ -21,54 +21,31 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
-namespace MonoGame.Aseprite.ContentPipeline.Processors
+namespace MonoGame.Aseprite.Graphics
 {
     /// <summary>
-    ///     Provies the values provided by the user in the content pipeline
-    ///     property window.
+    ///     Provides a value that indicates the direciton in which an animation should
+    ///     loop through its frames.
     /// </summary>
-    public struct AsepriteDocumentProcessorOptions
+    public enum AnimationLoopDirection
     {
         /// <summary>
-        ///     Indicates the way in which the final spritesheet should be
-        ///     generated.
+        ///     Describes an animation that plays in a forward direction from
+        ///     the starting frame to the ending frame.
         /// </summary>
-        public ProcessorSheetType SheetType;
+        Forward = 0,
 
         /// <summary>
-        ///     A value indicating if duplicate frames should be merged into
-        ///     one frame when processed.
+        ///     Describes an animation that plays in a reverse direction from
+        ///     the ending frame to the starting frame.
         /// </summary>
-        public bool MergeDuplicateFrames;
+        Reverse = 1,
 
         /// <summary>
-        ///     A value indicating if empty frames should be ignored when
-        ///     processing.
+        ///     Describes an animation that plays first in a forward direction from
+        ///     the starting frame to the ending frame, then plays in a reverse direction
+        ///     from the ending frame to the starting frame.
         /// </summary>
-        public bool IgnoreEmptyFrames;
-
-        /// <summary>
-        ///     A value indicating if only layers that are flagged as visible
-        ///     in Aseprite should be processed.
-        /// </summary>
-        public bool OnlyVisibleLayers;
-
-        /// <summary>
-        ///     The amount of transparent pixels to add between each frame
-        ///     and the edge of the spritesheet;
-        /// </summary>
-        public int BorderPadding;
-
-        /// <summary>
-        ///     The amount of transparent pixels to add between each frame
-        ///     in the spritesheet.
-        /// </summary>
-        public int Spacing;
-
-        /// <summary>
-        ///     The amount of transparent pixels to add to the inside of each
-        ///     frame's edge.
-        /// </summary>
-        public int InnerPadding;
+        PingPong = 2,
     }
 }

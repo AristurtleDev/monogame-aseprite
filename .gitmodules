@@ -1,3 +1,1 @@
-[submodule "source/MonoGame.Aseprite.ContentPipeline/ThirdParty/StbImageWriteSharp"]
-	path = source/MonoGame.Aseprite.ContentPipeline/ThirdParty/StbImageWriteSharp
-	url = https://github.com/StbSharp/StbImageWriteSharp.git
+

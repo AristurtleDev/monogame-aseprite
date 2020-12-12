@@ -81,9 +81,7 @@ namespace MonoGame.Aseprite.ContentReaders
         protected override AsepriteDocument Read(ContentReader input, AsepriteDocument existingInstance)
         {
 #if NET45
-            GraphicsDeviceManager gdManager = input.ContentManager.ServiceProvider.GetService(typeof(IGraphicsDeviceManager)) as GraphicsDeviceManager;
-
-            if(gdManager == null)
+            if (!(input.ContentManager.ServiceProvider.GetService(typeof(IGraphicsDeviceManager)) is GraphicsDeviceManager gdManager))
             {
                 throw new Exception("A GraphicsDeviceManager service could not be found");
             }
@@ -179,6 +177,8 @@ namespace MonoGame.Aseprite.ContentReaders
                     B = input.ReadByte(),
                     A = input.ReadByte()
                 };
+
+                tag.IsOneShot = input.ReadBoolean();
 
                 result.Tags.Add(tag.Name, tag);
             }

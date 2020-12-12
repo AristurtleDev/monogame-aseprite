@@ -46,6 +46,12 @@ namespace MonoGame.Aseprite.Documents
         ///     play forward from the starting frame to the ending frame, then it should
         ///     play in reverse from the ending frame to the starting frame.
         /// </summary>
-        PingPing = 2
+        PingPing = 2,
+
+        /// <summary>
+        ///     The animation should only play from the starting frame to the ending frame
+        ///     and the stop animation on the ending frame.
+        /// </summary>
+        OneShot
     }
 }

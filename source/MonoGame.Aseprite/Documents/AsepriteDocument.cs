@@ -106,6 +106,8 @@ namespace MonoGame.Aseprite.Documents
                     Texture = null;
                 }
             }
+
+            _isDisposed = true;
         }
     }
 }

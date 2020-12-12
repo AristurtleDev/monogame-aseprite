@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MonoGame.Aseprite": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

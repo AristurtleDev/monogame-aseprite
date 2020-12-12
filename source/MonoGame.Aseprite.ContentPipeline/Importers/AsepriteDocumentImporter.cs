@@ -63,8 +63,10 @@ namespace MonoGame.Aseprite.ContentPipeline.Importers
         public override AsepriteImporterResult Import(string filename, ContentImporterContext context)
         {
 
-            AsepriteImporterResult result = new AsepriteImporterResult();
-            result.Data = File.ReadAllBytes(filename);
+            AsepriteImporterResult result = new AsepriteImporterResult
+            {
+                Data = File.ReadAllBytes(filename)
+            };
             return result;
         }
     }

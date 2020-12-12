@@ -21,6 +21,8 @@
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------ */
 
+using Microsoft.Xna.Framework;
+
 namespace MonoGame.Aseprite.Documents
 {
     public sealed class AsepriteSliceKey

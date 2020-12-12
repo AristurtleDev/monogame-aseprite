@@ -2,6 +2,16 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <Platforms>AnyCPU;x86</Platforms>
+    <Authors>Christoher Whitley</Authors>
+    <Company>ManBeardGames</Company>
+    <Copyright>Coprright (c) 2020 Christoipher Whitley</Copyright>
+    <PackageProjectUrl>https://manbeardgames.com/monogame-aseprite</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/manbeardgames/monogame-aseprite</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
+    <AssemblyVersion>2.0.3.3</AssemblyVersion>
+    <FileVersion>2.0.3.3</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
@@ -31,19 +41,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="ThirdParty\StbImageWriteSharp\generation\**" />
-    <Compile Remove="ThirdParty\StbImageWriteSharp\tests\**" />
-    <EmbeddedResource Remove="ThirdParty\StbImageWriteSharp\generation\**" />
-    <EmbeddedResource Remove="ThirdParty\StbImageWriteSharp\tests\**" />
-    <None Remove="ThirdParty\StbImageWriteSharp\generation\**" />
-    <None Remove="ThirdParty\StbImageWriteSharp\tests\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="ThirdParty\StbImageWriteSharp\.git" />
-    <None Remove="ThirdParty\StbImageWriteSharp\.gitattributes" />
-    <None Remove="ThirdParty\StbImageWriteSharp\.gitignore" />
-    <None Remove="ThirdParty\StbImageWriteSharp\appveyor.yml" />
-    <None Remove="ThirdParty\StbImageWriteSharp\build_all.bat" />
-    <None Remove="ThirdParty\StbImageWriteSharp\README.md" />
+    <Compile Remove="ThirdParty\StbImageWriteSharp\**" />
+    <EmbeddedResource Remove="ThirdParty\StbImageWriteSharp\**" />
+    <None Remove="ThirdParty\StbImageWriteSharp\**" />
   </ItemGroup>
 </Project>

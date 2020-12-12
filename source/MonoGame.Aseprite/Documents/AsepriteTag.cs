@@ -59,6 +59,13 @@ namespace MonoGame.Aseprite.Documents
         public AsepriteTagDirection Direction { get; internal set; }
 
         /// <summary>
+        ///     Gets a value indicating if the animation tag is a one-shot animation, meaning
+        ///     that when it finished playing, it should stop animation on the last frame
+        ///     and not loop.
+        /// </summary>
+        public bool IsOneShot { get; internal set; }
+
+        /// <summary>
         ///     Creates a new <see cref="AsepriteTag"/> instance.
         /// </summary>
         internal AsepriteTag() { }

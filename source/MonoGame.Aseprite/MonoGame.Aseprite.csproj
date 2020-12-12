@@ -2,6 +2,17 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <Platforms>AnyCPU;x86</Platforms>
+    <SignAssembly>false</SignAssembly>
+    <Authors>Christoher Whitley</Authors>
+    <Company>ManBeardGames</Company>
+    <Copyright>Coprright (c) 2020 Christoipher Whitley</Copyright>
+    <PackageProjectUrl>https://manbeardgames.com/monogame-aseprite</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/manbeardgames/monogame-aseprite</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AssemblyVersion>2.0.3.3</AssemblyVersion>
+    <FileVersion>2.0.3.3</FileVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641">

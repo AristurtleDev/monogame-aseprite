@@ -328,9 +328,11 @@ namespace MonoGame.Aseprite.ContentPipeline.ThirdParty.Aseprite
         private static void set_lum(ref double r, ref double g, ref double b, double l)
         {
             double d = l - lum(r, g, b);
+#pragma warning disable IDE0054 // Use compound assignment
             r = r + d;
             g = g + d;
             b = b + d;
+#pragma warning restore IDE0054 // Use compound assignment
             clip_color(ref r, ref g, ref b);
         }
 

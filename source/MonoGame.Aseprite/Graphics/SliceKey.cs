@@ -41,6 +41,11 @@ namespace MonoGame.Aseprite.Graphics
         public Rectangle Bounds;
 
         /// <summary>
+        ///     The color of this slicekey.
+        /// </summary>
+        public Color Color;
+
+        /// <summary>
         ///     Creates a new <see cref="SliceKey"/> structure
         /// </summary>
         /// <param name="frame">
@@ -50,10 +55,22 @@ namespace MonoGame.Aseprite.Graphics
         ///     A rectangle that describes the bounds of this slicekey.
         /// </param>
         public SliceKey(int frame, Rectangle bounds)
-        {
-            Frame = frame;
-            Bounds = bounds;
-        }
+            : this(frame, bounds.X, bounds.Y, bounds.Width, bounds.Height, Color.White) { }
+
+        /// <summary>
+        ///     Creates a new <see cref="SliceKey"/> structure
+        /// </summary>
+        /// <param name="frame">
+        ///     The index of the frame that this slicekey is valid for.
+        /// </param>
+        /// <param name="bounds">
+        ///     A rectangle that describes the bounds of this slicekey.
+        /// </param>
+        /// <param name="color">
+        ///     The color of this slicekey.
+        /// </param>
+        public SliceKey(int frame, Rectangle bounds, Color color)
+            : this(frame, bounds.X, bounds.Y, bounds.Width, bounds.Height, color) { }
 
         /// <summary>
         ///     Creates a new <see cref="SliceKey"/> structure
@@ -70,10 +87,27 @@ namespace MonoGame.Aseprite.Graphics
         ///     of the slicekey.
         /// </param>
         public SliceKey(int frame, Point location, Point size)
-        {
-            Frame = frame;
-            Bounds = new Rectangle(location, size);
-        }
+            : this(frame, location.X, location.Y, size.X, size.Y, Color.White) { }
+
+        /// <summary>
+        ///     Creates a new <see cref="SliceKey"/> structure
+        /// </summary>
+        /// <param name="frame">
+        ///     The index of the frame that this slicekey is valid for.
+        /// </param>
+        /// <param name="location">
+        ///     A Point instance that descrbies the top-left xy-coordinate position of the bounds
+        ///     of this slicekey.
+        /// </param>
+        /// <param name="size">
+        ///     A Point instance that descrbies the width and height, in pixels, of the bounds
+        ///     of the slicekey.
+        /// </param>
+        /// <param name="color">
+        ///     The color of this slicekey.
+        /// </param>
+        public SliceKey(int frame, Point location, Point size, Color color)
+            : this(frame, location.X, location.Y, size.X, size.Y, color) { }
 
         /// <summary>
         ///     Creates a new <see cref="SliceKey"/> structure
@@ -94,9 +128,34 @@ namespace MonoGame.Aseprite.Graphics
         ///     The height, in pixels, of the bounds of this slicekey.
         /// </param>
         public SliceKey(int frame, int x, int y, int width, int height)
+            : this(frame, x, y, width, height, Color.White) { }
+
+        /// <summary>
+        ///     Creates a new <see cref="SliceKey"/> structure
+        /// </summary>
+        /// <param name="frame">
+        ///     The index of the frame that this slicekey is valid for.
+        /// </param>
+        /// <param name="x">
+        ///     The top-left x-coordinate position of hte bounds of this slicekey.
+        /// </param>
+        /// <param name="y">
+        ///     The top-left y-coordinate position of the bounds of this slicekey.
+        /// </param>
+        /// <param name="width">
+        ///     The width, in pixels, of the bounds of this slicekey.
+        /// </param>
+        /// <param name="height">
+        ///     The height, in pixels, of the bounds of this slicekey.
+        /// </param>
+        /// <param name="color">
+        ///     The color of this slicekey.
+        /// </param>
+        public SliceKey(int frame, int x, int y, int width, int height, Color color)
         {
             Frame = frame;
             Bounds = new Rectangle(x, y, width, height);
+            Color = color;
         }
     }
 }

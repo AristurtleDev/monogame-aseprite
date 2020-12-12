@@ -23,11 +23,9 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using MonoGame.Aseprite.ContentPipeline.Processors;
-using StbImageWriteSharp;
 
 namespace MonoGame.Aseprite.ContentPipeline
 {
@@ -113,6 +111,7 @@ namespace MonoGame.Aseprite.ContentPipeline
             //                      1 = Reverse
             //                      2 = Ping Pong
             //      [color] Color of the animation tag in Aseprtie as an XNA Color instance.
+            //      [bool]  Is this a one-shot animation.
             //
             //  [int]   Total number of slices
             //  +   For each slice
@@ -176,6 +175,8 @@ namespace MonoGame.Aseprite.ContentPipeline
                 output.Write(animation.Color.G);
                 output.Write(animation.Color.B);
                 output.Write(animation.Color.A);
+
+                output.Write(animation.IsOneShot);
             }
 
             output.Write(input.Slices.Count);
@@ -218,44 +219,6 @@ namespace MonoGame.Aseprite.ContentPipeline
                     {
                         output.Write(sliceKey.PivotX);
                         output.Write(sliceKey.PivotY);
-                    }
-                }
-            }
-
-            //  If user asked to output the generated spritesheet by providing a filepath
-            //  to output to, then output the spritesheet.
-            if (!string.IsNullOrWhiteSpace(input.Options.OutputSpriteSheet))
-            {
-                OutputSpritesheet(input);
-            }
-        }
-
-        /// <summary>
-        ///     This is a quick and dirty port of the MonoGame code to write a
-        ///     Texture2D to png.
-        //
-        //      https://github.com/MonoGame/MonoGame/blob/develop/MonoGame.Framework/Platform/Graphics/Texture2D.StbSharp.cs#L75
-        /// </summary>
-        private unsafe void OutputSpritesheet(AsepriteDocumentProcessorResult input)
-        {
-            using (FileStream stream = new FileStream(input.Options.OutputSpriteSheet, FileMode.OpenOrCreate))
-            {
-                Color[] data = null;
-
-                try
-                {
-                    data = input.ColorData;
-                    fixed (Color* ptr = &data[0])
-                    {
-                        ImageWriter writer = new ImageWriter();
-                        writer.WritePng(ptr, input.TextureWidth, input.TextureHeight, ColorComponents.RedGreenBlueAlpha, stream);
-                    }
-                }
-                finally
-                {
-                    if (data != null)
-                    {
-                        data = null;
                     }
                 }
             }

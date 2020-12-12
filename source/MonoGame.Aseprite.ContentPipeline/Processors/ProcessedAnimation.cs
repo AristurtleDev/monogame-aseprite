@@ -57,5 +57,12 @@ namespace MonoGame.Aseprite.ContentPipeline.Processors
         ///     0 = Forward, 1 = Reverse, 2 = Ping Pong.
         /// </summary>
         public int Direction;
+
+        /// <summary>
+        ///     A value indicating if the animation is a one-shot animation, meaning
+        ///     that when it finished playing, it should stop animation on the last frame
+        ///     and not loop.
+        /// </summary>
+        public bool IsOneShot;
     }
 }

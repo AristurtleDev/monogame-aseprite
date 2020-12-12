@@ -36,7 +36,12 @@ namespace MonoGame.Aseprite.Graphics
     /// </summary>
     public class AnimatedSprite : Sprite
     {
+        //  The current frame
         private Frame _currentFrame;
+
+        //  A value used to increment or decrement the current frame index depending
+        //  on the direction the current animation is playing in.
+        private int _direction;
 
         /// <summary>
         ///     Gets the key-value collection of <see cref="Animation"/> instances
@@ -93,7 +98,14 @@ namespace MonoGame.Aseprite.Graphics
         ///     Gets a value indicating if this instance is currently
         ///     playing an animation.
         /// </summary>
-        public bool Animating { get; set; }
+        public bool Animating { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating if the current animation is in
+        ///     a paused state, meaning it will not advance to the next frame
+        ///     until unpaused
+        /// </summary>
+        public bool Paused { get; private set; }
 
         /// <summary>
         ///     Gets the width, in pixels.
@@ -133,6 +145,15 @@ namespace MonoGame.Aseprite.Graphics
         ///     Gets or Sets an action to invoke each time an animation loops.
         /// </summary>
         public Action OnAnimationLoop { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets an action to invoke when an animation ends.
+        /// </summary>
+        /// <remarks>
+        ///     This action will only be called at the end of one-shot
+        ///     animations, or if <see cref="Stop"/> is called manually.
+        /// </remarks>
+        public Action OnAnimationEnd { get; set; }
 
         /// <summary>
         ///     Creates a new <see cref="AnimatedSprite"/> instance.
@@ -199,7 +220,16 @@ namespace MonoGame.Aseprite.Graphics
 
             foreach (KeyValuePair<string, AsepriteTag> kvp in aseprite.Tags)
             {
-                Animations.Add(kvp.Key, new Animation(kvp.Key, kvp.Value.From, kvp.Value.To));
+                Animation animation = new Animation()
+                {
+                    Name = kvp.Value.Name,
+                    From = kvp.Value.From,
+                    To = kvp.Value.To,
+                    Direction = (AnimationLoopDirection)kvp.Value.Direction,
+                    IsOneShot = kvp.Value.IsOneShot
+                }
+                ;
+                Animations.Add(animation.Name, animation);
             }
 
             foreach (KeyValuePair<string, AsepriteSlice> kvp in aseprite.Slices)
@@ -216,7 +246,8 @@ namespace MonoGame.Aseprite.Graphics
                     SliceKey key = new SliceKey()
                     {
                         Bounds = new Rectangle(innerKVP.Value.X, innerKVP.Value.Y, innerKVP.Value.Width, innerKVP.Value.Height),
-                        Frame = innerKVP.Value.FrameIndex
+                        Frame = innerKVP.Value.FrameIndex,
+                        Color = slice.Color
                     };
 
                     slice.Keys.Add(key.Frame, key);
@@ -236,7 +267,7 @@ namespace MonoGame.Aseprite.Graphics
         /// </param>
         public override void Update(float deltaTime)
         {
-            if (Animating)
+            if (Animating && !Paused)
             {
                 //  Using an epsilon of 0.0001 to check for equality between
                 //  the Framtimer (double) and duration (float).  This is to handle
@@ -255,28 +286,136 @@ namespace MonoGame.Aseprite.Graphics
                 //  Check if we need to move on to the next frame
                 if (FrameTimer <= 0)
                 {
-                    //  We're now at the end of a frame, so invoke the action
-                    OnFrameEnd?.Invoke();
-
-                    //  Increment the frame index
-                    CurrentFrameIndex += 1;
-
-                    //  Check that we are still within the bounds of the animations frames
-                    if (CurrentFrameIndex > CurrentAnimation.To)
-                    {
-                        //  Loop back to the beginning of the animations frame
-                        CurrentFrameIndex = CurrentAnimation.From;
-
-                        //  Since we looped, invoke the loop aciton
-                        OnAnimationLoop?.Invoke();
-                    }
-
-                    //  Set the CurrentFrame
-                    CurrentFrame = Frames[CurrentFrameIndex];
-
-                    //  Set the Duration
-                    FrameTimer = (double)CurrentFrame.Duration;
+                    AdvanceFrame();
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Advances the animation by one frame.
+        /// </summary>
+        private void AdvanceFrame()
+        {
+            //  Invoke the OnFrameEnd action
+            OnFrameEnd?.Invoke();
+
+            //  Increment the frame index
+            CurrentFrameIndex += _direction;
+
+            //  Handle the animation direcion type
+            switch (CurrentAnimation.Direction)
+            {
+                case AnimationLoopDirection.Forward:
+                    ForwardAnimationLoopCheck();
+                    break;
+                case AnimationLoopDirection.Reverse:
+                    ReverseAnimationLoopCheck();
+                    break;
+                case AnimationLoopDirection.PingPong:
+                    PingPongAnimationLoopCheck();
+                    break;
+                default:
+                    throw new Exception($"Unknown AnimationLoopDirection value given");
+            }
+
+            //  Set the CurrentFrame
+            CurrentFrame = Frames[CurrentFrameIndex];
+
+            //  Set the duration
+            FrameTimer = (double)CurrentFrame.Duration;
+
+        }
+
+        /// <summary>
+        ///     Handles the logic for looping an animation that is animating
+        ///     in a foward direciton.
+        /// </summary>
+        private void ForwardAnimationLoopCheck()
+        {
+            //  Check that we are still within the bounds of the animation's frames
+            if (CurrentFrameIndex > CurrentAnimation.To)
+            {
+                //  Check if this is a one-shot animation
+                if (CurrentAnimation.IsOneShot)
+                {
+                    //  It's one-shot, set current frame to last and stop animating
+                    CurrentFrameIndex = CurrentAnimation.To;
+                    Animating = false;
+                }
+                else
+                {
+                    //  Otherwise we loop the animation back to the beginning
+                    CurrentFrameIndex = CurrentAnimation.From;
+
+                    //  Since we looped, invoke the OnAnimationLoop action
+                    OnAnimationLoop?.Invoke();
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Handles the logic for looping an animation that is animating
+        ///     in a reverse direction.
+        /// </summary>
+        private void ReverseAnimationLoopCheck()
+        {
+            //  Chck that we are still within the bounds of the animation's frames
+            if (CurrentFrameIndex < CurrentAnimation.From)
+            {
+                //  Check if this is a one-shot animation
+                if (CurrentAnimation.IsOneShot)
+                {
+                    //  It's one-shot, set hte current frame to the first and stop animating
+                    CurrentFrameIndex = CurrentAnimation.From;
+                    Animating = false;
+                }
+                else
+                {
+                    //  Otherwise we loop the animation back to the end
+                    CurrentFrameIndex = CurrentAnimation.To;
+
+                    //  Since we looped, invoke the OnAnimationLoop action
+                    OnAnimationLoop?.Invoke();
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Handls the logic for looping an animation that is ping-pong
+        ///     animating.
+        /// </summary>
+        private void PingPongAnimationLoopCheck()
+        {
+            //  Check if we are still within the bounds of the animations frames
+            if (CurrentFrameIndex < CurrentAnimation.From || CurrentFrameIndex > CurrentAnimation.To)
+            {
+                //  Reverse the direction of the animation
+                _direction = -_direction;
+
+                if (_direction == -1)
+                {
+                    //  We've reached the end frame and reversed direciton, so set hte
+                    //  current frame index to one less the last frame
+                    CurrentFrameIndex = CurrentAnimation.To - 1;
+                }
+                else if (_direction == 1 && CurrentAnimation.IsOneShot)
+                {
+                    //  We've cycled the animation forward and backwards, and it's a one-shot
+                    //  aniamtion, so we set the current frame to the first and stop animating
+                    CurrentFrameIndex = CurrentAnimation.From;
+                    Animating = false;
+                }
+                else if (_direction == 1)
+                {
+                    //  We've cycled the animation forward and backwards, and it is NOT
+                    //  a one-shot animation, so we start it at the beginning + 1
+                    CurrentFrameIndex = CurrentAnimation.From + 1;
+
+                    //  And invoke the OnAnimationLoop action
+                    OnAnimationLoop?.Invoke();
+                }
+
+
             }
         }
 
@@ -313,19 +452,71 @@ namespace MonoGame.Aseprite.Graphics
         {
             //  If the current animation that is playing is the same as the
             //  name provided, just return back
-            if (CurrentAnimation.Name == animationName) { return; }
+            if (CurrentAnimation.Name == animationName && Animating) { return; }
 
             if (Animations.TryGetValue(animationName, out Animation animation))
             {
                 CurrentAnimation = animation;
-                CurrentFrameIndex = CurrentAnimation.From;
+                CurrentFrameIndex = animation.Direction == AnimationLoopDirection.Reverse ?
+                                    animation.To : animation.From;
                 CurrentFrame = Frames[CurrentFrameIndex];
                 FrameTimer = CurrentFrame.Duration;
                 Animating = true;
+                _direction = animation.Direction == AnimationLoopDirection.Reverse ? -1 : 1;
             }
             else
             {
                 throw new ArgumentOutOfRangeException($"No animation exists with the given name {animationName}");
+            }
+        }
+
+        /// <summary>
+        ///     Pauses the current playing animation.
+        /// </summary>
+        /// <param name="resetFrameDuration">
+        ///     When true, resets the remaining time of the frame that is
+        ///     paused on to the full duratoin of the frame.
+        /// </param>
+        public void Pause(bool resetFrameDuration = false)
+        {
+            //  Can't pause something that's already paused, so we
+            //  just return back. This is to prevent improper usage that
+            //  could accidently reset frame duration if it was set to true.
+            if (Paused)
+            {
+                return;
+            }
+
+            Paused = true;
+
+            if(resetFrameDuration)
+            {
+                FrameTimer = CurrentFrame.Duration;
+            }
+        }
+
+        /// <summary>
+        ///     Unpauses the current playing animation.
+        /// </summary>
+        /// <param name="advanceToNextFrame">
+        ///     When true, advances the current animation to the next
+        ///     frame in the animation.
+        /// </param>
+        public void Unpause(bool advanceToNextFrame = false)
+        {
+            //  Can't unpause something that's already paused, so we
+            //  just return back.  This is to prevent improper usage that
+            //  could accidently advance the next frame if it was set to true.
+            if (!Paused)
+            {
+                return;
+            }
+
+            Paused = false;
+
+            if(advanceToNextFrame)
+            {
+                AdvanceFrame();
             }
         }
 
@@ -392,8 +583,9 @@ namespace MonoGame.Aseprite.Graphics
             }
             else
             {
-                //  No slice exists with the given name, throw error
-                throw new ArgumentOutOfRangeException($"No slice exists with the given name {sliceName}");
+                //  No slice exists with the given name, return false
+                sliceKey = new SliceKey();
+                return false;
             }
         }
 
