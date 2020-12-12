@@ -1,64 +1,70 @@
+![](https://raw.githubusercontent.com/manbeardgames/monogame-aseprite/gh-pages-develop/static/img/monogame_aseprite_banner_800_200.png)
+
 # MonoGame.Aseprite
+MonoGame.Aseprite is an extension for the [MonoGame Framework](https://www.monogame.net) that allows you to import [Aseprite](https://www.aseprite.org) \*.ase/\*.aseprite files into your game project using the MGCB Editor (also known as the Content Pipeline Tool).
 
-MonoGame.Aseprite is an extension for [MonoGame Framework](http://www.monogame.net) to import the .json file produced by [Aseprite](http://www.aseprite.org) using the content pipeline, with a collection of classes to support rending the animation.
+No need to export a sprite sheet from Aseprite and have to deal with a PNG image file and a JSON file. With MonoGame.Aseprite the import process takes the single Aseprite file and generates a `AsepriteDocument` object, containing a `Texture2D` generated sprite sheet and all the data you need to animate those sweet pixels in game. 
 
-
-![](https://github.com/manbeardgames/repository-images/blob/master/monogame-aseprite/readme/preview.gif)
+MonoGame.Aseprite also provides an out-of-the-box AnimatedSprite class that can be used with the imported `AsepriteDocument` to get you started quickly if you prefer this as well.
 
 ## Getting Started
-MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed inot your existing MonOGame project using NuGet Package Manger in Visual Studio.  You can also use the following commands to install it.
+MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed into your existing MonoGame game project using NuGet Package Manger in Visual Studio. 
 
-**Package Manager**  
-```PM> Install-Package MonoGame.Aseprite -Version 1.2.2 ```
+For **MonoGame 3.7.1** (.NET Framework >= 4.5) users, please refer to the [installation documentation here](https://manbeardgames.com/monogame-aseprite/getting-started/monogame37installation).
 
-**.Net CLI**  
-```> dotnet add package MonoGame.Aseprite --version 1.2.2 ``` 
+For **MonoGame 3.8** (.NET Core) users, please refer to the [installation documentation here](https://manbeardgames.com/monogame-aseprite/getting-started/monogame38installation).
 
+For those that are migrating from **version 1.2.2** to **version 2.0.3** you can find the [migration documentation here](https://manbeardgames.com/monogame-aseprite/getting-started/migratingv1v2).
 
-Once you've added the NuGet package, you'll also need to add a reference to **MonoGame.Aseprite.ContentPipeline.dll** in the Content Pipeline Tool.  The location of this file after downloading the NuGet package is dependent on which version of MonoGame you are using.  Please refer to the following [wiki page](https://github.com/manbeardgames/monogame-aseprite/wiki/downloading-and-adding-references) for information on doing this.
+## Example Usage
+The following is a quick example of using MonoGame.Aseprite in your game.
 
+**Add Using Statements**
+```csharp
+//  Add using statements
+using MonoGame.Aseprite.Documents;
+using MonoGame.Aseprite.Graphics;
+```
 
-## Usage
-The following is a brief explination of how to use this in your MonoGame project. 
-[**For a more detailed explination, including images, please check the wiki**](https://github.com/manbeardgames/monogame-aseprite/wiki)  
+**Load the Content**
+```csharp
+//  Load the AsepriteDocument
+AsepriteDocument aseDoc = Content.Load<AsepriteDocument>("myAseFile");
 
-* Export your spritesheet from Aseprite
-    * Select Array for meta information not Hash
-    * Frame Tags must be checked
-    * Slices must be checked
-    * Trim and Padding is currently not supported. These must be unchecked.
-* Add the exported spritesheet and associated .json file from Aseprite to your project using the MonoGame Pipeline Tool
-    * The spritesheet can be imported normally using the Texture importer and processor
-    * For the .json file, use the Aseprite Animation Importer and the Aseprite Animation Processor
-* Create a new AnimatedSprite object using the spritesheet and the animation definition.
-    * The animation defintion is loaded in your game using the content manger. It loads the .json file you imported.
+//  Create a new AnimatedSprite from the document
+AnimatedSprite sprite = new AnimatedSprite(aseDoc);
 
-    ```csharp
-    //  Be sure to add the using statement at the top
-    using MonoGame.Aseprite;
-    
-    ...
-    
-    //  Load the .json file
-    AnimationDefinition animationDefinition = content.Load<AnimationDefinition>("animationDefinition");
-    
-    //  Load the sprite sheet
-    Texture2D spritesheet = content.load<Texture2D>("spritesheet");
-    
-    //  Create the AnimatedSprite based on the animation definition and the sprite sheet
-    AnimatedSprite animatedSprite = new AnimatedSprite(spriteSheet, animationDefinition);
-    ```
+```
+
+**Update the AnimatedSprite Instance**
+```csharp
+sprite.Update(gameTime);
+```
+
+**Drawing the AnimatedSprite**
+```csharp
+sprite.Render(spriteBatch);
+```
+
 
 ## What Next?
-* Check out the [wiki](https://github.com/manbeardgames/monogame-aseprite/wiki)
-* Read about [using slices](https://github.com/manbeardgames/monogame-aseprite/wiki/using-slices-from-aseprite) if you plan to do that
-* Submit an [issue on GitHub](https://github.com/manbeardgames/monogame-aseprite/issues)
-* Hit me up on [Twitter @manbeardgames](https://www.twitter.com/manbeardgames) if you have questions
+* Read the [documentation](https://manbeardgames.com/monogame-aseprite).
+* Join the [Discord](https://discord.gg/8jFvHhuMJU) to ask questions or keep up to date.
+* Submit an [issue on GitHub](https://github.com/manbeardgames/monogame-aseprite/issues).
+* Follow me on [Twitter @manbeardgames](https://www.twitter.com/manbeardgames).
+
+## Sponsor On GitHub
+[![](https://raw.githubusercontent.com/manbeardgames/monogame-aseprite/gh-pages-develop/static/img/github_sponsor.png)](https://github.com/sponsors/manbeardgames)
+ Hi, my name is Christopher Whitley. I am an indie game developer and game development tool developer. I create tools primary for the MonoGame framework. All of the tools I develop are released as free and open-sourced software (FOSS), just like this **Monogame.Aseprite** library.
+
+ If you'd like to buy me a cup of coffee or just sponsor me and my projects in general, you can do so on [GitHub Sponsors](https://github.com/sponsors/manbeardgames). 
+
+
 
 
 
 ## License
-Copyright(c) 2018 Chris Whitley
+Copyright(c) 2020 Chris Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,0 +1,1365 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MonoGame.Aseprite</name>
+    </assembly>
+    <members>
+        <member name="T:MonoGame.Aseprite.ContentReaders.AsepriteDocumentTypeReader">
+            <summary>
+                ContentTypeReader used to import a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/>
+                instance from the content pipeline.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.ContentReaders.AsepriteDocumentTypeReader.Read(System.Byte[],Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+            <summary>
+                Given a valid byte[] that represents the contents of the aserptie file
+                import from MonoGame.Aseprite.ContentPipeline, reads the content and
+                returns a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instance.
+            </summary>
+            <param name="input">
+                The binary file contents of the aseprite file import created by
+                the MonoGame.Aseprite.Contentpipline.
+            </param>
+            <param name="graphicsDevice">
+                The GraphicsDevice instance used for rendering.
+            </param>
+            <returns>
+                A new <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instance.
+            </returns>
+        </member>
+        <member name="M:MonoGame.Aseprite.ContentReaders.AsepriteDocumentTypeReader.Read(Microsoft.Xna.Framework.Content.ContentReader,MonoGame.Aseprite.Documents.AsepriteDocument)">
+            <summary>
+                Allows the ContentPipline to read a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/>.
+            </summary>
+            <param name="input">
+                The ContentReader instance provided by the ContentManager.
+            </param>
+            <param name="existingInstance">
+                An existing instnace of the content being read.
+            </param>
+            <returns>
+                A new <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instance.
+            </returns>
+        </member>
+        <member name="M:MonoGame.Aseprite.ContentReaders.AsepriteDocumentTypeReader.ReadInternal(System.IO.BinaryReader,Microsoft.Xna.Framework.Graphics.GraphicsDevice,MonoGame.Aseprite.Documents.AsepriteDocument)">
+            <summary>
+                Reads the <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> from the base stream
+                of the reader provided.
+            </summary>
+            <param name="input">
+                A BinaryReader instance who's base stream contains the content of the
+                <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> being read.
+            </param>
+            <param name="graphicsDevice">
+                The GraphicsDevice instance used for rendering.
+            </param>
+            <param name="existingInstance">
+                An existing instnace of the content being read.
+            </param>
+            <returns>
+                A new <see cref="!:AsepriteAnimationDocument"/> instance.
+            </returns>
+        </member>
+        <member name="T:MonoGame.Aseprite.Documents.AsepriteDocument">
+            <summary>
+                A class that provides the information imported from an Aseprite file
+                through the content pipeline.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteDocument.Texture">
+            <summary>
+                Gets the <see cref="T:Microsoft.Xna.Framework.Graphics.Texture2D"/> containing a packed spritesheet
+                of all frames from the Aseprite file.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteDocument.TextureWidth">
+            <summary>
+                Gets the width, in pixels, of the <see cref="P:MonoGame.Aseprite.Documents.AsepriteDocument.Texture"/>
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteDocument.TextureHeight">
+            <summary>
+                Gets the height, in pixels, of hte <see cref="P:MonoGame.Aseprite.Documents.AsepriteDocument.Texture"/>
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteDocument.Frames">
+            <summary>
+                Gest the collection of frames.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteDocument.Slices">
+            <summary>
+                Gets the collection of defined slices, with the dictionary key
+                being the name of the slice.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteDocument.Tags">
+            <summary>
+                Gets the collection of defined animations, with the dictionary key
+                being the name of the animation.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Documents.AsepriteDocument.#ctor">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instance.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Documents.AsepriteDocument.Dispose">
+            <summary>
+                Gracefully disposes of resources that are managed by this instance.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Documents.AsepriteDocument.Dispose(System.Boolean)">
+            <summary>
+                Gracefully disposes of resources that are managed by this instance.
+            </summary>
+            <param name="disposing">
+                A value indicating if the resources managed by this instance should
+                be disposed.
+            </param>
+        </member>
+        <member name="T:MonoGame.Aseprite.Documents.AsepriteFrame">
+            <summary>
+                A class that provides the bounds an duration of a single
+                frame for an <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/>.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteFrame.X">
+            <summary>
+                Gets the top-left x-coordinate position of the frame relative
+                to the top-left of the texture.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteFrame.Y">
+            <summary>
+                Gets the top-left y-coordinate position of the frame relative
+                to the top-left of the texture.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteFrame.Width">
+            <summary>
+                Gets the width, in pixels, of the frame.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteFrame.Height">
+            <summary>
+                Gets the height, in pixels, of the frame.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteFrame.Duration">
+            <summary>
+                Gets the duration, in seconds, of the frame.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Documents.AsepriteFrame.#ctor">
+            <summary>
+                Creates a <see cref="T:MonoGame.Aseprite.Documents.AsepriteFrame"/>
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSlice.Name">
+            <summary>
+                Gets the name of the slice.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSlice.Color">
+            <summary>
+                Gets the color of the slice.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSlice.SliceKeys">
+            <summary>
+                Gets the key-value pair dictionary of <see cref="T:MonoGame.Aseprite.Documents.AsepriteSliceKey"/>
+                instance for this slice. The frame in which the <see cref="T:MonoGame.Aseprite.Documents.AsepriteSliceKey"/>
+                is valid on is the key and the instance itself is the value.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Documents.AsepriteSlice.#ctor">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteSlice"/> instance.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.FrameIndex">
+            <summary>
+                Gets the index of the frame that the slice is valid
+                starting on.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.X">
+            <summary>
+                Gets the x-coordinate position of the slice relative to
+                the bounds of the frame.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.Y">
+            <summary>
+                Gets the y-coordinate position of the slice relative to
+                the bounds of the frame.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.Width">
+            <summary>
+                Gets the width, in pixels, of the slice.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.Height">
+            <summary>
+                Gets the height, in pixels, of the slice.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.HasNinePatch">
+            <summary>
+                Gets a value indicating if this slicekey has nine patch
+                data.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.CenterX">
+            <summary>
+                Gets the top-left x-coordinate position of the nine patch
+                center rect if this slice contains ninepatch data.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.CenterY">
+            <summary>
+                Gets the top-left y-coordinate position of the nine patch
+                center rect if this slice contains ninepatch data.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.CenterWidth">
+            <summary>
+                Gets the width, in pixels, of the nine patch center rect
+                if this slice contains ninepatch data.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.CenterHeight">
+            <summary>
+                Gets the height, in pixels, of the nine patch center rect
+                if this slice contains ninepatch data.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.HasPivot">
+            <summary>
+                Gets a value indicating if this slicekey has pivot data.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.PivotX">
+            <summary>
+                Gets the x-coordinate origin point of the pivot if this slice
+                contains pivot data.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.PivotY">
+            <summary>
+                Gets the y-coordinate origin point of the pivot if this slice
+                contains pivot data.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Documents.AsepriteSliceKey.#ctor">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteSliceKey"/> instance.
+            </summary>
+        </member>
+        <member name="T:MonoGame.Aseprite.Documents.AsepriteTag">
+            <summary>
+                A class that provides the information about an animation tag
+                for an <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/>.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteTag.Name">
+            <summary>
+                Gets the name of the animation.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteTag.From">
+            <summary>
+                Gets the starting frame of the animation.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteTag.To">
+            <summary>
+                Gets the ending frame of the animation.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteTag.Color">
+            <summary>
+                Gets the color of the animation as defined as the
+                tag color in Asperite.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteTag.Direction">
+            <summary>
+                A value that indicates the direction the animation is played in.
+                0 = Forward, 1 = Reverse, 2 = Ping Pong.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteTag.IsOneShot">
+            <summary>
+                Gets a value indicating if the animation tag is a one-shot animation, meaning
+                that when it finished playing, it should stop animation on the last frame
+                and not loop.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Documents.AsepriteTag.#ctor">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteTag"/> instance.
+            </summary>
+        </member>
+        <member name="T:MonoGame.Aseprite.Documents.AsepriteTagDirection">
+            <summary>
+                Values that define the direction in which a the animation
+                defined by an <see cref="T:MonoGame.Aseprite.Documents.AsepriteTag"/> should be played.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Documents.AsepriteTagDirection.Forward">
+            <summary>
+                The animation shoudl be played in a forward direction from
+                the starting frame to the ending frame.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Documents.AsepriteTagDirection.Reverse">
+            <summary>
+                The aniamtion should be played in a reverse direction from
+                the ending frame to the starting frame.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Documents.AsepriteTagDirection.PingPing">
+            <summary>
+                The animation should ping pong the direciton played; First it should
+                play forward from the starting frame to the ending frame, then it should
+                play in reverse from the ending frame to the starting frame.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Documents.AsepriteTagDirection.OneShot">
+            <summary>
+                The animation should only play from the starting frame to the ending frame
+                and the stop animation on the ending frame.
+            </summary>
+        </member>
+        <member name="T:MonoGame.Aseprite.Graphics.AnimatedSprite">
+            <summary>
+                An animated sprite class used to define, mange, and rendering sprite
+                animations based on a single spritesheet.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Animations">
+            <summary>
+                Gets the key-value collection of <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> instances
+                used by this animated sprite. The name of the animation is the
+                key for the dictionary.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Frames">
+            <summary>
+                Gets the collection of <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instances for this
+                animated sprite.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Slices">
+            <summary>
+                Gets the key-value collection of <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instances
+                for this animated sprite. 
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.CurrentAnimation">
+            <summary>
+                Gets the current <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> that is being played.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.CurrentFrame">
+            <summary>
+                Gets the current <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> in the animation that
+                is being rendered.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.CurrentFrameIndex">
+            <summary>
+                Gets the index of current <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> in the animation
+                that is being rendered. This is the index of the frame in the
+                <see cref="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Frames"/> propery.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.FrameTimer">
+            <summary>
+                Gets the amount of time, in seconds, that is left to display
+                the current frame in the current animation.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Animating">
+            <summary>
+                Gets a value indicating if this instance is currently
+                playing an animation.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Paused">
+            <summary>
+                Gets a value indicating if the current animation is in
+                a paused state, meaning it will not advance to the next frame
+                until unpaused
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Width">
+            <summary>
+                Gets the width, in pixels.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Height">
+            <summary>
+                Gets the height, in pixels.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.OnFrameBegin">
+            <summary>
+                Gets or Sets an action to invoke at the beginning of each
+                frame in an animation.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.OnFrameEnd">
+            <summary>
+                Gets or Sets an action to invoke at the end of each frame
+                in an animation.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.OnAnimationLoop">
+            <summary>
+                Gets or Sets an action to invoke each time an animation loops.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.AnimatedSprite.OnAnimationEnd">
+            <summary>
+                Gets or Sets an action to invoke when an animation ends.
+            </summary>
+            <remarks>
+                This action will only be called at the end of one-shot
+                animations, or if <see cref="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Stop"/> is called manually.
+            </remarks>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.AnimatedSprite"/> instance.
+            </summary>
+            <param name="texture">
+                A Texture2D that is the spritesheet containing all frames of all
+                animations that will be rendered.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.AnimatedSprite"/> instance.
+            </summary>
+            <param name="texture">
+                A Texture2D that is the spritesheet containing all frames of all
+                animations that will be rendered.
+            </param>
+            <param name="position">
+                The top-left xy-coordinate position of this instance.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.#ctor(MonoGame.Aseprite.Documents.AsepriteDocument)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.AnimatedSprite"/> instance.
+            </summary>
+            <param name="aseprite">
+                An <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instace created by
+                importing from the content pipeline.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.#ctor(MonoGame.Aseprite.Documents.AsepriteDocument,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.AnimatedSprite"/> instance.
+            </summary>
+            <param name="aseprite">
+                An <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instace created by
+                importing from the content pipeline.
+            </param>
+            <param name="position">
+                The top-left xy-coordinate position.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Update(System.Single)">
+            <summary>
+                Updates this instance.
+            </summary>
+            <param name="deltaTime">
+                The amount of time, in seconds, that have passed since
+                the last update.  Usually gathered from GameTime.ElapsedTime.TotalSeconds
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AdvanceFrame">
+            <summary>
+                Advances the animation by one frame.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.ForwardAnimationLoopCheck">
+            <summary>
+                Handles the logic for looping an animation that is animating
+                in a foward direciton.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.ReverseAnimationLoopCheck">
+            <summary>
+                Handles the logic for looping an animation that is animating
+                in a reverse direction.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.PingPongAnimationLoopCheck">
+            <summary>
+                Handls the logic for looping an animation that is ping-pong
+                animating.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Render(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+                Renders to the screen
+            </summary>
+            <param name="spriteBatch"></param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Play(System.String)">
+            <summary>
+                Given the name of an animation, sets that animation as the
+                current animation to play and starts it.
+            </summary>
+            <param name="animationName">
+                The name of the animation to play.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                Thrown if there is no animation exists with the name given
+                in <paramref name="animationName"/>
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Pause(System.Boolean)">
+            <summary>
+                Pauses the current playing animation.
+            </summary>
+            <param name="resetFrameDuration">
+                When true, resets the remaining time of the frame that is
+                paused on to the full duratoin of the frame.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Unpause(System.Boolean)">
+            <summary>
+                Unpauses the current playing animation.
+            </summary>
+            <param name="advanceToNextFrame">
+                When true, advances the current animation to the next
+                frame in the animation.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Stop">
+            <summary>
+                Stops this animated sprite from animating on the
+                current frame in the animation.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.GetSliceColor(System.String)">
+            <summary>
+                Gets the defined color of the slice with the given name
+            </summary>
+            <param name="sliceName">
+                The name of the slice
+            </param>
+            <returns>
+                The color of the slice
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown if no <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance exists with the name given
+                in <paramref name="sliceName"/>
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.TryGetCurrentFrameSlice(System.String,MonoGame.Aseprite.Graphics.SliceKey@)">
+            <summary>
+                Get the Rectangle definition of the slice at the current frame of 
+                animation, if there is a slice key defined for the frame
+            </summary>
+            <param name="sliceName">The name of the slice</param>
+            <returns>
+                A Rectangle definition of the frame slice, at the xy-coordinate of
+                this sprite.  If no slice key exists for the current frame, 
+                null is returned.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice name provided does not exist in the animation definitions slice dictionary
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddAnimation(MonoGame.Aseprite.Graphics.Animation)">
+            <summary>
+                Adds the given <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> to the animations dictionary
+            </summary>
+            <param name="animation">
+                The <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> to add
+            </param>
+            <remarks>
+                Animations are stored in the dictionary by name, so each animation
+                must have a unique name
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the animation provided has a name that is already present in 
+                the animation dictionary
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddAnimation(System.String,System.Int32,System.Int32)">
+            <summary>
+                Given the name, starting frame, and ending frame, creates a new
+                <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> instances and adds it to the animation dictionary.
+            </summary>
+            <param name="name">
+                The name of the animation
+            </param>
+            <param name="from">
+                The starting frame
+            </param>
+            <param name="to">
+                The ending frame
+            </param>
+            <remarks>
+                Animations are stored in the ditionary by name, so each animation
+                must have a unique name
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the animation provided has a name that is already present in 
+                the animation dictionary
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddAnimations(System.Collections.Generic.IEnumerable{MonoGame.Aseprite.Graphics.Animation})">
+            <summary>
+                Given a collection of <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> instances, adds them
+                to the animation dictionary.
+            </summary>
+            <param name="animations">
+                The collection of <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> instances to add
+            </param>
+            <remarks>
+                Animations are stored in the dictionary by name, so each animation
+                must have a unique name
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the animation provided has a name that is already present in 
+                the animation dictionary
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddAnimations(MonoGame.Aseprite.Graphics.Animation[])">
+            <summary>
+                Given <see cref="P:MonoGame.Aseprite.Graphics.AnimatedSprite.Animations"/> instances, adds them to the animation
+                dictionary.
+            </summary>
+            <param name="animations"
+                >The <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> instances to add
+                </param>
+            <remarks>
+                Animations are stored in the dictionary by name, so each animation
+                must have a unique name
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the animation provided has a name that is already present in 
+                the animation dictionary
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddFrame(MonoGame.Aseprite.Graphics.Frame)">
+            <summary>
+                Given a <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instance, adss it to the collection
+                of frames.
+            </summary>
+            <param name="frame">
+                The <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> to add
+            </param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddFrame(Microsoft.Xna.Framework.Rectangle,System.Single)" -->
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddFrame(System.Int32,System.Int32,System.Int32,System.Int32,System.Single)">
+            <summary>
+                Given the boundry values of a frame and the duration, in seconds, creates
+                a new <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instance and adds it to the collection of
+                frames.
+            </summary>
+            <param name="x">
+                The top-left x-coordinate position of the frame relative to the
+                spritesheet.
+            </param>
+            <param name="y">
+                The top-left y-coordinate position of the frame relative to the
+                spritesheet.
+            </param>
+            <param name="width">
+                The width, in pixels, of the frame.
+            </param>
+            <param name="height">
+                The height, in pixels, of the frame.
+            </param>
+            <param name="duration">
+                The amount of time, in seconds, that the frame should be displayed.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddFrames(System.Collections.Generic.IEnumerable{MonoGame.Aseprite.Graphics.Frame})">
+            <summary>
+                Given a collection of <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instances, add it to the
+                collection of frames.
+                Adds the collection of <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> values to the collection of frames
+            </summary>
+            <param name="frames">
+                The collection of <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instances to add.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddFrames(MonoGame.Aseprite.Graphics.Frame[])">
+            <summary>
+                Given <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instnaces, adds them to the collectio of frames.
+            </summary>
+            <param name="frames">
+                The <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instances to add.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlice(MonoGame.Aseprite.Graphics.Slice)">
+            <summary>
+                Given a <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance, adds it to the collection
+                of slices.
+            </summary>
+            <param name="slice">
+                The <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance to add.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlice(System.String,System.Collections.Generic.Dictionary{System.Int32,MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Given the name and the key-value pair of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/>
+                instances, creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance and adds it
+                to the collection of slices.
+            </summary>
+            <param name="name">
+                The name of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="keys">
+                The key-value pair collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances
+                that belong to the slice.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlice(System.String,System.Collections.Generic.IEnumerable{MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Given the name and a collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances,
+                creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance and adds it to the
+                collection of slices.
+            </summary>
+            <param name="name">
+                The name of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="keys">
+                The collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that
+                belong to the slice.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlice(System.String,MonoGame.Aseprite.Graphics.SliceKey[])">
+            <summary>
+                Given the name and <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances,
+                creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance and adds it to the
+                collection of slices.
+            </summary>
+            <param name="name">
+                The name of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="keys">
+                The <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that belong to the slice.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlice(System.String,Microsoft.Xna.Framework.Color,System.Collections.Generic.Dictionary{System.Int32,MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Given the name, color, and the key-value pair of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/>
+                instances, creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance and adds it
+                to the collection of slices.
+            </summary>
+            <param name="name">
+                The name of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="color">
+                The color of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="keys">
+                The key-value pair collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances
+                that belong to the slice.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlice(System.String,Microsoft.Xna.Framework.Color,System.Collections.Generic.IEnumerable{MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Given the name, color, and collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/>
+                instances, creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance and adds it
+                to the collection of slices.
+            </summary>
+            <param name="name">
+                The name of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="color">
+                The color of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="keys">
+                The collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that belong
+                to the slice.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlice(System.String,Microsoft.Xna.Framework.Color,MonoGame.Aseprite.Graphics.SliceKey[])">
+            <summary>
+                Given the name, color, and <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances,
+                creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance and adds it to the
+                collection of slices.
+            </summary>
+            <param name="name">
+                The name of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="color">
+                The color of the <see cref="T:MonoGame.Aseprite.Graphics.Slice"/>.
+            </param>
+            <param name="keys">
+                The <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that belong to the slice.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+            </exception>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlices(System.Collections.Generic.IEnumerable{MonoGame.Aseprite.Graphics.Slice})" -->
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.AddSlices(MonoGame.Aseprite.Graphics.Slice[])">
+            <summary>
+                Given <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instances, add them to the colleciton of
+                slices.
+            </summary>
+            <param name="slices">
+                The <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instances to add.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the slice collection already contains a slice with the same name
+                or if any of the slices in the given collection have the same name
+            </exception>
+        </member>
+        <member name="T:MonoGame.Aseprite.Graphics.Animation">
+            <summary>
+                Represents the definition of an animation
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Animation.Name">
+            <summary>
+                The name of this animation.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Animation.From">
+            <summary>
+                The index of the frame that this animation starts on.
+                The starting frame
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Animation.To">
+            <summary>
+                The index of the frame that this animation ends on.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Animation.Direction">
+            <summary>
+                The direciton in which the animation loops through its frames.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Animation.IsOneShot">
+            <summary>
+                A value indicating if the animation is a one-shot animation, meaning
+                that when it finished playing, it should stop animation on the last frame
+                and not loop.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Animation.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> structure with a forward
+                animation direction.
+            </summary>
+            <param name="name">
+                The name of this animation.
+            </param>
+            <param name="from">
+                The index of the frame that this animation starts on.
+            </param>
+            <param name="to">
+                The index of the frame that this animation ends on.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Animation.#ctor(System.String,System.Int32,System.Int32,MonoGame.Aseprite.Graphics.AnimationLoopDirection)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> structure
+            </summary>
+            <param name="name">
+                The name of this animation.
+            </param>
+            <param name="from">
+                The index of the frame that this animation starts on.
+            </param>
+            <param name="to">
+                The index of the frame that this animation ends on.
+            </param>
+            <param name="direction">
+                The direction in which the animation loops through its frames.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Animation.#ctor(System.String,System.Int32,System.Int32,MonoGame.Aseprite.Graphics.AnimationLoopDirection,System.Boolean)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Animation"/> structure
+            </summary>
+            <param name="name">
+                The name of this animation.
+            </param>
+            <param name="from">
+                The index of the frame that this animation starts on.
+            </param>
+            <param name="to">
+                The index of the frame that this animation ends on.
+            </param>
+            <param name="direction">
+                The direction in which the animation loops through its frames.
+            </param>
+            <param name="isOneShot">
+                A value indicating if the animation should only play once and not loop.
+            </param>
+        </member>
+        <member name="T:MonoGame.Aseprite.Graphics.AnimationLoopDirection">
+            <summary>
+                Provides a value that indicates the direciton in which an animation should
+                loop through its frames.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.AnimationLoopDirection.Forward">
+            <summary>
+                Describes an animation that plays in a forward direction from
+                the starting frame to the ending frame.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.AnimationLoopDirection.Reverse">
+            <summary>
+                Describes an animation that plays in a reverse direction from
+                the ending frame to the starting frame.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.AnimationLoopDirection.PingPong">
+            <summary>
+                Describes an animation that plays first in a forward direction from
+                the starting frame to the ending frame, then plays in a reverse direction
+                from the ending frame to the starting frame.
+            </summary>
+        </member>
+        <member name="T:MonoGame.Aseprite.Graphics.Frame">
+            <summary>
+                A frame is the rectangluar area within the spritesheet that describes a single
+                frame of an animation and the duration in which that frame should be rendered.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Frame.Bounds">
+            <summary>
+                Defines the rectanglular bounds within the spritesheet that should be.
+                rendered for for this frame.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Frame.Duration">
+            <summary>
+                The amount of time, in seconds, this frame should be displayed.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Frame.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Single)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> instance.
+            </summary>
+            <param name="x">
+                The top-left x-coordinate position of the frame relative to the spritesheet.
+            </param>a
+            <param name="y">
+                The top-left y-coordinate position of the frame relative to the spritesheet.
+            </param>
+            <param name="width">
+                The width, in pixels, of the frame.
+            </param>
+            <param name="height">
+                The height, in pixels, of the frame.
+            </param>
+            <param name="duration">
+                The amount of time, in seconds, the frame should be displayed.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Frame.#ctor(Microsoft.Xna.Framework.Rectangle,System.Single)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Frame"/> structure
+            </summary>
+            <param name="bounds">
+                A <see cref="T:Microsoft.Xna.Framework.Rectangle"/> instance that describes the bounds of the frame relative
+                to the spritesheet.
+            </param>
+            <param name="duration">
+                The amount of time, in seconds, the frame should be displayed.
+            </param>
+        </member>
+        <member name="T:MonoGame.Aseprite.Graphics.Slice">
+            <summary>
+                Represents a sliced (predefined) area of a frame of animation
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Slice.Name">
+            <summary>
+                The name of the slice
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Slice.Color">
+            <summary>
+                The color of the slice
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.Slice.Keys">
+            <summary>
+                The collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that describe the
+                boundries of this slice per frame.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Slice.#ctor(System.String,System.Collections.Generic.Dictionary{System.Int32,MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance
+            </summary>
+            <param name="name">
+                The name of the slice
+            </param>
+            <param name="keys">
+                A collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that describe the
+                bounds of this slice per frame.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Slice.#ctor(System.String,System.Collections.Generic.IEnumerable{MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance.
+            </summary>
+            <param name="name">
+                The name of the slice
+            </param>
+            <param name="keys">
+                A collection of <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that describe the
+                bounds of this slice per frame.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if any of the <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> structures in the collection given contain,
+                the same name
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Slice.#ctor(System.String,MonoGame.Aseprite.Graphics.SliceKey[])">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance.
+            </summary>
+            <param name="name">
+                The name of the slice
+            </param>
+            <param name="keys">
+                The <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that describe the
+                bounds of this slice per frame.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the frame for any of the <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instance given has already
+                been added to this slice.
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Slice.#ctor(System.String,Microsoft.Xna.Framework.Color,System.Collections.Generic.Dictionary{System.Int32,MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance.
+            </summary>
+            <param name="name">
+                The name of the slice
+            </param>
+            <param name="keys">
+                The <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that describe the
+                bounds of this slice per frame.
+            </param>
+            <param name="color">
+                The color of the slice
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Slice.#ctor(System.String,Microsoft.Xna.Framework.Color,System.Collections.Generic.IEnumerable{MonoGame.Aseprite.Graphics.SliceKey})">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance.
+            </summary>
+            <param name="name">
+                The name of the slice
+            </param>
+            <param name="keys">
+                The <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that describe the
+                bounds of this slice per frame.
+            </param>
+            <param name="color">
+                The color of the slice
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the frame for any of the <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instance given has already
+                been added to this slice.
+            </exception>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Slice.#ctor(System.String,Microsoft.Xna.Framework.Color,MonoGame.Aseprite.Graphics.SliceKey[])">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Slice"/> instance.
+            </summary>
+            <param name="name">
+                The name of the slice
+            </param>
+            <param name="keys">
+                The <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instances that describe the
+                bounds of this slice per frame.
+            </param>
+            <param name="color">
+                The color of the slice
+            </param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the frame for any of the <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> instance given has already
+                been added to this slice.
+            </exception>
+        </member>
+        <member name="T:MonoGame.Aseprite.Graphics.SliceKey">
+            <summary>
+                Represents the frame specific boundry infromation for a slice.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.SliceKey.Frame">
+            <summary>
+                The index of the frame that this slicekey is valid for.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.SliceKey.Bounds">
+            <summary>
+                A rectangle that describes the bounds of this slicekey.
+            </summary>
+        </member>
+        <member name="F:MonoGame.Aseprite.Graphics.SliceKey.Color">
+            <summary>
+                The color of this slicekey.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.SliceKey.#ctor(System.Int32,Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> structure
+            </summary>
+            <param name="frame">
+                The index of the frame that this slicekey is valid for.
+            </param>
+            <param name="bounds">
+                A rectangle that describes the bounds of this slicekey.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.SliceKey.#ctor(System.Int32,Microsoft.Xna.Framework.Rectangle,Microsoft.Xna.Framework.Color)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> structure
+            </summary>
+            <param name="frame">
+                The index of the frame that this slicekey is valid for.
+            </param>
+            <param name="bounds">
+                A rectangle that describes the bounds of this slicekey.
+            </param>
+            <param name="color">
+                The color of this slicekey.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.SliceKey.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Point)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> structure
+            </summary>
+            <param name="frame">
+                The index of the frame that this slicekey is valid for.
+            </param>
+            <param name="location">
+                A Point instance that descrbies the top-left xy-coordinate position of the bounds
+                of this slicekey.
+            </param>
+            <param name="size">
+                A Point instance that descrbies the width and height, in pixels, of the bounds
+                of the slicekey.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.SliceKey.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Color)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> structure
+            </summary>
+            <param name="frame">
+                The index of the frame that this slicekey is valid for.
+            </param>
+            <param name="location">
+                A Point instance that descrbies the top-left xy-coordinate position of the bounds
+                of this slicekey.
+            </param>
+            <param name="size">
+                A Point instance that descrbies the width and height, in pixels, of the bounds
+                of the slicekey.
+            </param>
+            <param name="color">
+                The color of this slicekey.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.SliceKey.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> structure
+            </summary>
+            <param name="frame">
+                The index of the frame that this slicekey is valid for.
+            </param>
+            <param name="x">
+                The top-left x-coordinate position of hte bounds of this slicekey.
+            </param>
+            <param name="y">
+                The top-left y-coordinate position of the bounds of this slicekey.
+            </param>
+            <param name="width">
+                The width, in pixels, of the bounds of this slicekey.
+            </param>
+            <param name="height">
+                The height, in pixels, of the bounds of this slicekey.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.SliceKey.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,Microsoft.Xna.Framework.Color)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.SliceKey"/> structure
+            </summary>
+            <param name="frame">
+                The index of the frame that this slicekey is valid for.
+            </param>
+            <param name="x">
+                The top-left x-coordinate position of hte bounds of this slicekey.
+            </param>
+            <param name="y">
+                The top-left y-coordinate position of the bounds of this slicekey.
+            </param>
+            <param name="width">
+                The width, in pixels, of the bounds of this slicekey.
+            </param>
+            <param name="height">
+                The height, in pixels, of the bounds of this slicekey.
+            </param>
+            <param name="color">
+                The color of this slicekey.
+            </param>
+        </member>
+        <member name="T:MonoGame.Aseprite.Graphics.Sprite">
+            <summary>
+                Simple sprite classed used for managing and rendering a Texture2D
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Texture">
+            <summary>
+                Gets the Texture2D used when rendering.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Position">
+            <summary>
+                Gets or Sets the top-left xy-coordinate position.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.X">
+            <summary>
+                Gets or Sets the top-left x-coordinate position of the sprite.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Y">
+            <summary>
+                Gets or Sets the top-left y-coordinate position of the sprite.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Width">
+            <summary>
+                Gets the width, in pixels.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Height">
+            <summary>
+                Gets the height, in pixels.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.SourceRectangle">
+            <summary>
+                Gets or Sets the bounds of the source rectangle to use
+                when rendering. Defines the area within the <see cref="P:MonoGame.Aseprite.Graphics.Sprite.Texture"/>
+                that is rendered.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Color">
+            <summary>
+                Gets or Sets the color mask to use when rendering.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Rotation">
+            <summary>
+                Gets or Sets the amount of rotation to apply when rendering.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Origin">
+            <summary>
+                Gets or Sets the xy-coordinate to use as the origin point
+                when rendering.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.Scale">
+            <summary>
+                Gets or Sets the x and y scale values too apply when rendering.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.SpriteEffect">
+            <summary>
+                Gets or sets the SpriteEffects to use when rendering.
+            </summary>
+        </member>
+        <member name="P:MonoGame.Aseprite.Graphics.Sprite.LayerDepth">
+            <summary>
+                Gets or Sets the layer depth to set when rendering.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.#ctor">
+            <summary>
+                Creates a new instance.
+            </summary>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+                Creates a new instance
+            </summary>
+            <param name="texture">
+                The Texture2D used when rendering.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+                Creates a new instance
+            </summary>
+            <param name="texture">
+                The Texture2D used when rendering.
+            </param>
+            <param name="position">
+                The xy-coordinate position to render this sprite at.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+                Updates this instance.
+            </summary>
+            <param name="gameTime">
+                Snapshot of the current game timeing values.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.Update(System.Single)">
+            <summary>
+                Updates this instance.
+            </summary>
+            <param name="deltaTime">
+                The amount of time, in seconds, that has passed since the last update.
+                This value should come from GameTime.ElapsedGameTime.TotalSeconds
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.Render(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+                Renders this instance.
+            </summary>
+            <param name="spriteBatch">
+                The SpriteBatch instance to use when rendering.
+            </param>
+        </member>
+    </members>
+</doc>
