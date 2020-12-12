@@ -270,7 +270,7 @@ namespace MonoGame.Aseprite.Graphics
             if (Animating && !Paused)
             {
                 //  Using an epsilon of 0.0001 to check for equality between
-                //  the Framtimer (double) and duration (float).  This is to handle
+                //  the FrameTimer (double) and duration (float).  This is to handle
                 //  edge cases where precision loss in the float may cause this to
                 //  skip.
                 if (Math.Abs(FrameTimer - CurrentFrame.Duration) < 0.0001)
@@ -341,6 +341,7 @@ namespace MonoGame.Aseprite.Graphics
                     //  It's one-shot, set current frame to last and stop animating
                     CurrentFrameIndex = CurrentAnimation.To;
                     Animating = false;
+                    OnAnimationEnd?.Invoke();
                 }
                 else
                 {
@@ -368,6 +369,7 @@ namespace MonoGame.Aseprite.Graphics
                     //  It's one-shot, set hte current frame to the first and stop animating
                     CurrentFrameIndex = CurrentAnimation.From;
                     Animating = false;
+                    OnAnimationEnd?.Invoke();
                 }
                 else
                 {
@@ -404,6 +406,7 @@ namespace MonoGame.Aseprite.Graphics
                     //  aniamtion, so we set the current frame to the first and stop animating
                     CurrentFrameIndex = CurrentAnimation.From;
                     Animating = false;
+                    OnAnimationEnd?.Invoke();
                 }
                 else if (_direction == 1)
                 {
@@ -450,11 +453,27 @@ namespace MonoGame.Aseprite.Graphics
         /// </exception>
         public void Play(string animationName)
         {
-            //  If the current animation that is playing is the same as the
-            //  name provided, just return back
-            if (CurrentAnimation.Name == animationName && Animating) { return; }
-
-            if (Animations.TryGetValue(animationName, out Animation animation))
+            if (CurrentAnimation.Name == animationName)
+            {
+                if (Animating)
+                {
+                    //  If the current animation that is playing is the same as the
+                    //  name provided and we are animating, just return back.  This is
+                    //  to prevent restating a current animation causing a graphical
+                    //  jump in frames.
+                    return;
+                }
+                else if (!Animating)
+                {
+                    //  If the current animation is the same name as the name provided
+                    //  and we are NOT animating, set that we are animating and return back.
+                    //  This is to start back an animation at the same frame that it was
+                    //  stopped on when a user called Stop().
+                    Animating = true;
+                    return;
+                }
+            }
+            else if (Animations.TryGetValue(animationName, out Animation animation))
             {
                 CurrentAnimation = animation;
                 CurrentFrameIndex = animation.Direction == AnimationLoopDirection.Reverse ?
@@ -479,19 +498,17 @@ namespace MonoGame.Aseprite.Graphics
         /// </param>
         public void Pause(bool resetFrameDuration = false)
         {
-            //  Can't pause something that's already paused, so we
-            //  just return back. This is to prevent improper usage that
-            //  could accidently reset frame duration if it was set to true.
-            if (Paused)
+            //  We can only pause something that is animating and is
+            //  not paused.  This is to prevent improper usage that could
+            //  accidently reset fraem duration if it was set to true.
+            if (Animating && !Paused)
             {
-                return;
-            }
+                Paused = true;
 
-            Paused = true;
-
-            if(resetFrameDuration)
-            {
-                FrameTimer = CurrentFrame.Duration;
+                if (resetFrameDuration)
+                {
+                    FrameTimer = CurrentFrame.Duration;
+                }
             }
         }
 
@@ -504,19 +521,33 @@ namespace MonoGame.Aseprite.Graphics
         /// </param>
         public void Unpause(bool advanceToNextFrame = false)
         {
-            //  Can't unpause something that's already paused, so we
-            //  just return back.  This is to prevent improper usage that
-            //  could accidently advance the next frame if it was set to true.
-            if (!Paused)
+            //  Can't unpause something that's not animating and paused.
+            //  This is to prevent improper usage that could accidently advent
+            //  the next frame if it was set to true.
+            if (Animating && Paused)
             {
-                return;
+                Paused = false;
+
+                if (advanceToNextFrame)
+                {
+                    AdvanceFrame();
+                }
             }
+        }
 
-            Paused = false;
-
-            if(advanceToNextFrame)
+        /// <summary>
+        ///     Stops this animated sprite from animating on the
+        ///     current frame in the animation.
+        /// </summary>
+        public void Stop()
+        {
+            //  Can't stop something that's not animating, so we just
+            //  return back.  This is to prevent improprer usage that
+            //  could accidently invoke the OnAnimationEnd action.
+            if (Animating)
             {
-                AdvanceFrame();
+                Animating = false;
+                OnAnimationEnd.Invoke();
             }
         }
 

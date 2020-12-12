@@ -14,6 +14,8 @@ For **MonoGame 3.7.1** (.NET Framework >= 4.5) users, please refer to the [insta
 
 For **MonoGame 3.8** (.NET Core) users, please refer to the [installation documentation here](https://manbeardgames.com/monogame-aseprite/getting-started/monogame38installation).
 
+For those that are migrating from **version 1.2.2** to **version 2.0.3** you can find the [migration documentation here](https://manbeardgames.com/monogame-aseprite/getting-started/migratingv1v2).
+
 ## Example Usage
 The following is a quick example of using MonoGame.Aseprite in your game.
 
@@ -51,9 +53,11 @@ sprite.Render(spriteBatch);
 * Submit an [issue on GitHub](https://github.com/manbeardgames/monogame-aseprite/issues).
 * Follow me on [Twitter @manbeardgames](https://www.twitter.com/manbeardgames).
 
-## Patreon Support
-[![image](https://raw.githubusercontent.com/manbeardgames/monogame-aseprite/gh-pages-develop/static/img/patreon.png)](https://www.patreon.com/manbeardgames)
-If you would like, you can support me and this project on Patreon by clicking the image above. Thank you to all who support.
+## Sponsor On GitHub
+[![](https://raw.githubusercontent.com/manbeardgames/monogame-aseprite/gh-pages-develop/static/img/github_sponsor.png)](https://github.com/sponsors/manbeardgames)
+ Hi, my name is Christopher Whitley. I am an indie game developer and game development tool developer. I create tools primary for the MonoGame framework. All of the tools I develop are released as free and open-sourced software (FOSS), just like this **Monogame.Aseprite** library.
+
+ If you'd like to buy me a cup of coffee or just sponsor me and my projects in general, you can do so on [GitHub Sponsors](https://github.com/sponsors/manbeardgames). 
 
 
 
