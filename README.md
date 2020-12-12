@@ -10,6 +10,12 @@ MonoGame.Aseprite also provides an out-of-the-box AnimatedSprite class that can 
 ## Getting Started
 MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed into your existing MonoGame game project using NuGet Package Manger in Visual Studio. 
 
+**Package Manager CLI**  
+```Install-Package MonoGame.Aseprite -Version 2.0.3.3```
+
+**.NET CLI**  
+```dotnet add package MonoGame.Aseprite --version 2.0.3.3```
+
 For **MonoGame 3.7.1** (.NET Framework >= 4.5) users, please refer to the [installation documentation here](https://manbeardgames.com/monogame-aseprite/getting-started/monogame37installation).
 
 For **MonoGame 3.8** (.NET Core) users, please refer to the [installation documentation here](https://manbeardgames.com/monogame-aseprite/getting-started/monogame38installation).
