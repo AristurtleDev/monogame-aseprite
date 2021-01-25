@@ -11,8 +11,8 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>2.0.3.3</AssemblyVersion>
-    <FileVersion>2.0.3.3</FileVersion>
+    <AssemblyVersion>2.0.4.1</AssemblyVersion>
+    <FileVersion>2.0.4.1</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
     <DocumentationFile>C:\Users\Dart\Desktop\gamedev\monogame-aseprite\monogame-aseprite\source\MonoGame.Aseprite\MonoGame.Aseprite.xml</DocumentationFile>
