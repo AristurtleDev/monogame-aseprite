@@ -547,7 +547,7 @@ namespace MonoGame.Aseprite.Graphics
             if (Animating)
             {
                 Animating = false;
-                OnAnimationEnd.Invoke();
+                OnAnimationEnd?.Invoke();
             }
         }
 
