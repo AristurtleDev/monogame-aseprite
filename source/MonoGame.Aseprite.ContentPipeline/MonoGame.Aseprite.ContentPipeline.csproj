@@ -9,8 +9,8 @@
     <RepositoryUrl>https://github.com/manbeardgames/monogame-aseprite</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
-    <AssemblyVersion>2.0.3.3</AssemblyVersion>
-    <FileVersion>2.0.3.3</FileVersion>
+    <AssemblyVersion>2.0.4.1</AssemblyVersion>
+    <FileVersion>2.0.4.1</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
