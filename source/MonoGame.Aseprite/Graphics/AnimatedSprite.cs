@@ -441,6 +441,19 @@ namespace MonoGame.Aseprite.Graphics
         }
 
         /// <summary>
+        ///     Centers the origin of the rendered animation.
+        /// </summary>
+        /// <remarks>
+        ///     When using this for AnimatedSprite, all frames are assumed to be the
+        ///     same width and height, so the current frame bounds is used for the
+        ///     center origin calculation.
+        /// </remarks>
+        public override void CenterOrigin()
+        {
+            Origin = new Vector2(CurrentFrame.Bounds.Width, CurrentFrame.Bounds.Height) * 0.5f;
+        }
+
+        /// <summary>
         ///     Given the name of an animation, sets that animation as the
         ///     current animation to play and starts it.
         /// </summary>
