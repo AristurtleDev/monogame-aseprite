@@ -253,6 +253,11 @@
                 contains pivot data.
             </summary>
         </member>
+        <member name="P:MonoGame.Aseprite.Documents.AsepriteSliceKey.Bounds">
+            <summary>
+                Gets a <see cref="T:Microsoft.Xna.Framework.Rectangle"/> represntation of the boundry of the slice.
+            </summary>
+        </member>
         <member name="M:MonoGame.Aseprite.Documents.AsepriteSliceKey.#ctor">
             <summary>
                 Creates a new <see cref="T:MonoGame.Aseprite.Documents.AsepriteSliceKey"/> instance.
@@ -511,6 +516,16 @@
                 Renders to the screen
             </summary>
             <param name="spriteBatch"></param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.CenterOrigin">
+            <summary>
+                Centers the origin of the rendered animation.
+            </summary>
+            <remarks>
+                When using this for AnimatedSprite, all frames are assumed to be the
+                same width and height, so the current frame bounds is used for the
+                center origin calculation.
+            </remarks>
         </member>
         <member name="M:MonoGame.Aseprite.Graphics.AnimatedSprite.Play(System.String)">
             <summary>
@@ -1336,6 +1351,27 @@
                 The xy-coordinate position to render this sprite at.
             </param>
         </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.#ctor(MonoGame.Aseprite.Documents.AsepriteDocument)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Sprite"/> instance.
+            </summary>
+            <param name="aseprite">
+                An <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instace created by
+                importing from the content pipeline.
+            </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.#ctor(MonoGame.Aseprite.Documents.AsepriteDocument,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+                Creates a new <see cref="T:MonoGame.Aseprite.Graphics.Sprite"/> instance.
+            </summary>
+            <param name="aseprite">
+                An <see cref="T:MonoGame.Aseprite.Documents.AsepriteDocument"/> instace created by
+                importing from the content pipeline.
+            </param>
+            <param name="position">
+                The xy-coordinate position to render this sprite at.
+            </param>
+        </member>
         <member name="M:MonoGame.Aseprite.Graphics.Sprite.Update(Microsoft.Xna.Framework.GameTime)">
             <summary>
                 Updates this instance.
@@ -1360,6 +1396,11 @@
             <param name="spriteBatch">
                 The SpriteBatch instance to use when rendering.
             </param>
+        </member>
+        <member name="M:MonoGame.Aseprite.Graphics.Sprite.CenterOrigin">
+            <summary>
+                Centers the origin of the rendered sprite.
+            </summary>
         </member>
     </members>
 </doc>
