@@ -103,6 +103,11 @@ namespace MonoGame.Aseprite.Documents
         public int PivotY { get; internal set; }
 
         /// <summary>
+        ///     Gets a <see cref="Rectangle"/> represntation of the boundry of the slice.
+        /// </summary>
+        public Rectangle Bounds => new Rectangle(X, Y, Width, Height);
+
+        /// <summary>
         ///     Creates a new <see cref="AsepriteSliceKey"/> instance.
         /// </summary>
         internal AsepriteSliceKey() { }
