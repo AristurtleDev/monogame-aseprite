@@ -23,6 +23,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Documents;
 
 namespace MonoGame.Aseprite.Graphics
 {
@@ -172,6 +173,28 @@ namespace MonoGame.Aseprite.Graphics
         }
 
         /// <summary>
+        ///     Creates a new <see cref="Sprite"/> instance.
+        /// </summary>
+        /// <param name="aseprite">
+        ///     An <see cref="AsepriteDocument"/> instace created by
+        ///     importing from the content pipeline.
+        /// </param>
+        public Sprite(AsepriteDocument aseprite) : this(aseprite.Texture) { }
+
+        /// <summary>
+        ///     Creates a new <see cref="Sprite"/> instance.
+        /// </summary>
+        /// <param name="aseprite">
+        ///     An <see cref="AsepriteDocument"/> instace created by
+        ///     importing from the content pipeline.
+        /// </param>
+        /// <param name="position">
+        ///     The xy-coordinate position to render this sprite at.
+        /// </param>
+        public Sprite(AsepriteDocument aseprite, Vector2 position)
+            : this(aseprite.Texture, position) { }
+
+        /// <summary>
         ///     Updates this instance.
         /// </summary>
         /// <param name="gameTime">
@@ -209,6 +232,14 @@ namespace MonoGame.Aseprite.Graphics
                 scale: Scale,
                 effects: SpriteEffect,
                 layerDepth: LayerDepth);
+        }
+
+        /// <summary>
+        ///     Centers the origin of the rendered sprite.
+        /// </summary>
+        public virtual void CenterOrigin()
+        {
+            Origin = new Vector2(SourceRectangle.Width, SourceRectangle.Height) * 0.5f;
         }
     }
 }
