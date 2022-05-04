@@ -15,7 +15,7 @@
     <FileVersion>2.0.4.1</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <DocumentationFile>C:\Users\Dart\Desktop\gamedev\monogame-aseprite\monogame-aseprite\source\MonoGame.Aseprite\MonoGame.Aseprite.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641">
