@@ -5,14 +5,14 @@
     <SignAssembly>false</SignAssembly>
     <Authors>Christoher Whitley</Authors>
     <Company>ManBeardGames</Company>
-    <Copyright>Coprright (c) 2020 Christoipher Whitley</Copyright>
-    <PackageProjectUrl>https://manbeardgames.com/monogame-aseprite</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/manbeardgames/monogame-aseprite</RepositoryUrl>
+    <Copyright>Coprright (c) 2022 Christoipher Whitley</Copyright>
+    <PackageProjectUrl>https://aristurtle.net/monogame-aseprite/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>2.0.4.1</AssemblyVersion>
-    <FileVersion>2.0.4.1</FileVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <FileVersion>2.0.5.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
     <DocumentationFile></DocumentationFile>
