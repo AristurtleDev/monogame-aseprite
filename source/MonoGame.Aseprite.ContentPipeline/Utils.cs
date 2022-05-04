@@ -67,12 +67,14 @@ namespace MonoGame.Aseprite.ContentPipeline
         /// </returns>
         public static Color UINTToColor(uint color)
         {
+
             byte r = DocColor.rgba_getr(color);
             byte g = DocColor.rgba_getg(color);
             byte b = DocColor.rgba_getb(color);
             byte a = DocColor.rgba_geta(color);
 
-            return new Color(r, g, b, a);
+            //  Aseprite doesn't premultily alpha
+            return Color.FromNonPremultiplied(r, g, b, a);
         }
 
         /// <summary>
