@@ -1,30 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
-    <Platforms>AnyCPU;x86</Platforms>
-    <SignAssembly>false</SignAssembly>
-    <Authors>Christoher Whitley</Authors>
-    <Company>ManBeardGames</Company>
-    <Copyright>Coprright (c) 2022 Christoipher Whitley</Copyright>
-    <PackageProjectUrl>https://aristurtle.net/monogame-aseprite/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite/</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
-    <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <FileVersion>2.0.5.0</FileVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45'">
-    <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-</Project>
+      <Platforms>AnyCPU;x86</Platforms>
+      <Authors>Christopher Whitley</Authors>
+      <Company>Aristurtle</Company>
+      <Copyright>Copyright (c) 2022 Christoipher Whitley</Copyright>
+      <PackageProjectUrl>https://aristurtle.net/monogame-aseprite/</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite/</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+      <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
+      <VersionPrefix>3.0.0.0</VersionPrefix>
+      <VersionSuffix>alpha</VersionSuffix>
+      <PackageVersion>3.0.0-alpha</PackageVersion>
+      <AssemblyVersion>3.0.0.0</AssemblyVersion>
+      <FileVersion>3.0.0.0</FileVersion>
+      <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
+        <PrivateAssets>All</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
+        <PrivateAssets>All</PrivateAssets>
+      </PackageReference>
+    </ItemGroup>
+
+  </Project>
