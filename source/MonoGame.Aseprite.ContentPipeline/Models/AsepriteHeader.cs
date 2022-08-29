@@ -1,5 +1,5 @@
 ﻿/* ------------------------------------------------------------------------------
-    Copyright (c) 2020 Christopher Whitley
+    Copyright (c) 2022 Christopher Whitley
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -8,10 +8,10 @@
     distribute, sublicense, and/or sell copies of the Software, and to
     permit persons to whom the Software is furnished to do so, subject to
     the following conditions:
-    
+
     The above copyright notice and this permission notice shall be
     included in all copies or substantial portions of the Software.
-    
+
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -31,7 +31,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Aseprite Header documentation: 
+    ///         Aseprite Header documentation:
     ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#header">
     ///             Click to view.
     ///         </a>
@@ -129,9 +129,9 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             ColorCount = reader.ReadWORD();
 
             //  We're going to ignore the rest of the header as we don't need
-            //  the information. For documentation though, the following is 
+            //  the information. For documentation though, the following is
             //  what we are skipping
-            // 
+            //
             //  Pixel Width
             //  Pixel Height
             //  X position of the grid
@@ -140,7 +140,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
             //  Grid height (zero if there is no grid
             //  84 bytes which are reserved for future use.
             //
-            //  Since we are skipping all this, we'll just set the reader's basestream to 
+            //  Since we are skipping all this, we'll just set the reader's basestream to
             //  the end of the header position we calculated earlier
             reader.BaseStream.Position = headerEnd;
         }

@@ -1,5 +1,5 @@
 ﻿/* ------------------------------------------------------------------------------
-    Copyright (c) 2020 Christopher Whitley
+    Copyright (c) 2022 Christopher Whitley
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -8,10 +8,10 @@
     distribute, sublicense, and/or sell copies of the Software, and to
     permit persons to whom the Software is furnished to do so, subject to
     the following conditions:
-    
+
     The above copyright notice and this permission notice shall be
     included in all copies or substantial portions of the Software.
-    
+
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -30,7 +30,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
     ///     A blend mode is applied to a Cel when blending it with the cel one layer
     ///     below it.
     ///     <para>
-    ///         Aseprite Blend Mode Values documentation: 
+    ///         Aseprite Blend Mode Values documentation:
     ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#layer-chunk-0x2004">
     ///             Click to view.
     ///         </a>

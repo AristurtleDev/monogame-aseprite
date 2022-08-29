@@ -1,5 +1,5 @@
 ﻿/* ------------------------------------------------------------------------------
-    Copyright (c) 2020 Christopher Whitley
+    Copyright (c) 2022 Christopher Whitley
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -8,10 +8,10 @@
     distribute, sublicense, and/or sell copies of the Software, and to
     permit persons to whom the Software is furnished to do so, subject to
     the following conditions:
-    
+
     The above copyright notice and this permission notice shall be
     included in all copies or substantial portions of the Software.
-    
+
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -58,7 +58,7 @@ namespace MonoGame.Aseprite.Graphics
 
         /// <summary>
         ///     Gets the key-value collection of <see cref="Slice"/> instances
-        ///     for this animated sprite. 
+        ///     for this animated sprite.
         /// </summary>
         public Dictionary<string, Slice> Slices { get; private set; }
 
@@ -580,13 +580,13 @@ namespace MonoGame.Aseprite.Graphics
         }
 
         /// <summary>
-        ///     Get the Rectangle definition of the slice at the current frame of 
+        ///     Get the Rectangle definition of the slice at the current frame of
         ///     animation, if there is a slice key defined for the frame
         /// </summary>
         /// <param name="sliceName">The name of the slice</param>
         /// <returns>
         ///     A Rectangle definition of the frame slice, at the xy-coordinate of
-        ///     this sprite.  If no slice key exists for the current frame, 
+        ///     this sprite.  If no slice key exists for the current frame,
         ///     null is returned.
         /// </returns>
         /// <exception cref="ArgumentException">
@@ -631,7 +631,7 @@ namespace MonoGame.Aseprite.Graphics
         ///     must have a unique name
         /// </remarks>
         /// <exception cref="ArgumentException">
-        ///     Thrown if the animation provided has a name that is already present in 
+        ///     Thrown if the animation provided has a name that is already present in
         ///     the animation dictionary
         /// </exception>
         public void AddAnimation(Animation animation)
@@ -657,7 +657,7 @@ namespace MonoGame.Aseprite.Graphics
         ///     must have a unique name
         /// </remarks>
         /// <exception cref="ArgumentException">
-        ///     Thrown if the animation provided has a name that is already present in 
+        ///     Thrown if the animation provided has a name that is already present in
         ///     the animation dictionary
         /// </exception>
         public void AddAnimation(string name, int from, int to)
@@ -677,7 +677,7 @@ namespace MonoGame.Aseprite.Graphics
         ///     must have a unique name
         /// </remarks>
         /// <exception cref="ArgumentException">
-        ///     Thrown if the animation provided has a name that is already present in 
+        ///     Thrown if the animation provided has a name that is already present in
         ///     the animation dictionary
         /// </exception>
         public void AddAnimations(IEnumerable<Animation> animations)
@@ -700,7 +700,7 @@ namespace MonoGame.Aseprite.Graphics
         ///     must have a unique name
         /// </remarks>
         /// <exception cref="ArgumentException">
-        ///     Thrown if the animation provided has a name that is already present in 
+        ///     Thrown if the animation provided has a name that is already present in
         ///     the animation dictionary
         /// </exception>
         public void AddAnimations(params Animation[] animations)

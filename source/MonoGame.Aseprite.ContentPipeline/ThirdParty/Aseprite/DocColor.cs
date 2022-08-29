@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------------
     Copyright(c) 2018 - 2020 Igara Studio S.A.
     Copyright (c) 2001 - 2018 David Capello
-    Copyright (c) 2020 Christopher Whitley
+    Copyright (c) 2022 Christopher Whitley
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -10,10 +10,10 @@
     distribute, sublicense, and/or sell copies of the Software, and to
     permit persons to whom the Software is furnished to do so, subject to
     the following conditions:
-    
+
     The above copyright notice and this permission notice shall be
     included in all copies or substantial portions of the Software.
-    
+
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -32,7 +32,7 @@
 // ------------------------------------------------------------------------
 
 
-//  To make things simpler to port the code over, we'll use the typedefs as 
+//  To make things simpler to port the code over, we'll use the typedefs as
 //  defined and used in aseprite
 using uint16_t = System.UInt16;
 using uint32_t = System.UInt32;
@@ -99,7 +99,7 @@ namespace MonoGame.Aseprite.ContentPipeline.ThirdParty.Aseprite
         #region Grayscale
         const uint16_t graya_v_shift = 0;
         const uint16_t graya_a_shift = 8;
-        
+
         const uint16_t graya_v_mask = 0x00ff;
 
         const uint16_t graya_a_mask = 0xff00;

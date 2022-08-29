@@ -1,5 +1,5 @@
 ﻿/* ------------------------------------------------------------------------------
-    Copyright (c) 2020 Christopher Whitley
+    Copyright (c) 2022 Christopher Whitley
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -8,10 +8,10 @@
     distribute, sublicense, and/or sell copies of the Software, and to
     permit persons to whom the Software is furnished to do so, subject to
     the following conditions:
-    
+
     The above copyright notice and this permission notice shall be
     included in all copies or substantial portions of the Software.
-    
+
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
     /// <remarks>
     ///     A frame within Aseprite is comprised of multiple chunks
     ///     <para>
-    ///         Aseprite Frame documentation: 
+    ///         Aseprite Frame documentation:
     ///         <a href="https://github.com/aseprite/aseprite/blob/master/docs/ase-file-specs.md#frames">
     ///             Click to view.
     ///         </a>
@@ -148,7 +148,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
                     case AsepriteChunkType.Mask:            //  Ignore
                     case AsepriteChunkType.Path:            //  Ignore
                         //  Since we are ignoreing these chunk types, we need to ensure that the
-                        //  reader's basestream position is set to where the end of the ignored 
+                        //  reader's basestream position is set to where the end of the ignored
                         //  chunk would be.
                         reader.BaseStream.Position = chunkEnd;
                         break;
@@ -182,7 +182,7 @@ namespace MonoGame.Aseprite.ContentPipeline.Models
         ///     Aseprite file.
         /// </param>
         /// <param name="dataSize">
-        ///     The size of the cel chunks data, in bytes. 
+        ///     The size of the cel chunks data, in bytes.
         /// </param>
         private void ReadCelChunk(AsepriteReader reader, int dataSize)
         {
