@@ -80,19 +80,7 @@ namespace MonoGame.Aseprite.ContentReaders
         /// </returns>
         protected override AsepriteDocument Read(ContentReader input, AsepriteDocument existingInstance)
         {
-#if NET45
-            if (!(input.ContentManager.ServiceProvider.GetService(typeof(IGraphicsDeviceManager)) is GraphicsDeviceManager gdManager))
-            {
-                throw new Exception("A GraphicsDeviceManager service could not be found");
-            }
-            else
-            {
-                return ReadInternal(input, gdManager.GraphicsDevice, existingInstance);
-            }
-
-#elif NETSTANDARD2_0
             return ReadInternal(input, input.GetGraphicsDevice(), existingInstance);
-#endif
         }
 
         /// <summary>
