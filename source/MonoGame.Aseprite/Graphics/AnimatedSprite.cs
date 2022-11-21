@@ -114,7 +114,7 @@ namespace MonoGame.Aseprite.Graphics
         {
             get
             {
-                return CurrentFrame.Bounds.Width;
+                return CurrentFrame.Bounds.Width * (int)Scale.X;
             }
         }
 
@@ -125,7 +125,7 @@ namespace MonoGame.Aseprite.Graphics
         {
             get
             {
-                return CurrentFrame.Bounds.Height;
+                return CurrentFrame.Bounds.Height * (int)Scale.Y;
             }
         }
 
@@ -602,8 +602,15 @@ namespace MonoGame.Aseprite.Graphics
                 {
                     //  Update the xy-coordinate of the slicekey bounds to match the positiona
                     //  data of this animated sprite.
-                    sliceKey.Bounds.X += (int)Position.X;
-                    sliceKey.Bounds.Y += (int)Position.Y;
+                    //  Hotfix, slice key needs to scale with sprite scale
+                    sliceKey.Bounds.X = (int)(Position.X + (sliceKey.Bounds.X * Scale.X));
+                    sliceKey.Bounds.Y = (int)(Position.Y + (sliceKey.Bounds.Y * Scale.Y));
+
+                    sliceKey.Bounds.Width = (int)(sliceKey.Bounds.Width * Scale.X);
+                    sliceKey.Bounds.Height = (int)(sliceKey.Bounds.Height * Scale.Y);
+
+
+
                     return true;
                 }
                 else
