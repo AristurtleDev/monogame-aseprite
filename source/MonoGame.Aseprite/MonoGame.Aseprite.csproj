@@ -13,8 +13,8 @@
         <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite/</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
-        <AssemblyVersion>3.1.0.0</AssemblyVersion>
-        <FileVersion>3.1.0.0</FileVersion>
+        <AssemblyVersion>3.1.1.0</AssemblyVersion>
+        <FileVersion>3.1.1.0</FileVersion>
         <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
