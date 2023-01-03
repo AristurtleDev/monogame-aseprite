@@ -32,13 +32,13 @@ public class AsepriteFileImporter : ContentImporter<AsepriteFile>
 {
     public override AsepriteFile Import(string filename, ContentImporterContext context)
     {
-        AsepriteFile content;
+        AsepriteFile file;
 
         using(AsepriteFileReader reader = new(filename))
         {
-            content = reader.ReadFile();
+            file = reader.ReadFile();
         }
 
-        return content;
+        return file;
     }
 }
