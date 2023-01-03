@@ -23,7 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite;
 
 internal static class BlendFunctions
 {
@@ -39,7 +39,7 @@ internal static class BlendFunctions
 
     public static Color Blend(BlendMode mode, Color backdrop, Color source, int opacity)
     {
-        if (backdrop.A == 0 && source.A== 0)
+        if (backdrop.A == 0 && source.A == 0)
         {
             return Color.Transparent;
         }
@@ -47,7 +47,7 @@ internal static class BlendFunctions
         {
             return source;
         }
-        else if (source.A== 0)
+        else if (source.A == 0)
         {
             return backdrop;
         }
@@ -482,7 +482,7 @@ internal static class BlendFunctions
         return Normal(backdrop, src, opacity);
     }
 
-    private static uint Addition(uint  backdrop, uint source, int opacity)
+    private static uint Addition(uint backdrop, uint source, int opacity)
     {
         int r = GetR(backdrop) + GetR(source);
         int g = GetG(backdrop) + GetG(source);

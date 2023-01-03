@@ -21,30 +21,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using Microsoft.Xna.Framework;
+using System.Collections.ObjectModel;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-public sealed class AsepriteFileContent
+/// <summary>
+///     Represents a group layer in an Aseprite image.
+/// </summary>
+public sealed class AsepriteGroupLayer : AsepriteLayer
 {
-    internal Point FrameSize { get; }
-    internal int FrameWidth => FrameSize.X;
-    internal int FrameHeight => FrameSize.Y;
-    internal AsepritePalette Palette { get; }
-    internal List<AsepriteFrame> Frames { get; }
-    internal List<AsepriteLayer> Layers { get; }
-    internal List<AsepriteTag> Tags { get; }
-    internal List<AsepriteSlice> Slices { get; }
-    internal List<AsepriteTileset> Tilesets { get; }
+    private List<AsepriteLayer> _layers = new();
 
-    internal AsepriteFileContent(Point frameSize, AsepritePalette palette, List<AsepriteFrame> frames, List<AsepriteLayer> layers, List<AsepriteTag> tags, List<AsepriteSlice> slices, List<AsepriteTileset> tilesets)
-    {
-        FrameSize = frameSize;
-        Palette = palette;
-        Frames = frames;
-        Layers = layers;
-        Tags = tags;
-        Slices = slices;
-        Tilesets = tilesets;
-    }
+    /// <summary>
+    ///     A read-only collection of all child layers of this group layer.
+    /// </summary>
+    public ReadOnlyCollection<AsepriteLayer> Children => _layers.AsReadOnly();
+
+    /// <summary>
+    ///     The total number of children layers in this group layer.
+    /// </summary>
+    public int ChildCount => _layers.Count;
+
+    internal AsepriteGroupLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name)
+        : base(isVisible, isBackground, isReference, blendMode, opacity, name) { }
+
+    internal void AddChild(AsepriteLayer layer) => _layers.Add(layer);
 }

@@ -26,9 +26,9 @@ using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.Xna.Framework;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.IO;
+namespace MonoGame.Aseprite.IO;
 
 internal sealed class AsepriteFileReader : IDisposable
 {
@@ -83,7 +83,7 @@ internal sealed class AsepriteFileReader : IDisposable
 
     ~AsepriteFileReader() => Dispose(false);
 
-    internal AsepriteFileContent ReadFile()
+    internal AsepriteFile ReadFile()
     {
         //  After reading the file header, several field values are initialized
         //  that are used throughout reading the rest of the file.
@@ -98,7 +98,7 @@ internal sealed class AsepriteFileReader : IDisposable
         Point size = new(_width, _height);
         AsepritePalette palette = new(_palette, _transparentIndex);
 
-        AsepriteFileContent file = new(size, palette, _frames, _layers, _tags, _slices, _tilesets);
+        AsepriteFile file = new(size, palette, _frames, _layers, _tags, _slices, _tilesets);
         return file;
     }
 
@@ -287,7 +287,7 @@ internal sealed class AsepriteFileReader : IDisposable
 
         if (level != 0 && _lastGroupLayer is not null)
         {
-            _lastGroupLayer.Children.Add(layer);
+            _lastGroupLayer.AddChild(layer);
         }
 
         if (layer is AsepriteGroupLayer gLayer)
@@ -325,7 +325,7 @@ internal sealed class AsepriteFileReader : IDisposable
             _ => throw new InvalidOperationException($"Unknown cel type '{type}'")
         };
 
-        frame.Cels.Add(cel);
+        frame.AddCel(cel);
     }
 
     private AsepriteImageCel ReadRawImageCel(AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
@@ -402,7 +402,7 @@ internal sealed class AsepriteFileReader : IDisposable
             uint rotation = (value & rotationBitmask);
 
             AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
-            cel.Tiles.Add(tile);
+            cel.AddTile(tile);
         }
 
         Debug.Assert(cel.TileCount == tileCount);
@@ -518,7 +518,7 @@ internal sealed class AsepriteFileReader : IDisposable
             }
 
             AsepriteSliceKey key = new((int)start, bounds, center, pivot);
-            slice.Keys.Add(key);
+            slice.AddKey(key);
         }
 
         _slices.Add(slice);

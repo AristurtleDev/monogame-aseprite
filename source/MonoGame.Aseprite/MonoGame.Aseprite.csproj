@@ -12,4 +12,6 @@
     </PackageReference>
   </ItemGroup>
 
+    <Import Project="..\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems" Label="Shared" />
+
 </Project>

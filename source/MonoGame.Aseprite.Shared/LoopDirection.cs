@@ -21,20 +21,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite;
 
-internal sealed class AsepriteTile
+/// <summary>
+///     Defines the values that describe the loop direction for an animation
+///     in an Aseprite image.
+/// </summary>
+public enum LoopDirection : byte
 {
-    internal int TilesetTileId { get; }
-    internal int XFlip { get; }
-    internal int YFlip { get; }
-    internal int Rotation { get; }
+    /// <summary>
+    ///     Describes that the animation loops in a forward direction staring on
+    ///     the first frame and ending on the last frame.
+    /// </summary>
+    Forward = 0,
 
-    internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int rotation)
-    {
-        TilesetTileId = tilesetTileId;
-        XFlip = xFlip;
-        YFlip = yFlip;
-        Rotation = rotation;
-    }
+    /// <summary>
+    ///     Describes that the animation loops in a reverse direction starting
+    ///     on the last frame and ending on the first frame.
+    /// </summary>
+    Reverse = 1,
+
+    /// <summary>
+    ///     Describes that the animation loops in a ping-pong direction starting
+    ///     on the first frame and moving forward to the last frame, then moving
+    ///     back in reverse to the first frame.
+    /// </summary>
+    PingPong = 2
 }

@@ -21,15 +21,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite;
 
-internal sealed class AsepriteTilemapLayer : AsepriteLayer
+/// <summary>
+///     Defines the color depth used by an Aseprite image.
+/// </summary>
+public enum ColorDepth : ushort
 {
-    internal AsepriteTileset Tileset { get; }
+    /// <summary>
+    ///     Defines that the Aseprite image uses an Indexed mode of 8-bits per
+    ///     pixel.
+    /// </summary>
+    Indexed = 8,
 
-    internal AsepriteTilemapLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name, AsepriteTileset tileset)
-        :base(isVisible, isBackground, isReference, blend, opacity, name)
-    {
-        Tileset = tileset;
-    }
+    /// <summary>
+    ///     Defines that the Aseprite image uses a Grayscale mode of 16-bits
+    ///     per pixel.
+    /// </summary>
+    Grayscale = 16,
+
+    /// <summary>
+    ///     Defines that the Aseprite image uses an RGBA mode of 32-bits per
+    ///     pixel.
+    /// </summary>
+    RGBA = 32
 }

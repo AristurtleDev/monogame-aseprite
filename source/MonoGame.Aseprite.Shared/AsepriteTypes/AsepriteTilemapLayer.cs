@@ -21,45 +21,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using Microsoft.Xna.Framework;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-
-internal sealed class AsepriteTilemapCel : AsepriteCel
+/// <summary>
+///     Represents a layer in an Aseprite image that contains cels with tile
+///     data.
+/// </summary>
+public sealed class AsepriteTilemapLayer : AsepriteLayer
 {
-    internal Point Size { get; }
-    internal List<AsepriteTile> Tiles { get; } = new();
-    internal int TileCount => Tiles.Count;
+    /// <summary>
+    ///     A reference to the tileset used by the tilemap cels on this layer.
+    /// </summary>
+    public AsepriteTileset Tileset { get; }
 
-    internal AsepriteTile this[int index]
+    internal AsepriteTilemapLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name, AsepriteTileset tileset)
+        : base(isVisible, isBackground, isReference, blend, opacity, name)
     {
-        get
-        {
-            if (index < 0 || index >= TileCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
-
-            return Tiles[index];
-        }
-    }
-
-    internal AsepriteTileset Tileset
-    {
-        get
-        {
-            if (Layer is AsepriteTilemapLayer tilemapLayer)
-            {
-                return tilemapLayer.Tileset;
-            }
-
-            throw new InvalidOperationException($"The layer of this cel is not a tilemap layer");
-        }
-    }
-
-    internal AsepriteTilemapCel(Point size, AsepriteLayer layer, Point position, int opacity)
-        : base(layer, position, opacity)
-    {
-        Size = size;
+        Tileset = tileset;
     }
 }

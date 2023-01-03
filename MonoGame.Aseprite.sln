@@ -5,17 +5,16 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{50C5DDEC-666B-428E-8C19-A8DBC0951D0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "source\MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{5AA97036-A32D-48EC-976E-569F08F73E2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGame.Aseprite", "source\MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{5AA97036-A32D-48EC-976E-569F08F73E2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Content.Pipeline", "source\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGame.Aseprite.Content.Pipeline", "source\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MonoGame.Aseprite.Shared", "source\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.shproj", "{9F4B4619-7DE6-4F51-8975-3E996DE23FFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5AA97036-A32D-48EC-976E-569F08F73E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -27,8 +26,20 @@ Global
 		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5AA97036-A32D-48EC-976E-569F08F73E2A} = {50C5DDEC-666B-428E-8C19-A8DBC0951D0F}
 		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D} = {50C5DDEC-666B-428E-8C19-A8DBC0951D0F}
+		{9F4B4619-7DE6-4F51-8975-3E996DE23FFE} = {50C5DDEC-666B-428E-8C19-A8DBC0951D0F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F263F871-48AA-4F53-8D7F-AA02B7DE79CB}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		source\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems*{44f8cf29-4ff9-4d27-bfe8-c33d2e4dd65d}*SharedItemsImports = 5
+		source\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems*{5aa97036-a32d-48ec-976e-569f08f73e2a}*SharedItemsImports = 5
+		source\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems*{9f4b4619-7de6-4f51-8975-3e996de23ffe}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

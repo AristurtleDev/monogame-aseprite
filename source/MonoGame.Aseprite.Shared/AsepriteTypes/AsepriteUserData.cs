@@ -21,34 +21,42 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 
-internal sealed class AsepriteSlice
+namespace MonoGame.Aseprite.AsepriteTypes;
+
+/// <summary>
+///     Represents custom user data that a user can set for a cel, layer, slice,
+///     or tag in an Aseprite image.
+/// </summary>
+public sealed class AsepriteUserData
 {
-    internal bool IsNinePatch { get; }
-    internal bool HasPivot { get; }
-    internal string Name { get; }
-    internal List<AsepriteSliceKey> Keys { get; } = new();
-    internal int KeyCount => Keys.Count;
-    internal AsepriteUserData UserData { get; } = new();
+    /// <summary>
+    ///     Indicates whether this user data has a text value.
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(Text))]
+    public bool HasText => Text is not null;
 
-    internal AsepriteSliceKey this[int index]
-    {
-        get
-        {
-            if(index < 0 || index >= KeyCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
+    /// <summary>
+    ///     The text value for this user data, if one was set in Aseprite;
+    ///     otherwise, null.
+    /// </summary>
+    public string? Text { get; internal set; } = default;
 
-            return Keys[index];
-        }
-    }
+    /// <summary>
+    ///     Indicates whether this user data has a color value.
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(Color))]
+    public bool HasColor => Color is not null;
 
-    internal AsepriteSlice(string name, bool isNine, bool hasPivot)
-    {
-        Name = name;
-        IsNinePatch = isNine;
-        HasPivot = hasPivot;
-    }
+    /// <summary>
+    ///     The color value for this user data, if one was set in Aseprite;
+    ///     otherwise, null.
+    /// </summary>
+    public Color? Color { get; internal set; } = default;
+
+
+
+    internal AsepriteUserData() { }
 }

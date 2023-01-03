@@ -21,27 +21,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal enum BlendMode : ushort
+/// <summary>
+///     Represents a layer in an Aseprite image that contains cels with image
+///     data.
+/// </summary>
+public sealed class AsepriteImageLayer : AsepriteLayer
 {
-    Normal = 0,
-    Multiply = 1,
-    Screen = 2,
-    Overlay = 3,
-    Darken = 4,
-    Lighten = 5,
-    ColorDodge = 6,
-    ColorBurn = 7,
-    HardLight = 8,
-    SoftLight = 9,
-    Difference = 10,
-    Exclusion = 11,
-    Hue = 12,
-    Saturation = 13,
-    Color = 14,
-    Luminosity = 15,
-    Addition = 16,
-    Subtract = 17,
-    Divide = 18,
+    internal AsepriteImageLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name)
+        : base(isVisible, isBackground, isReference, blendMode, opacity, name) { }
 }

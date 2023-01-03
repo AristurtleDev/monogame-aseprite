@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9f4b4619-7de6-4f51-8975-3e996de23ffe</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>MonoGame.Aseprite.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteCel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteFileContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteFrame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteGroupLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteImageCel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteImageLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepritePalette.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteSlice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteSliceKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteTile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteTIlemapCel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteTilemapLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteTileset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsepriteTypes\AsepriteUserData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlendFunctions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlendMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColorDepth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Frame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IO\AsepriteFileReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoopDirection.cs" />
+  </ItemGroup>
+</Project>

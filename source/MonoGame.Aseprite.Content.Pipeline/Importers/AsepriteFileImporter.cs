@@ -22,17 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-using MonoGame.Aseprite.Content.Pipeline.IO;
+using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.IO;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 
 [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer", DefaultProcessor = "AsepriteFileProcessor")]
-public class AsepriteFileImporter : ContentImporter<AsepriteFileContent>
+public class AsepriteFileImporter : ContentImporter<AsepriteFile>
 {
-    public override AsepriteFileContent Import(string filename, ContentImporterContext context)
+    public override AsepriteFile Import(string filename, ContentImporterContext context)
     {
-        AsepriteFileContent content;
+        AsepriteFile content;
 
         using(AsepriteFileReader reader = new(filename))
         {

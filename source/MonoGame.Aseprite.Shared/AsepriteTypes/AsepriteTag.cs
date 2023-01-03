@@ -23,19 +23,51 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal abstract class AsepriteCel
+/// <summary>
+///     Represents an animation tag in an Aseprite image.
+/// </summary>
+public sealed class AsepriteTag
 {
-    internal AsepriteLayer Layer { get; }
-    internal Point Position { get; }
-    internal int Opacity { get; }
-    internal AsepriteUserData UserData { get; } = new();
+    private Color _tagColor;
 
-    internal AsepriteCel(AsepriteLayer layer, Point position, int opacity)
+    /// <summary>
+    ///     The starting index of the frame for the animation of this tag.
+    /// </summary>
+    public int From { get; }
+
+    /// <summary>
+    ///     The ending index of the frame for the animation of this tag.
+    /// </summary>
+    public int To { get; }
+
+    /// <summary>
+    ///     The animation loop direction of the animation of this tag.
+    /// </summary>
+    public LoopDirection Direction { get; }
+
+    /// <summary>
+    ///     The name of this tag.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    ///     The custom user data that was set for this tag in Aseprite.
+    /// </summary>
+    public AsepriteUserData UserData { get; } = new();
+
+    /// <summary>
+    ///     The color value of this tag.
+    /// </summary>
+    public Color Color => UserData.Color ?? _tagColor;
+
+    internal AsepriteTag(ushort from, ushort to, LoopDirection direction, Color color, string name)
     {
-        Layer = layer;
-        Position = position;
-        Opacity = opacity;
+        From = from;
+        To = to;
+        Direction = direction;
+        _tagColor = color;
+        Name = name;
     }
 }
