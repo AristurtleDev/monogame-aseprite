@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Platforms>AnyCPU;x86</Platforms>
+        <Authors>Christopher Whitley</Authors>
+        <Company>Aristurtle</Company>
+        <Copyright>Copyright (c) 2022 Christoipher Whitley</Copyright>
+        <PackageProjectUrl>https://aristurtle.net/monogame-aseprite/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite/</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
+        <AssemblyVersion>3.1.1.0</AssemblyVersion>
+        <FileVersion>3.1.1.0</FileVersion>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
+            <PrivateAssets>All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
+            <PrivateAssets>All</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>
