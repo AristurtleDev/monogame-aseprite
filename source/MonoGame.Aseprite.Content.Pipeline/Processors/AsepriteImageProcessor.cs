@@ -25,7 +25,7 @@ using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-[ContentProcessor]
+[ContentProcessor(DisplayName = "Aseprite Image Processor - MonoGame.Aseprite")]
 public sealed class AsepriteImageProcessor : ContentProcessor<AsepriteFile, AsepriteImageProcessorResult>
 {
     /// <summary>
@@ -47,6 +47,10 @@ public sealed class AsepriteImageProcessor : ContentProcessor<AsepriteFile, Asep
         Color[] pixels = input.Frames[0].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
         int width = input.FrameWidth;
         int height = input.FrameHeight;
+
+        context.Logger.LogMessage("Pixel Count: " + pixels.Length);
+        context.Logger.LogMessage("Width: " + width);
+        context.Logger.LogMessage("Height: " + height);
 
         return new AsepriteImageProcessorResult(pixels, width, height);
     }

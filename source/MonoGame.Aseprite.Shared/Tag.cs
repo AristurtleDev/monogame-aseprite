@@ -1,4 +1,4 @@
-﻿/* ----------------------------------------------------------------------------
+/* ----------------------------------------------------------------------------
 MIT License
 
 Copyright (c) 2022 Christopher Whitley
@@ -21,24 +21,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.IO;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Importers;
+namespace MonoGame.Aseprite;
 
-[ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer", DefaultProcessor = "AsepriteImageProcessor")]
-public class AsepriteFileImporter : ContentImporter<AsepriteFile>
+/// <summary>
+///     Represents a named sequence of frames that define an animation.
+/// </summary>
+public sealed class Tag
 {
-    public override AsepriteFile Import(string filename, ContentImporterContext context)
+    /// <summary>
+    ///     The name of the animation defined by this tag.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    ///     The index of the frame that the animation defined by this tag starts
+    ///     on.
+    /// </summary>
+    public int From { get; }
+
+    /// <summary>
+    ///     The index of the frame that the animation defined by this tag ends
+    ///     on.
+    /// </summary>
+    public int To { get; }
+
+    /// <summary>
+    ///     The loop direction of the animation defined by this tag.
+    /// </summary>
+    public LoopDirection Direction { get; }
+
+    /// <summary>
+    ///     The color of this tag.
+    /// </summary>
+    public Color Color { get; }
+
+    internal Tag(string name, int from, int to, LoopDirection direction, Color color)
     {
-        AsepriteFile file;
-
-        using(AsepriteFileReader reader = new(filename))
-        {
-            file = reader.ReadFile();
-        }
-
-        return file;
+        Name = name;
+        From = from;
+        To = to;
+        Direction = direction;
+        Color = color;
     }
 }

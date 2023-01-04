@@ -1,4 +1,4 @@
-﻿/* ----------------------------------------------------------------------------
+/* ----------------------------------------------------------------------------
 MIT License
 
 Copyright (c) 2022 Christopher Whitley
@@ -21,24 +21,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.IO;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Importers;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-[ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer", DefaultProcessor = "AsepriteImageProcessor")]
-public class AsepriteFileImporter : ContentImporter<AsepriteFile>
+public sealed class AsepriteSpritesheetProcessorResult
 {
-    public override AsepriteFile Import(string filename, ContentImporterContext context)
+    internal int Width { get; }
+    internal int Height { get; }
+    internal Color[] Pixels { get; }
+    internal List<Frame> Frames { get; }
+    internal List<Tag> Tags { get; }
+    internal List<Slice> Slices { get; }
+
+    internal AsepriteSpritesheetProcessorResult(int width, int height, Color[] pixels, List<Frame> frames, List<Tag> tags, List<Slice> slices)
     {
-        AsepriteFile file;
-
-        using(AsepriteFileReader reader = new(filename))
-        {
-            file = reader.ReadFile();
-        }
-
-        return file;
+        Width = width;
+        Height = height;
+        Pixels = pixels;
+        Frames = frames;
+        Tags = tags;
+        Slices = slices;
     }
 }

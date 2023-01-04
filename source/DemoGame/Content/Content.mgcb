@@ -1,0 +1,39 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:../../MonoGame.Aseprite.Content.Pipeline/bin/Debug/net6.0/MonoGame.Aseprite.Content.Pipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin adventurer.aseprite
+/importer:AsepriteFileImporter
+/processor:AsepriteSpritesheetProcessor
+/processorParam:OnlyVisibleLayers=True
+/processorParam:IncludeBackgroundLayer=False
+/processorParam:MergeDuplicateFrames=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=0
+/build:adventurer.aseprite
+
+#begin aristurtle-pfp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:aristurtle-pfp.png
+

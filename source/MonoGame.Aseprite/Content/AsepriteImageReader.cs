@@ -1,4 +1,4 @@
-﻿/* ----------------------------------------------------------------------------
+/* ----------------------------------------------------------------------------
 MIT License
 
 Copyright (c) 2022 Christopher Whitley
@@ -21,24 +21,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Importers;
+namespace MonoGame.Aseprite.Content;
 
-[ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer", DefaultProcessor = "AsepriteImageProcessor")]
-public class AsepriteFileImporter : ContentImporter<AsepriteFile>
+public sealed class AsepriteImageReader : ContentTypeReader<Texture2D>
 {
-    public override AsepriteFile Import(string filename, ContentImporterContext context)
+    protected override Texture2D Read(ContentReader input, Texture2D existingInstance)
     {
-        AsepriteFile file;
+        int width = input.ReadInt32();
+        int height = input.ReadInt32();
+        int len = input.ReadInt32();
 
-        using(AsepriteFileReader reader = new(filename))
+        Color[] pixels = new Color[len];
+
+        for (int i = 0; i < len; i++)
         {
-            file = reader.ReadFile();
+            pixels[i] = input.ReadColor();
         }
 
-        return file;
+        Texture2D texture = new(input.GetGraphicsDevice(), width, height, false, SurfaceFormat.Color);
+        texture.SetData<Color>(pixels);
+
+        return texture;
     }
 }
