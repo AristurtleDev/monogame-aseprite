@@ -18,20 +18,19 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ----------------------------------------------------------------------------- */
-using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Importers;
 
-public sealed class AsepriteImageProcessorResult
+public static class AsepriteFileImporter
 {
-    internal Color[] Pixels { get; }
-    internal int Width { get; }
-    internal int Height { get; }
-
-    internal AsepriteImageProcessorResult(Color[] pixels, int width, int height)
+    public static AsepriteFile Import(string filename)
     {
-        Pixels = pixels;
-        Width = width;
-        Height = height;
+        if (!File.Exists(filename))
+        {
+            throw new FileNotFoundException($"The following file could not be found: '{filename}'");
+        }
+
+        return AsepriteFile.Load(filename);
     }
 }

@@ -27,7 +27,7 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Represents a name region of a frame.
+///     Represents a named region of a frame.
 /// </summary>
 public sealed class Slice
 {

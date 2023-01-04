@@ -22,12 +22,21 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite Image Processor - MonoGame.Aseprite")]
-public sealed class AsepriteImageProcessor : ContentProcessor<AsepriteFile, AsepriteImageProcessorResult>
+public sealed class AsepriteImageContentPipelineProcessor : ContentProcessor<AsepriteFile, AsepriteImageProcessorResult>
 {
+    /// <summary>
+    ///     The index of the frame in the Aseprite image to process. Must be
+    ///     greater than zero and less than the total number of frames in the
+    ///     Aseprite file.
+    /// </summary>
+    [DisplayName("Frame Index")]
+    public int FrameIndex { get; set; } = 0;
+
     /// <summary>
     ///     Indicates whether only cels that are on layers that are visible
     ///     should be used.
@@ -42,16 +51,29 @@ public sealed class AsepriteImageProcessor : ContentProcessor<AsepriteFile, Asep
     [DisplayName("Include Background Layer")]
     public bool IncludeBackgroundLayer { get; set; } = false;
 
-    public override AsepriteImageProcessorResult Process(AsepriteFile input, ContentProcessorContext context)
+    /// <summary>
+    ///     Processes the image of a single frame of an Aseprite file.  The
+    ///     result contains the data for the image generated from the specified
+    ///     frame.
+    /// </summary>
+    /// <param name="file">
+    ///     The Aseprite file to process
+    /// </param>
+    /// <param name="context">
+    ///     The context of the processor. This is provided by the MonoGame
+    ///     framework when called from the mgcb-editor.
+    /// </param>
+    /// <returns>
+    ///     A new instance of the <see cref="AsepriteImageProcessorResult"/>
+    ///     class containing the data of the image that was generated.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the specified frame index is less than zero or is greater
+    ///     than or equal to the total number of frame elements in the Aseprite
+    ///     file.
+    /// </exception>
+    public override AsepriteImageProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
-        Color[] pixels = input.Frames[0].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
-        int width = input.FrameWidth;
-        int height = input.FrameHeight;
-
-        context.Logger.LogMessage("Pixel Count: " + pixels.Length);
-        context.Logger.LogMessage("Width: " + width);
-        context.Logger.LogMessage("Height: " + height);
-
-        return new AsepriteImageProcessorResult(pixels, width, height);
+        return AsepriteImageProcessor.Process(file, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer);
     }
 }

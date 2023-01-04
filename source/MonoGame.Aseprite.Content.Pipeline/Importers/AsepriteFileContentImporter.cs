@@ -23,22 +23,34 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 using Microsoft.Xna.Framework.Content.Pipeline;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.IO;
+using MonoGame.Aseprite.Importers;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 
-[ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer", DefaultProcessor = "AsepriteImageProcessor")]
-public class AsepriteFileImporter : ContentImporter<AsepriteFile>
+/// <summary>
+///     The content pipeline importer for importing the contents of an
+///     Aseprite file.
+/// </summary>
+[ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = "AsepriteSpritesheetProcessor")]
+public class AsepriteFileContentPipelineImporter : ContentImporter<AsepriteFile>
 {
-    public override AsepriteFile Import(string filename, ContentImporterContext context)
+    /// <summary>
+    ///     Imports the Aseprite file at the specified file path.
+    /// </summary>
+    /// <param name="filePath">
+    ///     The absolute path, including extension, to the Aseprite file to
+    ///     import.
+    /// </param>
+    /// <param name="context">
+    ///     The importer context. This is provided by the MonoGame framework
+    ///     when called from the mgcb-editor.
+    /// </param>
+    /// <returns>
+    ///     A new instance of the <see cref="AsepriteFile"/> class containing
+    ///     the data imported from the Aseprite file.
+    /// </returns>
+    public override AsepriteFile Import(string filePath, ContentImporterContext context)
     {
-        AsepriteFile file;
-
-        using(AsepriteFileReader reader = new(filename))
-        {
-            file = reader.ReadFile();
-        }
-
-        return file;
+        return AsepriteFileImporter.Import(filePath);
     }
 }

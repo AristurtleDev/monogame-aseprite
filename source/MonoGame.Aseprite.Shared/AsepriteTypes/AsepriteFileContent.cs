@@ -23,6 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.IO;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
@@ -92,5 +93,13 @@ public sealed class AsepriteFile
         _tags = tags;
         _slices = slices;
         _tilesets = tilesets;
+    }
+
+    public static AsepriteFile Load(string fileName)
+    {
+        using (AsepriteFileReader reader = new(fileName))
+        {
+            return reader.ReadFile();
+        }
     }
 }

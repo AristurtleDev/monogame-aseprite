@@ -693,7 +693,8 @@ internal sealed class AsepriteFileReader : IDisposable
 
                 if (index == _transparentIndex)
                 {
-                    result[i] = Color.Transparent;
+                    // result[i] = Color.Transparent;
+                    result[i] = new Color(0, 0, 0, 0);
                 }
                 else
                 {

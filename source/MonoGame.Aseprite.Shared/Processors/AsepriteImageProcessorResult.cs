@@ -18,29 +18,40 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ----------------------------------------------------------------------------- */
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Processors;
+using System.Collections.ObjectModel;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Writers;
+namespace MonoGame.Aseprite.Processors;
 
-[ContentTypeWriter]
-public sealed class AsepriteImageWriter : ContentTypeWriter<AsepriteImageProcessorResult>
+/// <summary>
+///     Represents the results of the <see cref="AsepriteImageProcessor"/>.
+/// </summary>
+public sealed class AsepriteImageProcessorResult
 {
-    protected override void Write(ContentWriter output, AsepriteImageProcessorResult input)
-    {
-        output.Write(input.Width);
-        output.Write(input.Height);
-        output.Write(input.Pixels.Count);
+    /// <summary>
+    ///     A read-only collection of the pixels that represent the image that
+    ///     was generated as a result of the processing.  Each element is a
+    ///     Color value that represents a single pixels.  Pixel order is from
+    ///     top-to-bottom, read left-to-right.
+    /// </summary>
+    public ReadOnlyCollection<Color> Pixels { get; }
 
-        for (int i = 0; i < input.Pixels.Count; i++)
-        {
-            output.Write(input.Pixels[i]);
-        }
-    }
+    /// <summary>
+    ///     The width, in pixels, of the image that was generated as a result
+    ///     of the processing.
+    /// </summary>
+    public int Width { get; }
 
-    public override string GetRuntimeReader(TargetPlatform targetPlatform)
+    /// <summary>
+    ///     The height, in pixels, of the image that was generated as a result
+    ///     of the processing.
+    /// </summary>
+    public int Height { get; }
+
+    internal AsepriteImageProcessorResult(int width, int height, Color[] pixels)
     {
-        return "MonoGame.Aseprite.Content.AsepriteImageReader, MonoGame.Aseprite";
+        Width = width;
+        Height = height;
+        Pixels = Array.AsReadOnly<Color>(pixels);
     }
 }

@@ -84,7 +84,7 @@ internal static class BlendFunctions
         byte red = GetR(blended);
         byte green = GetG(blended);
         byte blue = GetB(blended);
-        byte alpha = GetB(blended);
+        byte alpha = GetA(blended);
 
         return new Color(red, green, blue, alpha);
     }
