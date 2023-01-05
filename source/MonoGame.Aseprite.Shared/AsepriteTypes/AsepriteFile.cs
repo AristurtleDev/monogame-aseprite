@@ -95,9 +95,14 @@ public sealed class AsepriteFile
         _tilesets = tilesets;
     }
 
-    public static AsepriteFile Load(string fileName)
+    public static AsepriteFile Load(string path)
     {
-        using (AsepriteFileReader reader = new(fileName))
+        if(!File.Exists(path))
+        {
+            throw new FileNotFoundException($"No file exists at the path '{path}'");
+        }
+
+        using(AsepriteFileReader reader = new(path))
         {
             return reader.ReadFile();
         }

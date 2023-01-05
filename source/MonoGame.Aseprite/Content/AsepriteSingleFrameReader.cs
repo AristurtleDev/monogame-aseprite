@@ -27,7 +27,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite.Content;
 
-public sealed class AsepriteImageReader : ContentTypeReader<Texture2D>
+public sealed class AsepriteSingleFrameReader : ContentTypeReader<Texture2D>
 {
     protected override Texture2D Read(ContentReader input, Texture2D existingInstance)
     {

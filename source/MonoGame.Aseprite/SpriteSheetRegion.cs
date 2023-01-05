@@ -21,60 +21,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using System.Collections.ObjectModel;
-
-using Microsoft.Xna.Framework.Graphics;
-
 namespace MonoGame.Aseprite;
 
-public sealed class AsepriteSheet : IDisposable
+public sealed class SpriteSheetRegion
 {
-    private List<Frame> _frames;
-    private List<Tag> _tags;
-    private List<Slice> _slices;
-
-    public bool IsDisposed { get; private set; }
-    public Texture2D Texture { get; }
-    public int Width => Texture.Width;
-    public int Height => Texture.Height;
-
-    public ReadOnlyCollection<Frame> Frames => _frames.AsReadOnly();
-    public ReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
-    public ReadOnlyCollection<Slice> Slices => _slices.AsReadOnly();
-
-    internal AsepriteSheet(Texture2D texture, List<Frame> frames, List<Tag> tags, List<Slice> slices)
-    {
-        Texture = texture;
-        _frames = frames;
-        _tags = tags;
-        _slices = slices;
-    }
-
-    ~AsepriteSheet() => Dispose(false);
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    private void Dispose(bool isDisposing)
-    {
-        if(IsDisposed)
-        {
-            return;
-        }
-
-        if(isDisposing)
-        {
-            if(!Texture.IsDisposed)
-            {
-                Texture.Dispose();
-            }
-        }
-
-        IsDisposed = true;
-    }
-
-
+    public string Name { get; }
+    public
 }
