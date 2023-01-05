@@ -27,22 +27,36 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite.Content;
 
-public sealed class AsepriteSheetReader : ContentTypeReader<AsepriteSheet>
+public sealed class SpriteSheetReader : ContentTypeReader<SpriteSheet>
 {
-    protected override AsepriteSheet Read(ContentReader input, AsepriteSheet existingInstance)
+    protected override SpriteSheet Read(ContentReader input, SpriteSheet? existingInstance)
     {
-        int width = input.ReadInt32();
-        int height = input.ReadInt32();
+        if (existingInstance is not null)
+        {
+            return existingInstance;
+        }
+
+        ReadInput(input, out string name, out int width, out int height, out Color[] pixels, out Frame[] frames, out Tag[] tags, out Slice[] slices);
+        Texture2D texture = CreateTexture(input.GetGraphicsDevice(), pixels, width, height);
+        SpriteSheet spriteSheet = CreateSpriteSheet(name, texture, frames, tags, slices);
+        return spriteSheet;
+    }
+
+    private void ReadInput(ContentReader input, out string name, out int width, out int height, out Color[] pixels, out Frame[] frames, out Tag[] tags, out Slice[] slices)
+    {
+        name = input.ReadString();
+        width = input.ReadInt32();
+        height = input.ReadInt32();
 
         int nPixels = input.ReadInt32();
-        Color[] pixels = new Color[nPixels];
+        pixels = new Color[nPixels];
         for (int i = 0; i < nPixels; i++)
         {
             pixels[i] = input.ReadColor();
         }
 
         int nFrames = input.ReadInt32();
-        List<Frame> frames = new();
+        frames = new Frame[nFrames];
         for (int i = 0; i < nFrames; i++)
         {
             int x = input.ReadInt32();
@@ -56,28 +70,28 @@ public sealed class AsepriteSheetReader : ContentTypeReader<AsepriteSheet>
             TimeSpan duration = TimeSpan.FromMilliseconds(ms);
 
             Frame frame = new(bounds, duration);
-            frames.Add(frame);
+            frames[i] = frame;
         }
 
         int nTags = input.ReadInt32();
-        List<Tag> tags = new();
+        tags = new Tag[nTags];
         for (int i = 0; i < nTags; i++)
         {
-            string name = input.ReadString();
+            string tagName = input.ReadString();
             Color color = input.ReadColor();
             int from = input.ReadInt32();
             int to = input.ReadInt32();
             LoopDirection direction = (LoopDirection)input.ReadInt32();
 
-            Tag tag = new(name, from, to, direction, color);
-            tags.Add(tag);
+            Tag tag = new(tagName, from, to, direction, color);
+            tags[i] = tag;
         }
 
         int nSlices = input.ReadInt32();
-        List<Slice> slices = new();
+        slices = new Slice[nSlices];
         for (int i = 0; i < nSlices; i++)
         {
-            string name = input.ReadString();
+            string sliceName = input.ReadString();
             Color color = input.ReadColor();
             int frame = input.ReadInt32();
 
@@ -107,13 +121,29 @@ public sealed class AsepriteSheetReader : ContentTypeReader<AsepriteSheet>
                 pivot = new(px, py);
             }
 
-            Slice slice = new(name, color, frame, bounds, center, pivot);
-            slices.Add(slice);
+            Slice slice = new(sliceName, color, frame, bounds, center, pivot);
+            slices[i] = slice;
+        }
+    }
+
+    private Texture2D CreateTexture(GraphicsDevice device, Color[] pixels, int width, int height)
+    {
+        Texture2D texture = new(device, width, height, false, SurfaceFormat.Color);
+        texture.SetData<Color>(pixels);
+        return texture;
+    }
+
+    private SpriteSheet CreateSpriteSheet(string name, Texture2D texture, Frame[] frames, Tag[] tags, Slice[] slices)
+    {
+        SpriteSheet spriteSheet = new(name, texture);
+
+        for (int i = 0; i < frames.Length; i++)
+        {
+            Frame frame = frames[i];
+            spriteSheet.CreateRegion($"frame_{i}", frame.X, frame.Y, frame.Width, frame.Height);
         }
 
-        Texture2D texture = new(input.GetGraphicsDevice(), width, height, false, SurfaceFormat.Color);
-        texture.SetData<Color>(pixels);
+        return spriteSheet;
 
-        return new(texture, frames, tags, slices);
     }
 }

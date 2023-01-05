@@ -78,7 +78,7 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
         List<Tag> tags = GetTags(input);
         List<Slice> slices = GetSlices(input);
 
-        return new AsepriteSpritesheetProcessorResult(width, height, pixels, frames, tags, slices);
+        return new AsepriteSpritesheetProcessorResult(input.Name, width, height, pixels, frames, tags, slices);
     }
 
     private List<Frame> GetFrames(AsepriteFile file, out int width, out int height, out Color[] pixels)

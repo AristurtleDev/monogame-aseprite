@@ -7,7 +7,9 @@ namespace DemoGame;
 
 public class Game1 : Game
 {
-    private AsepriteSheet _sheet;
+    private SpriteSheet _sheet;
+    private Sprite _sprite;
+
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private int _frameIndex = 0;
@@ -45,7 +47,8 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-        _sheet = Content.Load<AsepriteSheet>("adventurer");
+        _sheet = Content.Load<SpriteSheet>("adventurer");
+        _sprite = _sheet.CreateSprite("frame_0");
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData<Color>(new Color[] { Color.White });
     }
@@ -62,11 +65,13 @@ public class Game1 : Game
         {
             _frameIndex--;
             if (_frameIndex < 0) { _frameIndex = 0; }
+            _sprite = _sheet.CreateSprite($"frame_{_frameIndex}");
         }
         else if (_curState.IsKeyDown(Keys.Up) && _prevState.IsKeyUp(Keys.Up))
         {
             _frameIndex++;
-            if (_frameIndex >= _sheet.Frames.Count) { _frameIndex--; }
+            if (_frameIndex >= _sheet.RegionCount) { _frameIndex--; }
+            _sprite = _sheet.CreateSprite($"frame_{_frameIndex}");
         }
 
         if (_curState.IsKeyDown(Keys.Left) && _prevState.IsKeyUp(Keys.Left))
@@ -105,15 +110,6 @@ public class Game1 : Game
     private void DrawSector(Rectangle rect, Color color)
     {
         _spriteBatch.Draw(_pixel, rect, color);
-
-        _spriteBatch.Draw(_sheet.Texture,
-                          new Vector2(rect.X, rect.Y),
-                          _sheet.Frames[_frameIndex].SourceRectangle,
-                          Color.White,
-                          0.0f,
-                          Vector2.Zero,
-                          new Vector2(_scale, _scale),
-                          SpriteEffects.None,
-                          0.0f);
+        _spriteBatch.Draw(_sprite, position: new Vector2(rect.X, rect.Y), scale: new Vector2(_scale, _scale));
     }
 }

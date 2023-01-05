@@ -32,6 +32,7 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
 {
     protected override void Write(ContentWriter output, AsepriteSpritesheetProcessorResult value)
     {
+        output.Write(value.Name);
         output.Write(value.Width);
         output.Write(value.Height);
 
@@ -76,7 +77,7 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
             output.Write(slice.Height);
 
             output.Write(slice.IsNinePatch);
-            if(slice.IsNinePatch)
+            if (slice.IsNinePatch)
             {
                 output.Write(slice.CenterX.Value);
                 output.Write(slice.CenterY.Value);
@@ -85,7 +86,7 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
             }
 
             output.Write(slice.HasPivot);
-            if(slice.HasPivot)
+            if (slice.HasPivot)
             {
                 output.Write(slice.PivotX.Value);
                 output.Write(slice.PivotY.Value);
@@ -96,6 +97,6 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {
-        return "MonoGame.Aseprite.Content.AsepriteSheetReader, MonoGame.Aseprite";
+        return "MonoGame.Aseprite.Content.SpriteSheetReader, MonoGame.Aseprite";
     }
 }

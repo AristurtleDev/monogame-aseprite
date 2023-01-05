@@ -27,6 +27,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 public sealed class AsepriteSpritesheetProcessorResult
 {
+    internal string Name { get; }
     internal int Width { get; }
     internal int Height { get; }
     internal Color[] Pixels { get; }
@@ -34,8 +35,9 @@ public sealed class AsepriteSpritesheetProcessorResult
     internal List<Tag> Tags { get; }
     internal List<Slice> Slices { get; }
 
-    internal AsepriteSpritesheetProcessorResult(int width, int height, Color[] pixels, List<Frame> frames, List<Tag> tags, List<Slice> slices)
+    internal AsepriteSpritesheetProcessorResult(string name, int width, int height, Color[] pixels, List<Frame> frames, List<Tag> tags, List<Slice> slices)
     {
+        Name = name;
         Width = width;
         Height = height;
         Pixels = pixels;

@@ -49,6 +49,7 @@ internal sealed class AsepriteFileReader : IDisposable
 
     private bool _isDisposed;
 
+    private string _name;
     private int _nFrames;
     private int _width;
     private int _height;
@@ -77,6 +78,8 @@ internal sealed class AsepriteFileReader : IDisposable
             throw new FileNotFoundException($"No file exists at '{path}'");
         }
 
+        _name = Path.GetFileNameWithoutExtension(path);
+
         Stream stream = File.OpenRead(path);
         _reader = new(stream, Encoding.UTF8, leaveOpen: false);
     }
@@ -98,7 +101,7 @@ internal sealed class AsepriteFileReader : IDisposable
         Point size = new(_width, _height);
         AsepritePalette palette = new(_palette, _transparentIndex);
 
-        AsepriteFile file = new(size, palette, _frames, _layers, _tags, _slices, _tilesets);
+        AsepriteFile file = new(_name, size, palette, _frames, _layers, _tags, _slices, _tilesets);
         return file;
     }
 

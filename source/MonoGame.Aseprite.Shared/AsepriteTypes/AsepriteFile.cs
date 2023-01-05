@@ -39,53 +39,69 @@ public sealed class AsepriteFile
     private List<AsepriteTileset> _tilesets;
 
     /// <summary>
-    ///     The width and height extents, in pixels of each frame in this
-    ///     Aseprite file.
+    ///     Gets the name of this <see cref="AsepriteFile"/>.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    ///     Gets the width and height extents, in pixels of each
+    ///     <see cref="AsepriteFrame"/> element in this
+    ///     <see cref="AsepriteFile"/>.
     /// </summary>
     public Point FrameSize { get; }
 
     /// <summary>
-    ///     THe width, in pixels of each frame in this Aseprite file.
+    ///     The width, in pixels, of each <see cref="AsepriteFrame"/> element
+    ///     in this <see cref="AsepriteFile"/>.
     /// </summary>
     public int FrameWidth => FrameSize.X;
 
     /// <summary>
-    ///     The height, in pixels, of each frame in this Aseprite file.
+    ///     The height, in pixels, of each <see cref="AsepriteFrame"/> element
+    ///     in this <see cref="AsepriteFile"/>.
     /// </summary>
     public int FrameHeight => FrameSize.Y;
 
     /// <summary>
-    ///     The collection of color values that were used by this Aseprite file.
+    ///     The <see cref="AsepritePalette"/> instance of this
+    ///     <see cref="AsepriteFile"/> that contains the color values that
+    ///     were used by this <see cref="AsepriteFile"/>.
     /// </summary>
     public AsepritePalette Palette { get; }
 
     /// <summary>
-    ///     A read-only collection of all frames in this Aseprite file.
+    ///     A read-only collection of all <see cref="AsepriteFrame"/> elements
+    ///     in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlyCollection<AsepriteFrame> Frames => _frames.AsReadOnly();
 
     /// <summary>
-    ///     A read-only collection of all layers in this Aseprite file.
+    ///     A read-only collection of all <see cref="AsepriteLayer"/> elements
+    ///     in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlyCollection<AsepriteLayer> Layers => _layers.AsReadOnly();
 
     /// <summary>
-    ///     A read-only collection of all tags in this Aseprite file.
+    ///     A read-only collection of all <see cref="AsepriteTag"/> elements
+    ///     in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlyCollection<AsepriteTag> Tags => _tags.AsReadOnly();
 
     /// <summary>
-    ///     A read-only collection of all slices in this Aseprite file.
+    ///     A read-only collection of all <see cref="AsepriteSlice"/> elements
+    ///     in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlyCollection<AsepriteSlice> Slices => _slices.AsReadOnly();
 
     /// <summary>
-    ///     A read-only collection of all tilesets in this Aseprite file.
+    ///     A read-only collection of all <see cref="AsepriteTileset"/>
+    ///     elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlyCollection<AsepriteTileset> Tilesets => _tilesets.AsReadOnly();
 
-    internal AsepriteFile(Point frameSize, AsepritePalette palette, List<AsepriteFrame> frames, List<AsepriteLayer> layers, List<AsepriteTag> tags, List<AsepriteSlice> slices, List<AsepriteTileset> tilesets)
+    internal AsepriteFile(string name, Point frameSize, AsepritePalette palette, List<AsepriteFrame> frames, List<AsepriteLayer> layers, List<AsepriteTag> tags, List<AsepriteSlice> slices, List<AsepriteTileset> tilesets)
     {
+        Name = name;
         FrameSize = frameSize;
         Palette = palette;
         _frames = frames;
@@ -97,12 +113,12 @@ public sealed class AsepriteFile
 
     public static AsepriteFile Load(string path)
     {
-        if(!File.Exists(path))
+        if (!File.Exists(path))
         {
             throw new FileNotFoundException($"No file exists at the path '{path}'");
         }
 
-        using(AsepriteFileReader reader = new(path))
+        using (AsepriteFileReader reader = new(path))
         {
             return reader.ReadFile();
         }

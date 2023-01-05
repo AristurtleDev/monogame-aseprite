@@ -15,7 +15,7 @@
 #---------------------------------- Content ---------------------------------#
 
 #begin adventurer.aseprite
-/importer:AsepriteFileContentPipelineImporter
+/importer:AsepriteFileImporter
 /processor:AsepriteSpritesheetProcessor
 /processorParam:OnlyVisibleLayers=True
 /processorParam:IncludeBackgroundLayer=False

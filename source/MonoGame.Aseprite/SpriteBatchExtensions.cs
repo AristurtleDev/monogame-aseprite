@@ -23,246 +23,108 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
+/// <summary>
+///     Extension methods for the SpriteBatch that makes uses of the built-in
+///     classes in MonoGame.Aseprite.
+/// </summary>
 public static class SpriteBatchExtensions
 {
     /// <summary>
-    ///     Renders the sprite using the given SpriteBatch with the values
-    ///     from the properties of the sprite.
-    /// </summary>
-    /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
-    /// </param>
-    /// <param name="sprite">
-    ///     The Sprite instance to render.
-    /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite) =>
-        sprite.Render(spriteBatch);
-
-    /// <summary>
-    ///     Renders the Texture of this sprite using the given SpriteBatch with
-    ///     the given parameters.
+    ///     Draws this <see cref="Sprite"/> using the given
+    ///     <see cref="SpriteBatch"/>
     /// </summary>
     /// <remarks>
-    ///     This render method ignores the properties set for this Sprite
-    ///     instance and instead uses only the parameters given as if you were
-    ///     just rendering the texture normally using the SpriteBatch.
+    ///     The values for position, color, rotation, origin, scale, effects,
+    ///     and layer depth that are passed to the SpriteBatch are derived from
+    ///     the properties of this <see cref="Sprite"/> instance when using this
+    ///     method.  To use different values, use one of the other Draw method
+    ///     overloads instead.
     /// </remarks>
     /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
+    ///     The SpriteBatch instance to use when drawing this sprite.
     /// </param>
     /// <param name="sprite">
-    ///     The Sprite instance that contains the texture to render.
+    ///     The <see cref="Sprite"/> to draw.
     /// </param>
-    /// <param name="destinationRectangle">
-    ///     The rectangular area that defines the destination to render the
-    ///     texture of this sprite.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering.
-    /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite, Rectangle destinationRectangle, Color color) =>
-        sprite.Render(spriteBatch, destinationRectangle, color);
+    public static void Draw(this SpriteBatch spriteBatch, Sprite sprite) =>
+        sprite.Draw(spriteBatch);
 
     /// <summary>
-    ///     Renders the Texture of this sprite using the given SpriteBatch with
-    ///     the given parameters.
+    ///     Draws this <see cref="Sprite"/> using the given
+    ///     <see cref="SpriteBatch"/>.
     /// </summary>
-    /// <remarks>
-    ///     This render method ignores the properties set for this Sprite
-    ///     instance and instead uses only the parameters given as if you were
-    ///     just rendering the texture normally using the SpriteBatch.
-    /// </remarks>
     /// <param name="spriteBatch">
     ///     The SpriteBatch instance to use when rendering this sprite.
     /// </param>
     /// <param name="sprite">
-    ///     The Sprite instance that contains the texture to render.
-    /// </param>
-    /// <param name="destinationRectangle">
-    ///     The rectangular area that defines the destination to render the
-    ///     texture of this sprite.
-    /// </param>
-    /// <param name="sourceRectangle">
-    ///     The rectangular area within the texture to be rendered.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering.
-    /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color) =>
-        sprite.Render(spriteBatch, destinationRectangle, sourceRectangle, color);
-
-    /// <summary>
-    ///     Renders the Texture of this sprite using the given SpriteBatch with
-    ///     the given parameters.
-    /// </summary>
-    /// <remarks>
-    ///     This render method ignores the properties set for this Sprite
-    ///     instance and instead uses only the parameters given as if you were
-    ///     just rendering the texture normally using the SpriteBatch.
-    /// </remarks>
-    /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
-    /// </param>
-    /// <param name="sprite">
-    ///     The Sprite instance that contains the texture to render.
+    ///     The <see cref="Sprite"/> to draw.
     /// </param>
     /// <param name="position">
-    ///     The x- and y-coordinate position to render the texture at.
-    /// </param>
-    /// <param name="sourceRectangle">
-    ///     The rectangular area within the texture to be rendered.
+    ///     If a value is provided, overrides the <see cref="Sprite.Position"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="color">
-    ///     The color mask to apply when rendering.
-    /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite, Vector2 position, Rectangle? sourceRectangle, Color color) =>
-        sprite.Render(spriteBatch, position, sourceRectangle, color);
-
-    /// <summary>
-    ///     Renders the Texture of this sprite using the given SpriteBatch with
-    ///     the given parameters.
-    /// </summary>
-    /// <remarks>
-    ///     This render method ignores the properties set for this Sprite
-    ///     instance and instead uses only the parameters given as if you were
-    ///     just rendering the texture normally using the SpriteBatch.
-    /// </remarks>
-    /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
-    /// </param>
-    /// <param name="sprite">
-    ///     The Sprite instance that contains the texture to render.
-    /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate position to render the texture at.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering.
-    /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite, Vector2 position, Color color) =>
-        sprite.Render(spriteBatch, position, color);
-
-    /// <summary>
-    ///     Renders the Texture of this sprite using the given SpriteBatch with
-    ///     the given parameters.
-    /// </summary>
-    /// <remarks>
-    ///     This render method ignores the properties set for this Sprite
-    ///     instance and instead uses only the parameters given as if you were
-    ///     just rendering the texture normally using the SpriteBatch.
-    /// </remarks>
-    /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
-    /// </param>
-    /// <param name="sprite">
-    ///     The Sprite instance that contains the texture to render.
-    /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate position to render the texture at.
-    /// </param>
-    /// <param name="sourceRectangle">
-    ///     The rectangular area within the texture to be rendered.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering.
+    ///     If a value is provided, overrides the <see cref="Sprite.Color"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="rotation">
-    ///     The amount of rotation to apply to the texture when rendering.
+    ///     If a value is provided, overrides the <see cref="Sprite.Rotation"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="origin">
-    ///     The x- and y-coordinate origin point.
+    ///     If a value is provided, overrides the <see cref="Sprite.Origin"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="scale">
-    ///     The scale to render the texture at.
+    ///     If a value is provided, overrides the <see cref="Sprite.Scale"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="effects">
-    ///     The SpriteEffects to apply to the texture when rendering.
+    ///     If a value is provided, overrides the
+    ///     <see cref="Sprite.SpriteEffects"/> value during this render only.
     /// </param>
     /// <param name="layerDepth">
-    ///     THe layer depth to apply when rendering the texture.
+    ///     If a value is provided, overrides the
+    ///     <see cref="Sprite.LayerDepth"/> value during this render only.
     /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth) =>
-        sprite.Render(spriteBatch, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+    public static void Draw(this SpriteBatch spriteBatch, Sprite sprite, Vector2? position = default, Color? color = default, float? rotation = default, Vector2? origin = default, Vector2? scale = default, SpriteEffects? effects = default, float? layerDepth = default) =>
+        sprite.Draw(spriteBatch, position, color, rotation, origin, scale, effects, layerDepth);
 
     /// <summary>
-    ///     Renders the Texture of this sprite using the given SpriteBatch with
-    ///     the given parameters.
+    ///     Draws this <see cref="Sprite"/> using the given
+    ///     <see cref="SpriteBatch"/>.
     /// </summary>
-    /// <remarks>
-    ///     This render method ignores the properties set for this Sprite
-    ///     instance and instead uses only the parameters given as if you were
-    ///     just rendering the texture normally using the SpriteBatch.
-    /// </remarks>
     /// <param name="spriteBatch">
     ///     The SpriteBatch instance to use when rendering this sprite.
     /// </param>
     /// <param name="sprite">
-    ///     The Sprite instance that contains the texture to render.
-    /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate position to render the texture at.
-    /// </param>
-    /// <param name="sourceRectangle">
-    ///     The rectangular area within the texture to be rendered.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering.
-    /// </param>
-    /// <param name="rotation">
-    ///     The amount of rotation to apply to the texture when rendering.
-    /// </param>
-    /// <param name="origin">
-    ///     The x- and y-coordinate origin point.
-    /// </param>
-    /// <param name="scale">
-    ///     The x- and y-scale value to use when rendering the texture.
-    /// </param>
-    /// <param name="effects">
-    ///     The SpriteEffects to apply to the texture when rendering.
-    /// </param>
-    /// <param name="layerDepth">
-    ///     The layer depth to apply when rendering the texture.
-    /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth) =>
-        sprite.Render(spriteBatch, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
-
-    /// <summary>
-    ///     Renders the Texture of this sprite using the given SpriteBatch with
-    ///     the given parameters.
-    /// </summary>
-    /// <remarks>
-    ///     This render method ignores the properties set for this Sprite
-    ///     instance and instead uses only the parameters given as if you were
-    ///     just rendering the texture normally using the SpriteBatch.
-    /// </remarks>
-    /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
-    /// </param>
-    /// <param name="sprite">
-    ///     The Sprite instance that contains the texture to render.
+    ///     The <see cref="Sprite"/> to draw.
     /// </param>
     /// <param name="destinationRectangle">
-    ///     The rectangular area that defines the destination to render the
-    ///     texture of this sprite.
-    /// </param>
-    /// <param name="sourceRectangle">
-    ///     The rectangular area within the texture to be rendered.
+    ///     If a value is provided, overrides the <see cref="Sprite.Position"/>
+    ///     and <see cref="Sprite.Scale"/> values to fit the sprite render into
+    ///     the bounds given during this render only.
     /// </param>
     /// <param name="color">
-    ///     The color mask to apply when rendering.
+    ///     If a value is provided, overrides the <see cref="Sprite.Color"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="rotation">
-    ///     The amount of rotation to apply to the texture when rendering.
+    ///     If a value is provided, overrides the <see cref="Sprite.Rotation"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="origin">
-    ///     The x- and y-coordinate origin point.
+    ///     If a value is provided, overrides the <see cref="Sprite.Origin"/>
+    ///     value during this render only.
     /// </param>
     /// <param name="effects">
-    ///     The SpriteEffects to apply to the texture when rendering.
+    ///     If a value is provided, overrides the
+    ///     <see cref="Sprite.SpriteEffects"/> value during this render only.
     /// </param>
     /// <param name="layerDepth">
-    ///     The layer depth to apply when rendering the texture.
+    ///     If a value is provided, overrides the
+    ///     <see cref="Sprite.LayerDepth"/> value during this render only.
     /// </param>
-    public static void Render(this SpriteBatch spriteBatch, Sprite sprite, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth) =>
-        sprite.Render(spriteBatch, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
+    public static void Draw(this SpriteBatch spriteBatch, Sprite sprite, Rectangle? destinationRectangle = default, Color? color = default, float? rotation = default, Vector2? origin = default, SpriteEffects? effects = default, float? layerDepth = default) =>
+        sprite.Draw(spriteBatch, destinationRectangle, color, rotation, origin, effects, layerDepth);
 }
