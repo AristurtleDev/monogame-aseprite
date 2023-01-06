@@ -28,7 +28,8 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetRegion>
 {
     Dictionary<string, SpriteSheetRegion> _regionLookup = new();
     List<SpriteSheetRegion> _regionMap = new();
-    Dictionary<string, SpriteSheetAnimationDefinition> _animationDefinitionLookup = new();
+
+    public Dictionary<string, SpriteSheetAnimation> Animations { get; } = new();
 
     /// <summary>
     ///     Gets the <see cref="SpriteSheetRegion"/> element in this
@@ -299,40 +300,6 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetRegion>
     /// <returns></returns>
     public SpriteSheetRegion CreateRegion(string name, Rectangle bounds) =>
         CreateRegion(name, bounds.X, bounds.Y, bounds.Width, bounds.Height);
-
-    /// <summary>
-    ///     Adds the given <see cref="SpriteSheetAnimationDefinition"/> to this
-    ///     <see cref="SpriteSheet"/>.
-    /// </summary>
-    /// <param name="definition">
-    ///     The <see cref="SpriteSheetAnimationDefinition"/> to add.
-    /// </param>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown if this <see cref="SpriteSheet"/> already contains a
-    ///     <see cref="SpriteSheetAnimationDefinition"/> element with the
-    ///     same <see cref="SpriteSheetAnimationDefinition.Name"/> as the
-    ///     one given.
-    /// </exception>
-    public void AddAnimationDefinition(SpriteSheetAnimationDefinition definition)
-    {
-        if (_animationDefinitionLookup.ContainsKey(definition.Name))
-        {
-            throw new InvalidOperationException($"A {nameof(SpriteSheetAnimationDefinition)} with the name '{definition.Name}' has already been added to this {nameof(SpriteSheet)}.");
-        }
-
-        _animationDefinitionLookup.Add(definition.Name, definition);
-    }
-
-
-    public void CreateAnimatedSprite(string definitionName)
-    {
-        if (_animationDefinitionLookup.TryGetValue(definitionName, out SpriteSheetAnimationDefinition? definition))
-        {
-
-        }
-
-        throw new KeyNotFoundException($"No {nameof(SpriteSheetAnimationDefinition)} with the name '{definitionName}' was found in the SpriteSheet '{Name}'");
-    }
 
 
     /// <summary>
