@@ -1,56 +1,56 @@
-/* -----------------------------------------------------------------------------
-Copyright 2022 Christopher Whitley
+// /* -----------------------------------------------------------------------------
+// Copyright 2022 Christopher Whitley
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
------------------------------------------------------------------------------ */
-namespace MonoGame.Aseprite;
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// ----------------------------------------------------------------------------- */
+// namespace MonoGame.Aseprite;
 
-public sealed class SpriteSheetAnimationFrame
-{
-    /// <summary>
-    ///     Gets or Sets the index of the <see cref="SpriteSheetRegion"/> in
-    ///     the <see cref="SpriteSheet"/> that represents this
-    ///     <see cref="SpriteSheetAnimationFrame"/>.
-    /// </summary>
-    public int Index { get; set; }
+// public sealed class SpriteSheetAnimationFrame
+// {
+//     /// <summary>
+//     ///     Gets or Sets the index of the <see cref="SpriteSheetRegion"/> in
+//     ///     the <see cref="SpriteSheet"/> that represents this
+//     ///     <see cref="SpriteSheetAnimationFrame"/>.
+//     /// </summary>
+//     public int Index { get; set; }
 
-    /// <summary>
-    ///     Gets or Sets the total duration of this
-    ///     <see cref="SpriteSheetAnimationFrame"/> during the animation it
-    ///     plays in.
-    /// </summary>
-    public TimeSpan Duration { get; set; }
+//     /// <summary>
+//     ///     Gets or Sets the total duration of this
+//     ///     <see cref="SpriteSheetAnimationFrame"/> during the animation it
+//     ///     plays in.
+//     /// </summary>
+//     public TimeSpan Duration { get; set; }
 
 
-    /// <summary>
-    ///     Initializes a new instance of the
-    ///     <see cref="SpriteSheetAnimationFrame"/> class with the values
-    ///     provided.
-    /// </summary>
-    /// <param name="index">
-    ///     The index of the <see cref="SpriteSheetRegion"/> in the
-    ///     <see cref="SpriteSheet"/> that represents this
-    ///     <see cref="SpriteSheetAnimationFrame"/>.
-    /// </param>
-    /// <param name="duration">
-    ///     The total duration of this ,<see cref="SpriteSheetAnimationFrame"/>
-    ///     during the animation it plays in.
-    /// </param>
-    public SpriteSheetAnimationFrame(int index, TimeSpan duration) =>
-        (Index, Duration) = (index, duration);
-}
+//     /// <summary>
+//     ///     Initializes a new instance of the
+//     ///     <see cref="SpriteSheetAnimationFrame"/> class with the values
+//     ///     provided.
+//     /// </summary>
+//     /// <param name="index">
+//     ///     The index of the <see cref="SpriteSheetRegion"/> in the
+//     ///     <see cref="SpriteSheet"/> that represents this
+//     ///     <see cref="SpriteSheetAnimationFrame"/>.
+//     /// </param>
+//     /// <param name="duration">
+//     ///     The total duration of this ,<see cref="SpriteSheetAnimationFrame"/>
+//     ///     during the animation it plays in.
+//     /// </param>
+//     public SpriteSheetAnimationFrame(int index, TimeSpan duration) =>
+//         (Index, Duration) = (index, duration);
+// }

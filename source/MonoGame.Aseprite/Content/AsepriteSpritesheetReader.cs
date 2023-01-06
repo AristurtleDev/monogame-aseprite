@@ -140,7 +140,30 @@ public sealed class SpriteSheetReader : ContentTypeReader<SpriteSheet>
         for (int i = 0; i < frames.Length; i++)
         {
             Frame frame = frames[i];
-            spriteSheet.CreateRegion($"frame_{i}", frame.X, frame.Y, frame.Width, frame.Height);
+            _ = spriteSheet.CreateFrame($"frame_{i}", frame.SourceRectangle, frame.Duration);
+        }
+
+        //  2 .. 5
+        //  2, 3, 4, 5 = 4 frames
+        //  5 - 2 = 3 + 1 = 4
+
+        //  3 .. 10
+        //  3, 4, 5, 6, 7, 8, 9, 10 = 8 frames
+        //   10 - 3 = 7 + 1 = 8
+
+        //  1 .. 5
+        //  1, 2, 3, 4, 5
+
+        for (int i = 0; i < tags.Length; i++)
+        {
+            Tag tag = tags[i];
+            int[] indexes = new int[tag.To - tag.From + 1];
+            for (int f = 0; f < indexes.Length; f++)
+            {
+                indexes[f] = tag.From + f;
+            }
+
+            spriteSheet.AddAnimationDefinition(tag.Name, true, tag.Direction == LoopDirection.Reverse, tag.Direction == LoopDirection.PingPong, indexes);
         }
 
         return spriteSheet;

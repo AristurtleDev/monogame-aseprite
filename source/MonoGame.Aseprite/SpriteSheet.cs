@@ -24,49 +24,52 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
-public sealed class SpriteSheet : IEnumerable<SpriteSheetRegion>
+public sealed class SpriteSheet : IEnumerable<SpriteSheetFrame>
 {
-    Dictionary<string, SpriteSheetRegion> _regionLookup = new();
-    List<SpriteSheetRegion> _regionMap = new();
+    private static TimeSpan s_defaultDuration = TimeSpan.FromMilliseconds(100);
 
-    public Dictionary<string, SpriteSheetAnimation> Animations { get; } = new();
+    Dictionary<string, SpriteSheetFrame> _regionLookup = new();
+    List<SpriteSheetFrame> _regions = new();
+    Dictionary<string, int> _regionMap = new();
+
+    private Dictionary<string, SpriteSheetAnimationDefinition> _animationLookup = new();
 
     /// <summary>
-    ///     Gets the <see cref="SpriteSheetRegion"/> element in this
+    ///     Gets the <see cref="SpriteSheetFrame"/> element in this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetRegion"/>.
+    ///     The name of the <see cref="SpriteSheetFrame"/>.
     /// </param>
     /// <returns>
-    ///     The <see cref="SpriteSheetRegion"/> element in this
+    ///     The <see cref="SpriteSheetFrame"/> element in this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if there is no <see cref="SpriteSheetRegion"/> element
+    ///     Thrown if there is no <see cref="SpriteSheetFrame"/> element
     ///     in this <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </exception>
-    public SpriteSheetRegion this[string name] => GetRegion(name);
+    public SpriteSheetFrame this[string name] => GetRegion(name);
 
     /// <summary>
-    ///     Gets the <see cref="SpriteSheetRegion"/> element at the specified
+    ///     Gets the <see cref="SpriteSheetFrame"/> element at the specified
     ///     <paramref name="index"/> in this <see cref="SpriteSheet"/>.
     /// </summary>
     /// <param name="index">
-    ///     The index of the <see cref="SpriteSheetRegion"/>.
+    ///     The index of the <see cref="SpriteSheetFrame"/>.
     /// </param>
     /// <returns>
-    ///     The <see cref="SpriteSheetRegion"/> element at the specified
+    ///     The <see cref="SpriteSheetFrame"/> element at the specified
     ///     <paramref name="index"/> in this <see cref="SpriteSheet"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified <paramref name="index"/> is less than zero
     ///     or is greater than or equal to <see cref="RegionCount"/>.
     /// </exception>
-    public SpriteSheetRegion this[int index] => GetRegion(index);
+    public SpriteSheetFrame this[int index] => GetRegion(index);
 
     /// <summary>
     ///     Gets the name of this <see cref="SpriteSheet"/>.
@@ -80,10 +83,10 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetRegion>
     public Texture2D Texture { get; }
 
     /// <summary>
-    ///     Gets the total number of <see cref="SpriteSheetRegion"/> elements
+    ///     Gets the total number of <see cref="SpriteSheetFrame"/> elements
     ///     in this <see cref="SpriteSheet"/>.
     /// </summary>
-    public int RegionCount => _regionMap.Count;
+    public int RegionCount => _regions.Count;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="SpriteSheet"/> class
@@ -101,66 +104,66 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetRegion>
 
     /// <summary>
     ///     Returns a value that indicates whether this
-    ///     <see cref="SpriteSheet"/> contains a <see cref="SpriteSheetRegion"/>
+    ///     <see cref="SpriteSheet"/> contains a <see cref="SpriteSheetFrame"/>
     ///     element with the specified <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetRegion"/> to locate in this
+    ///     The name of the <see cref="SpriteSheetFrame"/> to locate in this
     ///    <see cref="SpriteSheet"/>.
     /// </param>
     /// <returns>
     ///     <see langword="true"/> if this <see cref="SpriteSheet"/> contains
-    ///     a <see cref="SpriteSheetRegion"/> element with the specified
+    ///     a <see cref="SpriteSheetFrame"/> element with the specified
     ///     <paramref name="name"/>; otherwise, <see langword="false"/>.
     /// </returns>
     public bool ContainsRegion(string name) => _regionLookup.ContainsKey(name);
 
     /// <summary>
-    ///     Gets the <see cref="SpriteSheetRegion"/> element at the specified
+    ///     Gets the <see cref="SpriteSheetFrame"/> element at the specified
     ///     <paramref name="index"/> in this <see cref="SpriteSheet"/>.
     /// </summary>
     /// <param name="index">
-    ///     The index of the <see cref="SpriteSheetRegion"/>.
+    ///     The index of the <see cref="SpriteSheetFrame"/>.
     /// </param>
     /// <returns>
-    ///     The <see cref="SpriteSheetRegion"/> element at the specified
+    ///     The <see cref="SpriteSheetFrame"/> element at the specified
     ///     <paramref name="index"/> in this <see cref="SpriteSheet"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified <paramref name="index"/> is less than zero
     ///     or is greater than or equal to <see cref="RegionCount"/>.
     /// </exception>
-    public SpriteSheetRegion GetRegion(int index)
+    public SpriteSheetFrame GetRegion(int index)
     {
-        if (index < 0 || index >= _regionMap.Count)
+        if (index < 0 || index >= _regions.Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"The {nameof(index)} cannot be less than zero or greater than or equal to the total number of {nameof(SpriteSheetRegion)} elements in this {nameof(SpriteSheet)}");
+            throw new ArgumentOutOfRangeException(nameof(index), $"The {nameof(index)} cannot be less than zero or greater than or equal to the total number of {nameof(SpriteSheetFrame)} elements in this {nameof(SpriteSheet)}");
         }
 
-        return _regionMap[index];
+        return _regions[index];
     }
 
     /// <summary>
-    ///     Gets the <see cref="SpriteSheetRegion"/> element in this
+    ///     Gets the <see cref="SpriteSheetFrame"/> element in this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetRegion"/>.
+    ///     The name of the <see cref="SpriteSheetFrame"/>.
     /// </param>
     /// <returns>
-    ///     The <see cref="SpriteSheetRegion"/> element in this
+    ///     The <see cref="SpriteSheetFrame"/> element in this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if there is no <see cref="SpriteSheetRegion"/> element
+    ///     Thrown if there is no <see cref="SpriteSheetFrame"/> element
     ///     in this <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </exception>
-    public SpriteSheetRegion GetRegion(string name)
+    public SpriteSheetFrame GetRegion(string name)
     {
-        if (_regionLookup.TryGetValue(name, out SpriteSheetRegion? region))
+        if (_regionLookup.TryGetValue(name, out SpriteSheetFrame? region))
         {
             return region;
         }
@@ -169,64 +172,64 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetRegion>
     }
 
     /// <summary>
-    ///     Gets the <see cref="SpriteSheetRegion"/> element in this
+    ///     Gets the <see cref="SpriteSheetFrame"/> element in this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     THe name of the <see cref="SpriteSheetRegion"/>.
+    ///     THe name of the <see cref="SpriteSheetFrame"/>.
     /// </param>
     /// <param name="region">
     ///     When this method returns, contains the
-    ///     <see cref="SpriteSheetRegion"/> element that had the specified
+    ///     <see cref="SpriteSheetFrame"/> element that had the specified
     ///     <paramref name="name"/>, if one was found; otherwise,
     ///     <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if a <see cref="SpriteSheetRegion"/> element
+    ///     <see langword="true"/> if a <see cref="SpriteSheetFrame"/> element
     ///     was found in this <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>; otherwise, <see langword="false"/>.
     /// </returns>
-    public bool TryGetRegion(string name, out SpriteSheetRegion? region) =>
+    public bool TryGetRegion(string name, out SpriteSheetFrame? region) =>
         _regionLookup.TryGetValue(name, out region);
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetRegion"/> element with the specified
+    ///     <see cref="SpriteSheetFrame"/> element with the specified
     ///     <paramref name="regionName"/> from this <see cref="SpriteSheet"/>.
     /// </summary>
     /// <param name="regionName">
-    ///     The name of the <see cref="SpriteSheetRegion"/> element to use when
+    ///     The name of the <see cref="SpriteSheetFrame"/> element to use when
     ///     creating the <see cref="Sprite"/>.
     /// </param>
     /// <returns>
     ///     A new instance of the <see cref="Sprite"/> class initialized with
-    ///     the <see cref="SpriteSheetRegion"/> element with the specified
+    ///     the <see cref="SpriteSheetFrame"/> element with the specified
     ///     <paramref name="regionName"/> from this <see cref="SpriteSheet"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if there is no <see cref="SpriteSheetRegion"/> element
+    ///     Thrown if there is no <see cref="SpriteSheetFrame"/> element
     ///     in this <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </exception>
     public Sprite CreateSprite(string regionName)
     {
-        SpriteSheetRegion region = GetRegion(regionName);
+        SpriteSheetFrame region = GetRegion(regionName);
         return new Sprite(region);
     }
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetRegion"/> element at the specified
+    ///     <see cref="SpriteSheetFrame"/> element at the specified
     ///     <paramref name="regionIndex"/> in this <see cref="SpriteSheet"/>.
     /// </summary>
     /// <param name="regionIndex">
-    ///     The index of the <see cref="SpriteSheetRegion"/> element to use
+    ///     The index of the <see cref="SpriteSheetFrame"/> element to use
     ///     when creating the <see cref="Sprite"/>.
     /// </param>
     /// <returns>
     ///     A new instance of the <see cref="Sprite"/> class initialized with
-    ///     the <see cref="SpriteSheetRegion"/> element at the specified
+    ///     the <see cref="SpriteSheetFrame"/> element at the specified
     ///     <paramref name="regionIndex"/> in this <see cref="SpriteSheet"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -235,94 +238,219 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetRegion>
     /// </exception>
     public Sprite CreateSprite(int regionIndex)
     {
-        SpriteSheetRegion region = GetRegion(regionIndex);
+        SpriteSheetFrame region = GetRegion(regionIndex);
         return new Sprite(region);
     }
 
-    private void AddRegion(SpriteSheetRegion region)
+    private void AddRegion(SpriteSheetFrame region)
     {
+        _regions.Add(region);
         _regionLookup.Add(region.Name, region);
-        _regionMap.Add(region);
+        _regionMap.Add(region.Name, _regions.Count - 1);
     }
 
     /// <summary>
-    ///     Creates a new <see cref="SpriteSheetRegion"/> and adds it to the
+    ///     Creates a new <see cref="SpriteSheetFrame"/> and adds it to the
     ///     next index of this <see cref="SpriteSheet"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name to give the <see cref="SpriteSheetRegion"/>.
+    ///     The name to give the <see cref="SpriteSheetFrame"/>.
     /// </param>
-    /// <param name="x">
-    ///     The x-coordinate location of the upper-left corner of the
-    ///     <see cref="SpriteSheetRegion"/>.
-    /// </param>
-    /// <param name="y">
-    ///     The y-coordinate location of the upper-left corner of the
-    ///     <see cref="SpriteSheetRegion"/>.
-    /// </param>
-    /// <param name="width">
-    ///     The width, in pixels, of the <see cref="SpriteSheetRegion"/>.
-    /// </param>
-    /// <param name="height">
-    ///     The height, in pixels, of the <see cref="SpriteSheetRegion"/>.
+    /// <param name="bounds">
+    ///     The bounds of the <see cref="SpriteSheetFrame"/>.
     /// </param>
     /// <returns>
-    ///     A new instance of the <see cref="SpriteSheetRegion"/> class that is
+    ///     A new instance of the <see cref="SpriteSheetFrame"/> class that is
     ///     created by this method.
     /// </returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if a <see cref="SpriteSheetRegion"/> element has already
+    ///     Thrown if a <see cref="SpriteSheetFrame"/> element has already
     ///     been created for this <see cref="SpriteSheet"/> with the
     ///     specified <paramref name="name"/>.
     /// </exception>
-    public SpriteSheetRegion CreateRegion(string name, int x, int y, int width, int height)
+    public SpriteSheetFrame CreateFrame(string name, Rectangle bounds) =>
+        CreateFrame(name, bounds.X, bounds.Y, bounds.Width, bounds.Height, s_defaultDuration);
+
+    /// <summary>
+    ///     Creates a new <see cref="SpriteSheetFrame"/> and adds it to the
+    ///     next index of this <see cref="SpriteSheet"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name to give the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="bounds">
+    ///     The bounds of the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="duration">
+    ///     The duration of the <see cref="SpriteSheetFrame"/> when used in
+    ///     an animation.
+    /// </param>
+    /// <returns>
+    ///     A new instance of the <see cref="SpriteSheetFrame"/> class that is
+    ///     created by this method.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if a <see cref="SpriteSheetFrame"/> element has already
+    ///     been created for this <see cref="SpriteSheet"/> with the
+    ///     specified <paramref name="name"/>.
+    /// </exception>
+    public SpriteSheetFrame CreateFrame(string name, Rectangle bounds, TimeSpan duration) =>
+        CreateFrame(name, bounds.X, bounds.Y, bounds.Width, bounds.Height, duration);
+
+    /// <summary>
+    ///     Creates a new <see cref="SpriteSheetFrame"/> and adds it to the
+    ///     next index of this <see cref="SpriteSheet"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name to give the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="x">
+    ///     The x-coordinate location of the upper-left corner of the
+    ///     <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="y">
+    ///     The y-coordinate location of the upper-left corner of the
+    ///     <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="width">
+    ///     The width, in pixels, of the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="height">
+    ///     The height, in pixels, of the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <returns>
+    ///     A new instance of the <see cref="SpriteSheetFrame"/> class that is
+    ///     created by this method.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if a <see cref="SpriteSheetFrame"/> element has already
+    ///     been created for this <see cref="SpriteSheet"/> with the
+    ///     specified <paramref name="name"/>.
+    /// </exception>
+    public SpriteSheetFrame CreateFrame(string name, int x, int y, int width, int height) =>
+        CreateFrame(name, x, y, width, height, s_defaultDuration);
+
+
+    /// <summary>
+    ///     Creates a new <see cref="SpriteSheetFrame"/> and adds it to the
+    ///     next index of this <see cref="SpriteSheet"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name to give the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="x">
+    ///     The x-coordinate location of the upper-left corner of the
+    ///     <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="y">
+    ///     The y-coordinate location of the upper-left corner of the
+    ///     <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="width">
+    ///     The width, in pixels, of the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="height">
+    ///     The height, in pixels, of the <see cref="SpriteSheetFrame"/>.
+    /// </param>
+    /// <param name="duration">
+    ///     The duration of the <see cref="SpriteSheetFrame"/> when used in
+    ///     an animation.
+    /// </param>
+    /// <returns>
+    ///     A new instance of the <see cref="SpriteSheetFrame"/> class that is
+    ///     created by this method.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if a <see cref="SpriteSheetFrame"/> element has already
+    ///     been created for this <see cref="SpriteSheet"/> with the
+    ///     specified <paramref name="name"/>.
+    /// </exception>
+    public SpriteSheetFrame CreateFrame(string name, int x, int y, int width, int height, TimeSpan duration)
     {
         if (_regionLookup.ContainsKey(name))
         {
-            throw new InvalidOperationException($"A {nameof(SpriteSheetRegion)} with the name '{name}' has already been added to this {nameof(SpriteSheet)}.");
+            throw new InvalidOperationException($"A {nameof(SpriteSheetFrame)} with the name '{name}' has already been added to this {nameof(SpriteSheet)}.");
         }
 
-        SpriteSheetRegion region = new(name, Texture, x, y, width, height);
+        SpriteSheetFrame region = new(name, Texture, x, y, width, height, duration);
         AddRegion(region);
         return region;
     }
 
-    /// <summary>
-    ///     Creates a new <see cref="SpriteSheetRegion"/> and adds it to the
-    ///     next index of this <see cref="SpriteSheet"/>.
-    /// </summary>
-    /// <param name="name">
-    ///     The name to give the <see cref="SpriteSheetRegion"/>.
-    /// </param>
-    /// <param name="bounds">
-    ///     The bounds of the <see cref="SpriteSheetRegion"/>.
-    /// </param>
-    /// <returns></returns>
-    public SpriteSheetRegion CreateRegion(string name, Rectangle bounds) =>
-        CreateRegion(name, bounds.X, bounds.Y, bounds.Width, bounds.Height);
+
+
+    public SpriteSheetAnimationDefinition GetAnimationDefinition(string name)
+    {
+        if (_animationLookup.TryGetValue(name, out SpriteSheetAnimationDefinition? definition))
+        {
+            return definition;
+        }
+
+        throw new KeyNotFoundException($"No {nameof(SpriteSheetAnimationDefinition)} with the name '{name}' exists in this {nameof(SpriteSheet)}.");
+    }
+
+    public void AddAnimationDefinition(string name, params int[] frames) => AddAnimationDefinition(name, true, false, false, frames);
+
+    public void AddAnimationDefinition(string name, bool isLooping, bool isReversed, bool isPingPong, params int[] frames)
+    {
+        if (_animationLookup.ContainsKey(name))
+        {
+            throw new InvalidOperationException($"A {nameof(SpriteSheetAnimationDefinition)} with the name '{name}' has already been added to this {nameof(SpriteSheet)}.");
+        }
+
+        SpriteSheetAnimationDefinition definition = new(name, isLooping, isReversed, isPingPong, frames);
+        _animationLookup.Add(name, definition);
+    }
+
+    public void AddAnimationDefinition(string name, params string[] frames) => AddAnimationDefinition(name, true, false, false, frames);
+
+    public void AddAnimationDefinition(string name, bool isLooping, bool isReversed, bool isPingPong, params string[] frames)
+    {
+        if (_animationLookup.ContainsKey(name))
+        {
+            throw new InvalidOperationException($"A {nameof(SpriteSheetAnimationDefinition)} with the name '{name}' has already been added to this {nameof(SpriteSheet)}.");
+        }
+
+        int[] frameIndexes = new int[frames.Length];
+
+        for (int i = 0; i < frames.Length; i++)
+        {
+            if (_regionMap.TryGetValue(frames[i], out int index))
+            {
+                frameIndexes[i] = index;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"No {nameof(SpriteSheetFrame)} with the name '{frames[i]}' exists in this {nameof(SpriteSheet)}.");
+            }
+        }
+
+        SpriteSheetAnimationDefinition definition = new(name, isLooping, isReversed, isPingPong, frameIndexes);
+        _animationLookup.Add(name, definition);
+    }
 
 
     /// <summary>
     ///     Returns an enumerator that iterates through the
-    ///     <see cref="SpriteSheetRegion"/> elements in this
+    ///     <see cref="SpriteSheetFrame"/> elements in this
     ///     <see cref="SpriteSheet"/>.
     /// </summary>
     /// <returns>
     ///     A <see cref="List{T}.Enumerator"/> that iterates through the
-    ///     <see cref="SpriteSheetRegion"/> elements in this
+    ///     <see cref="SpriteSheetFrame"/> elements in this
     ///     <see cref="SpriteSheet"/>.
     /// </returns>
-    public IEnumerator<SpriteSheetRegion> GetEnumerator() => _regionMap.GetEnumerator();
+    public IEnumerator<SpriteSheetFrame> GetEnumerator() => _regions.GetEnumerator();
 
 
     /// <summary>
     ///     Returns an enumerator that iterates through the
-    ///     <see cref="SpriteSheetRegion"/> elements in this
+    ///     <see cref="SpriteSheetFrame"/> elements in this
     ///     <see cref="SpriteSheet"/>.
     /// </summary>
     /// <returns>
     ///     A <see cref="List{T}.Enumerator"/> that iterates through the
-    ///     <see cref="SpriteSheetRegion"/> elements in this
+    ///     <see cref="SpriteSheetFrame"/> elements in this
     ///     <see cref="SpriteSheet"/>.
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

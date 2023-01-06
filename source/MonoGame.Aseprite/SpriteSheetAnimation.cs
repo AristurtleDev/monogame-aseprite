@@ -33,20 +33,27 @@ public sealed class SpriteSheetAnimation
     public bool IsPingPong { get; set; }
     public bool IsPaused { get; set; }
     public bool IsAnimating { get; private set; }
-    public SpriteSheetAnimationFrame[] Frames { get; }
-    public SpriteSheetAnimationFrame CurrentFrame => Frames[_currentIndex];
+    public SpriteSheetFrame[] Frames { get; }
+    public SpriteSheetFrame CurrentFrame => Frames[_currentIndex];
+    public Action? OnFrameBegin { get; set; } = default;
+    public Action? OnFrameEnd { get; set; } = default;
+    public Action? OnAnimationLoop { get; set; } = default;
+    public Action? OnAnimationEnd { get; set; } = default;
+    // public SpriteSheetAnimationFrame[] Frames { get; }
+    // public SpriteSheetAnimationFrame CurrentFrame => Frames[_currentIndex];
 
     public TimeSpan CurrentFrameTimeRemaining { get; private set; }
 
-    public SpriteSheetAnimation(string name, SpriteSheetAnimationFrame[] frames, bool isLooping = true, bool isReversed = false, bool isPingPong = false)
+    public SpriteSheetAnimation(string name, SpriteSheetFrame[] frames, bool isLooping = true, bool isReversed = false, bool isPingPong = false)
     {
         Name = name;
         IsLooping = isLooping;
         IsReversed = isReversed;
         IsPingPong = isPingPong;
+        IsAnimating = true;
         Frames = frames;
 
-        if(isReversed)
+        if (isReversed)
         {
             _direction = -1;
             _currentIndex = frames.Length - 1;
@@ -58,17 +65,13 @@ public sealed class SpriteSheetAnimation
         }
     }
 
-    public SpriteSheetAnimation(string name, SpriteSheetAnimationFrame[] frames, SpriteSheetAnimationDefinition definition)
-        : this(name, frames, definition.IsLooping, definition.IsReversed, definition.IsPingPong) { }
-
     public void Update(GameTime gameTime)
     {
         if (IsAnimating && !IsPaused)
         {
             if (CurrentFrameTimeRemaining == CurrentFrame.Duration)
             {
-                //  TODO
-                // OnFrameBegin?.Invoke();
+                OnFrameBegin?.Invoke();
             }
 
             CurrentFrameTimeRemaining -= gameTime.ElapsedGameTime;
@@ -82,8 +85,7 @@ public sealed class SpriteSheetAnimation
 
     private void AdvanceFrame()
     {
-        // TODO
-        // OnFrameEnd?.Invoke()
+        OnFrameEnd?.Invoke();
 
         _currentIndex += _direction;
 
@@ -108,47 +110,47 @@ public sealed class SpriteSheetAnimation
 
     private void LoopCheck()
     {
-        if(_currentIndex >= Frames.Length)
+        if (_currentIndex >= Frames.Length)
         {
-            if(IsLooping)
+            if (IsLooping)
             {
                 _currentIndex = 0;
-                // OnAnimationLoop?.Invoke();
+                OnAnimationLoop?.Invoke();
             }
             else
             {
                 _currentIndex = Frames.Length - 1;
                 IsAnimating = false;
-                // OnAnimationEnd?.Invoke();
+                OnAnimationEnd?.Invoke();
             }
         }
     }
 
     private void ReverseLoopCheck()
     {
-        if(_currentIndex < 0)
+        if (_currentIndex < 0)
         {
             if (IsLooping)
             {
                 _currentIndex = Frames.Length - 1;
-                // OnAnimationLoop?.Invoke();
+                OnAnimationLoop?.Invoke();
             }
             else
             {
                 _currentIndex = 0;
                 IsAnimating = false;
-                // OnAnimationEnd?.Invoke();
+                OnAnimationEnd?.Invoke();
             }
         }
     }
 
     private void PingPongLoopCheck()
     {
-        if(_currentIndex < 0 || _currentIndex >= Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= Frames.Length)
         {
             _direction = -_direction;
 
-            if(_direction == -1)
+            if (_direction == -1)
             {
                 _currentIndex = Frames.Length - 2;
             }
@@ -157,13 +159,13 @@ public sealed class SpriteSheetAnimation
                 if (IsLooping)
                 {
                     _currentIndex = 1;
-                    // OnAnimationLoop?.Invoke();
+                    OnAnimationLoop?.Invoke();
                 }
                 else
                 {
                     _currentIndex = 0;
                     IsAnimating = false;
-                    // OnAnimationEnd?.Invoke();
+                    OnAnimationEnd?.Invoke();
                 }
             }
         }
@@ -171,11 +173,11 @@ public sealed class SpriteSheetAnimation
 
     private void ReversePingPongLoopCheck()
     {
-        if(_currentIndex < 0 || _currentIndex >= Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= Frames.Length)
         {
             _direction = -_direction;
 
-            if(_direction == 1)
+            if (_direction == 1)
             {
                 _currentIndex = 1;
             }
@@ -184,13 +186,13 @@ public sealed class SpriteSheetAnimation
                 if (IsLooping)
                 {
                     _currentIndex = Frames.Length - 2;
-                    // OnAnimationLoop?.Invoke();
+                    OnAnimationLoop?.Invoke();
                 }
                 else
                 {
                     _currentIndex = Frames.Length - 1;
                     IsAnimating = false;
-                    // OnAnimationEnd?().Invoke();
+                    OnAnimationEnd?.Invoke();
                 }
             }
         }
@@ -201,11 +203,11 @@ public sealed class SpriteSheetAnimation
         //  We can only pause something that is animating and is not already
         //  paused.  This is to prevent improper usage that could accidentally
         //  reset frame duration if it was set to true
-        if(IsAnimating && !IsPaused)
+        if (IsAnimating && !IsPaused)
         {
             IsPaused = true;
 
-            if(resetFrameDuration)
+            if (resetFrameDuration)
             {
                 CurrentFrameTimeRemaining = CurrentFrame.Duration;
             }
@@ -221,11 +223,11 @@ public sealed class SpriteSheetAnimation
         //  We can't unpause something that's not animating and also isn't
         //  paused.  This is to prevent improper usage that could accidentally
         //  advance to the next frame if it was set to true
-        if(IsAnimating && IsPaused)
+        if (IsAnimating && IsPaused)
         {
             IsPaused = false;
 
-            if(advanceToNextFrame)
+            if (advanceToNextFrame)
             {
                 AdvanceFrame();
             }
@@ -243,7 +245,7 @@ public sealed class SpriteSheetAnimation
         if (IsAnimating)
         {
             IsAnimating = false;
-            // OnAnimationEnd?.Invoke();
+            OnAnimationEnd?.Invoke();
             return true;
         }
 

@@ -25,7 +25,7 @@ namespace MonoGame.Aseprite;
 
 public class Sprite
 {
-    private SpriteSheetRegion _spriteSheetRegion;
+    private SpriteSheetFrame _spriteSheetRegion;
     private Vector2 _position;
     private Vector2 _scale;
     private SpriteEffects _spriteEffects;
@@ -34,7 +34,7 @@ public class Sprite
     ///     Gets or Sets the <see cref="SpriteSheetRegion"/> used by this
     ///     <see cref="Sprite"/>.
     /// </summary>
-    public SpriteSheetRegion SpriteSheetRegion
+    public SpriteSheetFrame SpriteSheetRegion
     {
         get => _spriteSheetRegion;
         set => _spriteSheetRegion = value;
@@ -197,7 +197,7 @@ public class Sprite
     ///     The <see cref="SpriteSheetRegion"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetRegion region)
+    public Sprite(SpriteSheetFrame region)
         : this(region, Vector2.Zero, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f) { }
 
     /// <summary>
@@ -207,7 +207,7 @@ public class Sprite
     ///     The <see cref="SpriteSheetRegion"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetRegion region, Vector2 position)
+    public Sprite(SpriteSheetFrame region, Vector2 position)
         : this(region, position, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f) { }
 
     /// <summary>
@@ -226,7 +226,7 @@ public class Sprite
     ///     The <see cref="Color"/> value to use as the color mask when
     ///     rendering this <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetRegion region, Vector2 position, Color color)
+    public Sprite(SpriteSheetFrame region, Vector2 position, Color color)
         : this(region, position, color, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f) { }
 
     /// <summary>
@@ -264,7 +264,7 @@ public class Sprite
     /// <param name="layerDepth">
     ///     The layer depth to apply when rendering this <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetRegion region, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+    public Sprite(SpriteSheetFrame region, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
     {
         _spriteSheetRegion = region;
         _position = position;

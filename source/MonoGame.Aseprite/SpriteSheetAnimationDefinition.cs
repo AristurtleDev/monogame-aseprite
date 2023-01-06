@@ -23,10 +23,14 @@ namespace MonoGame.Aseprite;
 public sealed class SpriteSheetAnimationDefinition
 {
     /// <summary>
-    ///     Gets the collection of <see cref="SpriteSheetAnimationFrame"/>
-    ///     elements in this <see cref="SpriteSheetAnimationDefinition"/>.
+    ///     Gets an array that contains the indexes of the
+    ///     <see cref="SpriteSheetFrame"/> elements that are played in the
+    ///     animation defined by this
+    ///     <see cref="SpriteSheetAnimationDefinition"/>.  Order of indexes is
+    ///     the order of the frames in the animation if it was playing from
+    ///     start to end in a forward direction.
     /// </summary>
-    public List<SpriteSheetAnimationFrame> Frames { get; } = new();
+    public int[] FrameIndexes { get; }
 
     /// <summary>
     ///     Gets the name of this <see cref="SpriteSheetAnimationDefinition"/>.
@@ -34,47 +38,24 @@ public sealed class SpriteSheetAnimationDefinition
     public string Name { get; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether the animation defined by
-    ///     this <see cref="SpriteSheetAnimationDefinition"/> should loop.
+    ///     Gets whether the animation defined by this
+    ///     <see cref="SpriteSheetAnimationDefinition"/> should loop.
     /// </summary>
-    public bool IsLooping { get; set; } = true;
+    public bool IsLooping { get; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether the animation defined by
-    ///     this <see cref="SpriteSheetAnimationDefinition"/> should play in
-    ///     reverse.
+    ///     Gets whether the animation defined by this
+    ///     <see cref="SpriteSheetAnimationDefinition"/> should play in reverse.
     /// </summary>
-    public bool IsReversed { get; set; } = false;
+    public bool IsReversed { get; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether the animation defined by
-    ///     this <see cref="SpriteSheetAnimationDefinition"/> should ping-pong.
+    ///     Gets whether the animation defined by this
+    ///     <see cref="SpriteSheetAnimationDefinition"/> should ping-pong.
     /// </summary>
-    public bool IsPingPong { get; set; } = false;
+    public bool IsPingPong { get; }
 
-    /// <summary>
-    ///     Initializes a new instance of the
-    ///     <see cref="SpriteSheetAnimationDefinition"/> class.
-    /// </summary>
-    /// <param name="name">
-    ///     The name of this <see cref="SpriteSheetAnimationDefinition"/>.
-    /// </param>
-    public SpriteSheetAnimationDefinition(string name) => Name = name;
 
-    /// <summary>
-    ///     Initializes a new instance of the
-    ///     <see cref="SpriteSheetAnimationDefinition"/> class with the
-    ///     collection of <see cref="SpriteSheetAnimationFrame"/> elements
-    ///     provided.
-    /// </summary>
-    /// <param name="name">
-    ///     The name of this <see cref="SpriteSheetAnimationDefinition"/>.
-    /// </param>
-    /// <param name="frames">
-    ///     The collection who's <see cref="SpriteSheetAnimationFrame"/>
-    ///     elements should be added to this
-    ///     <see cref="SpriteSheetAnimationDefinition"/>
-    /// </param>
-    public SpriteSheetAnimationDefinition(string name, IEnumerable<SpriteSheetAnimationFrame> frames)
-        : this(name) => Frames.AddRange(frames);
+    internal SpriteSheetAnimationDefinition(string name, bool isLooping, bool isReversed, bool isPingPong, int[] indexes) =>
+        (Name, IsLooping, IsReversed, IsPingPong, FrameIndexes) = (name, isLooping, isReversed, isPingPong, indexes);
 }

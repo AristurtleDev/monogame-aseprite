@@ -9,6 +9,7 @@ public class Game1 : Game
 {
     private SpriteSheet _sheet;
     private Sprite _sprite;
+    private AnimatedSprite _animatedSprite;
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
@@ -49,6 +50,9 @@ public class Game1 : Game
         // TODO: use this.Content to load your game content here
         _sheet = Content.Load<SpriteSheet>("adventurer");
         _sprite = _sheet.CreateSprite("frame_0");
+        _animatedSprite = new(_sheet, "attack3");
+
+
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData<Color>(new Color[] { Color.White });
     }
@@ -85,6 +89,8 @@ public class Game1 : Game
             if (_scale > 10) { _scale = 10; }
         }
 
+        _animatedSprite.Update(gameTime);
+
         base.Update(gameTime);
     }
 
@@ -110,6 +116,8 @@ public class Game1 : Game
     private void DrawSector(Rectangle rect, Color color)
     {
         _spriteBatch.Draw(_pixel, rect, color);
-        _spriteBatch.Draw(_sprite, position: new Vector2(rect.X, rect.Y), scale: new Vector2(_scale, _scale));
+        _spriteBatch.Draw(_animatedSprite, position: new Vector2(rect.X, rect.Y), scale: new Vector2(_scale, _scale));
+
+        // _spriteBatch.Draw(_sprite, position: new Vector2(rect.X, rect.Y), scale: new Vector2(_scale, _scale));
     }
 }
