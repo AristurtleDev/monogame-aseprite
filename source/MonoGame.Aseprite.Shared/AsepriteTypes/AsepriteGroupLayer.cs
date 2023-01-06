@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2022 Christopher Whitley
+Copyright (c) 2023 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,29 +21,62 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using System.Collections.ObjectModel;
+using System.Collections.Immutable;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
 ///     Represents a group layer in an Aseprite image.
 /// </summary>
-public sealed class AsepriteGroupLayer : AsepriteLayer
-{
-    private List<AsepriteLayer> _layers = new();
+/// <param name="Children">
+///     An <see cref="ImmutableArray{T}"/> of <see cref="AsepriteLayer"/>
+///     elements that are the children of this <see cref="AsepriteGroupLayer"/>.
+/// </param>
+/// <param name="IsVisible">
+///     Indicates whether the <see cref="AsepriteCel"/> elements that are on
+///     this <see cref="AsepriteLayer"/> are visible.
+/// </param>
+/// <param name="IsBackground">
+///     Indicates whether this <see cref="AsepriteGroupLayer"/> was marked as
+///     the background layer in the Aseprite UI.
+/// </param>
+/// <param name="IsReference">
+///     Indicates whether this <see cref="AsepriteGroupLayer"/> was marked as a
+///     reference layer in the Aseprite UI.
+/// </param>
+/// <param name="BlendMode">
+///     A <see cref="MonoGame.Aseprite.BlendMode"/> value that defines the type
+///     of pixel blending to use when the <see cref="AsepriteCel"/> elements on
+///     this <see cref="AsepriteGroupLayer"/> are blended with those below them.
+/// </param>
+/// <param name="Opacity">
+///     The opacity level of this <see cref="AsepriteGroupLayer"/>.
+/// </param>
+/// <param name="Name">
+///     The name of this <see cref="AsepriteGroupLayer"/>.
+/// </param>
+public sealed record AsepriteGroupLayer(ImmutableArray<AsepriteLayer> Children, bool IsVisible, bool IsBackground, bool IsReference, BlendMode BlendMode, int Opacity, string Name)
+    : AsepriteLayer(IsVisible, IsBackground, IsReference, BlendMode, Opacity, Name);
 
-    /// <summary>
-    ///     A read-only collection of all child layers of this group layer.
-    /// </summary>
-    public ReadOnlyCollection<AsepriteLayer> Children => _layers.AsReadOnly();
+// /// <summary>
+// ///     Represents a group layer in an Aseprite image.
+// /// </summary>
+// public sealed class AsepriteGroupLayer : AsepriteLayer
+// {
+//     private List<AsepriteLayer> _children = new();
 
-    /// <summary>
-    ///     The total number of children layers in this group layer.
-    /// </summary>
-    public int ChildCount => _layers.Count;
+//     /// <summary>
+//     ///     A <see cref="ReadOnlyCollection{T}"/> of <see cref="AsepriteLayer"/>
+//     ///     elements that are the children of this
+//     ///     <see cref="AsepriteGroupLayer"/>.
+//     /// </summary>
+//     public ReadOnlyCollection<AsepriteLayer> Children { get; }
 
-    internal AsepriteGroupLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name)
-        : base(isVisible, isBackground, isReference, blendMode, opacity, name) { }
+//     internal AsepriteGroupLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name)
+//         : base(isVisible, isBackground, isReference, blendMode, opacity, name)
+//     {
+//         Children = _children.AsReadOnly();
+//     }
 
-    internal void AddChild(AsepriteLayer layer) => _layers.Add(layer);
-}
+//     internal void AddChild(AsepriteLayer layer) => _children.Add(layer);
+// }

@@ -72,7 +72,6 @@ public sealed class SpriteSheetFrame
     /// </summary>
     public Point Size => new(Width, Height);
 
-
     /// <summary>
     ///     Gets the duration of this <see cref="SpriteSheetFrame"/> when it
     ///     is used as part of an animation.
@@ -80,9 +79,12 @@ public sealed class SpriteSheetFrame
     public TimeSpan Duration { get; }
 
     internal SpriteSheetFrame(string name, Texture2D texture, Rectangle region, TimeSpan duration)
+    {
+
+    }
         : this(name, texture, region.X, region.Y, region.Width, region.Height, duration) { }
 
-    internal SpriteSheetFrame(string name, Texture2D texture, int x, int y, int width, int height, TimeSpan duration) =>
-        (Name, Texture, X, Y, Width, Height, Duration) = (name, texture, x, y, width, height, duration);
+    // internal SpriteSheetFrame(string name, Texture2D texture, int x, int y, int width, int height, TimeSpan duration) =>
+    //     (Name, Texture, X, Y, Width, Height, Duration) = (name, texture, x, y, width, height, duration);
 
 }

@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2022 Christopher Whitley
+Copyright (c) 2023 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,52 +26,81 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// <summary>
 ///     Represents a layer in an Aseprite image.
 /// </summary>
-public abstract class AsepriteLayer
+/// <param name="IsVisible">
+///     Indicates whether the <see cref="AsepriteCel"/> elements that are on
+///     this <see cref="AsepriteLayer"/> are visible.
+/// </param>
+/// <param name="IsBackground">
+///     Indicates whether this <see cref="AsepriteLayer"/> was marked as the
+///     background layer in the Aseprite UI.
+/// </param>
+/// <param name="IsReference">
+///     Indicates whether this <see cref="AsepriteLayer"/> was marked as a
+///     reference layer in the Aseprite UI.
+/// </param>
+/// <param name="BlendMode">
+///     A <see cref="MonoGame.Aseprite.BlendMode"/> value that defines the type
+///     of pixel blending to use when the <see cref="AsepriteCel"/> elements on
+///     this <see cref="AsepriteLayer"/> are blended with those below them.
+/// </param>
+/// <param name="Opacity">
+///     The opacity level of this <see cref="AsepriteLayer"/>.
+/// </param>
+/// <param name="Name">
+///     The name of this <see cref="AsepriteLayer"/>.
+/// </param>
+public abstract record AsepriteLayer(bool IsVisible, bool IsBackground, bool IsReference, BlendMode BlendMode, int Opacity, string Name)
 {
-    /// <summary>
-    ///     Indicates whether the cels on this layer are visible.
-    /// </summary>
-    public bool IsVisible { get; }
-
-    /// <summary>
-    ///     Indicates whether this layer was marked as the background layer
-    ///     in Aseprite.
-    /// </summary>
-    public bool IsBackground { get; }
-
-    /// <summary>
-    ///     Indicates whether this layer is a reference layer.
-    /// </summary>
-    public bool IsReference { get; }
-
-    /// <summary>
-    ///     The blend mode to use when blending the cels of this layer with the
-    ///     layer below it.
-    /// </summary>
-    public BlendMode BlendMode { get; }
-
-    /// <summary>
-    ///     The opacity level of this layer.
-    /// </summary>
-    public int Opacity { get; }
-
-    /// <summary>
-    ///     The name of this layer.
-    /// </summary>
-    public string Name { get; }
-
-    /// <summary>
-    ///     The custom user data that was set for this layer in Aseprite.
-    /// </summary>
-    public AsepriteUserData UserData { get; } = new();
-
-    internal AsepriteLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blend, int opacity, string name)
-    {
-        IsVisible = isVisible;
-        IsBackground = isBackground;
-        IsReference = isReference;
-        BlendMode = blend;
-        Opacity = opacity;
-        Name = name;
-    }
+    public AsepriteUserData UserData { get; } = new(default, default);
 }
+
+// /// <summary>
+// ///     Represents a layer in an Aseprite image.
+// /// </summary>
+// public abstract class AsepriteLayer
+// {
+//     /// <summary>
+//     ///     Gets a value that indicates whether the <see cref="AsepriteCel"/>
+//     ///     elements that are on this <see cref="AsepriteLayer"/> are visible.
+//     /// </summary>
+//     public bool IsVisible { get; }
+
+//     /// <summary>
+//     ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/>
+//     ///     was marked as the background in Aseprite.
+//     /// </summary>
+//     public bool IsBackground { get; }
+
+//     /// <summary>
+//     ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/>
+//     ///     is a reference layer.
+//     /// </summary>
+//     public bool IsReference { get; }
+
+//     /// <summary>
+//     ///     Gets a <see cref="BlendMode"/> value that defines the type of
+//     ///     pixel blending to use when the <see cref="AsepriteCel"/> elements
+//     ///     on this <see cref="AsepriteLayer"/> are blended with those below
+//     ///     them.
+//     /// </summary>
+//     public BlendMode BlendMode { get; }
+
+//     /// <summary>
+//     ///     Gets the opacity level of this <see cref="AsepriteLayer"/>.
+//     /// </summary>
+//     public int Opacity { get; }
+
+//     /// <summary>
+//     ///     Gets the name of this <see cref="AsepriteLayer"/>.
+//     /// </summary>
+//     public string Name { get; }
+
+//     /// <summary>
+//     ///     Gets the <see cref="UserData"/> that was set for this
+//     ///     <see cref="AsepriteLayer"/> in Aseprite.
+//     /// </summary>
+//     public AsepriteUserData UserData { get; } = new();
+
+//     internal AsepriteLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blend, int opacity, string name) =>
+//         (IsVisible, IsBackground, IsReference, BlendMode, Opacity, Name) = (isVisible, isBackground, isReference, blend, opacity, name);
+// }

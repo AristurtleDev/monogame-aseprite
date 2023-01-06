@@ -27,54 +27,94 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 ///     Represents the tile data for a tile of a tilemap cel in an Aseprite
 ///     image.
 /// </summary>
-public sealed class AsepriteTile
-{
-    /// <summary>
-    ///     The ID of the tile in the tileset used by this tile.
-    /// </summary>
-    public int TilesetTileId { get; }
+/// <param name="TilesetTileId">
+///     The ID of the tile in the <see cref="AsepriteTileset"/> used by this
+///     <see cref="AsepriteTile"/>.
+/// </param>
+/// <param name="XFlip">
+///     <para>
+///         The x-flip value of this tile.
+///     </para>
+///     <para>
+///         As of the current Aseprite 1.3-beta, tile x-flip has not been
+///         implemented.  As such, this value will always be zero.
+///         <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+///     </para>
+/// </param>
+/// <param name="YFlip">
+///     <para>
+///         The y-flip value of this tile.
+///     </para>
+///     <para>
+///         As of the current Aseprite 1.3-beta, tile y-flip has not been
+///         implemented.  As such, this value will always be zero.
+///         <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+///     </para>
+/// </param>
+/// <param name="Rotation">
+///     <para>
+///         The 90deg clockwise rotation value of this tile.
+///     </para>
+///     <para>
+///         As of the current Aseprite 1.3-beta, tile rotation has not been
+///         implemented.  As such, this value will always be zero.
+///         <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+///     </para>
+/// </param>
+public sealed record AsepriteTile(int TilesetTileId, int XFlip, int YFlip, int Rotation);
 
-    /// <summary>
-    ///     The x-flip value of this tile.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         As of the current Aseprite 1.3-beta, tile x-flip has not been
-    ///         implemented. As such, this value will always be 0.
-    ///     </para>
-    ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
-    /// </remarks>
-    public int XFlip { get; }
+// /// <summary>
+// ///     Represents the tile data for a tile of a tilemap cel in an Aseprite
+// ///     image.
+// /// </summary>
+// public sealed class AsepriteTile
+// {
+//     /// <summary>
+//     ///     The ID of the tile in the tileset used by this tile.
+//     /// </summary>
+//     public int TilesetTileId { get; }
 
-    /// <summary>
-    ///     The y-flip value of this tile.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         As of the current Aseprite 1.3-beta, tile y-flip has not been
-    ///         implemented. As such, this value will always be 0.
-    ///     </para>
-    ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
-    /// </remarks>
-    public int YFlip { get; }
+//     /// <summary>
+//     ///     The x-flip value of this tile.
+//     /// </summary>
+//     /// <remarks>
+//     ///     <para>
+//     ///         As of the current Aseprite 1.3-beta, tile x-flip has not been
+//     ///         implemented. As such, this value will always be 0.
+//     ///     </para>
+//     ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+//     /// </remarks>
+//     public int XFlip { get; }
 
-    /// <summary>
-    ///     The 90deg clockwise rotation value of this tile.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         As of the current Aseprite 1.3-beta, tile rotation has not been
-    ///         implemented. As such, this value will always be 0.
-    ///     </para>
-    ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
-    /// </remarks>
-    public int Rotation { get; }
+//     /// <summary>
+//     ///     The y-flip value of this tile.
+//     /// </summary>
+//     /// <remarks>
+//     ///     <para>
+//     ///         As of the current Aseprite 1.3-beta, tile y-flip has not been
+//     ///         implemented. As such, this value will always be 0.
+//     ///     </para>
+//     ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+//     /// </remarks>
+//     public int YFlip { get; }
 
-    internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int rotation)
-    {
-        TilesetTileId = tilesetTileId;
-        XFlip = xFlip;
-        YFlip = yFlip;
-        Rotation = rotation;
-    }
-}
+//     /// <summary>
+//     ///     The 90deg clockwise rotation value of this tile.
+//     /// </summary>
+//     /// <remarks>
+//     ///     <para>
+//     ///         As of the current Aseprite 1.3-beta, tile rotation has not been
+//     ///         implemented. As such, this value will always be 0.
+//     ///     </para>
+//     ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+//     /// </remarks>
+//     public int Rotation { get; }
+
+//     internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int rotation)
+//     {
+//         TilesetTileId = tilesetTileId;
+//         XFlip = xFlip;
+//         YFlip = yFlip;
+//         Rotation = rotation;
+//     }
+// }

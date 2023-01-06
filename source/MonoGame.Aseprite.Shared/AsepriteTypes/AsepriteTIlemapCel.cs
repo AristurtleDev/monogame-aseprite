@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using System.Collections.ObjectModel;
+using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
@@ -29,97 +29,137 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// <summary>
 ///     Represents a cel that contains tile data in an Aseprite image.
 /// </summary>
-public sealed class AsepriteTilemapCel : AsepriteCel
+/// <param name="Size">
+///     <para>
+///         The width and height extents, in number of tiles, of this
+///         <see cref="AsepriteTilemapCel"/>.
+///     </para>
+///     <para>
+///         Note: as stated above, this is the width and height in "number of
+///         tiles", not in pixels.
+///     </para>
+/// </param>
+/// <param name="Tiles">
+///     An <see cref="ImmutableArray{T}"/> of the <see cref="AsepriteTile"/>
+///     elements that make up this <see cref="AsepriteTilemapCel"/>.  Tile order
+///     is from top-to-bottom, read left-to-right.
+/// </param>
+/// <param name="Layer">
+///     The <see cref="AsepriteLayer"/> this <see cref="AsepriteTilemapCel"/> is
+///     on.
+/// </param>
+/// <param name="Position">
+///     The x- and y-coordinate position of this
+///     <see cref="AsepriteTilemapCel"/> relative to the bounds of the
+///     <see cref="AsepriteFrame"/> it is in.
+/// </param>
+/// <param name="Opacity">
+///     The opacity level of this <see cref="AsepriteTilemapCel"/>.
+/// </param>
+public sealed record AsepriteTilemapCel(Size Size, ImmutableArray<AsepriteTile> Tiles, AsepriteLayer Layer, Point Position, int Opacity)
+    : AsepriteCel(Layer, Position, Opacity)
 {
-    private List<AsepriteTile> _tiles = new();
-
     /// <summary>
-    ///     The width and heigh extents, in number of tiles, of this tilemap
-    ///     cel.
+    ///     The <see cref="AsepriteTileset"/> used by this
+    ///     <see cref="AsepriteTilemapCel"/>.
     /// </summary>
-    /// <remarks>
-    ///     Note: as stated in the description above, this is the width and
-    ///     height in number of tiles, not in pixels.
-    /// </remarks>
-    public Point Size { get; }
-
-    /// <summary>
-    ///     The width, in number of tiles, of this tilemap cel.
-    /// </summary>
-    /// <remarks>
-    ///     Note: as stated in the description above, this is the width in
-    ///     number of tiles, not in pixels.
-    /// </remarks>
-    public int Width => Size.X;
-
-    /// <summary>
-    ///     The height, in number of tiles, of this tilemap cel.
-    /// </summary>
-    /// <remarks>
-    ///     Note: as stated in the description above, this is the height in
-    ///     number of tiles, not in pixels.
-    /// </remarks>
-    public int Height => Size.Y;
-
-    /// <summary>
-    ///     A read-only collection of the tile elements of this tilemap cel.
-    /// </summary>
-    public ReadOnlyCollection<AsepriteTile> Tiles => _tiles.AsReadOnly();
-
-    /// <summary>
-    ///     The total number of tile elements in this tilemap cel.
-    /// </summary>
-    public int TileCount => _tiles.Count;
-
-    /// <summary>
-    ///     Returns the tile element at the specified index from this tilemap
-    ///     cel.
-    /// </summary>
-    /// <param name="index">
-    ///     The index of the tile element.
-    /// </param>
-    /// <returns>
-    ///     The tile element at the specified index from this tilemap cel.
-    /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than
-    ///     or equal to the total number of tile elements in this tilemap cel.
-    /// </exception>
-    public AsepriteTile this[int index]
-    {
-        get
-        {
-            if (index < 0 || index >= TileCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
-
-            return Tiles[index];
-        }
-    }
-
-    /// <summary>
-    ///     The tileset used by this tilemap cel.
-    /// </summary>
-    public AsepriteTileset Tileset
-    {
-        get
-        {
-            if (Layer is AsepriteTilemapLayer tilemapLayer)
-            {
-                return tilemapLayer.Tileset;
-            }
-
-            //  This should theoretically never happen
-            throw new InvalidOperationException($"The layer of this cel is not a tilemap layer");
-        }
-    }
-
-    internal AsepriteTilemapCel(Point size, AsepriteLayer layer, Point position, int opacity)
-        : base(layer, position, opacity)
-    {
-        Size = size;
-    }
-
-    internal void AddTile(AsepriteTile tile) => _tiles.Add(tile);
+    public AsepriteTileset Tileset => LayerAs<AsepriteTilemapLayer>().Tileset;
 }
+
+// /// <summary>
+// ///     Represents a cel that contains tile data in an Aseprite image.
+// /// </summary>
+// public sealed class AsepriteTilemapCel : AsepriteCel
+// {
+//     private List<AsepriteTile> _tiles = new();
+
+//     /// <summary>
+//     ///     The width and heigh extents, in number of tiles, of this tilemap
+//     ///     cel.
+//     /// </summary>
+//     /// <remarks>
+//     ///     Note: as stated in the description above, this is the width and
+//     ///     height in number of tiles, not in pixels.
+//     /// </remarks>
+//     public Point Size { get; }
+
+//     /// <summary>
+//     ///     The width, in number of tiles, of this tilemap cel.
+//     /// </summary>
+//     /// <remarks>
+//     ///     Note: as stated in the description above, this is the width in
+//     ///     number of tiles, not in pixels.
+//     /// </remarks>
+//     public int Width => Size.X;
+
+//     /// <summary>
+//     ///     The height, in number of tiles, of this tilemap cel.
+//     /// </summary>
+//     /// <remarks>
+//     ///     Note: as stated in the description above, this is the height in
+//     ///     number of tiles, not in pixels.
+//     /// </remarks>
+//     public int Height => Size.Y;
+
+//     /// <summary>
+//     ///     A read-only collection of the tile elements of this tilemap cel.
+//     /// </summary>
+//     public ReadOnlyCollection<AsepriteTile> Tiles => _tiles.AsReadOnly();
+
+//     /// <summary>
+//     ///     The total number of tile elements in this tilemap cel.
+//     /// </summary>
+//     public int TileCount => _tiles.Count;
+
+//     /// <summary>
+//     ///     Returns the tile element at the specified index from this tilemap
+//     ///     cel.
+//     /// </summary>
+//     /// <param name="index">
+//     ///     The index of the tile element.
+//     /// </param>
+//     /// <returns>
+//     ///     The tile element at the specified index from this tilemap cel.
+//     /// </returns>
+//     /// <exception cref="ArgumentOutOfRangeException">
+//     ///     Thrown if the specified index is less than zero or is greater than
+//     ///     or equal to the total number of tile elements in this tilemap cel.
+//     /// </exception>
+//     public AsepriteTile this[int index]
+//     {
+//         get
+//         {
+//             if (index < 0 || index >= TileCount)
+//             {
+//                 throw new ArgumentOutOfRangeException(nameof(index));
+//             }
+
+//             return Tiles[index];
+//         }
+//     }
+
+//     /// <summary>
+//     ///     The tileset used by this tilemap cel.
+//     /// </summary>
+//     public AsepriteTileset Tileset
+//     {
+//         get
+//         {
+//             if (Layer is AsepriteTilemapLayer tilemapLayer)
+//             {
+//                 return tilemapLayer.Tileset;
+//             }
+
+//             //  This should theoretically never happen
+//             throw new InvalidOperationException($"The layer of this cel is not a tilemap layer");
+//         }
+//     }
+
+//     internal AsepriteTilemapCel(Point size, AsepriteLayer layer, Point position, int opacity)
+//         : base(layer, position, opacity)
+//     {
+//         Size = size;
+//     }
+
+//     internal void AddTile(AsepriteTile tile) => _tiles.Add(tile);
+// }

@@ -27,36 +27,79 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Represents custom user data that a user can set for a cel, layer, slice,
-///     or tag in an Aseprite image.
+///     Represents the custom user data that a user can set for a cel, layer,
+///     slice, or tag in an Aseprite image.
 /// </summary>
-public sealed class AsepriteUserData
+/// <param name="Text">
+///     The custom text value that was set for this
+///     <see cref="AsepriteUserData"/>.
+/// </param>
+/// <param name="Color">
+///     The custom color value that was set for this
+///     <see cref="AsepriteUserData"/>.
+/// </param>
+public sealed record AsepriteUserData(string? Text, Color? Color)
 {
     /// <summary>
-    ///     Indicates whether this user data has a text value.
+    ///     <para>
+    ///         Indicates whether this <see cref="AsepriteUserData"/> has
+    ///         a <see cref="AsepriteUserData.Text"/> value.
+    ///     </para>
+    ///     <para>
+    ///         When this returns <see langword="true"/> it guarantees that
+    ///         the <see cref="AsepriteUserData.Text"/> value of this
+    ///         instance  is not <see langword="null"/>.
+    ///     </para>
     /// </summary>
     [MemberNotNullWhen(true, nameof(Text))]
     public bool HasText => Text is not null;
 
     /// <summary>
-    ///     The text value for this user data, if one was set in Aseprite;
-    ///     otherwise, null.
-    /// </summary>
-    public string? Text { get; internal set; } = default;
-
-    /// <summary>
-    ///     Indicates whether this user data has a color value.
+    ///     <para>
+    ///         Indicates whether this <see cref="AsepriteUserData"/> has
+    ///         a <see cref="AsepriteUserData.Color"/> value.
+    ///     </para>
+    ///     <para>
+    ///         When this returns <see langword="true"/> it guarantees that
+    ///         the <see cref="AsepriteUserData.Color"/> value of this
+    ///         instance  is not <see langword="null"/>.
+    ///     </para>
     /// </summary>
     [MemberNotNullWhen(true, nameof(Color))]
     public bool HasColor => Color is not null;
-
-    /// <summary>
-    ///     The color value for this user data, if one was set in Aseprite;
-    ///     otherwise, null.
-    /// </summary>
-    public Color? Color { get; internal set; } = default;
-
-
-
-    internal AsepriteUserData() { }
 }
+
+// /// <summary>
+// ///     Represents custom user data that a user can set for a cel, layer, slice,
+// ///     or tag in an Aseprite image.
+// /// </summary>
+// public sealed class AsepriteUserData
+// {
+//     /// <summary>
+//     ///     Indicates whether this user data has a text value.
+//     /// </summary>
+//     [MemberNotNullWhen(true, nameof(Text))]
+//     public bool HasText => Text is not null;
+
+//     /// <summary>
+//     ///     The text value for this user data, if one was set in Aseprite;
+//     ///     otherwise, null.
+//     /// </summary>
+//     public string? Text { get; internal set; } = default;
+
+//     /// <summary>
+//     ///     Indicates whether this user data has a color value.
+//     /// </summary>
+//     [MemberNotNullWhen(true, nameof(Color))]
+//     public bool HasColor => Color is not null;
+
+//     /// <summary>
+//     ///     The color value for this user data, if one was set in Aseprite;
+//     ///     otherwise, null.
+//     /// </summary>
+//     public Color? Color { get; internal set; } = default;
+
+
+
+//     internal AsepriteUserData() { }
+// }

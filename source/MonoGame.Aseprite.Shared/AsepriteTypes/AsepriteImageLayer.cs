@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2022 Christopher Whitley
+Copyright (c) 2023 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,38 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 ///     Represents a layer in an Aseprite image that contains cels with image
 ///     data.
 /// </summary>
-public sealed class AsepriteImageLayer : AsepriteLayer
-{
-    internal AsepriteImageLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name)
-        : base(isVisible, isBackground, isReference, blendMode, opacity, name) { }
-}
+/// <param name="IsVisible">
+///     Indicates whether the <see cref="AsepriteCel"/> elements that are on
+///     this <see cref="AsepriteLayer"/> are visible.
+/// </param>
+/// <param name="IsBackground">
+///     Indicates whether this <see cref="AsepriteImageCel"/> was marked as the
+///     background layer in the Aseprite UI.
+/// </param>
+/// <param name="IsReference">
+///     Indicates whether this <see cref="AsepriteImageCel"/> was marked as a
+///     reference layer in the Aseprite UI.
+/// </param>
+/// <param name="BlendMode">
+///     A <see cref="MonoGame.Aseprite.BlendMode"/> value that defines the type
+///     of pixel blending to use when the <see cref="AsepriteCel"/> elements on
+///     this <see cref="AsepriteImageCel"/> are blended with those below them.
+/// </param>
+/// <param name="Opacity">
+///     The opacity level of this <see cref="AsepriteImageCel"/>.
+/// </param>
+/// <param name="Name">
+///     The name of this <see cref="AsepriteImageCel"/>.
+/// </param>
+public sealed record AsepriteImageLayer(bool IsVisible, bool IsBackground, bool IsReference, BlendMode BlendMode, int Opacity, string Name)
+    : AsepriteLayer(IsVisible, IsBackground, IsReference, BlendMode, Opacity, Name);
+
+// /// <summary>
+// ///     Represents a layer in an Aseprite image that contains cels with image
+// ///     data.
+// /// </summary>
+// public sealed class AsepriteImageLayer : AsepriteLayer
+// {
+//     internal AsepriteImageLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name)
+//         : base(isVisible, isBackground, isReference, blendMode, opacity, name) { }
+// }

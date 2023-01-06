@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2022 Christopher Whitley
+Copyright (c) 2023 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,80 +21,74 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using System.Collections.ObjectModel;
+using System.Collections.Immutable;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
 ///     Represents a named region slice in an Aseprite image.
 /// </summary>
-public sealed class AsepriteSlice
+/// <param name="IsNinePatch">
+///     Indicates whether the <see cref="AsepriteSliceKey"/> elements of this
+///     <see cref="AsepriteSlice"/> have nine-patch data.
+/// </param>
+/// <param name="HasPivot">
+///     Indicates whether the <see cref="AsepriteSliceKey"/> elements of this
+///     <see cref="AsepriteSlice"/> have pivot data.
+/// </param>
+/// <param name="Name">
+///     The name of this <see cref="AsepriteSlice"/>.
+/// </param>
+/// <param name="Keys">
+///     An <see cref="ImmutableArray{T}"/> of <see cref="AsepriteSliceKey"/>
+///     elements for this <see cref="AsepriteSlice"/>.
+/// </param>
+public sealed record AsepriteSlice(bool IsNinePatch, bool HasPivot, string Name, ImmutableArray<AsepriteSliceKey> Keys)
 {
-    private List<AsepriteSliceKey> _keys = new();
-
-    /// <summary>
-    ///     Indicates whether the keys of this slice have nine-patch values.
-    /// </summary>
-    public bool IsNinePatch { get; }
-
-    /// <summary>
-    ///     Indicates whether the keys of this slice have pivot values.
-    /// </summary>
-    public bool HasPivot { get; }
-
-    /// <summary>
-    ///     The name of this slice.
-    /// </summary>
-    public string Name { get; }
-
-    /// <summary>
-    ///     A read-only collection of all slice keys for this slice.
-    /// </summary>
-    public ReadOnlyCollection<AsepriteSliceKey> Keys => _keys.AsReadOnly();
-
-    /// <summary>
-    ///     The total number of slice keys in this slice.
-    /// </summary>
-    public int KeyCount => _keys.Count;
-
-    /// <summary>
-    ///     Returns the slice key at the specified index in this slice.
-    /// </summary>
-    /// <param name="index">
-    ///     The index of the slice key.
-    /// </param>
-    /// <returns>
-    ///     The slice key at the specified index.
-    /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the index specified is less than zero or is greater than
-    ///     or equal to the total number of keys in this slice.
-    /// </exception>
-    public AsepriteSliceKey this[int index]
-    {
-        get
-        {
-            if (index < 0 || index >= KeyCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
-
-            return _keys[index];
-        }
-    }
-
-    /// <summary>
-    ///     The custom user data that was set for this slice in Aseprite.
-    /// </summary>
-    public AsepriteUserData UserData { get; } = new();
-
-
-    internal AsepriteSlice(string name, bool isNine, bool hasPivot)
-    {
-        Name = name;
-        IsNinePatch = isNine;
-        HasPivot = hasPivot;
-    }
-
-    internal void AddKey(AsepriteSliceKey key) => _keys.Add(key);
+    public AsepriteUserData UserData { get; } = new(default default);
 }
+
+// /// <summary>
+// ///     Represents a named region slice in an Aseprite image.
+// /// </summary>
+// public sealed class AsepriteSlice
+// {
+//     /// <summary>
+//     ///     Gets a value that indicates whether the
+//     ///     <see cref="AsepriteSliceKey"/> elements of this
+//     ///     <see cref="AsepriteSlice"/> have nine-patch values.
+//     /// </summary>
+//     public bool IsNinePatch { get; }
+
+//     /// <summary>
+//     ///     Gets a value that indicates whether the
+//     ///     <see cref="AsepriteSliceKey"/> elements of this
+//     ///     <see cref="AsepriteSlice"/> have pivot values.
+//     /// </summary>
+//     public bool HasPivot { get; }
+
+//     /// <summary>
+//     ///     Gets the name of this <see cref="AsepriteSlice"/>.
+//     /// </summary>
+//     public string Name { get; }
+
+//     /// <summary>
+//     ///     A read-only collection of all slice keys for this slice.
+//     /// </summary>
+//     public ReadOnlyCollection<AsepriteSliceKey> Keys { get; }
+
+//     /// <summary>
+//     ///     Gets the <see cref="UserData"/> that was set for this
+//     ///     <see cref="AsepriteSlice"/> in Aseprite.
+//     /// </summary>
+//     public AsepriteUserData UserData { get; } = new();
+
+
+//     internal AsepriteSlice(string name, bool isNine, bool hasPivot, List<AsepriteSliceKey> keys)
+//     {
+//         Name = name;
+//         IsNinePatch = isNine;
+//         HasPivot = hasPivot;
+//         Keys = keys.AsReadOnly();
+//     }
+// }

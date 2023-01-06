@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using System.Collections.ObjectModel;
+using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
@@ -29,107 +29,174 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// <summary>
 ///     Represents a tileset used by tilemap cels in an Aseprite image.
 /// </summary>
-public sealed class AsepriteTileset
+/// <param name="ID">
+///     The ID of this <see cref="AsepriteTileset"/>.
+/// </param>
+/// <param name="Count">
+///     The total number of tiles in this <see cref="AsepriteTileset"/>.
+/// </param>
+/// <param name="TileSize">
+///     The width and height extents, in pixels, of each tile in this
+///     <see cref="AsepriteTileset"/>.
+/// </param>
+/// <param name="Size">
+///     The width and height extents, in pixels, of the image representation of
+///     this <see cref="AsepriteTileset"/>.
+/// </param>
+/// <param name="Name">
+///     The nme of this <see cref="AsepriteTileset"/>.
+/// </param>
+/// <param name="Pixels">
+///     An <see cref="ImmutableArray{T}"/> of
+///     <see cref="Microsoft.Xna.Framework.Color"/> elements that represent the
+///     pixels that make up the image of this <see cref="TileSize"/>.  Pixel
+///     order is from top-to-bottom, read left-to-right.
+/// </param>
+public sealed record AsepriteTileset(int ID, int Count, Size TileSize, Size Size, string Name, ImmutableArray<Color> Pixels)
 {
-    private Color[] _pixels;
-
     /// <summary>
-    ///     The ID of this tileset.
+    ///     Returns an <see cref="ImmutableArray{T}"/> of
+    ///     <see cref="Microsoft.Xna.Framework.Color"/> elements that represent
+    ///     the pixels that make up the image of the tile in this
+    ///     <see cref="AsepriteTileset"/> with the specified
+    ///     <paramref name="tileID"/>.
     /// </summary>
-    public int ID { get; }
-
-    /// <summary>
-    ///     The total number of tiles in this tileset.
-    /// </summary>
-    public int TileCount { get; }
-
-    /// <summary>
-    ///     The width and height extents, in pixels, of each tile in this
-    ///     tileset
-    /// </summary>
-    public Point TileSize { get; }
-
-    /// <summary>
-    ///     The width, in pixels, of each tile in this tileset.
-    /// </summary>
-    public int TileWidth => TileSize.X;
-
-    /// <summary>
-    ///     The height, in pixels, of each tile in this tileset.
-    /// </summary>
-    public int TileHeight => TileSize.Y;
-
-    /// <summary>
-    ///     The name of this tileset.
-    /// </summary>
-    public string Name { get; }
-
-    /// <summary>
-    ///     A read-only collection of the pixel data for this tileset. Pixels
-    ///     are in order of top-to-bottom, read left-to-right.
-    /// </summary>
-    public ReadOnlyCollection<Color> Pixels => Array.AsReadOnly<Color>(_pixels);
-
-    /// <summary>
-    ///     The total number of pixels in this tileset.
-    /// </summary>
-    public int PixelCount => _pixels.Length;
-
-    /// <summary>
-    ///     The width and height extents, in pixels, of this tileset.
-    /// </summary>
-    public Point Size { get; }
-
-    /// <summary>
-    ///     The width, in pixels, of this tileset.
-    /// </summary>
-    public int Width => Size.X;
-
-    /// <summary>
-    ///     THe height, in pixels, of this tileset.
-    /// </summary>
-    public int Height => Size.Y;
-
-    /// <summary>
-    ///     Returns a new array containing the color data for all pixels that
-    ///     make up the image for the tile at the specified index from this
-    ///     tileset. Pixel order is from top-to-bottom, read left-to-right
-    /// </summary>
-    /// <param name="tileId">
-    ///     The index of the tile in this tileset.
+    /// <param name="tileID">
+    ///     The ID of the tile in this <see cref="AsepriteTileset"/> to get
+    ///     the pixel data of.
     /// </param>
     /// <returns>
-    ///     A new array containing the color data for all pixels that make up
-    ///     the image for the tile at the specified index from this tileset.
-    ///     Pixel order is from top-to-bottom, read left-to-right
+    ///     An <see cref="ImmutableArray{T}"/> of
+    ///     <see cref="Microsoft.Xna.Framework.Color"/> elements that represent
+    ///     the pixels that make up the image of the tile in this
+    ///     <see cref="AsepriteTileset"/> with the specified
+    ///     <paramref name="tileID"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than
-    ///     or equal to the total number of tiles in this tileset.
+    ///     Thrown if the specified <paramref name="tileID"/> is less than zero
+    ///     or is greater than or equal to the total number of tiles in this
+    ///     <see cref="AsepriteTileset"/>.
     /// </exception>
-    public Color[] this[int tileId]
+    public ImmutableArray<Color> this[int tileID]
     {
         get
         {
-            if (tileId < 0 || tileId >= TileCount)
+            if (tileID < 0 || tileID >= Count)
             {
-                throw new ArgumentOutOfRangeException(nameof(tileId));
+                throw new ArgumentOutOfRangeException(nameof(tileID));
             }
 
-            int len = TileWidth * TileHeight;
-            return _pixels[(tileId * len)..((tileId * len) + len)];
+            int len = Size.Width * Size.Height;
+
+            return ImmutableArray.Create(Pixels, tileID * len, len);
         }
     }
-
-    internal AsepriteTileset(int id, int count, Point size, string name, Color[] pixels)
-    {
-        ID = id;
-        TileCount = count;
-        TileSize = size;
-        Name = name;
-        _pixels = pixels;
-
-        //  Aseprite stores tileset images as a vertical strip
-        Size = new(TileWidth, TileHeight * TileCount);
-    }
 }
+
+// /// <summary>
+// ///     Represents a tileset used by tilemap cels in an Aseprite image.
+// /// </summary>
+// public sealed class AsepriteTileset
+// {
+//     private Color[] _pixels;
+
+//     /// <summary>
+//     ///     The ID of this tileset.
+//     /// </summary>
+//     public int ID { get; }
+
+//     /// <summary>
+//     ///     The total number of tiles in this tileset.
+//     /// </summary>
+//     public int TileCount { get; }
+
+//     /// <summary>
+//     ///     The width and height extents, in pixels, of each tile in this
+//     ///     tileset
+//     /// </summary>
+//     public Point TileSize { get; }
+
+//     /// <summary>
+//     ///     The width, in pixels, of each tile in this tileset.
+//     /// </summary>
+//     public int TileWidth => TileSize.X;
+
+//     /// <summary>
+//     ///     The height, in pixels, of each tile in this tileset.
+//     /// </summary>
+//     public int TileHeight => TileSize.Y;
+
+//     /// <summary>
+//     ///     The name of this tileset.
+//     /// </summary>
+//     public string Name { get; }
+
+//     /// <summary>
+//     ///     A read-only collection of the pixel data for this tileset. Pixels
+//     ///     are in order of top-to-bottom, read left-to-right.
+//     /// </summary>
+//     public ReadOnlyCollection<Color> Pixels => Array.AsReadOnly<Color>(_pixels);
+
+//     /// <summary>
+//     ///     The total number of pixels in this tileset.
+//     /// </summary>
+//     public int PixelCount => _pixels.Length;
+
+//     /// <summary>
+//     ///     The width and height extents, in pixels, of this tileset.
+//     /// </summary>
+//     public Point Size { get; }
+
+//     /// <summary>
+//     ///     The width, in pixels, of this tileset.
+//     /// </summary>
+//     public int Width => Size.X;
+
+//     /// <summary>
+//     ///     THe height, in pixels, of this tileset.
+//     /// </summary>
+//     public int Height => Size.Y;
+
+//     /// <summary>
+//     ///     Returns a new array containing the color data for all pixels that
+//     ///     make up the image for the tile at the specified index from this
+//     ///     tileset. Pixel order is from top-to-bottom, read left-to-right
+//     /// </summary>
+//     /// <param name="tileId">
+//     ///     The index of the tile in this tileset.
+//     /// </param>
+//     /// <returns>
+//     ///     A new array containing the color data for all pixels that make up
+//     ///     the image for the tile at the specified index from this tileset.
+//     ///     Pixel order is from top-to-bottom, read left-to-right
+//     /// </returns>
+//     /// <exception cref="ArgumentOutOfRangeException">
+//     ///     Thrown if the specified index is less than zero or is greater than
+//     ///     or equal to the total number of tiles in this tileset.
+//     /// </exception>
+//     public Color[] this[int tileId]
+//     {
+//         get
+//         {
+//             if (tileId < 0 || tileId >= TileCount)
+//             {
+//                 throw new ArgumentOutOfRangeException(nameof(tileId));
+//             }
+
+//             int len = TileWidth * TileHeight;
+//             return _pixels[(tileId * len)..((tileId * len) + len)];
+//         }
+//     }
+
+//     internal AsepriteTileset(int id, int count, Point size, string name, Color[] pixels)
+//     {
+//         ID = id;
+//         TileCount = count;
+//         TileSize = size;
+//         Name = name;
+//         _pixels = pixels;
+
+//         //  Aseprite stores tileset images as a vertical strip
+//         Size = new(TileWidth, TileHeight * TileCount);
+//     }
+// }

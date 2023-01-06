@@ -27,16 +27,52 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 ///     Represents a layer in an Aseprite image that contains cels with tile
 ///     data.
 /// </summary>
-public sealed class AsepriteTilemapLayer : AsepriteLayer
-{
-    /// <summary>
-    ///     A reference to the tileset used by the tilemap cels on this layer.
-    /// </summary>
-    public AsepriteTileset Tileset { get; }
+/// <param name="Tileset">
+///     The <see cref="AsepriteTileset"/> used by the
+///     <see cref="AsepriteTilemapCel"/> elements on this
+///     <see cref="AsepriteTilemapLayer"/>.
+/// </param>
+/// <param name="IsVisible">
+///     Indicates whether the <see cref="AsepriteCel"/> elements that are on
+///     this <see cref="AsepriteTilemapLayer"/> are visible.
+/// </param>
+/// <param name="IsBackground">
+///     Indicates whether this <see cref="AsepriteTilemapLayer"/> was marked as
+///     the background layer in the Aseprite UI.
+/// </param>
+/// <param name="IsReference">
+///     Indicates whether this <see cref="AsepriteTilemapLayer"/> was marked as
+///     a reference layer in the Aseprite UI.
+/// </param>
+/// <param name="BlendMode">
+///     A <see cref="MonoGame.Aseprite.BlendMode"/> value that defines the type
+///     of pixel blending to use when the <see cref="AsepriteCel"/> elements on
+///     this <see cref="AsepriteTilemapLayer"/> are blended with those below
+///     them.
+/// </param>
+/// <param name="Opacity">
+///     The opacity level of this <see cref="AsepriteTilemapLayer"/>.
+/// </param>
+/// <param name="Name">
+///     The name of this <see cref="AsepriteTilemapLayer"/>.
+/// </param>
+public sealed record AsepriteTilemapLayer(AsepriteTileset Tileset, bool IsVisible, bool IsBackground, bool IsReference, BlendMode BlendMode, int Opacity, string Name)
+    : AsepriteLayer(IsVisible, IsBackground, IsReference, BlendMode, Opacity, Name);
 
-    internal AsepriteTilemapLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name, AsepriteTileset tileset)
-        : base(isVisible, isBackground, isReference, blend, opacity, name)
-    {
-        Tileset = tileset;
-    }
-}
+// /// <summary>
+// ///     Represents a layer in an Aseprite image that contains cels with tile
+// ///     data.
+// /// </summary>
+// public sealed class AsepriteTilemapLayer : AsepriteLayer
+// {
+//     /// <summary>
+//     ///     A reference to the tileset used by the tilemap cels on this layer.
+//     /// </summary>
+//     public AsepriteTileset Tileset { get; }
+
+//     internal AsepriteTilemapLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name, AsepriteTileset tileset)
+//         : base(isVisible, isBackground, isReference, blend, opacity, name)
+//     {
+//         Tileset = tileset;
+//     }
+// }

@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Runtime.CompilerServices;
@@ -99,7 +100,8 @@ internal sealed class AsepriteFileReader : IDisposable
         }
 
         Point size = new(_width, _height);
-        AsepritePalette palette = new(_palette, _transparentIndex);
+        AsepritePalette palette = new(_transparentIndex, _palette.ToImmutableArray());
+        // AsepritePalette palette = new(_palette, _transparentIndex);
 
         AsepriteFile file = new(_name, size, palette, _frames, _layers, _tags, _slices, _tilesets);
         return file;
@@ -178,6 +180,7 @@ internal sealed class AsepriteFileReader : IDisposable
         uint nChunks = nChunksA == 0xFFFF && nChunksA < nChunksB ?
                        nChunksB :
                        nChunksA;
+
 
         AsepriteFrame frame = new(new Point(_width, _height), duration);
         _frames.Add(frame);
@@ -340,10 +343,10 @@ internal sealed class AsepriteFileReader : IDisposable
         byte[] data = _reader.ReadBytes(len);   //  Raw Image Data
 
 
-        Point size = new(width, height);
+        Size size = new(width, height);
         Color[] pixels = ToColor(data);
 
-        return new(size, pixels, layer, position, opacity);
+        return new(size, pixels.ToImmutableArray(), layer, position, opacity);
     }
 
     private AsepriteCel ReadLinkedCel(AsepriteFrame frame)
@@ -363,10 +366,10 @@ internal sealed class AsepriteFileReader : IDisposable
 
         data = Decompress(data);
 
-        Point size = new(width, height);
+        Size size = new(width, height);
         Color[] pixels = ToColor(data);
 
-        return new(size, pixels, layer, position, opacity);
+        return new(size, pixels.ToImmutableArray(), layer, position, opacity);
     }
 
     private AsepriteTilemapCel ReadCompressedTilemapCel(AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
@@ -387,13 +390,12 @@ internal sealed class AsepriteFileReader : IDisposable
 
         data = Decompress(data);
 
-        Point size = new(width, height);
+        Size size = new(width, height);
 
         int bytesPerTile = bitsPerTile / 8;
         int tileCount = data.Length / bytesPerTile;
-        List<AsepriteTile> tiles = new(tileCount);
+        AsepriteTile[] tiles = new AsepriteTile[tileCount];
 
-        AsepriteTilemapCel cel = new(size, layer, position, opacity);
 
         for (int i = 0, b = 0; i < tileCount; i++, b += bytesPerTile)
         {
@@ -404,12 +406,10 @@ internal sealed class AsepriteFileReader : IDisposable
             uint yFlip = (value & yFlipBitmask);
             uint rotation = (value & rotationBitmask);
 
-            AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
-            cel.AddTile(tile);
+            tiles[i] = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
         }
 
-        Debug.Assert(cel.TileCount == tileCount);
-
+        AsepriteTilemapCel cel = new(size, tiles.ToImmutableArray(), layer, position, opacity);
         return cel;
     }
 
@@ -486,9 +486,8 @@ internal sealed class AsepriteFileReader : IDisposable
         bool isNinePatch = HasFlag(flags, FLAG_IS_NINE_PATCH);
         bool hasPivot = HasFlag(flags, FLAG_HAS_PIVOT);
 
-        List<AsepriteSliceKey> keys = new();
+        AsepriteSliceKey[] keys = new AsepriteSliceKey[count];
 
-        AsepriteSlice slice = new(name, isNinePatch, hasPivot);
 
         for (uint i = 0; i < count; i++)
         {
@@ -521,9 +520,10 @@ internal sealed class AsepriteFileReader : IDisposable
             }
 
             AsepriteSliceKey key = new((int)start, bounds, center, pivot);
-            slice.AddKey(key);
+            keys[i] = key;
         }
 
+        AsepriteSlice slice = new(isNinePatch, hasPivot, name, keys.ToImmutableArray());
         _slices.Add(slice);
     }
 
@@ -557,9 +557,10 @@ internal sealed class AsepriteFileReader : IDisposable
         data = Decompress(data);
 
         Color[] pixels = ToColor(data);
-        Point size = new(width, height);
+        Size tileSize = new(width, height);
+        Size size = new(width, (int)(height * count));
 
-        AsepriteTileset tileset = new((int)id, (int)count, size, name, pixels);
+        AsepriteTileset tileset = new((int)id, (int)count, tileSize, size, name, pixels.ToImmutableArray());
         _tilesets.Add(tileset);
 
     }
@@ -594,12 +595,15 @@ internal sealed class AsepriteFileReader : IDisposable
         switch (_lastUserDataChunkType)
         {
             case CHUNK_TYPE_CEL:
+                int frameIndex = _frames.Count - 1;
+
                 AsepriteFrame frame = _frames[_frames.Count - 1];
                 AsepriteCel cel = frame.Cels[frame.Cels.Count - 1];
                 userData = cel.UserData;
                 break;
             case CHUNK_TYPE_LAYER:
                 AsepriteLayer layer = _layers[_layers.Count - 1];
+                _layers[_layers.Count - 1] = layer with { UserData = new(text, color) };
                 userData = layer.UserData;
                 break;
             case CHUNK_TYPE_SLICE:
@@ -629,6 +633,26 @@ internal sealed class AsepriteFileReader : IDisposable
 
         userData.Text = text;
         userData.Color = color;
+    }
+
+    private void SetLastCelUserData(string? text, Color? color)
+    {
+
+    }
+
+    private void SetLastLayerUserData(string? text, Color? color)
+    {
+
+    }
+
+    private void SetLastSliceUserData(string? text, Color? color)
+    {
+
+    }
+
+    private void SetNextTagUserData(string? text, Color? color)
+    {
+
     }
 
 
