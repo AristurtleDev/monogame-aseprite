@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
@@ -43,9 +44,25 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 ///     An <see cref="ImmutableArray{T}"/> of <see cref="AsepriteSliceKey"/>
 ///     elements for this <see cref="AsepriteSlice"/>.
 /// </param>
-public sealed record AsepriteSlice(bool IsNinePatch, bool HasPivot, string Name, ImmutableArray<AsepriteSliceKey> Keys)
+/// <param name="UserData">
+///     The custom user data set for this <see cref="AsepriteSlice"/> in
+///     Aseprite, if any was set; otherwise, <see langword="null"/>.
+/// </param>
+public sealed record AsepriteSlice(bool IsNinePatch, bool HasPivot, string Name, ImmutableArray<AsepriteSliceKey> Keys, AsepriteUserData? UserData = default)
 {
-    public AsepriteUserData UserData { get; } = new(default default);
+    /// <summary>
+    ///     <para>
+    ///         Indicates whether this <see cref="AsepriteSlice"/> has user
+    ///         data.
+    ///     </para>
+    ///     <para>
+    ///         When this returns <see langword="true"/> it guarantees that
+    ///         the <see cref="AsepriteSlice.UserData"/> value of this instance
+    ///         is not <see langword="null"/>.
+    ///     </para>
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(UserData))]
+    public bool HasUserData => UserData is not null;
 }
 
 // /// <summary>

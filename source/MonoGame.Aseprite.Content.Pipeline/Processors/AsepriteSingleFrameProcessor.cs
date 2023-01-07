@@ -18,6 +18,7 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ----------------------------------------------------------------------------- */
+using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -73,15 +74,14 @@ public sealed class AsepriteSingleFrameProcessor : ContentProcessor<AsepriteFile
     /// </exception>
     public override AsepriteSingleFrameProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
-        if(FrameIndex < 0 || FrameIndex >= file.Frames.Count)
+        if (FrameIndex < 0 || FrameIndex >= file.Frames.Count)
         {
             throw new IndexOutOfRangeException("The 'Frame Index' cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file");
         }
 
-        Color[] pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
-        int width = file.FrameWidth;
-        int height = file.FrameHeight;
+        ImmutableArray<Color> pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
+        Size size = new(file.FrameWidth, file.FrameHeight);
 
-        return new AsepriteSingleFrameProcessorResult(width, height, pixels);
+        return new AsepriteSingleFrameProcessorResult(size, pixels);
     }
 }

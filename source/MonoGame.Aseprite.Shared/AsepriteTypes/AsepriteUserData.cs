@@ -38,7 +38,7 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 ///     The custom color value that was set for this
 ///     <see cref="AsepriteUserData"/>.
 /// </param>
-public sealed record AsepriteUserData(string? Text, Color? Color)
+public sealed record AsepriteUserData(string? Text = default, Color? Color = default)
 {
     /// <summary>
     ///     <para>

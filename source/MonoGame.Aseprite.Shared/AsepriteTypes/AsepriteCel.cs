@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
@@ -38,9 +39,25 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// <param name="Opacity">
 ///     The opacity level of this <see cref="AsepriteCel"/>.
 /// </param>
-public abstract record AsepriteCel(AsepriteLayer Layer, Point Position, int Opacity)
+/// <param name="UserData">
+///     The custom user data set for this <see cref="AsepriteCel"/> in
+///     Aseprite, if any was set; otherwise, <see langword="null"/>.
+/// </param>
+public abstract record AsepriteCel(AsepriteLayer Layer, Point Position, int Opacity, AsepriteUserData? UserData = null)
 {
-    public AsepriteUserData UserData { get; } = new(default, default);
+    /// <summary>
+    ///     <para>
+    ///         Indicates whether this <see cref="AsepriteCel"/> has user
+    ///         data.
+    ///     </para>
+    ///     <para>
+    ///         When this returns <see langword="true"/> it guarantees that
+    ///         the <see cref="AsepriteCel.UserData"/> value of this instance
+    ///         is not <see langword="null"/>.
+    ///     </para>
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(UserData))]
+    public bool HasUserData => UserData is not null;
 
     /// <summary>
     ///     Returns the <see cref="AsepriteCel.Layer"/> reference of this

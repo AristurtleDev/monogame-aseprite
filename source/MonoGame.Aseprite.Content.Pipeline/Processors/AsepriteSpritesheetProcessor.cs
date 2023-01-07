@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
+using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -74,16 +75,16 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
     public override AsepriteSpritesheetProcessorResult Process(AsepriteFile input, ContentProcessorContext context)
     {
-        List<Frame> frames = GetFrames(input, out int width, out int height, out Color[] pixels);
-        List<Tag> tags = GetTags(input);
-        List<Slice> slices = GetSlices(input);
+        ImmutableArray<Frame> frames = GetFrames(input, out int width, out int height, out Color[] pixels);
+        ImmutableArray<Tag> tags = GetTags(input);
+        ImmutableArray<Slice> slices = GetSlices(input);
 
-        return new AsepriteSpritesheetProcessorResult(input.Name, width, height, pixels, frames, tags, slices);
+        return new AsepriteSpritesheetProcessorResult(input.Name, new Size(width, height), pixels.ToImmutableArray(), frames, tags, slices);
     }
 
-    private List<Frame> GetFrames(AsepriteFile file, out int width, out int height, out Color[] pixels)
+    private ImmutableArray<Frame> GetFrames(AsepriteFile file, out int width, out int height, out Color[] pixels)
     {
-        List<Color[]> flattenedFrames = new();
+        List<ImmutableArray<Color>> flattenedFrames = new();
 
         for (int i = 0; i < file.Frames.Count; i++)
         {
@@ -155,7 +156,7 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
                 //  Inject the pixel color data from the frame into the final
                 //  spritesheet image
-                Color[] framePixels = flattenedFrames[fNum];
+                ImmutableArray<Color> framePixels = flattenedFrames[fNum];
 
                 for (int p = 0; p < framePixels.Length; p++)
                 {
@@ -209,10 +210,10 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
             }
         }
 
-        return frames;
+        return frames.ToImmutableArray();
     }
 
-    private List<Tag> GetTags(AsepriteFile file)
+    private ImmutableArray<Tag> GetTags(AsepriteFile file)
     {
         List<Tag> tags = new();
 
@@ -223,10 +224,10 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
             tags.Add(tag);
         }
 
-        return tags;
+        return tags.ToImmutableArray();
     }
 
-    private List<Slice> GetSlices(AsepriteFile file)
+    private ImmutableArray<Slice> GetSlices(AsepriteFile file)
     {
         List<Slice> slices = new();
 
@@ -245,9 +246,9 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
             AsepriteSliceKey? lastKey = default;
 
-            for (int k = 0; k < aseSlice.KeyCount; k++)
+            for (int k = 0; k < aseSlice.Keys.Length; k++)
             {
-                AsepriteSliceKey key = aseSlice[k];
+                AsepriteSliceKey key = aseSlice.Keys[k];
 
                 Slice slice = new(name: name,
                                   color: color,
@@ -293,6 +294,6 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
             }
         }
 
-        return slices;
+        return slices.ToImmutableArray();
     }
 }

@@ -21,6 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
+using System.Diagnostics.CodeAnalysis;
+
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
@@ -49,9 +51,25 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// <param name="Name">
 ///     The name of this <see cref="AsepriteLayer"/>.
 /// </param>
-public abstract record AsepriteLayer(bool IsVisible, bool IsBackground, bool IsReference, BlendMode BlendMode, int Opacity, string Name)
+/// <param name="UserData">
+///     The custom user data set for this <see cref="AsepriteLayer"/> in
+///     Aseprite, if any was set; otherwise, <see langword="null"/>.
+/// </param>
+public abstract record AsepriteLayer(bool IsVisible, bool IsBackground, bool IsReference, BlendMode BlendMode, int Opacity, string Name, AsepriteUserData? UserData = default)
 {
-    public AsepriteUserData UserData { get; } = new(default, default);
+    /// <summary>
+    ///     <para>
+    ///         Indicates whether this <see cref="AsepriteLayer"/> has user
+    ///         data.
+    ///     </para>
+    ///     <para>
+    ///         When this returns <see langword="true"/> it guarantees that
+    ///         the <see cref="AsepriteLayer.UserData"/> value of this instance
+    ///         is not <see langword="null"/>.
+    ///     </para>
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(UserData))]
+    public bool HasUserData => UserData is not null;
 }
 
 // /// <summary>

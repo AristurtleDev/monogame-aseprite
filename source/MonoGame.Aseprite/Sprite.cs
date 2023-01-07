@@ -80,12 +80,12 @@ public class Sprite
     ///     Gets the width, in pixels, of this <see cref="Sprite"/>.
     ///     Gets the width, in pixels, of this sprite.
     /// </summary>
-    public virtual int Width => _spriteSheetRegion.Width;
+    public virtual int Width => _spriteSheetRegion.Bounds.Width;
 
     /// <summary>
     ///     Gets the height, in pixels, of this <see cref="Sprite"/>.
     /// </summary>
-    public virtual int Height => _spriteSheetRegion.Height;
+    public virtual int Height => _spriteSheetRegion.Bounds.Height;
 
     /// <summary>
     ///     Gets or Sets the <see cref="Color"/> value to use as the color

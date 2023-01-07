@@ -40,37 +40,9 @@ public sealed class SpriteSheetFrame
     public Texture2D Texture { get; }
 
     /// <summary>
-    ///     Gets the x-coordinate location of the upper-left corner of this
-    ///     <see cref="SpriteSheetFrame"/>.
-    /// </summary>
-    public int X { get; }
-
-    /// <summary>
-    ///     Gets the y-coordinate location of the upper-left corner of this
-    ///     <see cref="SpriteSheetFrame"/>.
-    /// </summary>
-    public int Y { get; }
-
-    /// <summary>
-    ///     Gets the width, in pixels, of this <see cref="SpriteSheetFrame"/>.
-    /// </summary>
-    public int Width { get; }
-
-    /// <summary>
-    ///     Gets the height, in pixels, of this <see cref="SpriteSheetFrame"/>.
-    /// </summary>
-    public int Height { get; }
-
-    /// <summary>
     ///     Gets the rectangular bounds of this <see cref="SpriteSheetFrame"/>.
     /// </summary>
-    public Rectangle Bounds => new(X, Y, Width, Height);
-
-    /// <summary>
-    ///     Gets the width and height extents, in pixels of this
-    ///     <see cref="SpriteSheetFrame"/>.
-    /// </summary>
-    public Point Size => new(Width, Height);
+    public Rectangle Bounds { get; }
 
     /// <summary>
     ///     Gets the duration of this <see cref="SpriteSheetFrame"/> when it
@@ -78,11 +50,9 @@ public sealed class SpriteSheetFrame
     /// </summary>
     public TimeSpan Duration { get; }
 
-    internal SpriteSheetFrame(string name, Texture2D texture, Rectangle region, TimeSpan duration)
-    {
+    internal SpriteSheetFrame(string name, Texture2D texture, Rectangle region, TimeSpan duration) =>
+        (Name, Texture, Bounds, Duration) = (name, texture, region, duration);
 
-    }
-        : this(name, texture, region.X, region.Y, region.Width, region.Height, duration) { }
 
     // internal SpriteSheetFrame(string name, Texture2D texture, int x, int y, int width, int height, TimeSpan duration) =>
     //     (Name, Texture, X, Y, Width, Height, Duration) = (name, texture, x, y, width, height, duration);

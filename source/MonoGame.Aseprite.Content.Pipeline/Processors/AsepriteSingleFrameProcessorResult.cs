@@ -18,7 +18,7 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ----------------------------------------------------------------------------- */
-using System.Collections.ObjectModel;
+using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -26,16 +26,13 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// <summary>
 ///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
 /// </summary>
-public sealed class AsepriteSingleFrameProcessorResult
-{
-    internal int Width { get; }
-    internal int Height { get; }
-    internal Color[] Pixels { get; }
-
-    internal AsepriteSingleFrameProcessorResult(int width, int height, Color[] pixels)
-    {
-        Width = width;
-        Height = height;
-        Pixels = pixels;
-    }
-}
+/// <param name="Size">
+///     The width and height extents, in pixels of the generated image of the
+///     single frame that was processed.
+/// </param>
+/// <param name="Pixels">
+///     An <see cref="ImmutableArray{T}"/> of
+///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
+///     pixels of the generated image of the frame tha was processed.
+/// </param>
+public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);

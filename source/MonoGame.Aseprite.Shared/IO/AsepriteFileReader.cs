@@ -48,29 +48,33 @@ internal sealed class AsepriteFileReader : IDisposable
     private const ushort CHUNK_TYPE_SLICE = 0x2022;             //  Slice Chunk Type
     private const ushort CHUNK_TYPE_TILESET = 0x2023;           //  Tileset Chunk TypeF
 
-    private bool _isDisposed;
 
-    private string _name;
-    private int _nFrames;
-    private int _width;
-    private int _height;
-    private int _depth;
-    private bool _layerOpacityValid;
-    private int _transparentIndex;
-    private int _nColors;
+    //  File header values
+    private string _name;               //  The name of the Aseprite file without extension
+    private int _nFrames;               //  The total number of frames
+    private int _width;                 //  The width, in pixels, of canvas/frame
+    private int _height;                //  The height, in pixels, of canvas/frame
+    private int _depth;                 //  Color depth ("bits"-per-pixel)
+    private bool _layerOpacityValid;    //  Is layer opacity valid value?
+    private int _transparentIndex;      //  Index of transparent color in palette for Indexed mode
+    private int _nColors;               //  Total number of colors
 
-    private int _tagIterator;
-    private ushort _lastUserDataChunkType;
-    private AsepriteGroupLayer? _lastGroupLayer = default;
+    //  Tracking values/objects/collections
+    private int _tagIterator;                               //  Tag iterator when reading tag user data
+    private ushort _lastUserDataChunkType;                  //  Last chunk type read that may contain user data after
+    private List<AsepriteCel> _currentFrameCels = new();    //  Cels that have been read for the current frame being read
 
-    private Color[] _palette = Array.Empty<Color>();
-    private List<AsepriteFrame> _frames = new();
-    private List<AsepriteLayer> _layers = new();
-    private List<AsepriteTag> _tags = new();
-    private List<AsepriteSlice> _slices = new();
-    private List<AsepriteTileset> _tilesets = new();
+
+    //  AsepriteFile being built parts
+    private Color[] _palette = Array.Empty<Color>();    //  Color palette result
+    private List<AsepriteFrame> _frames = new();        //  Collection of all frames that have been read
+    private List<AsepriteLayer> _layers = new();        //  Collection of all layers that have been read
+    private List<AsepriteTag> _tags = new();            //  Collection of all tags that have been read
+    private List<AsepriteSlice> _slices = new();        //  Collection of all slices that have been read
+    private List<AsepriteTileset> _tilesets = new();    //  Collection of all tilesets that have been read
 
     private BinaryReader _reader;
+    private bool _isDisposed;
 
     internal AsepriteFileReader(string path)
     {
@@ -182,13 +186,15 @@ internal sealed class AsepriteFileReader : IDisposable
                        nChunksA;
 
 
-        AsepriteFrame frame = new(new Point(_width, _height), duration);
-        _frames.Add(frame);
 
         for (uint i = 0; i < nChunks; i++)
         {
             ReadChunk();
         }
+
+        AsepriteFrame frame = new(new Size(_width, _height), _currentFrameCels.ToImmutableArray(), duration);
+        _frames.Add(frame);
+        _currentFrameCels.Clear();
     }
 
     private void ReadChunk()
@@ -272,33 +278,23 @@ internal sealed class AsepriteFileReader : IDisposable
 
         AsepriteLayer layer;
 
-        if (type == TYPE_NORMAL)
+        if (type == TYPE_NORMAL || type == TYPE_GROUP)
         {
+            //  Treating group layers as normal layers. No use case for actually
+            //  keeping track of group layer and it's children since no there
+            //  are no cels or anything on a group layer, nor is there
+            //  properties that can be set for group layers in Aseprite.
             layer = new AsepriteImageLayer(isVisible, isBackground, isReference, mode, opacity, name);
-        }
-        else if (type == TYPE_GROUP)
-        {
-            layer = new AsepriteGroupLayer(isVisible, isBackground, isReference, mode, opacity, name);
         }
         else if (type == TYPE_TILEMAP)
         {
             uint index = ReadDword();   //  Index of tileset used by cels on this layer
             AsepriteTileset tileset = _tilesets[(int)index];
-            layer = new AsepriteTilemapLayer(isVisible, isBackground, isReference, mode, opacity, name, tileset);
+            layer = new AsepriteTilemapLayer(tileset, isVisible, isBackground, isReference, mode, opacity, name);
         }
         else
         {
             throw new InvalidOperationException($"Unknown layer type '{type}'");
-        }
-
-        if (level != 0 && _lastGroupLayer is not null)
-        {
-            _lastGroupLayer.AddChild(layer);
-        }
-
-        if (layer is AsepriteGroupLayer gLayer)
-        {
-            _lastGroupLayer = gLayer;
         }
 
         _layers.Add(layer);
@@ -318,20 +314,19 @@ internal sealed class AsepriteFileReader : IDisposable
         ushort type = ReadWord();           //  Cel type
         IgnoreBytes(7);                     //  For future (set to zero)
 
-        AsepriteFrame frame = _frames[_frames.Count - 1];
         AsepriteLayer layer = _layers[index];
         Point position = new(x, y);
 
         AsepriteCel cel = type switch
         {
             TYPE_RAW_IMAGE => ReadRawImageCel(layer, position, opacity, chunkEnd),
-            TYPE_LINKED => ReadLinkedCel(frame),
+            TYPE_LINKED => ReadLinkedCel(),
             TYPE_COMPRESSED_IMAGE => ReadCompressedImageCel(layer, position, opacity, chunkEnd),
             TYPE_COMPRESSED_TILEMAP => ReadCompressedTilemapCel(layer, position, opacity, chunkEnd),
             _ => throw new InvalidOperationException($"Unknown cel type '{type}'")
         };
 
-        frame.AddCel(cel);
+        _currentFrameCels.Add(cel);
     }
 
     private AsepriteImageCel ReadRawImageCel(AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
@@ -349,11 +344,11 @@ internal sealed class AsepriteFileReader : IDisposable
         return new(size, pixels.ToImmutableArray(), layer, position, opacity);
     }
 
-    private AsepriteCel ReadLinkedCel(AsepriteFrame frame)
+    private AsepriteCel ReadLinkedCel()
     {
         ushort frameIndex = ReadWord(); //  Frame position to link with
 
-        return _frames[frameIndex].Cels[frame.Cels.Count];
+        return _frames[frameIndex].Cels[_currentFrameCels.Count];
     }
 
     private AsepriteImageCel ReadCompressedImageCel(AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
@@ -590,69 +585,62 @@ internal sealed class AsepriteFileReader : IDisposable
             color = Color.FromNonPremultiplied(r, g, b, a);
         }
 
-        AsepriteUserData userData;
-
         switch (_lastUserDataChunkType)
         {
             case CHUNK_TYPE_CEL:
-                int frameIndex = _frames.Count - 1;
-
-                AsepriteFrame frame = _frames[_frames.Count - 1];
-                AsepriteCel cel = frame.Cels[frame.Cels.Count - 1];
-                userData = cel.UserData;
+                SetLastCelUserData(text, color);
                 break;
             case CHUNK_TYPE_LAYER:
-                AsepriteLayer layer = _layers[_layers.Count - 1];
-                _layers[_layers.Count - 1] = layer with { UserData = new(text, color) };
-                userData = layer.UserData;
+                SetLastLayerUserData(text, color);
                 break;
             case CHUNK_TYPE_SLICE:
-                AsepriteSlice slice = _slices[_slices.Count - 1];
-                userData = slice.UserData;
+                SetLastSliceUserData(text, color);
                 break;
             case CHUNK_TYPE_TAGS:
-                //  Tags are a special case, user data for tags comes all
-                //  together (one next to the other) after the tags chunk,
-                //  in the same order:
-                //
-                //  * TAGS CHUNK (TAG1, TAG2, ..., TAGn)
-                //  * USER DATA CHUNK FOR TAG1
-                //  * USER DATA CHUNK FOR TAG2
-                //  * ...
-                //  * USER DATA CHUNK FOR TAGn
-                //
-                //  So here we expect that the next user data chunk will
-                //  correspond to the next tag in the tags collection
-                AsepriteTag tag = _tags[_tagIterator];
-                _tagIterator++;
-                userData = tag.UserData;
+                SetNextTagUserData(text, color);
                 break;
             default:
                 throw new InvalidOperationException($"Invalid chunk type (0x{_lastUserDataChunkType:X4}) for user data.");
         }
-
-        userData.Text = text;
-        userData.Color = color;
     }
 
     private void SetLastCelUserData(string? text, Color? color)
     {
-
+        int index = _currentFrameCels.Count - 1;
+        AsepriteCel cel = _currentFrameCels[index];
+        _currentFrameCels[index] = cel with { UserData = new(text, color) };
     }
 
     private void SetLastLayerUserData(string? text, Color? color)
     {
-
+        int index = _layers.Count - 1;
+        AsepriteLayer layer = _layers[index];
+        _layers[index] = layer with { UserData = new(text, color) };
     }
 
     private void SetLastSliceUserData(string? text, Color? color)
     {
-
+        int index = _slices.Count - 1;
+        AsepriteSlice slice = _slices[index];
+        _slices[index] = slice with { UserData = new(text, color) };
     }
 
     private void SetNextTagUserData(string? text, Color? color)
     {
-
+        //  Tags are a special case, user data for tags comes all together
+        //  (one next to the other) after the tags chunk, in the same order:
+        //
+        //  * TAGS CHUNK (TAG1, TAG2, ..., TAGn)
+        //  * USER DATA CHUNK FOR TAG1
+        //  * USER DATA CHUNK FOR TAG2
+        //  * ...
+        //  * USER DATA CHUNK FOR TAGn
+        //
+        //  So here we expect that the next user data chunk will correspond to
+        //  the next tag in the tags collection
+        AsepriteTag tag = _tags[_tagIterator];
+        _tags[_tagIterator] = tag with { UserData = new(text, color) };
+        _tagIterator++;
     }
 
 

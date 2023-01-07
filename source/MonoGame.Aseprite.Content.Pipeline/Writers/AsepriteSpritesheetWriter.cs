@@ -33,8 +33,8 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
     protected override void Write(ContentWriter output, AsepriteSpritesheetProcessorResult value)
     {
         output.Write(value.Name);
-        output.Write(value.Width);
-        output.Write(value.Height);
+        output.Write(value.Size.Width);
+        output.Write(value.Size.Height);
 
         output.Write(value.Pixels.Length);
         for (int i = 0; i < value.Pixels.Length; i++)
@@ -42,8 +42,8 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
             output.Write(value.Pixels[i]);
         }
 
-        output.Write(value.Frames.Count);
-        for (int i = 0; i < value.Frames.Count; i++)
+        output.Write(value.Frames.Length);
+        for (int i = 0; i < value.Frames.Length; i++)
         {
             Frame frame = value.Frames[i];
             output.Write(frame.X);
@@ -53,8 +53,8 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
             output.Write(frame.Duration.TotalMilliseconds);
         }
 
-        output.Write(value.Tags.Count);
-        for (int i = 0; i < value.Tags.Count; i++)
+        output.Write(value.Tags.Length);
+        for (int i = 0; i < value.Tags.Length; i++)
         {
             Tag tag = value.Tags[i];
             output.Write(tag.Name);
@@ -64,8 +64,8 @@ public sealed class AsepriteSpritesheetWriter : ContentTypeWriter<AsepriteSprite
             output.Write((int)tag.Direction);
         }
 
-        output.Write(value.Slices.Count);
-        for (int i = 0; i < value.Slices.Count; i++)
+        output.Write(value.Slices.Length);
+        for (int i = 0; i < value.Slices.Length; i++)
         {
             Slice slice = value.Slices[i];
             output.Write(slice.Name);

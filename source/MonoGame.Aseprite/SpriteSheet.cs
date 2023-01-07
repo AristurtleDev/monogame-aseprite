@@ -242,7 +242,7 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetFrame>
         return new Sprite(region);
     }
 
-    private void AddRegion(SpriteSheetFrame region)
+    private void AddFrame(SpriteSheetFrame region)
     {
         _regions.Add(region);
         _regionLookup.Add(region.Name, region);
@@ -372,9 +372,10 @@ public sealed class SpriteSheet : IEnumerable<SpriteSheetFrame>
             throw new InvalidOperationException($"A {nameof(SpriteSheetFrame)} with the name '{name}' has already been added to this {nameof(SpriteSheet)}.");
         }
 
-        SpriteSheetFrame region = new(name, Texture, x, y, width, height, duration);
-        AddRegion(region);
-        return region;
+        SpriteSheetFrame frame = new(name, Texture, new Rectangle(x, y, width, height), duration);
+
+        AddFrame(frame);
+        return frame;
     }
 
 
