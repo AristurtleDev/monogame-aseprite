@@ -22,22 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
-using Microsoft.Xna.Framework;
+namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
-
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSpritesheetProcessor"/>.
-/// </summary>
-public sealed class AsepriteSpritesheetProcessorResult
+internal sealed class Slice
 {
+    internal List<SliceKey> Keys { get; } = new();
+    internal bool IsNinePatch { get; }
+    internal bool HasPivot { get; }
     internal string Name { get; }
-    internal Point Size { get; }
-    internal Color[] Pixels { get; }
-    internal List<SpriteSheetFrameContent> Frames { get; }
-    internal List<SpriteSheetAnimationDefinition> AnimationDefinitions { get; }
+    internal AsepriteUserData UserData { get; } = new();
 
-    internal AsepriteSpritesheetProcessorResult(string name, Point size, Color[] pixels, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationDefinition> animationDefinitions) =>
-        (Name, Size, Pixels, Frames, AnimationDefinitions) = (name, size, pixels, frames, animationDefinitions);
+    internal Slice(string name, bool isNine, bool hasPivot) =>
+        (Name, IsNinePatch, HasPivot) = (name, isNine, hasPivot);
 }

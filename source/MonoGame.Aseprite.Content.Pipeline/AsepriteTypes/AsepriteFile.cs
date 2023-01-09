@@ -22,134 +22,56 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using MonoGame.Aseprite.IO;
+using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-internal sealed class AsepriteFile
+public sealed class AsepriteFile
 {
-    internal List<AsepriteFrame> Frames { get; } = new();
-    internal List<AsepriteLayer> Layers { get; } = new();
-    internal List<AsepriteTag> Tags { get; } = new();
-    internal List<AsepriteSlice> Slices { get; } = new();
-    internal List<AsepriteTileset> Tilesets { get; } = new();
+    private Color[] _palette = Array.Empty<Color>();
 
-    internal string Name { get; }
-    internal Size FrameSize { get; }
-    internal AsepritePalette Palette { get; }
+    internal List<Frame> Frames { get; } = new();
+    internal List<Layer> Layers { get; } = new();
+    internal List<Tag> Tags { get; } = new();
+    internal List<Slice> Slices { get; } = new();
+    internal List<Tileset> Tilesets { get; } = new();
+    internal Color[] Palette => _palette;
+    internal int TransparentIndex { get; set; }
+    internal string Name { get; set; }
+    internal Point FrameSize { get; set; }
+    internal ColorDepth ColorDepth { get; set; }
+    internal int FrameCount { get; set; }
+    internal bool LayerOpacityValid { get; set; }
 
 
-    internal AsepriteFile(string name, Size frameSize, AsepritePalette palette) =>
-        (Name, FrameSize, Palette) = (name, frameSize, palette);
+    // internal Palette Palette { get; }
 
-    internal static AsepriteFile Load(string path)
+    internal AsepriteFile(string name) => Name = name;
+
+    internal void ResizePalette(int newSize)
     {
-        if (!File.Exists(path))
+        if (newSize > 0 && newSize > _palette.Length)
         {
-            throw new FileNotFoundException($"No file exists at the path '{path}'");
-        }
-
-        using (AsepriteFileReader reader = new(path))
-        {
-            return reader.ReadFile();
+            Color[] tmp = new Color[newSize];
+            Array.Copy(_palette, tmp, _palette.Length);
+            _palette = tmp;
         }
     }
+
+    // internal AsepriteFile(string name, Point frameSize, Palette palette, List<Frame> frames, List<Layer> layers, List<Tag> tags, List<Slice> slices, List<Tileset> tilesets) =>
+    //     (Name, FrameSize, Palette, Frames, Layers, Tags, Slices, Tilesets) = (name, frameSize, palette, frames, layers, tags, slices, tilesets);
+
+
+    // public static AsepriteFile Load(string path)
+    // {
+    //     if (!File.Exists(path))
+    //     {
+    //         throw new FileNotFoundException($"No file exists at the path '{path}'");
+    //     }
+
+    //     using (AsepriteFileReader reader = new(path))
+    //     {
+    //         return reader.ReadFile();
+    //     }
+    // }
 }
-
-// /// <summary>
-// ///     A read-only representation of an Aseprite file that was read.
-// /// </summary>
-// public sealed class AsepriteFile
-// {
-//     private List<AsepriteFrame> _frames;
-//     private List<AsepriteLayer> _layers;
-//     private List<AsepriteTag> _tags;
-//     private List<AsepriteSlice> _slices;
-//     private List<AsepriteTileset> _tilesets;
-
-//     /// <summary>
-//     ///     Gets the name of this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public string Name { get; }
-
-//     /// <summary>
-//     ///     Gets the width and height extents, in pixels of each
-//     ///     <see cref="AsepriteFrame"/> element in this
-//     ///     <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public Point FrameSize { get; }
-
-//     /// <summary>
-//     ///     The width, in pixels, of each <see cref="AsepriteFrame"/> element
-//     ///     in this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public int FrameWidth => FrameSize.X;
-
-//     /// <summary>
-//     ///     The height, in pixels, of each <see cref="AsepriteFrame"/> element
-//     ///     in this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public int FrameHeight => FrameSize.Y;
-
-//     /// <summary>
-//     ///     The <see cref="AsepritePalette"/> instance of this
-//     ///     <see cref="AsepriteFile"/> that contains the color values that
-//     ///     were used by this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public AsepritePalette Palette { get; }
-
-//     /// <summary>
-//     ///     A read-only collection of all <see cref="AsepriteFrame"/> elements
-//     ///     in this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public ReadOnlyCollection<AsepriteFrame> Frames => _frames.AsReadOnly();
-
-//     /// <summary>
-//     ///     A read-only collection of all <see cref="AsepriteLayer"/> elements
-//     ///     in this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public ReadOnlyCollection<AsepriteLayer> Layers => _layers.AsReadOnly();
-
-//     /// <summary>
-//     ///     A read-only collection of all <see cref="AsepriteTag"/> elements
-//     ///     in this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public ReadOnlyCollection<AsepriteTag> Tags => _tags.AsReadOnly();
-
-//     /// <summary>
-//     ///     A read-only collection of all <see cref="AsepriteSlice"/> elements
-//     ///     in this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public ReadOnlyCollection<AsepriteSlice> Slices => _slices.AsReadOnly();
-
-//     /// <summary>
-//     ///     A read-only collection of all <see cref="AsepriteTileset"/>
-//     ///     elements in this <see cref="AsepriteFile"/>.
-//     /// </summary>
-//     public ReadOnlyCollection<AsepriteTileset> Tilesets => _tilesets.AsReadOnly();
-
-//     internal AsepriteFile(string name, Point frameSize, AsepritePalette palette, List<AsepriteFrame> frames, List<AsepriteLayer> layers, List<AsepriteTag> tags, List<AsepriteSlice> slices, List<AsepriteTileset> tilesets)
-//     {
-//         Name = name;
-//         FrameSize = frameSize;
-//         Palette = palette;
-//         _frames = frames;
-//         _layers = layers;
-//         _tags = tags;
-//         _slices = slices;
-//         _tilesets = tilesets;
-//     }
-
-//     public static AsepriteFile Load(string path)
-//     {
-//         if (!File.Exists(path))
-//         {
-//             throw new FileNotFoundException($"No file exists at the path '{path}'");
-//         }
-
-//         using (AsepriteFileReader reader = new(path))
-//         {
-//             return reader.ReadFile();
-//         }
-//     }
-// }

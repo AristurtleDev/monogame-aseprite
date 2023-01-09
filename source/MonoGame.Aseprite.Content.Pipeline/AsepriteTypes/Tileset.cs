@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2022 Christopher Whitley
+Copyright (c) 2018-2023 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using System.Collections.ObjectModel;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-public sealed class AsepriteFileContent
+internal sealed class Tileset
 {
-    internal string Name { get; set; } = string.Empty;
-    internal List<AsepriteFrame> Frames { get; } = new();
-    internal List<AsepriteLayer> Layers { get; } = new();
-    internal List<AsepriteTag> Tags { get; } = new();
-    internal List<AsepriteTileset> Tilesets { get; } = new();
+    internal Color[] Pixels { get; }
+    internal int ID { get; }
+    internal int TileCount { get; }
+    internal Point TileSize { get; }
+    internal string Name { get; }
+    internal Point Size { get; }
+
+    internal Color[] this[int tileId]
+    {
+        get
+        {
+            if (tileId < 0 || tileId >= TileCount)
+            {
+                throw new ArgumentOutOfRangeException(nameof(tileId));
+            }
+
+            int len = TileSize.X * TileSize.Y;
+            return Pixels[(tileId * len)..((tileId * len) + len)];
+        }
+    }
+
+    internal Tileset(int id, int count, Point size, string name, Color[] pixels)
+    {
+        ID = id;
+        TileCount = count;
+        TileSize = size;
+        Name = name;
+        Pixels = pixels;
+
+        //  Aseprite stores tileset images as a vertical strip
+        Size = new(TileSize.X, TileSize.Y * TileCount);
+    }
 }

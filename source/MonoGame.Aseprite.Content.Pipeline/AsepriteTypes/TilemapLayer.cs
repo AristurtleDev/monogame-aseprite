@@ -22,38 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
-using Microsoft.Xna.Framework;
-
 namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-internal class AsepritePalette
+internal sealed class TilemapLayer : Layer
 {
-    internal int TransparentIndex { get; }
-    internal Color[] Colors { get; }
+    internal Tileset Tileset { get; }
 
-    internal AsepritePalette(int transparentIndex, Color[] colors) =>
-        (TransparentIndex, Colors) = (transparentIndex, colors);
+    internal TilemapLayer(Tileset tileset, bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name)
+        : base(isVisible, isBackground, isReference, blend, opacity, name) => Tileset = tileset;
 }
-
-// /// <summary>
-// ///     Represents the palette of an Aseprite file.
-// /// </summary>
-// /// <param name="TransparentIndex">
-// ///     <para>
-// ///         The index of the <see cref="Microsoft.Xna.Framework.Color"/> value
-// ///         in the <see cref="Colors"/> collection of this
-// ///         <see cref="AsepritePalette"/> that represents the value of a
-// ///         transparent pixel.
-// ///     </para>
-// ///     <para>
-// ///         This value is only valid if the Color Depth mode that was set in the
-// ///         Aseprite UI for the file was "Index Mode".
-// ///     </para>
-// /// </param>
-// /// <param name="Colors">
-// ///     A <see cref="ImmutableArray{T}"/> of
-// ///     <see cref="Microsoft.Xna.Framework.Color"/> values that make up this
-// ///     <see cref="AsepritePalette"/>.
-// /// </param>
-// public sealed record AsepritePalette(int TransparentIndex, ImmutableArray<Color> Colors);

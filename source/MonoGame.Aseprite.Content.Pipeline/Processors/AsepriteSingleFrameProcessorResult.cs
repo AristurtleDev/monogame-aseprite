@@ -30,13 +30,11 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// <summary>
 ///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
 /// </summary>
-/// <param name="Size">
-///     The width and height extents, in pixels of the generated image of the
-///     single frame that was processed.
-/// </param>
-/// <param name="Pixels">
-///     An <see cref="ImmutableArray{T}"/> of
-///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
-///     pixels of the generated image of the frame tha was processed.
-/// </param>
-public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);
+public sealed class AsepriteSingleFrameProcessorResult
+{
+    internal Point Size { get; }
+    internal Color[] Pixels { get; }
+
+    internal AsepriteSingleFrameProcessorResult(Point size, Color[] pixels) =>
+        (Size, Pixels) = (size, pixels);
+}

@@ -33,8 +33,8 @@ public sealed class SingleFrameWriter : ContentTypeWriter<AsepriteSingleFramePro
 {
     protected override void Write(ContentWriter output, AsepriteSingleFrameProcessorResult input)
     {
-        output.Write(input.Size.Width);
-        output.Write(input.Size.Height);
+        output.Write(input.Size.X);
+        output.Write(input.Size.Y);
         output.Write(input.Pixels.Length);
 
         for (int i = 0; i < input.Pixels.Length; i++)

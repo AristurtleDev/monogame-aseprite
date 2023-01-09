@@ -22,22 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSpritesheetProcessor"/>.
-/// </summary>
-public sealed class AsepriteSpritesheetProcessorResult
+internal sealed class SliceKey
 {
-    internal string Name { get; }
-    internal Point Size { get; }
-    internal Color[] Pixels { get; }
-    internal List<SpriteSheetFrameContent> Frames { get; }
-    internal List<SpriteSheetAnimationDefinition> AnimationDefinitions { get; }
+    internal int FrameIndex { get; }
+    internal Rectangle Bounds { get; }
+    internal Point Size => Bounds.Size;
+    internal Rectangle? CenterBounds { get; }
+    internal Point? Pivot { get; }
 
-    internal AsepriteSpritesheetProcessorResult(string name, Point size, Color[] pixels, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationDefinition> animationDefinitions) =>
-        (Name, Size, Pixels, Frames, AnimationDefinitions) = (name, size, pixels, frames, animationDefinitions);
+    [MemberNotNullWhen(true, nameof(CenterBounds))]
+    internal bool IsNinePatch => CenterBounds is not null;
+
+    [MemberNotNullWhen(true, nameof(Pivot))]
+    internal bool HasPivot => Pivot is not null;
+
+    internal SliceKey(int frameIndex, Rectangle bounds, Rectangle? centerBounds, Point? pivot) =>
+        (FrameIndex, Bounds, CenterBounds, Pivot) = (frameIndex, bounds, centerBounds, pivot);
 }

@@ -26,7 +26,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -80,12 +80,12 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
         List<SpriteSheetAnimationDefinition> tags = GenerateAnimationDefinitionData(input);
         GenerateFrameRegionData(input, frames);
 
-        return new AsepriteSpritesheetProcessorResult(input.Name, new Size(width, height), pixels, frames, tags);
+        return new AsepriteSpritesheetProcessorResult(input.Name, new Point(width, height), pixels, frames, tags);
     }
 
     private List<SpriteSheetFrameContent> GenerateFrameAndImageData(AsepriteFile file, out int width, out int height, out Color[] pixels)
     {
-        List<ImmutableArray<Color>> flattenedFrames = new();
+        List<Color[]> flattenedFrames = new();
 
         for (int i = 0; i < file.Frames.Count; i++)
         {
@@ -130,12 +130,12 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
         //  Determine the final width and height of the spritesheet image based
         //  on the number of columns and rows, adjusting for padding and spacing
-        width = (columns * file.FrameWidth) +
+        width = (columns * file.FrameSize.X) +
                 (BorderPadding * 2) +
                 (Spacing * (columns - 1)) +
                 (InnerPadding * 2 * columns);
 
-        height = (rows * file.FrameHeight) +
+        height = (rows * file.FrameSize.Y) +
                  (BorderPadding * 2) +
                  (Spacing * (rows - 1)) +
                  (InnerPadding * 2 * rows);
@@ -157,12 +157,12 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
                 //  Inject the pixel color data from the frame into the final
                 //  spritesheet image
-                ImmutableArray<Color> framePixels = flattenedFrames[fNum];
+                Color[] framePixels = flattenedFrames[fNum];
 
                 for (int p = 0; p < framePixels.Length; p++)
                 {
-                    int x = (p % file.FrameWidth) + (frameColumn * file.FrameWidth);
-                    int y = (p / file.FrameWidth) + (frameRow * file.FrameHeight);
+                    int x = (p % file.FrameSize.X) + (frameColumn * file.FrameSize.X);
+                    int y = (p / file.FrameSize.X) + (frameRow * file.FrameSize.Y);
 
                     //  Adjust x- and y-coordinate for any padding and/or
                     //  spacing.
@@ -181,10 +181,10 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
                 //  Now create the frame data
                 Rectangle sourceRectangle = new Rectangle
                 {
-                    X = frameColumn * file.FrameWidth,
-                    Y = frameRow * file.FrameHeight,
-                    Width = file.FrameWidth,
-                    Height = file.FrameHeight
+                    X = frameColumn * file.FrameSize.X,
+                    Y = frameRow * file.FrameSize.Y,
+                    Width = file.FrameSize.X,
+                    Height = file.FrameSize.Y
                 };
 
                 sourceRectangle.X += BorderPadding +
@@ -221,7 +221,7 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
         for (int i = 0; i < file.Tags.Count; i++)
         {
-            AsepriteTag aseTag = file.Tags[i];
+            Tag aseTag = file.Tags[i];
             int[] frameIndexes = new int[aseTag.To - aseTag.From + 1];
             for (int f = 0; f < frameIndexes.Length; f++)
             {
@@ -244,18 +244,18 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
         //  keys to create the Slice elements
         for (int i = 0; i < file.Slices.Count; i++)
         {
-            AsepriteSlice aseSlice = file.Slices[i];
+            Slice aseSlice = file.Slices[i];
             string name = aseSlice.Name;
 
             //  If no color defined in user data, use Aseprite default for slice
             //  color, which is just blue
             Color color = aseSlice.UserData?.Color ?? new Color(0, 0, 255, 255);
 
-            AsepriteSliceKey? lastKey = default;
+            SliceKey? lastKey = default;
 
-            for (int k = 0; k < aseSlice.Keys.Length; k++)
+            for (int k = 0; k < aseSlice.Keys.Count; k++)
             {
-                AsepriteSliceKey key = aseSlice.Keys[k];
+                SliceKey key = aseSlice.Keys[k];
 
                 SpriteSheetFrameRegion region = new(name, key.Bounds, color, key.CenterBounds, key.Pivot);
                 frames[key.FrameIndex].Regions.Add(name, region);

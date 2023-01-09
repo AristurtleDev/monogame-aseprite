@@ -1,7 +1,7 @@
 // /* ----------------------------------------------------------------------------
 // MIT License
 
-// Copyright (c) 2018-2023 Christopher Whitley
+// Copyright (c) 2022 Christopher Whitley
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 // ---------------------------------------------------------------------------- */
-
 // using System.Diagnostics;
 // using System.IO.Compression;
 // using System.Runtime.CompilerServices;
 // using System.Text;
 // using Microsoft.Xna.Framework;
+// using MonoGame.Aseprite.Content.Pipeline;
 // using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-// namespace MonoGame.Aseprite.Content.Pipeline.IO;
+// namespace MonoGame.Aseprite.IO;
 
 // internal sealed class AsepriteFileReader : IDisposable
 // {
@@ -46,7 +46,7 @@
 //     private const ushort CHUNK_TYPE_PALETTE = 0x2019;           //  Palette Chunk Type
 //     private const ushort CHUNK_TYPE_USER_DATA = 0x2020;         //  User Data Chunk Type
 //     private const ushort CHUNK_TYPE_SLICE = 0x2022;             //  Slice Chunk Type
-//     private const ushort CHUNK_TYPE_TILESET = 0x2023;           //  Tileset Chunk TypeF
+//     private const ushort CHUNK_TYPE_TILESET = 0x2023;           //  Tileset Chunk Type
 
 //     private bool _isDisposed;
 
@@ -63,11 +63,11 @@
 //     private ushort _lastUserDataChunkType;
 
 //     private Color[] _palette = Array.Empty<Color>();
-//     private List<Frame> _frames = new();
-//     private List<Layer> _layers = new();
-//     private List<Tag> _tags = new();
-//     private List<Slice> _slices = new();
-//     private List<Tileset> _tilesets = new();
+//     private List<AsepriteFrame> _frames = new();
+//     private List<AsepriteLayer> _layers = new();
+//     private List<AsepriteTag> _tags = new();
+//     private List<AsepriteSlice> _slices = new();
+//     private List<AsepriteTileset> _tilesets = new();
 
 //     private BinaryReader _reader;
 
@@ -98,10 +98,16 @@
 //             ReadFrame();
 //         }
 
-//         Point size = new(_width, _height);
-//         Palette palette = new(_palette, _transparentIndex);
 
-//         AsepriteFile file = new(_name, size, palette, _frames, _layers, _tags, _slices, _tilesets);
+//         Size size = new(_width, _height);
+//         AsepritePalette palette = new(_transparentIndex, _palette);
+
+//         AsepriteFile file = new(_name, size, palette);
+//         file.Frames.AddRange(_frames);
+//         file.Layers.AddRange(_layers);
+//         file.Tags.AddRange(_tags);
+//         file.Slices.AddRange(_slices);
+//         file.Tilesets.AddRange(_tilesets);
 //         return file;
 //     }
 
@@ -179,7 +185,7 @@
 //                        nChunksB :
 //                        nChunksA;
 
-//         Frame frame = new(new Point(_width, _height), duration);
+//         AsepriteFrame frame = new(new Size(_width, _height), duration);
 //         _frames.Add(frame);
 
 //         for (uint i = 0; i < nChunks; i++)
@@ -267,17 +273,17 @@
 //         bool isReference = HasFlag(flags, FLAG_IS_REFERENCE);
 //         BlendMode mode = (BlendMode)blend;
 
-//         Layer layer;
+//         AsepriteLayer layer;
 
 //         if (type == TYPE_NORMAL || type == TYPE_GROUP)
 //         {
-//             layer = new Layer(isVisible, isBackground, isReference, mode, opacity, name);
+//             layer = new AsepriteLayer(isVisible, isBackground, isReference, mode, opacity, name);
 //         }
 //         else if (type == TYPE_TILEMAP)
 //         {
 //             uint index = ReadDword();   //  Index of tileset used by cels on this layer
-//             Tileset tileset = _tilesets[(int)index];
-//             layer = new TilemapLayer(tileset, isVisible, isBackground, isReference, mode, opacity, name);
+//             AsepriteTileset tileset = _tilesets[(int)index];
+//             layer = new AsepriteTilemapLayer(tileset, isVisible, isBackground, isReference, mode, opacity, name);
 //         }
 //         else
 //         {
@@ -301,11 +307,11 @@
 //         ushort type = ReadWord();           //  Cel type
 //         IgnoreBytes(7);                     //  For future (set to zero)
 
-//         Frame frame = _frames[_frames.Count - 1];
-//         Layer layer = _layers[index];
+//         AsepriteFrame frame = _frames[_frames.Count - 1];
+//         AsepriteLayer layer = _layers[index];
 //         Point position = new(x, y);
 
-//         Cel cel = type switch
+//         AsepriteCel cel = type switch
 //         {
 //             TYPE_RAW_IMAGE => ReadRawImageCel(layer, position, opacity, chunkEnd),
 //             TYPE_LINKED => ReadLinkedCel(frame),
@@ -317,7 +323,7 @@
 //         frame.Cels.Add(cel);
 //     }
 
-//     private ImageCel ReadRawImageCel(Layer layer, Point position, byte opacity, long chunkEnd)
+//     private AsepriteImageCel ReadRawImageCel(AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
 //     {
 //         ushort width = ReadWord();              //  Width of cel, in pixels
 //         ushort height = ReadWord();             //  Height of cel, in pixels
@@ -326,20 +332,20 @@
 //         byte[] data = _reader.ReadBytes(len);   //  Raw Image Data
 
 
-//         Point size = new(width, height);
+//         Size size = new(width, height);
 //         Color[] pixels = ToColor(data);
 
 //         return new(size, pixels, layer, position, opacity);
 //     }
 
-//     private Cel ReadLinkedCel(Frame frame)
+//     private AsepriteCel ReadLinkedCel(AsepriteFrame frame)
 //     {
 //         ushort frameIndex = ReadWord(); //  Frame position to link with
 
 //         return _frames[frameIndex].Cels[frame.Cels.Count];
 //     }
 
-//     private ImageCel ReadCompressedImageCel(Layer layer, Point position, byte opacity, long chunkEnd)
+//     private AsepriteImageCel ReadCompressedImageCel(AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
 //     {
 //         ushort width = ReadWord();  //  Width of cel, in pixels
 //         ushort height = ReadWord(); //  Height of cel, in pixels
@@ -349,13 +355,13 @@
 
 //         data = Decompress(data);
 
-//         Point size = new(width, height);
+//         Size size = new(width, height);
 //         Color[] pixels = ToColor(data);
 
 //         return new(size, pixels, layer, position, opacity);
 //     }
 
-//     private TilemapCel ReadCompressedTilemapCel(Layer layer, Point position, byte opacity, long chunkEnd)
+//     private AsepriteTilemapCel ReadCompressedTilemapCel(AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
 //     {
 //         const int TILE_ID_SHIFT = 0;
 
@@ -373,12 +379,12 @@
 
 //         data = Decompress(data);
 
-//         Point size = new(width, height);
+//         Size size = new(width, height);
 
 //         int bytesPerTile = bitsPerTile / 8;
 //         int tileCount = data.Length / bytesPerTile;
 
-//         TilemapCel cel = new(size, layer, position, opacity);
+//         AsepriteTilemapCel cel = new(size, layer, position, opacity);
 
 //         for (int i = 0, b = 0; i < tileCount; i++, b += bytesPerTile)
 //         {
@@ -389,9 +395,11 @@
 //             uint yFlip = (value & yFlipBitmask);
 //             uint rotation = (value & rotationBitmask);
 
-//             Tile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
+//             AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
 //             cel.Tiles.Add(tile);
 //         }
+
+//         Debug.Assert(cel.Tiles.Count == tileCount);
 
 //         return cel;
 //     }
@@ -417,7 +425,7 @@
 
 //             Color color = Color.FromNonPremultiplied(r, g, b, 255);
 
-//             Tag tag = new(from, to, loopDirection, color, name);
+//             AsepriteTag tag = new(from, to, loopDirection, color, name);
 //             _tags.Add(tag);
 //         }
 //     }
@@ -469,7 +477,7 @@
 //         bool isNinePatch = HasFlag(flags, FLAG_IS_NINE_PATCH);
 //         bool hasPivot = HasFlag(flags, FLAG_HAS_PIVOT);
 
-//         Slice slice = new(name, isNinePatch, hasPivot);
+//         AsepriteSlice slice = new(isNinePatch, hasPivot, name);
 
 //         for (uint i = 0; i < count; i++)
 //         {
@@ -501,7 +509,7 @@
 //                 pivot = new(px, py);
 //             }
 
-//             SliceKey key = new((int)start, bounds, center, pivot);
+//             AsepriteSliceKey key = new((int)start, bounds, center, pivot);
 //             slice.Keys.Add(key);
 //         }
 
@@ -538,9 +546,10 @@
 //         data = Decompress(data);
 
 //         Color[] pixels = ToColor(data);
-//         Point size = new(width, height);
+//         Size tileSize = new(width, height);
+//         Size size = new(tileSize.Width, tileSize.Height * (int)count);
 
-//         Tileset tileset = new((int)id, (int)count, size, name, pixels);
+//         AsepriteTileset tileset = new((int)id, (int)count, tileSize, size, name, pixels);
 //         _tilesets.Add(tileset);
 
 //     }
@@ -570,49 +579,65 @@
 //             color = Color.FromNonPremultiplied(r, g, b, a);
 //         }
 
-//         AsepriteUserData userData;
-
 //         switch (_lastUserDataChunkType)
 //         {
 //             case CHUNK_TYPE_CEL:
-//                 Frame frame = _frames[_frames.Count - 1];
-//                 Cel cel = frame.Cels[frame.Cels.Count - 1];
-//                 userData = cel.UserData;
+//                 SetLastCelUseData(text, color);
 //                 break;
 //             case CHUNK_TYPE_LAYER:
-//                 Layer layer = _layers[_layers.Count - 1];
-//                 userData = layer.UserData;
+//                 SetLastLayerUserData(text, color);
 //                 break;
 //             case CHUNK_TYPE_SLICE:
-//                 Slice slice = _slices[_slices.Count - 1];
-//                 userData = slice.UserData;
+//                 SetLastSliceUserData(text, color);
 //                 break;
 //             case CHUNK_TYPE_TAGS:
-//                 //  Tags are a special case, user data for tags comes all
-//                 //  together (one next to the other) after the tags chunk,
-//                 //  in the same order:
-//                 //
-//                 //  * TAGS CHUNK (TAG1, TAG2, ..., TAGn)
-//                 //  * USER DATA CHUNK FOR TAG1
-//                 //  * USER DATA CHUNK FOR TAG2
-//                 //  * ...
-//                 //  * USER DATA CHUNK FOR TAGn
-//                 //
-//                 //  So here we expect that the next user data chunk will
-//                 //  correspond to the next tag in the tags collection
-//                 Tag tag = _tags[_tagIterator];
-//                 _tagIterator++;
-//                 userData = tag.UserData;
+//                 SetNextTagUserData(text, color);
 //                 break;
 //             default:
 //                 throw new InvalidOperationException($"Invalid chunk type (0x{_lastUserDataChunkType:X4}) for user data.");
 //         }
-
-//         userData.Text = text;
-//         userData.Color = color;
 //     }
 
+//     private void SetLastCelUseData(string? text, Color? color)
+//     {
+//         AsepriteFrame frame = _frames[_frames.Count - 1];
+//         AsepriteCel cel = frame.Cels[frame.Cels.Count - 1];
+//         cel.UserData.Text = text;
+//         cel.UserData.Color = color;
+//     }
 
+//     private void SetLastLayerUserData(string? text, Color? color)
+//     {
+//         AsepriteLayer layer = _layers[_layers.Count - 1];
+//         layer.UserData.Text = text;
+//         layer.UserData.Color = color;
+//     }
+
+//     private void SetLastSliceUserData(string? text, Color? color)
+//     {
+//         AsepriteSlice slice = _slices[_slices.Count - 1];
+//         slice.UserData.Text = text;
+//         slice.UserData.Color = color;
+//     }
+
+//     private void SetNextTagUserData(string? text, Color? color)
+//     {
+//         //  Tags are a special case, user data for tags comes all together
+//         //  (one next to the other) after the tags chunk, in the same order:
+//         //
+//         //  * TAGS CHUNK (TAG1, TAG2, ..., TAGn)
+//         //  * USER DATA CHUNK FOR TAG1
+//         //  * USER DATA CHUNK FOR TAG2
+//         //  * ...
+//         //  * USER DATA CHUNK FOR TAGn
+//         //
+//         //  So here we expect that the next user data chunk will correspond to
+//         //  the next tag in the tags collection
+//         AsepriteTag tag = _tags[_tagIterator];
+//         tag.UserData.Text = text;
+//         tag.UserData.Color = color;
+//         _tagIterator++;
+//     }
 
 //     private void IgnoreByte() => _reader.BaseStream.Position += 1;
 //     private void IgnoreBytes(int nBytes) => _reader.BaseStream.Position += nBytes;

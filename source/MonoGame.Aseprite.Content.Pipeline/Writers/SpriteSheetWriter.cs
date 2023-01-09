@@ -35,8 +35,8 @@ public sealed class SpriteSheetWriter : ContentTypeWriter<AsepriteSpritesheetPro
     protected override void Write(ContentWriter output, AsepriteSpritesheetProcessorResult value)
     {
         output.Write(value.Name);
-        output.Write(value.Size.Width);
-        output.Write(value.Size.Height);
+        output.Write(value.Size.X);
+        output.Write(value.Size.Y);
         WritePixels(output, value.Pixels);
         WriteFrames(output, value.Frames);
         WriteAnimationDefinition(output, value.AnimationDefinitions);
@@ -72,7 +72,7 @@ public sealed class SpriteSheetWriter : ContentTypeWriter<AsepriteSpritesheetPro
         output.Write(frame.Duration.Ticks);
         output.Write(frame.Regions.Count);
 
-        foreach(KeyValuePair<string, SpriteSheetFrameRegion> kvp in frame.Regions)
+        foreach (KeyValuePair<string, SpriteSheetFrameRegion> kvp in frame.Regions)
         {
             WriteSingleRegion(output, kvp.Value);
         }
@@ -89,7 +89,7 @@ public sealed class SpriteSheetWriter : ContentTypeWriter<AsepriteSpritesheetPro
 
         output.Write(region.IsNinePatch);
 
-        if(region.IsNinePatch)
+        if (region.IsNinePatch)
         {
             output.Write(region.CenterBounds.Value.X);
             output.Write(region.CenterBounds.Value.Y);
@@ -99,7 +99,7 @@ public sealed class SpriteSheetWriter : ContentTypeWriter<AsepriteSpritesheetPro
 
         output.Write(region.HasPivot);
 
-        if(region.HasPivot)
+        if (region.HasPivot)
         {
             output.Write(region.Pivot.Value.X);
             output.Write(region.Pivot.Value.Y);

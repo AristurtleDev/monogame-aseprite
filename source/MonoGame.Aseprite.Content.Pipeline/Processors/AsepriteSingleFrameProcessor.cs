@@ -26,7 +26,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -83,9 +83,10 @@ public sealed class AsepriteSingleFrameProcessor : ContentProcessor<AsepriteFile
             throw new IndexOutOfRangeException("The 'Frame Index' cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file");
         }
 
-        ImmutableArray<Color> pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
-        Size size = new(file.FrameWidth, file.FrameHeight);
 
-        return new AsepriteSingleFrameProcessorResult(size, pixels);
+
+        Color[] pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
+
+        return new AsepriteSingleFrameProcessorResult(file.FrameSize, pixels);
     }
 }

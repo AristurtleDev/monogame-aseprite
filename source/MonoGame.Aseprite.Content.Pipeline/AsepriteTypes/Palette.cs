@@ -22,22 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSpritesheetProcessor"/>.
-/// </summary>
-public sealed class AsepriteSpritesheetProcessorResult
+public sealed class Palette
 {
-    internal string Name { get; }
-    internal Point Size { get; }
-    internal Color[] Pixels { get; }
-    internal List<SpriteSheetFrameContent> Frames { get; }
-    internal List<SpriteSheetAnimationDefinition> AnimationDefinitions { get; }
+    internal Color[] Colors { get; }
+    internal int TransparentIndex { get; }
 
-    internal AsepriteSpritesheetProcessorResult(string name, Point size, Color[] pixels, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationDefinition> animationDefinitions) =>
-        (Name, Size, Pixels, Frames, AnimationDefinitions) = (name, size, pixels, frames, animationDefinitions);
+    internal Palette(Color[] colors, int transparentIndex) => (Colors, TransparentIndex) = (colors, transparentIndex);
 }
