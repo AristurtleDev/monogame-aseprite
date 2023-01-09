@@ -22,21 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
-/// </summary>
-/// <param name="Size">
-///     The width and height extents, in pixels of the generated image of the
-///     single frame that was processed.
-/// </param>
-/// <param name="Pixels">
-///     An <see cref="ImmutableArray{T}"/> of
-///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
-///     pixels of the generated image of the frame tha was processed.
-/// </param>
-public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);
+public sealed class SpriteSheetFrameContent
+{
+    internal Dictionary<string, SpriteSheetFrameRegion> Regions { get; } = new();
+
+    internal string Name { get; }
+    internal Rectangle Bounds { get; }
+    internal TimeSpan Duration { get; }
+
+    internal SpriteSheetFrameContent(string name, Rectangle bounds, TimeSpan duration) =>
+        (Name, Bounds, Duration) = (name, bounds, duration);
+}

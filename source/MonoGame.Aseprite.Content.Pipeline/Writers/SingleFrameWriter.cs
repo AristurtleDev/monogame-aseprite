@@ -22,21 +22,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Pipeline.Processors;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
-/// </summary>
-/// <param name="Size">
-///     The width and height extents, in pixels of the generated image of the
-///     single frame that was processed.
-/// </param>
-/// <param name="Pixels">
-///     An <see cref="ImmutableArray{T}"/> of
-///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
-///     pixels of the generated image of the frame tha was processed.
-/// </param>
-public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);
+[ContentTypeWriter]
+public sealed class SingleFrameWriter : ContentTypeWriter<AsepriteSingleFrameProcessorResult>
+{
+    protected override void Write(ContentWriter output, AsepriteSingleFrameProcessorResult input)
+    {
+        output.Write(input.Size.Width);
+        output.Write(input.Size.Height);
+        output.Write(input.Pixels.Length);
+
+        for (int i = 0; i < input.Pixels.Length; i++)
+        {
+            output.Write(input.Pixels[i]);
+        }
+    }
+
+    public override string GetRuntimeReader(TargetPlatform targetPlatform)
+    {
+        return "MonoGame.Aseprite.Content.Pipeline.Readers.SingleFrameReader, MonoGame.Aseprite";
+    }
+}

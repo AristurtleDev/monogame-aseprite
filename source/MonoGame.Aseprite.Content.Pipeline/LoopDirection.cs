@@ -22,21 +22,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
-using Microsoft.Xna.Framework;
-
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
 /// <summary>
-///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
+///     Defines the values that describe the loop direction for an animation
+///     in an Aseprite image.
 /// </summary>
-/// <param name="Size">
-///     The width and height extents, in pixels of the generated image of the
-///     single frame that was processed.
-/// </param>
-/// <param name="Pixels">
-///     An <see cref="ImmutableArray{T}"/> of
-///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
-///     pixels of the generated image of the frame tha was processed.
-/// </param>
-public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);
+public enum LoopDirection : byte
+{
+    /// <summary>
+    ///     Describes that the animation loops in a forward direction staring on
+    ///     the first frame and ending on the last frame.
+    /// </summary>
+    Forward = 0,
+
+    /// <summary>
+    ///     Describes that the animation loops in a reverse direction starting
+    ///     on the last frame and ending on the first frame.
+    /// </summary>
+    Reverse = 1,
+
+    /// <summary>
+    ///     Describes that the animation loops in a ping-pong direction starting
+    ///     on the first frame and moving forward to the last frame, then moving
+    ///     back in reverse to the first frame.
+    /// </summary>
+    PingPong = 2
+}

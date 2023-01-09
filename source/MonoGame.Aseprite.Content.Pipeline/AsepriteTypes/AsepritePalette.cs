@@ -25,18 +25,35 @@ SOFTWARE.
 using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
-/// </summary>
-/// <param name="Size">
-///     The width and height extents, in pixels of the generated image of the
-///     single frame that was processed.
-/// </param>
-/// <param name="Pixels">
-///     An <see cref="ImmutableArray{T}"/> of
-///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
-///     pixels of the generated image of the frame tha was processed.
-/// </param>
-public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);
+internal class AsepritePalette
+{
+    internal int TransparentIndex { get; }
+    internal Color[] Colors { get; }
+
+    internal AsepritePalette(int transparentIndex, Color[] colors) =>
+        (TransparentIndex, Colors) = (transparentIndex, colors);
+}
+
+// /// <summary>
+// ///     Represents the palette of an Aseprite file.
+// /// </summary>
+// /// <param name="TransparentIndex">
+// ///     <para>
+// ///         The index of the <see cref="Microsoft.Xna.Framework.Color"/> value
+// ///         in the <see cref="Colors"/> collection of this
+// ///         <see cref="AsepritePalette"/> that represents the value of a
+// ///         transparent pixel.
+// ///     </para>
+// ///     <para>
+// ///         This value is only valid if the Color Depth mode that was set in the
+// ///         Aseprite UI for the file was "Index Mode".
+// ///     </para>
+// /// </param>
+// /// <param name="Colors">
+// ///     A <see cref="ImmutableArray{T}"/> of
+// ///     <see cref="Microsoft.Xna.Framework.Color"/> values that make up this
+// ///     <see cref="AsepritePalette"/>.
+// /// </param>
+// public sealed record AsepritePalette(int TransparentIndex, ImmutableArray<Color> Colors);

@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2018-2023 Christopher Whitley
+Copyright (c) 2022 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
-using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
-/// </summary>
-/// <param name="Size">
-///     The width and height extents, in pixels of the generated image of the
-///     single frame that was processed.
-/// </param>
-/// <param name="Pixels">
-///     An <see cref="ImmutableArray{T}"/> of
-///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
-///     pixels of the generated image of the frame tha was processed.
-/// </param>
-public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);
+public sealed class AsepriteFileContent
+{
+    internal string Name { get; set; } = string.Empty;
+    internal List<AsepriteFrame> Frames { get; } = new();
+    internal List<AsepriteLayer> Layers { get; } = new();
+    internal List<AsepriteTag> Tags { get; } = new();
+    internal List<AsepriteTileset> Tilesets { get; } = new();
+}

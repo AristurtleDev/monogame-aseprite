@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2022 Christopher Whitley
+Copyright (c) 2018-2023 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
+
 using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
@@ -75,14 +76,14 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
     public override AsepriteSpritesheetProcessorResult Process(AsepriteFile input, ContentProcessorContext context)
     {
-        ImmutableArray<Frame> frames = GetFrames(input, out int width, out int height, out Color[] pixels);
-        ImmutableArray<Tag> tags = GetTags(input);
-        ImmutableArray<Slice> slices = GetSlices(input);
+        List<SpriteSheetFrameContent> frames = GenerateFrameAndImageData(input, out int width, out int height, out Color[] pixels);
+        List<SpriteSheetAnimationDefinition> tags = GenerateAnimationDefinitionData(input);
+        GenerateFrameRegionData(input, frames);
 
-        return new AsepriteSpritesheetProcessorResult(input.Name, new Size(width, height), pixels.ToImmutableArray(), frames, tags, slices);
+        return new AsepriteSpritesheetProcessorResult(input.Name, new Size(width, height), pixels, frames, tags);
     }
 
-    private ImmutableArray<Frame> GetFrames(AsepriteFile file, out int width, out int height, out Color[] pixels)
+    private List<SpriteSheetFrameContent> GenerateFrameAndImageData(AsepriteFile file, out int width, out int height, out Color[] pixels)
     {
         List<ImmutableArray<Color>> flattenedFrames = new();
 
@@ -91,9 +92,9 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
             flattenedFrames.Add(file.Frames[i].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer));
         }
 
-        List<Frame> frames = new();
+        List<SpriteSheetFrameContent> frames = new();
         int nFrames = flattenedFrames.Count;
-        Dictionary<int, Frame> originalToDuplicateLookup = new();
+        Dictionary<int, SpriteSheetFrameContent> originalToDuplicateLookup = new();
         Dictionary<int, int> duplicateMap = new();
 
         if (MergeDuplicateFrames)
@@ -194,7 +195,8 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
                                      (Spacing * frameRow) +
                                      (InnerPadding * (frameRow + 1 + frameRow));
 
-                Frame frame = new(sourceRectangle, TimeSpan.FromMilliseconds(file.Frames[fNum].Duration));
+                SpriteSheetFrameContent frame = new($"frame_{fNum}", sourceRectangle, TimeSpan.FromMilliseconds(file.Frames[fNum].Duration));
+                // Frame frame = new(sourceRectangle, TimeSpan.FromMilliseconds(file.Frames[fNum].Duration));
                 frames.Add(frame);
                 originalToDuplicateLookup.Add(fNum, frame);
             }
@@ -203,33 +205,38 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
                 //  We are merging duplicates and it was detected that the
                 //  current frame to process is a duplicate.  so we still need
                 //  to create the frame data
-                Frame original = originalToDuplicateLookup[duplicateMap[fNum]];
-                Frame frame = original;
-                frames.Add(frame);
+                SpriteSheetFrameContent original = originalToDuplicateLookup[duplicateMap[fNum]];
+                SpriteSheetFrameContent duplicate = new($"frame_{fNum}", original.Bounds, original.Duration);
+                frames.Add(duplicate);
                 fOffset++;
             }
         }
 
-        return frames.ToImmutableArray();
+        return frames;
     }
 
-    private ImmutableArray<Tag> GetTags(AsepriteFile file)
+    private List<SpriteSheetAnimationDefinition> GenerateAnimationDefinitionData(AsepriteFile file)
     {
-        List<Tag> tags = new();
+        List<SpriteSheetAnimationDefinition> definitions = new();
 
         for (int i = 0; i < file.Tags.Count; i++)
         {
             AsepriteTag aseTag = file.Tags[i];
-            Tag tag = new(aseTag.Name, aseTag.From, aseTag.To, aseTag.Direction, aseTag.Color);
-            tags.Add(tag);
+            int[] frameIndexes = new int[aseTag.To - aseTag.From + 1];
+            for (int f = 0; f < frameIndexes.Length; f++)
+            {
+                frameIndexes[f] = aseTag.From + f;
+            }
+            SpriteSheetAnimationDefinition definition = new(frameIndexes, aseTag.Name, true, aseTag.Direction == LoopDirection.Reverse, aseTag.Direction == LoopDirection.PingPong);
+            definitions.Add(definition);
         }
 
-        return tags.ToImmutableArray();
+        return definitions;
     }
 
-    private ImmutableArray<Slice> GetSlices(AsepriteFile file)
+    private void GenerateFrameRegionData(AsepriteFile file, List<SpriteSheetFrameContent> frames)
     {
-        List<Slice> slices = new();
+        List<SpriteSheetFrameRegion> regions = new();
 
         //  Slice keys in Aseprite are defined with a frame index that indicates
         //  the frame that the key starts on, but doesn't give a value for what
@@ -242,7 +249,7 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
 
             //  If no color defined in user data, use Aseprite default for slice
             //  color, which is just blue
-            Color color = aseSlice.UserData.Color ?? new Color(0, 0, 255, 255);
+            Color color = aseSlice.UserData?.Color ?? new Color(0, 0, 255, 255);
 
             AsepriteSliceKey? lastKey = default;
 
@@ -250,29 +257,19 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
             {
                 AsepriteSliceKey key = aseSlice.Keys[k];
 
-                Slice slice = new(name: name,
-                                  color: color,
-                                  frame: key.FrameIndex,
-                                  bounds: key.Bounds,
-                                  center: key.CenterBounds,
-                                  pivot: key.Pivot);
+                SpriteSheetFrameRegion region = new(name, key.Bounds, color, key.CenterBounds, key.Pivot);
+                frames[key.FrameIndex].Regions.Add(name, region);
 
-                //  Perform interpolation before adding the slice
+                //  Perform interpolation before caching last key
                 if (lastKey is not null && lastKey.FrameIndex < key.FrameIndex)
                 {
                     for (int offset = 1; offset < key.FrameIndex - lastKey.FrameIndex; offset++)
                     {
-                        Slice interpolatedSlice = new(name: name,
-                                                      color: color,
-                                                      frame: lastKey.FrameIndex,
-                                                      bounds: lastKey.Bounds,
-                                                      center: lastKey.CenterBounds,
-                                                      pivot: lastKey.Pivot);
-                        slices.Add(interpolatedSlice);
+                        SpriteSheetFrameRegion interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
+                        frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
                     }
                 }
 
-                slices.Add(slice);
                 lastKey = key;
             }
 
@@ -282,18 +279,10 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
             {
                 for (int offset = 1; offset < file.Frames.Count - lastKey.FrameIndex; offset++)
                 {
-                    Slice interpolatedSlice = new(name: name,
-                                                  color: color,
-                                                  frame: lastKey.FrameIndex,
-                                                  bounds: lastKey.Bounds,
-                                                  center: lastKey.CenterBounds,
-                                                  pivot: lastKey.Pivot);
-
-                    slices.Add(interpolatedSlice);
+                    SpriteSheetFrameRegion interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
+                    frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
                 }
             }
         }
-
-        return slices.ToImmutableArray();
     }
 }

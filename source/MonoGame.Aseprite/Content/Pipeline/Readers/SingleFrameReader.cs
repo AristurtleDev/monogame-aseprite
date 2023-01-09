@@ -22,21 +22,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
-/// </summary>
-/// <param name="Size">
-///     The width and height extents, in pixels of the generated image of the
-///     single frame that was processed.
-/// </param>
-/// <param name="Pixels">
-///     An <see cref="ImmutableArray{T}"/> of
-///     <see cref="Microsoft.Xna.Framework.Color"/> values that represent the
-///     pixels of the generated image of the frame tha was processed.
-/// </param>
-public sealed record AsepriteSingleFrameProcessorResult(Size Size, ImmutableArray<Color> Pixels);
+public sealed class SingleFrameReader : ContentTypeReader<Texture2D>
+{
+    protected override Texture2D Read(ContentReader input, Texture2D existingInstance)
+    {
+        int width = input.ReadInt32();
+        int height = input.ReadInt32();
+        int len = input.ReadInt32();
+
+        Color[] pixels = new Color[len];
+
+        for (int i = 0; i < len; i++)
+        {
+            pixels[i] = input.ReadColor();
+        }
+
+        Texture2D texture = new(input.GetGraphicsDevice(), width, height, false, SurfaceFormat.Color);
+        texture.SetData<Color>(pixels);
+
+        return texture;
+    }
+}
