@@ -22,30 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-/// <summary>
-///     Defines the values that describe the loop direction for an animation
-///     in an Aseprite image.
-/// </summary>
-public enum LoopDirection : byte
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+
+[ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
+public sealed class TilesetProcessor : ContentProcessor<AsepriteFile, TilesetProcessorResult>
 {
-    /// <summary>
-    ///     Describes that the animation loops in a forward direction staring on
-    ///     the first frame and ending on the last frame.
-    /// </summary>
-    Forward = 0,
-
-    /// <summary>
-    ///     Describes that the animation loops in a reverse direction starting
-    ///     on the last frame and ending on the first frame.
-    /// </summary>
-    Reverse = 1,
-
-    /// <summary>
-    ///     Describes that the animation loops in a ping-pong direction starting
-    ///     on the first frame and moving forward to the last frame, then moving
-    ///     back in reverse to the first frame.
-    /// </summary>
-    PingPong = 2
+    public override TilesetProcessorResult Process(AsepriteFile file, ContentProcessorContext context) =>
+        new(file.Tilesets);
 }

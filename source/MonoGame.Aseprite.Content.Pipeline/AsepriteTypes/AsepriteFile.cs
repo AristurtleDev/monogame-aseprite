@@ -39,7 +39,7 @@ public sealed class AsepriteFile
     internal int TransparentIndex { get; set; }
     internal string Name { get; set; }
     internal Point FrameSize { get; set; }
-    internal ColorDepth ColorDepth { get; set; }
+    internal ushort ColorDepth { get; set; }
     internal int FrameCount { get; set; }
     internal bool LayerOpacityValid { get; set; }
 

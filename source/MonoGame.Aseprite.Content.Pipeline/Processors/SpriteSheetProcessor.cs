@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -31,7 +30,7 @@ using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
-public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile, AsepriteSpritesheetProcessorResult>
+public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, SpriteSheetProcessorResult>
 {
     /// <summary>
     ///     Indicates whether only cels that are on layers that are visible
@@ -74,13 +73,13 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
     [DisplayName("Inner Padding")]
     public int InnerPadding { get; set; } = 0;
 
-    public override AsepriteSpritesheetProcessorResult Process(AsepriteFile input, ContentProcessorContext context)
+    public override SpriteSheetProcessorResult Process(AsepriteFile input, ContentProcessorContext context)
     {
         List<SpriteSheetFrameContent> frames = GenerateFrameAndImageData(input, out int width, out int height, out Color[] pixels);
         List<SpriteSheetAnimationDefinition> tags = GenerateAnimationDefinitionData(input);
         GenerateFrameRegionData(input, frames);
 
-        return new AsepriteSpritesheetProcessorResult(input.Name, new Point(width, height), pixels, frames, tags);
+        return new SpriteSheetProcessorResult(input.Name, new Point(width, height), pixels, frames, tags);
     }
 
     private List<SpriteSheetFrameContent> GenerateFrameAndImageData(AsepriteFile file, out int width, out int height, out Color[] pixels)
@@ -227,7 +226,11 @@ public sealed class AsepriteSpritesheetProcessor : ContentProcessor<AsepriteFile
             {
                 frameIndexes[f] = aseTag.From + f;
             }
-            SpriteSheetAnimationDefinition definition = new(frameIndexes, aseTag.Name, true, aseTag.Direction == LoopDirection.Reverse, aseTag.Direction == LoopDirection.PingPong);
+
+            bool isReversed = aseTag.Direction == 1;
+            bool isPingPong = aseTag.Direction == 2;
+
+            SpriteSheetAnimationDefinition definition = new(frameIndexes, aseTag.Name, true, isReversed, isPingPong);
             definitions.Add(definition);
         }
 

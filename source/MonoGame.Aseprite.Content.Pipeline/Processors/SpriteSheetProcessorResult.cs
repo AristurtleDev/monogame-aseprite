@@ -24,19 +24,19 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-internal sealed class Tag
+/// <summary>
+///     Represents the result of the <see cref="SpritesheetProcessor"/>.
+/// </summary>
+public sealed class SpriteSheetProcessorResult
 {
-    private Color _tagColor;
-
-    internal int From { get; }
-    internal int To { get; }
-    internal byte Direction { get; }
     internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
-    internal Color Color => UserData.Color ?? _tagColor;
+    internal Point Size { get; }
+    internal Color[] Pixels { get; }
+    internal List<SpriteSheetFrameContent> Frames { get; }
+    internal List<SpriteSheetAnimationDefinition> AnimationDefinitions { get; }
 
-    internal Tag(ushort from, ushort to, byte direction, Color color, string name) =>
-        (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
+    internal SpriteSheetProcessorResult(string name, Point size, Color[] pixels, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationDefinition> animationDefinitions) =>
+        (Name, Size, Pixels, Frames, AnimationDefinitions) = (name, size, pixels, frames, animationDefinitions);
 }

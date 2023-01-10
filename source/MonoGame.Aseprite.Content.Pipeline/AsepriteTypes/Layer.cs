@@ -29,11 +29,11 @@ internal class Layer
     internal bool IsVisible { get; }
     internal bool IsBackground { get; }
     internal bool IsReference { get; }
-    internal BlendMode BlendMode { get; }
+    internal ushort BlendMode { get; }
     internal int Opacity { get; }
     internal string Name { get; }
     internal AsepriteUserData UserData { get; } = new();
 
-    internal Layer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name) =>
+    internal Layer(bool isVisible, bool isBackground, bool isReference, ushort blendMode, int opacity, string name) =>
         (IsVisible, IsBackground, IsReference, BlendMode, Opacity, Name) = (isVisible, isBackground, isReference, blendMode, opacity, name);
 }

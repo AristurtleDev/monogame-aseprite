@@ -23,20 +23,22 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite;
 
-internal sealed class Tag
+public sealed class TilemapLayer
 {
-    private Color _tagColor;
+    private TilemapTile[] _tiles;
+    public string Name { get; }
+    public Point TileSize { get; }
+    public Tileset Tileset { get; }
 
-    internal int From { get; }
-    internal int To { get; }
-    internal byte Direction { get; }
-    internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
-    internal Color Color => UserData.Color ?? _tagColor;
-
-    internal Tag(ushort from, ushort to, byte direction, Color color, string name) =>
-        (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
+    internal TilemapLayer(Tileset tileset, string name, Point tileSize, int tileCount)
+    {
+        Tileset = tileset;
+        Name = name;
+        TileSize = tileSize;
+        _tiles = new TilemapTile[tileCount];
+    }
 }

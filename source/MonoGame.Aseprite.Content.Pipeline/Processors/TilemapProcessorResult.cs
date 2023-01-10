@@ -22,21 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-internal sealed class Tag
+/// <summary>
+///     Represents the result of the <see cref="TilemapProcessor"/>.
+/// </summary>
+public sealed class TilemapProcessorResult
 {
-    private Color _tagColor;
-
-    internal int From { get; }
-    internal int To { get; }
-    internal byte Direction { get; }
-    internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
-    internal Color Color => UserData.Color ?? _tagColor;
-
-    internal Tag(ushort from, ushort to, byte direction, Color color, string name) =>
-        (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
+    internal List<Tileset> Tilesets { get; }
+    internal List<TilemapFrameContent> Frames { get; }
+    internal TilemapProcessorResult(List<Tileset> tilesets, List<TilemapFrameContent> frames) =>
+        (Tilesets, Frames) = (tilesets, frames);
 }

@@ -65,7 +65,7 @@ internal static class BlendFunctions
     private const uint RGBA_RGB_MASK = 0x00ffffff;
     private const uint RGBA_A_MASK = 0xff000000;
 
-    public static Color Blend(BlendMode mode, Color backdrop, Color source, int opacity)
+    public static Color Blend(ushort mode, Color backdrop, Color source, int opacity)
     {
         if (backdrop.A == 0 && source.A == 0)
         {
@@ -85,28 +85,26 @@ internal static class BlendFunctions
 
         uint blended = mode switch
         {
-            #pragma warning disable format
-            BlendMode.Normal     => Normal(b, s, opacity),
-            BlendMode.Multiply   => Multiply(b, s, opacity),
-            BlendMode.Screen     => Screen(b, s, opacity),
-            BlendMode.Overlay    => Overlay(b, s, opacity),
-            BlendMode.Darken     => Darken(b, s, opacity),
-            BlendMode.Lighten    => Lighten(b, s, opacity),
-            BlendMode.ColorDodge => ColorDodge(b, s, opacity),
-            BlendMode.ColorBurn  => ColorBurn(b, s, opacity),
-            BlendMode.HardLight  => HardLight(b, s, opacity),
-            BlendMode.SoftLight  => SoftLight(b, s, opacity),
-            BlendMode.Difference => Difference(b, s, opacity),
-            BlendMode.Exclusion  => Exclusion(b, s, opacity),
-            BlendMode.Hue        => HslHue(b, s, opacity),
-            BlendMode.Saturation => HslSaturation(b, s, opacity),
-            BlendMode.Color      => HslColor(b, s, opacity),
-            BlendMode.Luminosity => HslLuminosity(b, s, opacity),
-            BlendMode.Addition   => Addition(b, s, opacity),
-            BlendMode.Subtract   => Subtract(b, s, opacity),
-            BlendMode.Divide     => Divide(b, s, opacity),
-            _                    => throw new InvalidOperationException($"Unknown blend mode '{mode}'")
-            #pragma warning restore format
+            00 => Normal(b, s, opacity),
+            01 => Multiply(b, s, opacity),
+            02 => Screen(b, s, opacity),
+            03 => Overlay(b, s, opacity),
+            04 => Darken(b, s, opacity),
+            05 => Lighten(b, s, opacity),
+            06 => ColorDodge(b, s, opacity),
+            07 => ColorBurn(b, s, opacity),
+            08 => HardLight(b, s, opacity),
+            09 => SoftLight(b, s, opacity),
+            10 => Difference(b, s, opacity),
+            11 => Exclusion(b, s, opacity),
+            12 => HslHue(b, s, opacity),
+            13 => HslSaturation(b, s, opacity),
+            14 => HslColor(b, s, opacity),
+            15 => HslLuminosity(b, s, opacity),
+            16 => Addition(b, s, opacity),
+            17 => Subtract(b, s, opacity),
+            18 => Divide(b, s, opacity),
+            _ => throw new InvalidOperationException($"Unknown blend mode '{mode}'")
         };
 
         byte red = GetR(blended);

@@ -1,745 +1,617 @@
-// /* ----------------------------------------------------------------------------
-// MIT License
-
-// Copyright (c) 2018-2023 Christopher Whitley
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-// ---------------------------------------------------------------------------- */
-
-// using System.Diagnostics;
-// using System.IO.Compression;
-// using System.Runtime.CompilerServices;
-// using System.Text;
-// using Microsoft.Xna.Framework;
-// using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-
-// namespace MonoGame.Aseprite.Content.Pipeline.IO;
-
-// internal sealed class AsepriteFileReader : IDisposable
-// {
-//     private const ushort CHUNK_TYPE_OLD_PALETTE1 = 0x0004;      //  Old Palette Chunk Type
-//     private const ushort CHUNK_TYPE_OLD_PALETTE2 = 0x0011;      //  Old Palette Chunk Type
-//     private const ushort CHUNK_TYPE_LAYER = 0x2004;             //  Layer Chunk Type
-//     private const ushort CHUNK_TYPE_CEL = 0x2005;               //  Cel Chunk Type
-//     private const ushort CHUNK_TYPE_CEL_EXTRA = 0x2006;         //  Cel Extra Chunk Type
-//     private const ushort CHUNK_TYPE_COLOR_PROFILE = 0x2007;     //  Color Profile Chunk Type
-//     private const ushort CHUNK_TYPE_EXTERNAL_FILES = 0x2008;    //  External Files Chunk Type
-//     private const ushort CHUNK_TYPE_MASK = 0x2016;              //  Mask Chunk Type
-//     private const ushort CHUNK_TYPE_PATH = 0x2017;              //  Path Chunk Type
-//     private const ushort CHUNK_TYPE_TAGS = 0x2018;              //  Tags Chunk Type
-//     private const ushort CHUNK_TYPE_PALETTE = 0x2019;           //  Palette Chunk Type
-//     private const ushort CHUNK_TYPE_USER_DATA = 0x2020;         //  User Data Chunk Type
-//     private const ushort CHUNK_TYPE_SLICE = 0x2022;             //  Slice Chunk Type
-//     private const ushort CHUNK_TYPE_TILESET = 0x2023;           //  Tileset Chunk TypeF
-
-//     private bool _isDisposed;
-
-//     private string _name;
-//     private int _nFrames;
-//     private int _width;
-//     private int _height;
-//     private int _depth;
-//     private bool _layerOpacityValid;
-//     private int _transparentIndex;
-//     private int _nColors;
-
-//     private int _tagIterator;
-//     private ushort _lastUserDataChunkType;
-
-//     private Color[] _palette = Array.Empty<Color>();
-//     private List<Frame> _frames = new();
-//     private List<Layer> _layers = new();
-//     private List<Tag> _tags = new();
-//     private List<Slice> _slices = new();
-//     private List<Tileset> _tilesets = new();
-
-//     private BinaryReader _reader;
-
-//     internal AsepriteFileReader(string path)
-//     {
-//         if (!File.Exists(path))
-//         {
-//             throw new FileNotFoundException($"No file exists at '{path}'");
-//         }
-
-//         _name = Path.GetFileNameWithoutExtension(path);
-
-//         Stream stream = File.OpenRead(path);
-//         _reader = new(stream, Encoding.UTF8, leaveOpen: false);
-//     }
-
-//     ~AsepriteFileReader() => Dispose(false);
-
-//     internal AsepriteFile ReadFile()
-//     {
-//         //  After reading the file header, several field values are initialized
-//         //  that are used throughout reading the rest of the file.
-//         ReadFileHeader();
-
-//         //  Read frame-by-frame until all frames are read
-//         for (int i = 0; i < _nFrames; i++)
-//         {
-//             ReadFrame();
-//         }
-
-//         Point size = new(_width, _height);
-//         Palette palette = new(_palette, _transparentIndex);
-
-//         AsepriteFile file = new(_name, size, palette, _frames, _layers, _tags, _slices, _tilesets);
-//         return file;
-//     }
-
-//     private void ReadFileHeader()
-//     {
-//         const int HEADER_LEN = 128;
-//         const ushort HEADER_MAGIC = 0xA5E0;
-//         const uint HEADER_FLAG_LAYER_OPACITY_VALID = 1;
-
-//         IgnoreDword();                              //  File size (don't need)
-//         ushort magic = ReadWord();                  //  Header magic (0xA5E0)
-//         _nFrames = ReadWord();                      //  Total number of frames
-//         _width = ReadWord();                        //  Width, in pixels, of each frame
-//         _height = ReadWord();                       //  Height, in pixels, of each frame
-//         _depth = ReadWord();                        //  Color depth (bits per pixel)
-//         uint flags = ReadDword();                   //  Header flags
-//         IgnoreWord();                               //  Speed (ms between frames) (deprecated)
-//         IgnoreDword();                              //  Set to 0
-//         IgnoreDword();                              //  Set to 0
-//         _transparentIndex = _reader.ReadByte();     //  Index of transparent color in palette
-//         IgnoreBytes(3);                             //  Ignore these bytes
-//         _nColors = ReadWord();                      //  Number of colors
-//         _reader.BaseStream.Position = HEADER_LEN;   //  Skip remainder of header, don't need
-
-//         if (magic != HEADER_MAGIC)
-//         {
-//             throw new InvalidOperationException($"Invalid header magic number (0x{magic:X4}).");
-//         }
-
-//         _layerOpacityValid = HasFlag(flags, HEADER_FLAG_LAYER_OPACITY_VALID);
-
-//         if (_width < 1 || _height < 1)
-//         {
-//             throw new InvalidOperationException($"Invalid canvas size ({_width}x{_height})");
-//         }
-
-//         if (_depth != 32 && _depth != 16 && _depth != 8)
-//         {
-//             throw new InvalidOperationException($"invalid color depth '{_depth}'");
-//         }
-
-//         if (_depth != 8)
-//         {
-//             //  Transparent index can only be non-zero when color depth is
-//             //  Indexed (8)
-//             _transparentIndex = 0;
-//         }
-
-//         //  When number of colors is zero, this means 256
-//         if (_nColors == 0)
-//         {
-//             _nColors = 256;
-//         }
-
-//         _palette = new Color[_nColors];
-//     }
-
-//     private void ReadFrame()
-//     {
-//         const ushort FRAME_MAGIC = 0xF1FA;
-
-//         uint len = ReadDword();         //  Length of frame, in bytes
-//         ushort magic = ReadWord();      //  Frame magic (0xF1FA)
-//         ushort nChunksA = ReadWord();   //  Old field which specifies number of chunks
-//         ushort duration = ReadWord();   //  Frame duration (ms)
-//         IgnoreBytes(2);                 //  For future (set to zero)
-//         uint nChunksB = ReadDword();    //  New field which specifies number of chunks
-
-//         if (magic != FRAME_MAGIC)
-//         {
-//             throw new InvalidOperationException($"Invalid frame magic number (0x{magic:X4})");
-//         }
-
-//         uint nChunks = nChunksA == 0xFFFF && nChunksA < nChunksB ?
-//                        nChunksB :
-//                        nChunksA;
-
-//         Frame frame = new(new Point(_width, _height), duration);
-//         _frames.Add(frame);
-
-//         for (uint i = 0; i < nChunks; i++)
-//         {
-//             ReadChunk();
-//         }
-//     }
-
-//     private void ReadChunk()
-//     {
-//         long start = _reader.BaseStream.Position;
-
-//         uint len = ReadDword();     //  Chunk length, in bytes
-//         ushort type = ReadWord();   //  Chunk type
-
-//         long end = start + len;
-
-//         switch (type)
-//         {
-//             case CHUNK_TYPE_LAYER:
-//                 ReadLayerChunk();
-//                 _lastUserDataChunkType = type;
-//                 break;
-//             case CHUNK_TYPE_CEL:
-//                 ReadCelChunk(end);
-//                 _lastUserDataChunkType = type;
-//                 break;
-//             case CHUNK_TYPE_TAGS:
-//                 ReadTagsChunk();
-//                 _lastUserDataChunkType = type;
-//                 break;
-//             case CHUNK_TYPE_PALETTE:
-//                 ReadPaletteChunk();
-//                 break;
-//             case CHUNK_TYPE_SLICE:
-//                 ReadSliceChunk();
-//                 _lastUserDataChunkType = type;
-//                 break;
-//             case CHUNK_TYPE_TILESET:
-//                 ReadTilesetChunk();
-//                 break;
-//             case CHUNK_TYPE_USER_DATA:
-//                 ReadUserDataChunk();
-//                 break;
-//             case CHUNK_TYPE_OLD_PALETTE1:   //  Only exists for backwards compatibility with v1.1
-//             case CHUNK_TYPE_OLD_PALETTE2:   //  Only exists for backwards compatibility with v1.1
-//             case CHUNK_TYPE_CEL_EXTRA:      //  Used by Aseprite UI, don't need here
-//             case CHUNK_TYPE_COLOR_PROFILE:  //  Don't need, probably. Someone may ask for it one day
-//             case CHUNK_TYPE_EXTERNAL_FILES: //  Not implemented in v1.3 yet
-//             case CHUNK_TYPE_MASK:           //  Deprecated
-//             case CHUNK_TYPE_PATH:           //  Never used
-//                 _reader.BaseStream.Position = end;
-//                 break;
-//             default:
-//                 throw new InvalidOperationException($"Unknown chunk type (0x{type:X4})");
-//         }
-//     }
-
-//     private void ReadLayerChunk()
-//     {
-//         const ushort FLAG_IS_VISIBLE = 1;
-//         const ushort FLAG_IS_BACKGROUND = 8;
-//         const ushort FLAG_IS_REFERENCE = 64;
-//         const ushort TYPE_NORMAL = 0;
-//         const ushort TYPE_GROUP = 1;
-//         const ushort TYPE_TILEMAP = 2;
-
-//         ushort flags = ReadWord();          //  Layer flags
-//         ushort type = ReadWord();           //  Layer type
-//         ushort level = ReadWord();          //  Layer child level
-//         IgnoreWord();                       //  Default layer width
-//         IgnoreWord();                       //  Default layer height
-//         ushort blend = ReadWord();          //  Blend mode
-//         byte opacity = _reader.ReadByte();  //  Layer opacity
-//         IgnoreBytes(3);                     //  For future (set to 0)
-//         string name = ReadString();         //  Layer name
-
-//         if (!_layerOpacityValid)
-//         {
-//             opacity = 255;
-//         }
-
-//         bool isVisible = HasFlag(flags, FLAG_IS_VISIBLE);
-//         bool isBackground = HasFlag(flags, FLAG_IS_BACKGROUND);
-//         bool isReference = HasFlag(flags, FLAG_IS_REFERENCE);
-//         BlendMode mode = (BlendMode)blend;
-
-//         Layer layer;
-
-//         if (type == TYPE_NORMAL || type == TYPE_GROUP)
-//         {
-//             layer = new Layer(isVisible, isBackground, isReference, mode, opacity, name);
-//         }
-//         else if (type == TYPE_TILEMAP)
-//         {
-//             uint index = ReadDword();   //  Index of tileset used by cels on this layer
-//             Tileset tileset = _tilesets[(int)index];
-//             layer = new TilemapLayer(tileset, isVisible, isBackground, isReference, mode, opacity, name);
-//         }
-//         else
-//         {
-//             throw new InvalidOperationException($"Unknown layer type '{type}'");
-//         }
-
-//         _layers.Add(layer);
-//     }
-
-//     private void ReadCelChunk(long chunkEnd)
-//     {
-//         const int TYPE_RAW_IMAGE = 0;
-//         const int TYPE_LINKED = 1;
-//         const int TYPE_COMPRESSED_IMAGE = 2;
-//         const int TYPE_COMPRESSED_TILEMAP = 3;
-
-//         ushort index = ReadWord();          //  Index of the layer this cel is on
-//         short x = ReadShort();              //  Cel x-position relative to frame bounds
-//         short y = ReadShort();              //  Cel y-position relative to frame bounds
-//         byte opacity = _reader.ReadByte();  //  Cel opacity
-//         ushort type = ReadWord();           //  Cel type
-//         IgnoreBytes(7);                     //  For future (set to zero)
-
-//         Frame frame = _frames[_frames.Count - 1];
-//         Layer layer = _layers[index];
-//         Point position = new(x, y);
-
-//         Cel cel = type switch
-//         {
-//             TYPE_RAW_IMAGE => ReadRawImageCel(layer, position, opacity, chunkEnd),
-//             TYPE_LINKED => ReadLinkedCel(frame),
-//             TYPE_COMPRESSED_IMAGE => ReadCompressedImageCel(layer, position, opacity, chunkEnd),
-//             TYPE_COMPRESSED_TILEMAP => ReadCompressedTilemapCel(layer, position, opacity, chunkEnd),
-//             _ => throw new InvalidOperationException($"Unknown cel type '{type}'")
-//         };
-
-//         frame.Cels.Add(cel);
-//     }
-
-//     private ImageCel ReadRawImageCel(Layer layer, Point position, byte opacity, long chunkEnd)
-//     {
-//         ushort width = ReadWord();              //  Width of cel, in pixels
-//         ushort height = ReadWord();             //  Height of cel, in pixels
-
-//         int len = (int)(chunkEnd - _reader.BaseStream.Position);
-//         byte[] data = _reader.ReadBytes(len);   //  Raw Image Data
-
-
-//         Point size = new(width, height);
-//         Color[] pixels = ToColor(data);
-
-//         return new(size, pixels, layer, position, opacity);
-//     }
-
-//     private Cel ReadLinkedCel(Frame frame)
-//     {
-//         ushort frameIndex = ReadWord(); //  Frame position to link with
-
-//         return _frames[frameIndex].Cels[frame.Cels.Count];
-//     }
-
-//     private ImageCel ReadCompressedImageCel(Layer layer, Point position, byte opacity, long chunkEnd)
-//     {
-//         ushort width = ReadWord();  //  Width of cel, in pixels
-//         ushort height = ReadWord(); //  Height of cel, in pixels
-
-//         int len = (int)(chunkEnd - _reader.BaseStream.Position);
-//         byte[] data = _reader.ReadBytes(len);   //  Raw image data compressed with ZLIB
-
-//         data = Decompress(data);
-
-//         Point size = new(width, height);
-//         Color[] pixels = ToColor(data);
-
-//         return new(size, pixels, layer, position, opacity);
-//     }
-
-//     private TilemapCel ReadCompressedTilemapCel(Layer layer, Point position, byte opacity, long chunkEnd)
-//     {
-//         const int TILE_ID_SHIFT = 0;
-
-//         ushort width = ReadWord();              //  Width of cel, in number of tiles
-//         ushort height = ReadWord();             //  Height of cel, in number of tiles
-//         ushort bitsPerTile = ReadWord();        //  Bits per tile (currently always 32)
-//         uint idBitmask = ReadDword();           //  Tile ID bitmask (e.g. 0x1FFFFFFF for 32-bit)
-//         uint xFlipBitmask = ReadDword();        //  X-Flip bitmask
-//         uint yFlipBitmask = ReadDword();        //  Y-Flip bitmask
-//         uint rotationBitmask = ReadDword();     //  90CW rotation bitmask
-//         IgnoreBytes(10);                        //  Reserved
-
-//         int len = (int)(chunkEnd - _reader.BaseStream.Position);
-//         byte[] data = _reader.ReadBytes(len);   //  Tile data compressed with ZLIB
-
-//         data = Decompress(data);
-
-//         Point size = new(width, height);
-
-//         int bytesPerTile = bitsPerTile / 8;
-//         int tileCount = data.Length / bytesPerTile;
-
-//         TilemapCel cel = new(size, layer, position, opacity);
-
-//         for (int i = 0, b = 0; i < tileCount; i++, b += bytesPerTile)
-//         {
-//             byte[] dword = data[b..(b + bytesPerTile)];
-//             uint value = BitConverter.ToUInt32(dword);
-//             uint id = (value & idBitmask) >> TILE_ID_SHIFT;
-//             uint xFlip = (value & xFlipBitmask);
-//             uint yFlip = (value & yFlipBitmask);
-//             uint rotation = (value & rotationBitmask);
-
-//             Tile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
-//             cel.Tiles.Add(tile);
-//         }
-
-//         return cel;
-//     }
-
-//     private void ReadTagsChunk()
-//     {
-//         ushort count = ReadWord();  //  Total number of tags
-//         IgnoreBytes(8);             //  For future (set to zero)
-
-//         for (int i = 0; i < count; i++)
-//         {
-//             ushort from = ReadWord();               //  From frame
-//             ushort to = ReadWord();                 //  To frame
-//             byte direction = _reader.ReadByte();    //  Loop animation direction
-//             IgnoreBytes(8);                         //  For future (set to zero)
-//             byte r = _reader.ReadByte();            //  RGB Red value (deprecated in 1.3)
-//             byte g = _reader.ReadByte();            //  RGB Green value (deprecated in 1.3)
-//             byte b = _reader.ReadByte();            //  RGB Blue value (deprecated in 1.3)
-//             IgnoreByte();                           //  Extra byte (zero)
-//             string name = ReadString();             //  Tag name
-
-//             LoopDirection loopDirection = (LoopDirection)direction;
-
-//             Color color = Color.FromNonPremultiplied(r, g, b, 255);
-
-//             Tag tag = new(from, to, loopDirection, color, name);
-//             _tags.Add(tag);
-//         }
-//     }
-
-//     private void ReadPaletteChunk()
-//     {
-//         const int FLAG_HAS_NAME = 1;
-
-//         uint nSize = ReadDword();   //  New palette size (total number of entries)
-//         uint from = ReadDword();    //  First color index to change
-//         uint to = ReadDword();      //  Last color index to change
-//         IgnoreBytes(8);             //  For future (set to zero)
-
-//         //  Resize current palette if needed
-//         if (nSize > 0)
-//         {
-//             Color[] tmp = new Color[nSize];
-//             Array.Copy(_palette, tmp, _palette.Length);
-//             _palette = tmp;
-//         }
-
-//         for (uint i = from; i <= to; i++)
-//         {
-//             ushort flags = ReadWord();      //  Entry flags
-//             byte r = _reader.ReadByte();    //  RGBA Red value (0 - 255)
-//             byte g = _reader.ReadByte();    //  RGBA Green value (0 - 255)
-//             byte b = _reader.ReadByte();    //  RGBA Blue value (0 - 255)
-//             byte a = _reader.ReadByte();    //  RGBA Alpha value (0 - 255)
-
-//             if (HasFlag(flags, FLAG_HAS_NAME))
-//             {
-//                 IgnoreString();         //  Color name (ignored)
-//             }
-
-//             _palette[(int)i] = Color.FromNonPremultiplied(r, g, b, a);
-//         }
-//     }
-
-//     private void ReadSliceChunk()
-//     {
-//         const int FLAG_IS_NINE_PATCH = 1;
-//         const int FLAG_HAS_PIVOT = 2;
-
-//         uint count = ReadDword();   //  Number of slice "keys"
-//         uint flags = ReadDword();   //  Slice flags
-//         IgnoreDword();              //  Reserved
-//         string name = ReadString(); //  Slice name
-
-//         bool isNinePatch = HasFlag(flags, FLAG_IS_NINE_PATCH);
-//         bool hasPivot = HasFlag(flags, FLAG_HAS_PIVOT);
-
-//         Slice slice = new(name, isNinePatch, hasPivot);
-
-//         for (uint i = 0; i < count; i++)
-//         {
-//             uint start = ReadDword();       //  Frame index this key is valid for starting on
-//             int x = ReadLong();             //  Slice X origin
-//             int y = ReadLong();             //  Slice Y origin
-//             uint width = ReadDword();       //  Slice width, in pixels
-//             uint height = ReadDword();      //  Slice height, in pixels
-
-//             Rectangle bounds = new(x, y, (int)width, (int)height);
-//             Rectangle? center = default;
-//             Point? pivot = default;
-
-//             if (isNinePatch)
-//             {
-//                 int cx = ReadLong();        //  Center X position
-//                 int cy = ReadLong();        //  Center Y position
-//                 uint cWidth = ReadDword();  //  Center width, in pixels
-//                 uint cHeight = ReadDword(); //  Center height, in pixels
-
-//                 center = new(cx, cy, (int)cWidth, (int)cHeight);
-//             }
-
-//             if (hasPivot)
-//             {
-//                 int px = ReadLong();        //  Pivot x position
-//                 int py = ReadLong();        //  Pivot y position
-
-//                 pivot = new(px, py);
-//             }
-
-//             SliceKey key = new((int)start, bounds, center, pivot);
-//             slice.Keys.Add(key);
-//         }
-
-//         _slices.Add(slice);
-//     }
-
-//     private void ReadTilesetChunk()
-//     {
-//         const int FLAG_EXTERNAL_FILE = 1;
-//         const int FLAG_EMBEDDED = 2;
-
-//         uint id = ReadDword();      //  Tileset ID
-//         uint flags = ReadDword();   //  Tileset flags
-//         uint count = ReadDword();   //  Number of tiles
-//         ushort width = ReadWord();  //  Tile width
-//         ushort height = ReadWord(); //  Tile height
-//         IgnoreShort();              //  Base index (ignored, UI only)
-//         IgnoreBytes(14);            //  Reserved
-//         string name = ReadString(); //  Tileset name
-
-//         if (HasFlag(flags, FLAG_EXTERNAL_FILE))
-//         {
-//             throw new InvalidOperationException($"Tileset '{name}' includes tileset in external file.  This is not supported at this time.");
-//         }
-
-//         if (!HasFlag(flags, FLAG_EMBEDDED))
-//         {
-//             throw new InvalidOperationException($"Tileset '{name}' does not include tileset image in file");
-//         }
-
-//         uint len = ReadDword();                     //  Compressed data length
-//         byte[] data = _reader.ReadBytes((int)len);  //  Tileset image compressed with ZLIB
-
-//         data = Decompress(data);
-
-//         Color[] pixels = ToColor(data);
-//         Point size = new(width, height);
-
-//         Tileset tileset = new((int)id, (int)count, size, name, pixels);
-//         _tilesets.Add(tileset);
-
-//     }
-
-//     private void ReadUserDataChunk()
-//     {
-//         const int FLAG_HAS_TEXT = 1;
-//         const int FLAG_HAS_COLOR = 2;
-
-//         uint flags = ReadDword();   //  User data flags
-
-//         string? text = default;
-//         Color? color = default;
-
-//         if (HasFlag(flags, FLAG_HAS_TEXT))
-//         {
-//             text = ReadString();    //  User data text
-//         }
-
-//         if (HasFlag(flags, FLAG_HAS_COLOR))
-//         {
-//             byte r = _reader.ReadByte();    //  User data RGBA Red value (0 - 255)
-//             byte g = _reader.ReadByte();    //  User data RGBA Green value (0 - 255)
-//             byte b = _reader.ReadByte();    //  User data RGBA Blue value (0 - 255)
-//             byte a = _reader.ReadByte();    //  User data RGBA Alpha value (0 - 255)
-
-//             color = Color.FromNonPremultiplied(r, g, b, a);
-//         }
-
-//         AsepriteUserData userData;
-
-//         switch (_lastUserDataChunkType)
-//         {
-//             case CHUNK_TYPE_CEL:
-//                 Frame frame = _frames[_frames.Count - 1];
-//                 Cel cel = frame.Cels[frame.Cels.Count - 1];
-//                 userData = cel.UserData;
-//                 break;
-//             case CHUNK_TYPE_LAYER:
-//                 Layer layer = _layers[_layers.Count - 1];
-//                 userData = layer.UserData;
-//                 break;
-//             case CHUNK_TYPE_SLICE:
-//                 Slice slice = _slices[_slices.Count - 1];
-//                 userData = slice.UserData;
-//                 break;
-//             case CHUNK_TYPE_TAGS:
-//                 //  Tags are a special case, user data for tags comes all
-//                 //  together (one next to the other) after the tags chunk,
-//                 //  in the same order:
-//                 //
-//                 //  * TAGS CHUNK (TAG1, TAG2, ..., TAGn)
-//                 //  * USER DATA CHUNK FOR TAG1
-//                 //  * USER DATA CHUNK FOR TAG2
-//                 //  * ...
-//                 //  * USER DATA CHUNK FOR TAGn
-//                 //
-//                 //  So here we expect that the next user data chunk will
-//                 //  correspond to the next tag in the tags collection
-//                 Tag tag = _tags[_tagIterator];
-//                 _tagIterator++;
-//                 userData = tag.UserData;
-//                 break;
-//             default:
-//                 throw new InvalidOperationException($"Invalid chunk type (0x{_lastUserDataChunkType:X4}) for user data.");
-//         }
-
-//         userData.Text = text;
-//         userData.Color = color;
-//     }
-
-
-
-//     private void IgnoreByte() => _reader.BaseStream.Position += 1;
-//     private void IgnoreBytes(int nBytes) => _reader.BaseStream.Position += nBytes;
-
-//     private ushort ReadWord() => _reader.ReadUInt16();
-//     private void IgnoreWord() => _reader.BaseStream.Position += 2;
-
-//     private short ReadShort() => _reader.ReadInt16();
-//     private void IgnoreShort() => _reader.BaseStream.Position += 2;
-
-//     private uint ReadDword() => _reader.ReadUInt32();
-//     private void IgnoreDword() => _reader.BaseStream.Position += 4;
-
-//     private int ReadLong() => _reader.ReadInt32();
-//     private void IgnoreLong() => _reader.BaseStream.Position += 4;
-
-//     private string ReadString()
-//     {
-//         int len = ReadWord();
-//         byte[] bytes = _reader.ReadBytes(len);
-//         return Encoding.UTF8.GetString(bytes);
-//     }
-
-//     private void IgnoreString()
-//     {
-//         int len = ReadWord();
-//         _reader.BaseStream.Position += len;
-//     }
-
-//     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//     private static bool HasFlag(uint value, uint flag) => (value & flag) != 0;
-
-//     private byte[] Decompress(byte[] buffer)
-//     {
-//         using MemoryStream compressedStream = new(buffer);
-
-//         //  First 2 bytes are the zlib header information, skip past them.
-//         _ = compressedStream.ReadByte();
-//         _ = compressedStream.ReadByte();
-
-//         using MemoryStream decompressedStream = new();
-//         using DeflateStream deflateStream = new(compressedStream, CompressionMode.Decompress);
-//         deflateStream.CopyTo(decompressedStream);
-//         return decompressedStream.ToArray();
-//     }
-
-//     private Color[] ToColor(byte[] data)
-//     {
-//         const int COLOR_DEPTH_RGBA = 32;
-//         const int COLOR_DEPTH_GRAYSCALE = 16;
-//         const int COLOR_DEPTH_INDEXED = 8;
-//         int bytesPerPixel = (ushort)_depth / 8;
-//         int len = data.Length / bytesPerPixel;
-
-//         Color[] result = new Color[len];
-
-//         if (_depth == COLOR_DEPTH_INDEXED)
-//         {
-//             for (int i = 0; i < result.Length; i++)
-//             {
-//                 int index = data[i];
-
-//                 if (index == _transparentIndex)
-//                 {
-//                     // result[i] = Color.Transparent;
-//                     result[i] = new Color(0, 0, 0, 0);
-//                 }
-//                 else
-//                 {
-//                     result[i] = _palette[index];
-//                 }
-//             }
-//         }
-//         else if (_depth == COLOR_DEPTH_GRAYSCALE)
-//         {
-//             for (int i = 0, b = 0; i < result.Length; i++, b += bytesPerPixel)
-//             {
-//                 byte rgb = data[b];
-//                 byte alpha = data[b + 1];
-
-//                 result[i] = Color.FromNonPremultiplied(rgb, rgb, rgb, alpha);
-
-//             }
-//         }
-//         else if (_depth == COLOR_DEPTH_RGBA)
-//         {
-//             for (int i = 0, b = 0; i < result.Length; i++, b += bytesPerPixel)
-//             {
-//                 byte red = data[b];
-//                 byte green = data[b + 1];
-//                 byte blue = data[b + 2];
-//                 byte alpha = data[b + 3];
-
-//                 result[i] = Color.FromNonPremultiplied(red, green, blue, alpha);
-
-//             }
-//         }
-//         else
-//         {
-//             throw new InvalidOperationException($"Invalid Color Depth '{_depth}'");
-//         }
-
-//         return result;
-//     }
-
-//     /// <summary>
-//     ///     Releases resources held by this instance of the
-//     ///     <see cref="AsepriteFileReader"/> class.
-//     /// </summary>
-//     public void Dispose()
-//     {
-//         Dispose(true);
-//         GC.SuppressFinalize(this);
-//     }
-
-//     private void Dispose(bool isDisposing)
-//     {
-//         if (_isDisposed)
-//         {
-//             return;
-//         }
-
-//         if (isDisposing)
-//         {
-//             _reader.Dispose();
-//         }
-
-//         _isDisposed = true;
-//     }
-// }
+/* ----------------------------------------------------------------------------
+MIT License
+
+Copyright (c) 2018-2023 Christopher Whitley
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+---------------------------------------------------------------------------- */
+
+using System.IO.Compression;
+using System.Runtime.CompilerServices;
+using System.Text;
+using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+
+namespace MonoGame.Aseprite.Content.Pipeline.IO;
+
+internal static class AsepriteFileReader
+{
+    internal static AsepriteFile ReadFile(string path)
+    {
+        Stream stream = File.OpenRead(path);
+        BinaryReader reader = new(stream);
+
+        string name = Path.GetFileNameWithoutExtension(path);
+        AsepriteFile file = new(name);
+
+        ReadFileHeader(reader, file);
+        ReadFrames(reader, file);
+
+        return file;
+    }
+
+    private static void ReadFileHeader(BinaryReader reader, AsepriteFile file)
+    {
+        IgnoreDword(reader);
+        ushort magic = ReadWord(reader);
+
+        if (magic != 0xA5E0)
+        {
+            throw new InvalidOperationException($"Invalid header magic number (0x{magic:X4}).");
+        }
+
+        file.FrameCount = ReadWord(reader);
+        ushort width = ReadWord(reader);
+        ushort height = ReadWord(reader);
+
+        file.FrameSize = new(width, height);
+
+        file.ColorDepth = ReadWord(reader);
+        uint flags = ReadDword(reader);
+
+        file.LayerOpacityValid = HasFlag(flags, 1);
+
+        IgnoreWord(reader);
+        IgnoreDword(reader);
+        IgnoreDword(reader);
+
+        file.TransparentIndex = ReadByte(reader);
+        IgnoreBytes(reader, 3);
+        ushort nColors = ReadWord(reader);
+
+        file.ResizePalette(nColors);
+
+        reader.BaseStream.Position = 128;
+    }
+
+    private static void ReadFrames(BinaryReader reader, AsepriteFile file)
+    {
+        for (int frameNum = 0; frameNum < file.FrameCount; frameNum++)
+        {
+            IgnoreDword(reader);
+            ushort magic = ReadWord(reader);
+
+            if (magic != 0xF1fA)
+            {
+                throw new InvalidOperationException($"Invalid frame magic in frame number {frameNum}");
+            }
+
+            ushort nChunksA = ReadWord(reader);
+            ushort duration = ReadWord(reader);
+            IgnoreBytes(reader, 2);
+            uint nChunksB = ReadDword(reader);
+
+            uint nChunks = nChunksA == 0xFFFF && nChunksA < nChunksB ?
+                           nChunksB :
+                           nChunksA;
+
+            Frame frame = new(file.FrameSize, duration);
+            file.Frames.Add(frame);
+
+            //  Start iterator at -1 so after tags chunk is read, it'll
+            //  increment to 0 to kick off the user data read.
+            int tagIterator = -1;
+            ushort lastChunkType = default;
+
+            for (uint chunkNum = 0; chunkNum < nChunks; chunkNum++)
+            {
+                lastChunkType = ReadChunk(reader, file, lastChunkType, tagIterator);
+                if (lastChunkType == 0x2018)
+                {
+                    tagIterator++;
+                }
+            }
+        }
+    }
+
+    private static ushort ReadChunk(BinaryReader reader, AsepriteFile file, ushort lastChunkType, int tagIterator)
+    {
+        long start = reader.BaseStream.Position;
+
+        uint len = ReadDword(reader);
+        ushort type = ReadWord(reader);
+
+        long end = start + len;
+
+        switch (type)
+        {
+            case 0x2004:
+                ReadLayerChunk(reader, file);
+                break;
+            case 0x2005:
+                ReadCelChunk(reader, file, end);
+                break;
+            case 0x2018:
+                ReadTagsChunk(reader, file);
+                break;
+            case 0x2019:
+                ReadPaletteChunk(reader, file);
+                break;
+            case 0x2022:
+                ReadSliceChunk(reader, file);
+                break;
+            case 0x2023:
+                ReadTilesetChunk(reader, file);
+                break;
+            case 0x2020:
+                ReadUserDataChunk(reader, file, lastChunkType, tagIterator);
+                break;
+            case 0x0004:    //  Old Palette 1
+            case 0x0011:    //  Old Palette 2
+            case 0x2006:    //  Cel Extra
+            case 0x2007:    //  Color Profile
+            case 0x2008:    //  External Files
+            case 0x2016:    //  Mask
+            case 0x2017:    //  Path
+                reader.BaseStream.Position = end;
+                break;
+            default:
+                throw new InvalidOperationException($"Unknown chunk type (0x{type:X4})");
+        }
+
+        if(type == 0x2020)
+        {
+            return lastChunkType;
+        }
+
+        return type;
+    }
+
+    private static void ReadLayerChunk(BinaryReader reader, AsepriteFile file)
+    {
+        ushort flags = ReadWord(reader);
+        ushort type = ReadWord(reader);
+        IgnoreWord(reader);
+        IgnoreWord(reader);
+        IgnoreWord(reader);
+        ushort blend = ReadWord(reader);
+        byte opacity = ReadByte(reader);
+        IgnoreBytes(reader, 3);
+        string name = ReadString(reader);
+
+        if (!file.LayerOpacityValid)
+        {
+            opacity = 255;
+        }
+
+        bool isVisible = HasFlag(flags, 1);
+        bool isBackground = HasFlag(flags, 8);
+        bool isReference = HasFlag(flags, 64);
+
+        Layer layer = type switch
+        {
+            0 or 1 => new Layer(isVisible, isBackground, isReference, blend, opacity, name),
+            2 => ReadTilemapLayerChunk(reader, file, isVisible, isBackground, isReference, blend, opacity, name),
+            _ => throw new InvalidOperationException($"Unknown layer type '{type}'")
+        };
+
+        file.Layers.Add(layer);
+    }
+
+    private static TilemapLayer ReadTilemapLayerChunk(BinaryReader reader, AsepriteFile file, bool isVisible, bool isBackground, bool isReference, ushort blend, byte opacity, string name)
+    {
+        uint index = ReadDword(reader);
+        Tileset tileset = file.Tilesets[(int)index];
+        return new(tileset, isVisible, isBackground, isReference, blend, opacity, name);
+    }
+
+    private static void ReadCelChunk(BinaryReader reader, AsepriteFile file, long chunkEnd)
+    {
+        ushort index = ReadWord(reader);
+        short x = ReadShort(reader);
+        short y = ReadShort(reader);
+        byte opacity = ReadByte(reader);
+        ushort type = ReadWord(reader);
+        IgnoreBytes(reader, 7);
+
+        Frame frame = file.Frames[file.Frames.Count - 1];
+        Layer layer = file.Layers[index];
+        Point position = new(x, y);
+
+        Cel cel = type switch
+        {
+            0 => ReadRawImageCel(reader, file, layer, position, opacity, chunkEnd),
+            1 => ReadLinkedCel(reader, file, frame),
+            2 => ReadCompressedImageCel(reader, file, layer, position, opacity, chunkEnd),
+            3 => ReadCompressedTilemapCel(reader, layer, position, opacity, chunkEnd),
+            _ => throw new InvalidOperationException($"Unknown cel type '{type}'")
+        };
+
+        frame.Cels.Add(cel);
+    }
+
+    private static ImageCel ReadRawImageCel(BinaryReader reader, AsepriteFile file, Layer layer, Point position, byte opacity, long chunkEnd)
+    {
+        ushort width = ReadWord(reader);
+        ushort height = ReadWord(reader);
+
+        int len = (int)(chunkEnd - reader.BaseStream.Position);
+        byte[] data = ReadBytes(reader, len);
+
+        Point size = new(width, height);
+        Color[] pixels = ToColor(data, file.ColorDepth, file.TransparentIndex, file.Palette);
+
+        return new(size, pixels, layer, position, opacity);
+    }
+
+    private static Cel ReadLinkedCel(BinaryReader reader, AsepriteFile file, Frame frame)
+    {
+        ushort frameIndex = ReadWord(reader);
+        return file.Frames[frameIndex].Cels[frame.Cels.Count];
+    }
+
+    private static ImageCel ReadCompressedImageCel(BinaryReader reader, AsepriteFile file, Layer layer, Point position, byte opacity, long chunkEnd)
+    {
+        ushort width = ReadWord(reader);
+        ushort height = ReadWord(reader);
+
+        int len = (int)(chunkEnd - reader.BaseStream.Position);
+        byte[] data = ReadBytes(reader, len);
+
+        data = Decompress(data);
+
+        Point size = new(width, height);
+        Color[] pixels = ToColor(data, file.ColorDepth, file.TransparentIndex, file.Palette);
+
+        return new(size, pixels, layer, position, opacity);
+    }
+
+    private static TilemapCel ReadCompressedTilemapCel(BinaryReader reader, Layer layer, Point position, byte opacity, long chunkEnd)
+    {
+        ushort width = ReadWord(reader);
+        ushort height = ReadWord(reader);
+        ushort bitsPerTile = ReadWord(reader);
+        uint idBitmask = ReadDword(reader);
+        uint xFlipBitmask = ReadDword(reader);
+        uint yFlipBitmask = ReadDword(reader);
+        uint rotationBitmask = ReadDword(reader);
+        IgnoreBytes(reader, 10);
+
+        int len = (int)(chunkEnd - reader.BaseStream.Position);
+        byte[] data = ReadBytes(reader, len);
+
+        data = Decompress(data);
+
+        Point size = new(width, height);
+
+        int bytesPerTile = bitsPerTile / 8;
+        int tileCount = data.Length / bytesPerTile;
+
+        TilemapCel cel = new(size, layer, position, opacity);
+
+        for (int i = 0, b = 0; i < tileCount; i++, b += bytesPerTile)
+        {
+            byte[] dword = data[b..(b + bytesPerTile)];
+            uint value = BitConverter.ToUInt32(dword);
+            uint id = (value & idBitmask) >> 0;
+            uint xFlip = (value & xFlipBitmask);
+            uint yFlip = (value & yFlipBitmask);
+            uint rotation = (value & rotationBitmask);
+
+            Tile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
+            cel.Tiles.Add(tile);
+        }
+
+        return cel;
+    }
+
+    private static void ReadTagsChunk(BinaryReader reader, AsepriteFile file)
+    {
+        ushort count = ReadWord(reader);
+        IgnoreBytes(reader, 8);
+
+        for (int tagNum = 0; tagNum < count; tagNum++)
+        {
+            ushort from = ReadWord(reader);
+            ushort to = ReadWord(reader);
+            byte direction = ReadByte(reader);
+            IgnoreBytes(reader, 8);
+            byte r = ReadByte(reader);
+            byte g = ReadByte(reader);
+            byte b = ReadByte(reader);
+            IgnoreByte(reader);
+            string name = ReadString(reader);
+
+            Color color = Color.FromNonPremultiplied(r, g, b, 255);
+
+            Tag tag = new(from, to, direction, color, name);
+            file.Tags.Add(tag);
+        }
+    }
+
+    private static void ReadPaletteChunk(BinaryReader reader, AsepriteFile file)
+    {
+        uint newSize = ReadDword(reader);
+        uint from = ReadDword(reader);
+        uint to = ReadDword(reader);
+        IgnoreBytes(reader, 8);
+
+        file.ResizePalette((int)newSize);
+
+        for (uint entry = from; entry <= to; entry++)
+        {
+            ushort flags = ReadWord(reader);
+            byte r = ReadByte(reader);
+            byte g = ReadByte(reader);
+            byte b = ReadByte(reader);
+            byte a = ReadByte(reader);
+
+            if (HasFlag(flags, 1))
+            {
+                IgnoreString(reader);
+            }
+
+            file.Palette[(int)entry] = Color.FromNonPremultiplied(r, g, b, a);
+        }
+    }
+
+    private static void ReadSliceChunk(BinaryReader reader, AsepriteFile file)
+    {
+        uint count = ReadDword(reader);
+        uint flags = ReadDword(reader);
+        IgnoreDword(reader);
+        string name = ReadString(reader);
+
+        bool isNinePatch = HasFlag(flags, 1);
+        bool hasPivot = HasFlag(flags, 2);
+
+        Slice slice = new(name, isNinePatch, hasPivot);
+
+        for (uint keyNum = 0; keyNum < count; keyNum++)
+        {
+            uint start = ReadDword(reader);
+            int x = ReadLong(reader);
+            int y = ReadLong(reader);
+            uint width = ReadDword(reader);
+            uint height = ReadDword(reader);
+
+            Rectangle bounds = new(x, y, (int)width, (int)height);
+            Rectangle? center = default;
+            Point? pivot = default;
+
+            if (isNinePatch)
+            {
+                int cx = ReadLong(reader);
+                int cy = ReadLong(reader);
+                uint cw = ReadDword(reader);
+                uint ch = ReadDword(reader);
+
+                center = new(cx, cy, (int)cw, (int)ch);
+            }
+
+            if (hasPivot)
+            {
+                int px = ReadLong(reader);
+                int py = ReadLong(reader);
+
+                pivot = new(px, py);
+            }
+
+            SliceKey key = new((int)start, bounds, center, pivot);
+            slice.Keys.Add(key);
+        }
+
+        file.Slices.Add(slice);
+    }
+
+    private static void ReadTilesetChunk(BinaryReader reader, AsepriteFile file)
+    {
+        uint id = ReadDword(reader);
+        uint flags = ReadDword(reader);
+        uint count = ReadDword(reader);
+        ushort width = ReadWord(reader);
+        ushort height = ReadWord(reader);
+        IgnoreShort(reader);
+        IgnoreBytes(reader, 14);
+        string name = ReadString(reader);
+
+        if (HasFlag(flags, 1))
+        {
+            throw new InvalidOperationException($"Tileset '{name}' includes tileset in external file.  This is not supported at this time");
+        }
+
+        if (!HasFlag(flags, 2))
+        {
+            throw new InvalidOperationException($"Tileset '{name}' does not include tileset image in file");
+        }
+
+        uint len = ReadDword(reader);
+        byte[] data = ReadBytes(reader, (int)len);
+
+        data = Decompress(data);
+
+        Color[] pixels = ToColor(data, file.ColorDepth, file.TransparentIndex, file.Palette);
+        Point size = new(width, height);
+
+        Tileset tileset = new((int)id, (int)count, size, name, pixels);
+        file.Tilesets.Add(tileset);
+    }
+
+    private static void ReadUserDataChunk(BinaryReader reader, AsepriteFile file, ushort lastChunkType, int tagIterator)
+    {
+        uint flags = ReadDword(reader);
+
+        string? text = default;
+        Color? color = default;
+
+        if (HasFlag(flags, 1))
+        {
+            text = ReadString(reader);
+        }
+
+        if (HasFlag(flags, 2))
+        {
+            byte r = ReadByte(reader);
+            byte g = ReadByte(reader);
+            byte b = ReadByte(reader);
+            byte a = ReadByte(reader);
+
+            color = Color.FromNonPremultiplied(r, g, b, a);
+        }
+
+        switch (lastChunkType)
+        {
+            case 0x2005:
+                SetLastCelUserData(file, text, color);
+                break;
+            case 0x2004:
+                SetLastLayerUserData(file, text, color);
+                break;
+            case 0x2022:
+                SetLastSliceUserData(file, text, color);
+                break;
+            case 0x2018:
+                SetNextTagUserData(file, tagIterator, text, color);
+                break;
+            default:
+                throw new InvalidOperationException($"Invalid chunk type (0x{lastChunkType:X4} for user data");
+        }
+    }
+
+    private static void SetLastCelUserData(AsepriteFile file, string? text, Color? color)
+    {
+        Frame frame = file.Frames[file.Frames.Count - 1];
+        Cel cel = frame.Cels[frame.Cels.Count - 1];
+        cel.UserData.Text = text;
+        cel.UserData.Color = color;
+    }
+
+    private static void SetLastLayerUserData(AsepriteFile file, string? text, Color? color)
+    {
+        Layer layer = file.Layers[file.Layers.Count - 1];
+        layer.UserData.Text = text;
+        layer.UserData.Color = color;
+    }
+
+    private static void SetLastSliceUserData(AsepriteFile file, string? text, Color? color)
+    {
+        Slice slice = file.Slices[file.Slices.Count - 1];
+        slice.UserData.Text = text;
+        slice.UserData.Color = color;
+    }
+
+    private static void SetNextTagUserData(AsepriteFile file, int tagIterator, string? text, Color? color)
+    {
+        Tag tag = file.Tags[tagIterator];
+        tag.UserData.Text = text;
+        tag.UserData.Color = color;
+    }
+
+    private static byte ReadByte(BinaryReader reader) => reader.ReadByte();
+    private static byte[] ReadBytes(BinaryReader reader, int len) => reader.ReadBytes(len);
+    private static ushort ReadWord(BinaryReader reader) => reader.ReadUInt16();
+    private static short ReadShort(BinaryReader reader) => reader.ReadInt16();
+    private static uint ReadDword(BinaryReader reader) => reader.ReadUInt32();
+    private static int ReadLong(BinaryReader reader) => reader.ReadInt32();
+    private static string ReadString(BinaryReader reader) => Encoding.UTF8.GetString(ReadBytes(reader, ReadWord(reader)));
+
+    private static void IgnoreBytes(BinaryReader reader, int len) => reader.BaseStream.Position += len;
+    private static void IgnoreByte(BinaryReader reader) => IgnoreBytes(reader, 1);
+    private static void IgnoreWord(BinaryReader reader) => IgnoreBytes(reader, 2);
+    private static void IgnoreShort(BinaryReader reader) => IgnoreBytes(reader, 2);
+    private static void IgnoreDword(BinaryReader reader) => IgnoreBytes(reader, 4);
+    private static void IgnoreLong(BinaryReader reader) => IgnoreBytes(reader, 4);
+    private static void IgnoreString(BinaryReader reader) => IgnoreBytes(reader, ReadWord(reader));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool HasFlag(uint value, uint flag) => (value & flag) != 0;
+
+    private static byte[] Decompress(byte[] buffer)
+    {
+        using MemoryStream compressedStream = new(buffer);
+
+        //  First 2 bytes are the zlib header information, skip past them.
+        _ = compressedStream.ReadByte();
+        _ = compressedStream.ReadByte();
+
+        using MemoryStream decompressedStream = new();
+        using DeflateStream deflateStream = new(compressedStream, CompressionMode.Decompress);
+        deflateStream.CopyTo(decompressedStream);
+        return decompressedStream.ToArray();
+    }
+
+    private static Color[] ToColor(byte[] data, ushort depth, int transparentIndex, Color[] palette)
+    {
+        int bytesPerPixel = depth / 8;
+        int len = data.Length / bytesPerPixel;
+
+        Color[] result = depth switch
+        {
+            8 => IndexedToColor(data, transparentIndex, palette),
+            16 => GrayscaleToColor(data),
+            32 => RgbaToColor(data),
+            _ => throw new InvalidOperationException($"Invalid Color Depth '{depth}'")
+        };
+
+        return result;
+    }
+
+    private static Color[] IndexedToColor(byte[] data, int transparentIndex, Color[] palette)
+    {
+        Color[] result = new Color[data.Length];
+
+        for (int i = 0; i < result.Length; i++)
+        {
+            int index = data[i];
+
+            if (index == transparentIndex)
+            {
+                result[i] = new Color(0, 0, 0, 0);
+            }
+            else
+            {
+                result[i] = palette[index];
+            }
+        }
+
+        return result;
+    }
+
+    private static Color[] GrayscaleToColor(byte[] data)
+    {
+        Color[] result = new Color[data.Length / 2];
+
+        for (int i = 0, b = 0; i < result.Length; i++, b += 2)
+        {
+            byte rgb = data[b];
+            byte alpha = data[b + 1];
+
+            result[i] = Color.FromNonPremultiplied(rgb, rgb, rgb, alpha);
+        }
+
+        return result;
+    }
+
+    private static Color[] RgbaToColor(byte[] data)
+    {
+        Color[] result = new Color[data.Length / 4];
+
+        for (int i = 0, b = 0; i < result.Length; i++, b += 4)
+        {
+            byte red = data[b];
+            byte green = data[b + 1];
+            byte blue = data[b + 2];
+            byte alpha = data[b + 3];
+
+            result[i] = Color.FromNonPremultiplied(red, green, blue, alpha);
+        }
+
+        return result;
+    }
+}

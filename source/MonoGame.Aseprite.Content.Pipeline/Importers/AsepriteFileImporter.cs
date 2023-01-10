@@ -52,6 +52,6 @@ public class AsepriteFileImporter : ContentImporter<AsepriteFile>
     /// </returns>
     public override AsepriteFile Import(string filePath, ContentImporterContext context)
     {
-        return StaticAsepriteFileReader.ReadFile(filePath);
+        return AsepriteFileReader.ReadFile(filePath);
     }
 }

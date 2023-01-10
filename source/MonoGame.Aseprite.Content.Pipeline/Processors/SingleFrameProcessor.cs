@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -31,7 +30,7 @@ using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite Single Frame Processor - MonoGame.Aseprite")]
-public sealed class AsepriteSingleFrameProcessor : ContentProcessor<AsepriteFile, AsepriteSingleFrameProcessorResult>
+public sealed class SingleFrameProcessor : ContentProcessor<AsepriteFile, SingleFrameProcessorResult>
 {
     /// <summary>
     ///     The index of the frame in the Aseprite image to process. Must be
@@ -76,7 +75,7 @@ public sealed class AsepriteSingleFrameProcessor : ContentProcessor<AsepriteFile
     ///     than or equal to the total number of frame elements in the Aseprite
     ///     file.
     /// </exception>
-    public override AsepriteSingleFrameProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
+    public override SingleFrameProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
         if (FrameIndex < 0 || FrameIndex >= file.Frames.Count)
         {
@@ -87,6 +86,6 @@ public sealed class AsepriteSingleFrameProcessor : ContentProcessor<AsepriteFile
 
         Color[] pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
 
-        return new AsepriteSingleFrameProcessorResult(file.FrameSize, pixels);
+        return new SingleFrameProcessorResult(file.FrameSize, pixels);
     }
 }

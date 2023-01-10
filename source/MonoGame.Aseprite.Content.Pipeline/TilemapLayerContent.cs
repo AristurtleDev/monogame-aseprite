@@ -22,19 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
-/// <summary>
-///     Represents the result of the <see cref="AsepriteSingleFrameProcessor"/>.
-/// </summary>
-public sealed class AsepriteSingleFrameProcessorResult
+public sealed class TilemapLayerContent
 {
-    internal Point Size { get; }
-    internal Color[] Pixels { get; }
+    internal int TilesetID { get; }
+    internal string Name { get; }
+    internal Point TileSize { get; }
+    internal int[] Tiles { get; }
 
-    internal AsepriteSingleFrameProcessorResult(Point size, Color[] pixels) =>
-        (Size, Pixels) = (size, pixels);
+    internal TilemapLayerContent(int tilesetId, string name, Point tileSize, int[] tiles) =>
+        (TilesetID, Name, TileSize, Tiles) = (tilesetId, name, tileSize, tiles);
 }

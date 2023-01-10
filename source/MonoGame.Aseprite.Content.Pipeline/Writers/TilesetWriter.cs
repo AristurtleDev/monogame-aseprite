@@ -24,27 +24,43 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-public sealed class SingleFrameWriter : ContentTypeWriter<SingleFrameProcessorResult>
+public sealed class TilesetWriter : ContentTypeWriter<TilesetProcessorResult>
 {
-    protected override void Write(ContentWriter output, SingleFrameProcessorResult input)
+    protected override void Write(ContentWriter output, TilesetProcessorResult input)
     {
-        output.Write(input.Size.X);
-        output.Write(input.Size.Y);
-        output.Write(input.Pixels.Length);
+        output.Write(input.Tilesets.Count);
 
-        for (int i = 0; i < input.Pixels.Length; i++)
+        for (int i = 0; i < input.Tilesets.Count; i++)
         {
-            output.Write(input.Pixels[i]);
+            WriteTileset(output, input.Tilesets[i]);
+        }
+    }
+
+    private void WriteTileset(ContentWriter output, Tileset tileset)
+    {
+        output.Write(tileset.ID);
+        output.Write(tileset.Name);
+        output.Write(tileset.TileCount);
+        output.Write(tileset.TileSize.X);
+        output.Write(tileset.TileSize.Y);
+        output.Write(tileset.Size.X);
+        output.Write(tileset.Size.Y);
+        output.Write(tileset.Pixels.Length);
+
+        for (int i = 0; i < tileset.Pixels.Length; i++)
+        {
+            output.Write(tileset.Pixels[i]);
         }
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {
-        return "MonoGame.Aseprite.Content.Pipeline.Readers.SingleFrameReader, MonoGame.Aseprite";
+        return "MonoGame.Aseprite.Content.Pipeline.Readers.TilesetReader, MonoGame.Aseprite";
     }
 }

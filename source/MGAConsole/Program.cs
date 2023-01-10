@@ -4,6 +4,6 @@ using MonoGame.Aseprite.Content.Pipeline.IO;
 string path = Path.Combine(Environment.CurrentDirectory, "adventurer.aseprite");
 
 
-AsepriteFile file = StaticAsepriteFileReader.ReadFile(path);
+AsepriteFile file = AsepriteFileReader.ReadFile(path);
 
 Console.WriteLine(file.Name);

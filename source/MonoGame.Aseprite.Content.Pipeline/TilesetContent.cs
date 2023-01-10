@@ -22,28 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
+
 namespace MonoGame.Aseprite.Content.Pipeline;
 
-/// <summary>
-///     Defines the color depth used by an Aseprite image.
-/// </summary>
-public enum ColorDepth : ushort
+public sealed class TilesetContent
 {
-    /// <summary>
-    ///     Defines that the Aseprite image uses an Indexed mode of 8-bits per
-    ///     pixel.
-    /// </summary>
-    Indexed = 8,
+    internal string Name { get; }
+    internal Color[] Pixels { get; }
+    internal Point Size { get; }
+    internal Point TileSize { get; }
+    internal int TileCount { get; }
 
-    /// <summary>
-    ///     Defines that the Aseprite image uses a Grayscale mode of 16-bits
-    ///     per pixel.
-    /// </summary>
-    Grayscale = 16,
-
-    /// <summary>
-    ///     Defines that the Aseprite image uses an RGBA mode of 32-bits per
-    ///     pixel.
-    /// </summary>
-    RGBA = 32
+    internal TilesetContent(string name, Color[] pixels, Point size, Point tileSize, int tileCount) =>
+        (Name, Pixels, Size, TileSize, TileCount) = (name, pixels, size, tileSize, tileCount);
 }

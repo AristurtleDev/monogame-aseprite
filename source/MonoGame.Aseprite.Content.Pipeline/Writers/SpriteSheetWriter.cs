@@ -30,9 +30,9 @@ using MonoGame.Aseprite.Content.Pipeline.Processors;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-public sealed class SpriteSheetWriter : ContentTypeWriter<AsepriteSpritesheetProcessorResult>
+public sealed class SpriteSheetWriter : ContentTypeWriter<SpriteSheetProcessorResult>
 {
-    protected override void Write(ContentWriter output, AsepriteSpritesheetProcessorResult value)
+    protected override void Write(ContentWriter output, SpriteSheetProcessorResult value)
     {
         output.Write(value.Name);
         output.Write(value.Size.X);

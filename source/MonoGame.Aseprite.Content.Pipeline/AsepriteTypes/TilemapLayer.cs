@@ -28,6 +28,6 @@ internal sealed class TilemapLayer : Layer
 {
     internal Tileset Tileset { get; }
 
-    internal TilemapLayer(Tileset tileset, bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name)
+    internal TilemapLayer(Tileset tileset, bool isVisible, bool isBackground, bool isReference, ushort blend, byte opacity, string name)
         : base(isVisible, isBackground, isReference, blend, opacity, name) => Tileset = tileset;
 }

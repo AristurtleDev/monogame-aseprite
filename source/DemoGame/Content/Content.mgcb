@@ -16,7 +16,7 @@
 
 #begin adventurer.aseprite
 /importer:AsepriteFileImporter
-/processor:AsepriteSpritesheetProcessor
+/processor:SpritesheetProcessor
 /processorParam:OnlyVisibleLayers=True
 /processorParam:IncludeBackgroundLayer=False
 /processorParam:MergeDuplicateFrames=True
@@ -36,4 +36,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:aristurtle-pfp.png
+
+#begin tileset-collection.aseprite
+/importer:AsepriteFileImporter
+/processor:TilesetProcessor
+/build:tileset-collection.aseprite
 

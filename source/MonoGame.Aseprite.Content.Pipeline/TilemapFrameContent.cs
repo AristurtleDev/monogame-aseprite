@@ -24,19 +24,15 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
-internal sealed class Tag
+public sealed class TilemapFrameContent
 {
-    private Color _tagColor;
-
-    internal int From { get; }
-    internal int To { get; }
-    internal byte Direction { get; }
+    internal List<TilemapLayerContent> Layers { get; } = new();
     internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
-    internal Color Color => UserData.Color ?? _tagColor;
+    internal TimeSpan Duration { get; }
 
-    internal Tag(ushort from, ushort to, byte direction, Color color, string name) =>
-        (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
+    internal TilemapFrameContent(string name, TimeSpan duration) =>
+        (Name, Duration) = (name, duration);
+
 }

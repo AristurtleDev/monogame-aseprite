@@ -1,3 +1,3 @@
 ﻿
-using var game = new DemoGame.Game1();
+using var game = new DemoGame.GameTilesetCollection();
 game.Run();
