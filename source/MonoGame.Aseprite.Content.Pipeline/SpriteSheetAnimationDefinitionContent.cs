@@ -22,30 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+namespace MonoGame.Aseprite;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
-
-public sealed class SingleFrameReader : ContentTypeReader<Texture2D>
+/// <summary>
+///     Represents the content that is written to the file for a sprite sheet
+///     animation definition.
+/// </summary>
+public sealed class SpriteSheetAnimationDefinitionContent
 {
-    protected override Texture2D Read(ContentReader input, Texture2D existingInstance)
-    {
-        int width = input.ReadInt32();
-        int height = input.ReadInt32();
-        int len = input.ReadInt32();
+    internal int[] FrameIndexes { get; }
+    internal string Name { get; }
+    internal byte LoopReversePingPongMask { get; }
 
-        Color[] pixels = new Color[len];
-
-        for (int i = 0; i < len; i++)
-        {
-            pixels[i] = input.ReadColor();
-        }
-
-        Texture2D texture = new(input.GetGraphicsDevice(), width, height, false, SurfaceFormat.Color);
-        texture.SetData<Color>(pixels);
-
-        return texture;
-    }
+    internal SpriteSheetAnimationDefinitionContent(int[] frameIndexes, string name, byte loopReversePingPongMask) =>
+        (FrameIndexes, Name, LoopReversePingPongMask) = (frameIndexes, name, loopReversePingPongMask);
 }

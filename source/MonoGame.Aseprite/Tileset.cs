@@ -33,7 +33,6 @@ public sealed class Tileset
 {
     private TilesetTile[] _tiles;
 
-    public int ID { get; }
     public string Name { get; }
     public Texture2D Texture { get; }
     public Point TileSize { get; }
@@ -41,9 +40,8 @@ public sealed class Tileset
 
     public TilesetTile this[int id] => GetTile(id);
 
-    internal Tileset(int id, string name, Texture2D texture, Point tileSize)
+    internal Tileset(string name, Texture2D texture, Point tileSize)
     {
-        ID = id;
         Name = name;
         Texture = texture;
         TileSize = tileSize;

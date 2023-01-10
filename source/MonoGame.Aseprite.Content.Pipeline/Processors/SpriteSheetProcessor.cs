@@ -29,60 +29,112 @@ using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
+/// <summary>
+///     Provides method for processing all <see cref="Frame"/>,
+///     <see cref="Tag"/>, and <see cref="Slice"/> elements in an
+///     <see cref="AsepriteFile"/> as an instance of the
+///     <see cref="SpriteSheetContent"/> class.
+/// </summary>
 [ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
-public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, SpriteSheetProcessorResult>
+public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, SpriteSheetContent>
 {
     /// <summary>
-    ///     Indicates whether only cels that are on layers that are visible
-    ///     should be used.
+    ///     Indicates whether only <see cref="Cel"/> elements that are on
+    ///     <see cref="Layer"/> elements that are visible should be used.
     /// </summary>
+    /// <remarks>
+    ///     This value is set in the property window of the mgcb-editor
+    /// </remarks>
     [DisplayName("Only Visible Layers")]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    ///     Indicates whether the layer marked as a background layer in
-    ///     Aseprite should be included when generating image data.
+    ///     Indicates whether <see cref="Cel"/> elements that are on the
+    ///     <see cref="Layer"/> element that is set as the background should be
+    ///     included.
     /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         A <see cref="Layer"/> has to be set as the background in
+    ///         Aseprite.  Being the bottom layer does not automatically mean it
+    ///         is a background layer.
+    ///     </para>
+    ///     <para>
+    ///         This value is set in the property window of the mgcb-editor
+    ///     </para>
+    /// </remarks>
     [DisplayName("Include Background Layer")]
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
-    ///     Indicates whether frames that are detected as being duplicates
-    ///     should be merged into a single frame.
+    ///     Indicates whether <see cref="Frame"/> elements that are detected
+    ///     as being duplicates should be merged into a single element.
     /// </summary>
+    /// <remarks>
+    ///     This value is set in the property window of the mgcb-editor
+    /// </remarks>
     [DisplayName("Merge Duplicate Frames")]
     public bool MergeDuplicateFrames { get; set; } = true;
 
     /// <summary>
     ///     The amount of transparent pixels to add between the edge of the
-    ///     spritesheet and the frames.
+    ///     generated texture for the spritesheet and the frame regions within
+    ///     it.
     /// </summary>
+    /// <remarks>
+    ///     This value is set in the property window of the mgcb-editor
+    /// </remarks>
     [DisplayName("Border Padding")]
     public int BorderPadding { get; set; } = 0;
 
     /// <summary>
-    ///     The amount of transparent pixels to add between each frame.
+    ///     The amount of transparent pixels to add between each frame region
+    ///     in the generated texture for the spritesheet.
     /// </summary>
+    /// <remarks>
+    ///     This value is set in the property window of the mgcb-editor
+    /// </remarks>
     [DisplayName("Spacing")]
     public int Spacing { get; set; } = 0;
 
     /// <summary>
     ///     The amount of transparent pixels to add around the edge of each
-    ///     frame.
+    ///     frame region in the generated texture for the spritesheet.
     /// </summary>
+    /// <remarks>
+    ///     This value is set in the property window of the mgcb-editor
+    /// </remarks>
     [DisplayName("Inner Padding")]
     public int InnerPadding { get; set; } = 0;
 
-    public override SpriteSheetProcessorResult Process(AsepriteFile input, ContentProcessorContext context)
+    /// <summary>
+    ///     Processes all <see cref="Frame"/>, <see cref="Tag"/>, and
+    ///     <see cref="Slice"/> elements in an <see cref="AsepriteFile"/>.  The
+    ///     result is a new instance of the <see cref="SpriteSheetContent"/>
+    ///     class containing the texture content and data generated to be
+    ///     written to the xnb file.
+    /// </summary>
+    /// <param name="file">
+    ///     The <see cref="AsepriteFile"/> to process.
+    /// </param>
+    /// <param name="context">
+    ///     The context of the content processor.
+    /// </param>
+    /// <returns>
+    ///     A new instance of the <see cref="SpriteSheetContent"/> class
+    ///     containing the texture content and data generated to be written to
+    ///     the xnb file.
+    /// </returns>
+    public override SpriteSheetContent Process(AsepriteFile input, ContentProcessorContext context)
     {
-        List<SpriteSheetFrameContent> frames = GenerateFrameAndImageData(input, out int width, out int height, out Color[] pixels);
-        List<SpriteSheetAnimationDefinition> tags = GenerateAnimationDefinitionData(input);
+        List<SpriteSheetFrameContent> frames = GenerateFrameAndImageData(input, out TextureContent textureContent);
+        List<SpriteSheetAnimationDefinitionContent> tags = GenerateAnimationDefinitionData(input);
         GenerateFrameRegionData(input, frames);
 
-        return new SpriteSheetProcessorResult(input.Name, new Point(width, height), pixels, frames, tags);
+        return new SpriteSheetContent(input.Name, textureContent, frames, tags);
     }
 
-    private List<SpriteSheetFrameContent> GenerateFrameAndImageData(AsepriteFile file, out int width, out int height, out Color[] pixels)
+    private List<SpriteSheetFrameContent> GenerateFrameAndImageData(AsepriteFile file, out TextureContent textureContent)
     {
         List<Color[]> flattenedFrames = new();
 
@@ -129,17 +181,17 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
 
         //  Determine the final width and height of the spritesheet image based
         //  on the number of columns and rows, adjusting for padding and spacing
-        width = (columns * file.FrameSize.X) +
-                (BorderPadding * 2) +
-                (Spacing * (columns - 1)) +
-                (InnerPadding * 2 * columns);
+        int width = (columns * file.FrameSize.X) +
+                    (BorderPadding * 2) +
+                    (Spacing * (columns - 1)) +
+                    (InnerPadding * 2 * columns);
 
-        height = (rows * file.FrameSize.Y) +
-                 (BorderPadding * 2) +
-                 (Spacing * (rows - 1)) +
-                 (InnerPadding * 2 * rows);
+        int height = (rows * file.FrameSize.Y) +
+                     (BorderPadding * 2) +
+                     (Spacing * (rows - 1)) +
+                     (InnerPadding * 2 * rows);
 
-        pixels = new Color[width * height];
+        Color[] pixels = new Color[width * height];
 
         //  Offset for when we detect merged frames
         int fOffset = 0;
@@ -194,7 +246,7 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
                                      (Spacing * frameRow) +
                                      (InnerPadding * (frameRow + 1 + frameRow));
 
-                SpriteSheetFrameContent frame = new($"frame_{fNum}", sourceRectangle, TimeSpan.FromMilliseconds(file.Frames[fNum].Duration));
+                SpriteSheetFrameContent frame = new($"frame_{fNum}", sourceRectangle, file.Frames[fNum].Duration);
                 // Frame frame = new(sourceRectangle, TimeSpan.FromMilliseconds(file.Frames[fNum].Duration));
                 frames.Add(frame);
                 originalToDuplicateLookup.Add(fNum, frame);
@@ -211,12 +263,14 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
             }
         }
 
+        textureContent = new(new Point(width, height), pixels);
+
         return frames;
     }
 
-    private List<SpriteSheetAnimationDefinition> GenerateAnimationDefinitionData(AsepriteFile file)
+    private List<SpriteSheetAnimationDefinitionContent> GenerateAnimationDefinitionData(AsepriteFile file)
     {
-        List<SpriteSheetAnimationDefinition> definitions = new();
+        List<SpriteSheetAnimationDefinitionContent> definitions = new();
 
         for (int i = 0; i < file.Tags.Count; i++)
         {
@@ -227,10 +281,18 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
                 frameIndexes[f] = aseTag.From + f;
             }
 
-            bool isReversed = aseTag.Direction == 1;
-            bool isPingPong = aseTag.Direction == 2;
+            byte loopReversePingPongMask = 1;
+            if (aseTag.Direction == 1)
+            {
+                loopReversePingPongMask |= 2;
+            }
 
-            SpriteSheetAnimationDefinition definition = new(frameIndexes, aseTag.Name, true, isReversed, isPingPong);
+            if (aseTag.Direction == 2)
+            {
+                loopReversePingPongMask |= 4;
+            }
+
+            SpriteSheetAnimationDefinitionContent definition = new(frameIndexes, aseTag.Name, loopReversePingPongMask);
             definitions.Add(definition);
         }
 
@@ -239,7 +301,7 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
 
     private void GenerateFrameRegionData(AsepriteFile file, List<SpriteSheetFrameContent> frames)
     {
-        List<SpriteSheetFrameRegion> regions = new();
+        List<SpriteSheetFrameRegionContent> regions = new();
 
         //  Slice keys in Aseprite are defined with a frame index that indicates
         //  the frame that the key starts on, but doesn't give a value for what
@@ -260,7 +322,7 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
             {
                 SliceKey key = aseSlice.Keys[k];
 
-                SpriteSheetFrameRegion region = new(name, key.Bounds, color, key.CenterBounds, key.Pivot);
+                SpriteSheetFrameRegionContent region = new(name, key.Bounds, color, key.CenterBounds, key.Pivot);
                 frames[key.FrameIndex].Regions.Add(name, region);
 
                 //  Perform interpolation before caching last key
@@ -268,7 +330,7 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
                 {
                     for (int offset = 1; offset < key.FrameIndex - lastKey.FrameIndex; offset++)
                     {
-                        SpriteSheetFrameRegion interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
+                        SpriteSheetFrameRegionContent interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
                         frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
                     }
                 }
@@ -282,7 +344,7 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
             {
                 for (int offset = 1; offset < file.Frames.Count - lastKey.FrameIndex; offset++)
                 {
-                    SpriteSheetFrameRegion interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
+                    SpriteSheetFrameRegionContent interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
                     frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
                 }
             }

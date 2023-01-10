@@ -12,7 +12,6 @@
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
     </ItemGroup>
-    <Import Project="..\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems" Label="Shared" />
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

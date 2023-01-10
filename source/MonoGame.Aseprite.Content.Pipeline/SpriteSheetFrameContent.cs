@@ -26,14 +26,19 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Content.Pipeline;
 
+
+/// <summary>
+///     Represents the content that is written to the file for a sprite sheet
+///     frame.
+/// </summary>
 public sealed class SpriteSheetFrameContent
 {
-    internal Dictionary<string, SpriteSheetFrameRegion> Regions { get; } = new();
+    internal Dictionary<string, SpriteSheetFrameRegionContent> Regions { get; } = new();
 
     internal string Name { get; }
     internal Rectangle Bounds { get; }
-    internal TimeSpan Duration { get; }
+    internal int Duration { get; }
 
-    internal SpriteSheetFrameContent(string name, Rectangle bounds, TimeSpan duration) =>
+    internal SpriteSheetFrameContent(string name, Rectangle bounds, int duration) =>
         (Name, Bounds, Duration) = (name, bounds, duration);
 }

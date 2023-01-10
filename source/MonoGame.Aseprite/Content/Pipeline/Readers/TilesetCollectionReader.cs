@@ -22,21 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
-///     Represents the result of the <see cref="SpritesheetProcessor"/>.
+///     Provides method for reading a <see cref="TilesetCollection"/> from an
+///     xnb file that was generated with the MonoGame.Aseprite library.
 /// </summary>
-public sealed class SpriteSheetProcessorResult
+public sealed class TilesetCollectionReader : CommonReader<TilesetCollection>
 {
-    internal string Name { get; }
-    internal Point Size { get; }
-    internal Color[] Pixels { get; }
-    internal List<SpriteSheetFrameContent> Frames { get; }
-    internal List<SpriteSheetAnimationDefinition> AnimationDefinitions { get; }
-
-    internal SpriteSheetProcessorResult(string name, Point size, Color[] pixels, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationDefinition> animationDefinitions) =>
-        (Name, Size, Pixels, Frames, AnimationDefinitions) = (name, size, pixels, frames, animationDefinitions);
+    protected override TilesetCollection Read(ContentReader input, TilesetCollection existingInstance) =>
+        existingInstance is not null ? existingInstance : ReadTilesetCollection(input);
 }

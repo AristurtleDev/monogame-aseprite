@@ -22,20 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
+namespace MonoGame.Aseprite;
 
-namespace MonoGame.Aseprite.Content.Pipeline;
-
-/// <summary>
-///     Represents the content that is written to the file for a tileset.
-/// </summary>
-public sealed class TilesetContent
-{
-    internal string Name { get; }
-    internal int TileCount { get; }
-    internal Point TileSize { get; }
-    internal TextureContent TextureContent { get; set; }
-
-    internal TilesetContent(string name, int tileCount, Point tileSize, TextureContent textureContent) =>
-        (Name, TileCount, TileSize, TextureContent) = (name, tileCount, tileSize, textureContent);
-}
+public sealed record SpriteSheetAnimationDefinition(int[] FrameIndexes, string Name, bool IsLooping, bool IsReversed, bool IsPingPong);

@@ -27,15 +27,16 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.Content.Pipeline;
 
 /// <summary>
-///     Represents the content that is written to the file for a tileset.
+///     Represents the content of a sprite sheet to be written to the output
+///     file.
 /// </summary>
-public sealed class TilesetContent
+public sealed class SpriteSheetContent
 {
     internal string Name { get; }
-    internal int TileCount { get; }
-    internal Point TileSize { get; }
-    internal TextureContent TextureContent { get; set; }
+    internal TextureContent TextureContent { get; }
+    internal List<SpriteSheetFrameContent> Frames { get; }
+    internal List<SpriteSheetAnimationDefinitionContent> AnimationDefinitions { get; }
 
-    internal TilesetContent(string name, int tileCount, Point tileSize, TextureContent textureContent) =>
-        (Name, TileCount, TileSize, TextureContent) = (name, tileCount, tileSize, textureContent);
+    internal SpriteSheetContent(string name, TextureContent textureContent, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationDefinitionContent> animationDefinitions) =>
+        (Name, TextureContent, Frames, AnimationDefinitions) = (name, textureContent, frames, animationDefinitions);
 }

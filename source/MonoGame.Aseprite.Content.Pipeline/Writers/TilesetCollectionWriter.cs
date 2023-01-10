@@ -24,27 +24,21 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
+/// <summary>
+///     Provides method for writing an instance of the
+///     <see cref="TilesetCollectionContent"/> class to an xnb file.
+/// </summary>
 [ContentTypeWriter]
-public sealed class SingleFrameWriter : ContentTypeWriter<SingleFrameProcessorResult>
+public sealed class TilesetCollectionWriter : CommonWriter<TilesetCollectionContent>
 {
-    protected override void Write(ContentWriter output, SingleFrameProcessorResult input)
-    {
-        output.Write(input.Size.X);
-        output.Write(input.Size.Y);
-        output.Write(input.Pixels.Length);
-
-        for (int i = 0; i < input.Pixels.Length; i++)
-        {
-            output.Write(input.Pixels[i]);
-        }
-    }
+    protected override void Write(ContentWriter output, TilesetCollectionContent input) =>
+        WriteTilesetCollectionContent(output, input);
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {
-        return "MonoGame.Aseprite.Content.Pipeline.Readers.SingleFrameReader, MonoGame.Aseprite";
+        return "MonoGame.Aseprite.Content.Pipeline.Readers.TilesetCollectionReader, MonoGame.Aseprite";
     }
 }

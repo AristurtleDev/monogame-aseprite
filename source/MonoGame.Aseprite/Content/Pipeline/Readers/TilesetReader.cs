@@ -28,59 +28,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-public sealed class TilesetReader : ContentTypeReader<TilesetCollection>
+/// <summary>
+///     Provides method for reading a <see cref="Tileset"/> from an xnb file
+///     that was generated using the MonoGame.Aseprite library.
+/// </summary>
+public sealed class TilesetReader : CommonReader<Tileset>
 {
-    protected override TilesetCollection Read(ContentReader input, TilesetCollection existingInstance)
-    {
-        if(existingInstance is not null)
-        {
-            return existingInstance;
-        }
-
-        int count = input.ReadInt32();
-
-        TilesetCollection collection = new();
-
-        for (int i = 0; i < count; i++)
-        {
-            ReadTileset(input, collection);
-        }
-
-        return collection;
-    }
-
-    private void ReadTileset(ContentReader input, TilesetCollection collection)
-    {
-        int id = input.ReadInt32();
-        string name = input.ReadString();
-        int count = input.ReadInt32();
-        int tileWidth = input.ReadInt32();
-        int tileHeight = input.ReadInt32();
-        int width = input.ReadInt32();
-        int height = input.ReadInt32();
-        int pixelCount = input.ReadInt32();
-
-        Color[] pixels = new Color[pixelCount];
-
-        for (int i = 0; i < pixelCount; i++)
-        {
-            pixels[i] = input.ReadColor();
-        }
-
-        Texture2D texture = new(input.GetGraphicsDevice(), width, height, false, SurfaceFormat.Color);
-        texture.SetData<Color>(pixels);
-        Point tileSize = new(tileWidth, tileHeight);
-
-        Tileset tileset = collection.CreateTileset(name, texture, tileSize);
-
-        if(tileset.ID != id)
-        {
-            throw new InvalidOperationException("Tile ID after creation is not the expected value");
-        }
-
-        if(tileset.TileCount != count)
-        {
-            throw new InvalidOperationException($"Tile count after creation is not the expected value");
-        }
-    }
+    protected override Tileset Read(ContentReader input, Tileset? existingInstance) =>
+        existingInstance is not null ? existingInstance : ReadTileset(input);
 }

@@ -32,24 +32,25 @@ public sealed class TilemapProcessor : ContentProcessor<AsepriteFile, TilemapPro
 {
     public override TilemapProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
+        TilesetCollectionContent tilesetCollection = GetTilesetCollectionContent(file);
         List<TilemapFrameContent> frames = GetFrameContent(file);
 
         return new(file.Tilesets, frames);
     }
 
-    private List<TilesetContent> GetTilesetContent(AsepriteFile file)
+    private TilesetCollectionContent GetTilesetCollectionContent(AsepriteFile file)
     {
-
-        List<TilesetContent> tilesets = new();
+        TilesetCollectionContent collectionContent = new();
 
         for (int i = 0; i < file.Tilesets.Count; i++)
         {
             Tileset tileset = file.Tilesets[i];
-            TilesetContent content = new(tileset.Name, tileset.Pixels, tileset.Size, tileset.TileSize, tileset.TileCount);
-            tilesets.Add(content);
+            TextureContent textureContent = new(tileset.Size, tileset.Pixels);
+            TilesetContent tilesetContent = new(tileset.Name, tileset.TileCount, tileset.TileSize, textureContent);
+            collectionContent.Tilesets.Add(tilesetContent);
         }
 
-        return tilesets;
+        return collectionContent;
     }
 
     private List<TilemapFrameContent> GetFrameContent(AsepriteFile file)
@@ -60,12 +61,11 @@ public sealed class TilemapProcessor : ContentProcessor<AsepriteFile, TilemapPro
         {
             Frame frame = file.Frames[i];
             string frameName = new($"frame_{i}");
-            TimeSpan frameDuration = TimeSpan.FromMilliseconds(frame.Duration);
-            TilemapFrameContent frameContent = new(frameName, frameDuration);
+            TilemapFrameContent frameContent = new(frameName, frame.Duration);
 
             for (int c = 0; c < frame.Cels.Count; c++)
             {
-                if(frame.Cels[c] is TilemapCel cel)
+                if (frame.Cels[c] is TilemapCel cel)
                 {
                     Tileset celTileset = cel.Tileset;
                     TilemapLayer celLayer = cel.LayerAs<TilemapLayer>();

@@ -22,17 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Content.Pipeline;
 
+/// <summary>
+///     Represents the content that is written to the file for a tile map frame.
+/// </summary>
 public sealed class TilemapFrameContent
 {
     internal List<TilemapLayerContent> Layers { get; } = new();
     internal string Name { get; }
-    internal TimeSpan Duration { get; }
+    internal int Duration { get; }
 
-    internal TilemapFrameContent(string name, TimeSpan duration) =>
+    internal TilemapFrameContent(string name, int duration) =>
         (Name, Duration) = (name, duration);
 
 }

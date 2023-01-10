@@ -22,20 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
-///     Represents the content that is written to the file for a tileset.
+///     Provides method for reading a <see cref="Texture2D"/> from an xnb file
+///     that was generated using the MonoGame.Aseprite library.
 /// </summary>
-public sealed class TilesetContent
+public sealed class TextureReader : CommonReader<Texture2D>
 {
-    internal string Name { get; }
-    internal int TileCount { get; }
-    internal Point TileSize { get; }
-    internal TextureContent TextureContent { get; set; }
+    protected override Texture2D Read(ContentReader input, Texture2D existingInstance) =>
+        existingInstance is not null ? existingInstance : ReadTexture(input);
 
-    internal TilesetContent(string name, int tileCount, Point tileSize, TextureContent textureContent) =>
-        (Name, TileCount, TileSize, TextureContent) = (name, tileCount, tileSize, textureContent);
 }

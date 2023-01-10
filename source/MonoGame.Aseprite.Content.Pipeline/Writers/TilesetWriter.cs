@@ -24,40 +24,18 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
+/// <summary>
+///     Provides method for writing an instance of the
+///     <see cref="TilesetContent"/> class to an xnb file.
+/// </summary>
 [ContentTypeWriter]
-public sealed class TilesetWriter : ContentTypeWriter<TilesetProcessorResult>
+public sealed class TilesetWriter : CommonWriter<TilesetContent>
 {
-    protected override void Write(ContentWriter output, TilesetProcessorResult input)
-    {
-        output.Write(input.Tilesets.Count);
-
-        for (int i = 0; i < input.Tilesets.Count; i++)
-        {
-            WriteTileset(output, input.Tilesets[i]);
-        }
-    }
-
-    private void WriteTileset(ContentWriter output, Tileset tileset)
-    {
-        output.Write(tileset.ID);
-        output.Write(tileset.Name);
-        output.Write(tileset.TileCount);
-        output.Write(tileset.TileSize.X);
-        output.Write(tileset.TileSize.Y);
-        output.Write(tileset.Size.X);
-        output.Write(tileset.Size.Y);
-        output.Write(tileset.Pixels.Length);
-
-        for (int i = 0; i < tileset.Pixels.Length; i++)
-        {
-            output.Write(tileset.Pixels[i]);
-        }
-    }
+    protected override void Write(ContentWriter output, TilesetContent value) =>
+        WriteTilesetContent(output, value);
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {

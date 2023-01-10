@@ -22,18 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
-///     Represents the result of the <see cref="SingleFrameProcessor"/>.
+///     Provides method for writing an instance of the
+///     <see cref="TextureContent"/> class to an xnb file.
 /// </summary>
-public sealed class SingleFrameProcessorResult
+[ContentTypeWriter]
+public sealed class TextureWriter : CommonWriter<TextureContent>
 {
-    internal Point Size { get; }
-    internal Color[] Pixels { get; }
+    protected override void Write(ContentWriter output, TextureContent input) =>
+        WriteTextureContent(output, input);
 
-    internal SingleFrameProcessorResult(Point size, Color[] pixels) =>
-        (Size, Pixels) = (size, pixels);
+    public override string GetRuntimeReader(TargetPlatform targetPlatform)
+    {
+        return "MonoGame.Aseprite.Content.Pipeline.Readers.TextureReader, MonoGame.Aseprite";
+    }
 }

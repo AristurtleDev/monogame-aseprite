@@ -26,6 +26,9 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Content.Pipeline;
 
+/// <summary>
+///     Represents the content that is written to the file for a tile map layer.
+/// </summary>
 public sealed class TilemapLayerContent
 {
     internal int TilesetID { get; }

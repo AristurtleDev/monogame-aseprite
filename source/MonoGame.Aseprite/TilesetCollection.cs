@@ -29,32 +29,27 @@ namespace MonoGame.Aseprite;
 
 public sealed class TilesetCollection
 {
-    private List<Tileset> _tilesetByID = new();
+    private List<Tileset> _tilesets = new();
     private Dictionary<string, Tileset> _tilesetByName = new();
 
-    public int Count => _tilesetByID.Count;
+    public int Count => _tilesets.Count;
 
     public Tileset this[int id] => GetTileset(id);
     public Tileset this[string name] => GetTileset(name);
 
     internal TilesetCollection() { }
 
-    internal Tileset CreateTileset(string name, Texture2D texture, Point tileSize)
+    internal void AddTileset(Tileset tileset)
     {
-        if (_tilesetByName.ContainsKey(name))
+        if (_tilesetByName.ContainsKey(tileset.Name))
         {
-            throw new InvalidOperationException($"This {nameof(TilesetCollection)} already contains a {nameof(Tileset)} with the name '{name}'");
+            throw new InvalidOperationException($"This {nameof(TilesetCollection)} already contains a {nameof(Tileset)} with the name '{tileset.Name}'");
         }
 
-        int id = _tilesetByID.Count;
-
-        Tileset tileset = new(id, name, texture, tileSize);
-
-        _tilesetByID.Add(tileset);
-        _tilesetByName.Add(name, tileset);
-
-        return tileset;
+        _tilesets.Add(tileset);
+        _tilesetByName.Add(tileset.Name, tileset);
     }
+
 
     public Tileset GetTileset(string name)
     {
@@ -68,11 +63,11 @@ public sealed class TilesetCollection
 
     public Tileset GetTileset(int id)
     {
-        if (id < 0 || id >= _tilesetByID.Count)
+        if (id < 0 || id >= _tilesets.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(id), $"{nameof(id)} cannot be less than zero or greater than or equal to the number of elements in this {nameof(TilesetCollection)}.");
         }
 
-        return _tilesetByID[id];
+        return _tilesets[id];
     }
 }
