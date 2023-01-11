@@ -24,6 +24,7 @@ SOFTWARE.
 
 using System.Collections;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
@@ -31,9 +32,12 @@ public sealed class SpriteSheetFrame : IEnumerable<SpriteSheetFrameRegion>
 {
     private Dictionary<string, SpriteSheetFrameRegion> _regions = new();
 
-    public TextureAtlasRegion TextureAtlasRegion { get; }
 
     public string Name { get; }
+
+    public Texture2D Texture { get; }
+    public Rectangle Bounds { get; }
+
 
     /// <summary>
     ///     Gets the duration of this <see cref="SpriteSheetFrame"/> when it
@@ -47,8 +51,8 @@ public sealed class SpriteSheetFrame : IEnumerable<SpriteSheetFrameRegion>
     /// </summary>
     public int RegionCount => _regions.Count;
 
-    internal SpriteSheetFrame(string name, TextureAtlasRegion textureAtlasRegion, TimeSpan duration) =>
-        (Name, TextureAtlasRegion, Duration) = (name, textureAtlasRegion, duration);
+    internal SpriteSheetFrame(string name, Texture2D texture, Rectangle bounds, TimeSpan duration) =>
+        (Name, Texture, Bounds, Duration) = (name, texture, bounds, duration);
 
     /// <summary>
     ///     Creates and adds a new <see cref="SpriteSheetFrameRegion"/> to this

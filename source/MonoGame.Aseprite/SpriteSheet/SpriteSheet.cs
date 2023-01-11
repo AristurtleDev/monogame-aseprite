@@ -40,15 +40,16 @@ public class SpriteSheet
 
 
     public string Name { get; }
-    public TextureAtlas TextureAtlas { get; }
+    public Texture2D Texture { get; }
+    public int FrameCount => _frames.Count;
 
     public SpriteSheetFrame this[int frameIndex] => GetFrame(frameIndex);
     public SpriteSheetFrame this[string frameName] => GetFrame(frameName);
 
-    public SpriteSheet(string name, TextureAtlas textureAtlas)
+    public SpriteSheet(string name, Texture2D texture)
     {
         Name = name;
-        TextureAtlas = textureAtlas;
+        Texture = texture;
     }
 
     #region Frames
@@ -70,29 +71,20 @@ public class SpriteSheet
         _frameLookup.Remove(frame.Name);
     }
 
-    private SpriteSheetFrame CreateFrame(string frameName, TextureAtlasRegion region, TimeSpan duration)
+    public SpriteSheetFrame CreateFrame(string frameName, int x, int y, int width, int height) =>
+        CreateFrame(frameName, new Rectangle(x, y, width, height));
+
+    public SpriteSheetFrame CreateFrame(string frameName, int x, int y, int width, int height, TimeSpan duration) =>
+        CreateFrame(frameName, new Rectangle(x, y, width, height), duration);
+
+    public SpriteSheetFrame CreateFrame(string frameName, Rectangle bounds) =>
+        CreateFrame(frameName, bounds, s_defaultDuration);
+
+    public SpriteSheetFrame CreateFrame(string frameName, Rectangle bounds, TimeSpan duration)
     {
-        SpriteSheetFrame frame = new(frameName, region, duration);
+        SpriteSheetFrame frame = new(frameName, Texture, bounds, duration);
         AddFrame(frame);
         return frame;
-    }
-
-    public SpriteSheetFrame CreateFrame(string frameName, int textureAtlasRegionIndex) =>
-        CreateFrame(frameName, textureAtlasRegionIndex, s_defaultDuration);
-
-    public SpriteSheetFrame CreateFrame(string frameName, int textureAtlasRegionIndex, TimeSpan duration)
-    {
-        TextureAtlasRegion region = TextureAtlas[textureAtlasRegionIndex];
-        return CreateFrame(frameName, region, duration);
-    }
-
-    public SpriteSheetFrame CreateFrame(string frameName, string textureAtlasRegionName) =>
-        CreateFrame(frameName, textureAtlasRegionName, s_defaultDuration);
-
-    public SpriteSheetFrame CreateFrame(string frameName, string textureAtlasRegionName, TimeSpan duration)
-    {
-        TextureAtlasRegion region = TextureAtlas[textureAtlasRegionName];
-        return CreateFrame(frameName, region, duration);
     }
 
     public bool ContainsFrame(string frameName) => _frameLookup.ContainsKey(frameName);
@@ -560,17 +552,17 @@ public class SpriteSheet
 
     #endregion Animations
 
-#region Animated Sprite
+    #region Animated Sprite
 
-// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-//
-//  This is where I left off.
-//  Tie in the new spritesheet animation class with the
-//  animated sprite class
-//
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    //
+    //  This is where I left off.
+    //  Tie in the new spritesheet animation class with the
+    //  animated sprite class
+    //
+    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#endregion Animated Sprite
+    #endregion Animated Sprite
 
 }
 

@@ -84,12 +84,12 @@ public class Sprite
     ///     Gets the width, in pixels, of this <see cref="Sprite"/>.
     ///     Gets the width, in pixels, of this sprite.
     /// </summary>
-    public virtual int Width => _spriteSheetFrame.TextureAtlasRegion.Bounds.Width;
+    public virtual int Width => _spriteSheetFrame.Bounds.Width;
 
     /// <summary>
     ///     Gets the height, in pixels, of this <see cref="Sprite"/>.
     /// </summary>
-    public virtual int Height => _spriteSheetFrame.TextureAtlasRegion.Bounds.Height;
+    public virtual int Height => _spriteSheetFrame.Bounds.Height;
 
     /// <summary>
     ///     Gets or Sets the <see cref="Color"/> value to use as the color
@@ -301,9 +301,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetFrame.TextureAtlasRegion.Texture,
+            texture: _spriteSheetFrame.Texture,
             position: _position,
-            sourceRectangle: _spriteSheetFrame.TextureAtlasRegion.Bounds,
+            sourceRectangle: _spriteSheetFrame.Bounds,
             color: Color * Alpha,
             rotation: Rotation,
             origin: Origin,
@@ -352,9 +352,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetFrame.TextureAtlasRegion.Texture,
+            texture: _spriteSheetFrame.Texture,
             position: position ?? Position,
-            sourceRectangle: _spriteSheetFrame.TextureAtlasRegion.Bounds,
+            sourceRectangle: _spriteSheetFrame.Bounds,
             color: color ?? Color * Alpha,
             rotation: rotation ?? Rotation,
             origin: origin ?? Origin,
@@ -401,9 +401,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetFrame.TextureAtlasRegion.Texture,
+            texture: _spriteSheetFrame.Texture,
             destinationRectangle: destinationRectangle ?? new Rectangle((int)X, (int)Y, Width, Height),
-            sourceRectangle: _spriteSheetFrame.TextureAtlasRegion.Bounds,
+            sourceRectangle: _spriteSheetFrame.Bounds,
             color: color ?? Color * Alpha,
             rotation: rotation ?? Rotation,
             origin: origin ?? Origin,

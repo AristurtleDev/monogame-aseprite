@@ -22,18 +22,16 @@
 // SOFTWARE.
 // ---------------------------------------------------------------------------- */
 
-// using Microsoft.Xna.Framework;
-// using Microsoft.Xna.Framework.Graphics;
+// using Microsoft.Xna.Framework.Content;
 
-// namespace MonoGame.Aseprite;
+// namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-// public sealed class TilemapFrame
+// /// <summary>
+// ///     Provides method for reading a <see cref="SpriteSheet"/> from an xnb file
+// ///     that was generated using the MonoGame.Aseprite library.
+// /// </summary>
+// public sealed class TextureAtlasReader : CommonReader<TextureAtlas>
 // {
-
-//     public string Name { get; }
-//     public TimeSpan Duration { get; }
-//     public List<TilemapFrameLayer> Layers { get; } = new();
-
-//     internal TilemapFrame(string name, TimeSpan duration) =>
-//         (Name, Duration) = (name, duration);
+//     protected override TextureAtlas Read(ContentReader input, TextureAtlas? existingInstance) =>
+//         existingInstance is not null ? existingInstance : ReadTextureAtlas(input);
 // }

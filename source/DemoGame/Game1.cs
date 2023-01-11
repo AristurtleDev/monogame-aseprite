@@ -74,7 +74,7 @@ public class Game1 : Game
         else if (_curState.IsKeyDown(Keys.Up) && _prevState.IsKeyUp(Keys.Up))
         {
             _frameIndex++;
-            if (_frameIndex >= _sheet.RegionCount) { _frameIndex--; }
+            if (_frameIndex >= _sheet.FrameCount) { _frameIndex--; }
             _sprite = _sheet.CreateSprite($"frame_{_frameIndex}");
         }
 

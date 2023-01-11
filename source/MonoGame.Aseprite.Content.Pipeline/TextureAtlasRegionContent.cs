@@ -23,17 +23,14 @@
 // ---------------------------------------------------------------------------- */
 
 // using Microsoft.Xna.Framework;
-// using Microsoft.Xna.Framework.Graphics;
 
-// namespace MonoGame.Aseprite;
+// namespace MonoGame.Aseprite.Content.Pipeline;
 
-// public sealed class TilemapFrame
+// public sealed class TextureAtlasRegionContent
 // {
+//     internal string Name { get; }
+//     internal Rectangle Bounds { get; }
 
-//     public string Name { get; }
-//     public TimeSpan Duration { get; }
-//     public List<TilemapFrameLayer> Layers { get; } = new();
-
-//     internal TilemapFrame(string name, TimeSpan duration) =>
-//         (Name, Duration) = (name, duration);
+//     internal TextureAtlasRegionContent(string name, Rectangle bounds) =>
+//         (Name, Bounds) = (name, bounds);
 // }

@@ -22,18 +22,15 @@
 // SOFTWARE.
 // ---------------------------------------------------------------------------- */
 
-// using Microsoft.Xna.Framework;
-// using Microsoft.Xna.Framework.Graphics;
+// namespace MonoGame.Aseprite.Content.Pipeline;
 
-// namespace MonoGame.Aseprite;
-
-// public sealed class TilemapFrame
+// public sealed class TextureAtlasContent
 // {
+//     internal string Name { get; }
+//     internal TextureContent TextureContent { get; }
+//     internal List<TextureAtlasRegionContent> Regions { get; }
 
-//     public string Name { get; }
-//     public TimeSpan Duration { get; }
-//     public List<TilemapFrameLayer> Layers { get; } = new();
+//     internal TextureAtlasContent(string name, TextureContent textureContent, List<TextureAtlasRegionContent> regions) =>
+//         (Name, TextureContent, Regions) = (name, textureContent, regions);
 
-//     internal TilemapFrame(string name, TimeSpan duration) =>
-//         (Name, Duration) = (name, duration);
 // }

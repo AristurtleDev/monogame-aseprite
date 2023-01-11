@@ -24,7 +24,6 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
@@ -63,6 +62,24 @@ public abstract class CommonWriter<T> : ContentTypeWriter<T>
         WritePoint(output, content.Size);
         WritePixels(output, content.Pixels);
     }
+
+    // internal static void WriteTextureAtlasContent(ContentWriter output, TextureAtlasContent content)
+    // {
+    //     output.Write(content.Name);
+    //     WriteTextureContent(output, content.TextureContent);
+
+    //     output.Write(content.Regions.Count);
+    //     foreach (TextureAtlasRegionContent region in content.Regions)
+    //     {
+    //         WriteTextureAtlasRegionContent(output, region);
+    //     }
+    // }
+
+    // internal static void WriteTextureAtlasRegionContent(ContentWriter output, TextureAtlasRegionContent content)
+    // {
+    //     output.Write(content.Name);
+    //     WriteRectangle(output, content.Bounds);
+    // }
 
     internal static void WriteSpriteSheetContent(ContentWriter output, SpriteSheetContent content)
     {

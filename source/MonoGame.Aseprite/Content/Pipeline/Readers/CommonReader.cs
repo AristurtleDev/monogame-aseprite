@@ -83,6 +83,29 @@ public abstract class CommonReader<T> : ContentTypeReader<T>
         return texture;
     }
 
+    // internal static TextureAtlas ReadTextureAtlas(ContentReader input)
+    // {
+    //     string name = input.ReadString();
+    //     Texture2D texture = ReadTexture(input);
+
+    //     TextureAtlas atlas = new(name, texture);
+    //     ReadTextureAtlasRegions(input, atlas);
+    // }
+
+    // internal static void ReadTextureAtlasRegions(ContentReader input, TextureAtlas atlas)
+    // {
+    //     int count = input.ReadInt32();
+
+    //     for (int i = 0; i < count; i++)
+    //     {
+    //         string name = input.ReadString();
+    //         Rectangle bounds = ReadRectangle(input);
+
+    //         atlas.CreateRegion(name, bounds);
+    //     }
+    // }
+
+
     internal static SpriteSheet ReadSpriteSheet(ContentReader input)
     {
         string name = input.ReadString();
@@ -176,7 +199,7 @@ public abstract class CommonReader<T> : ContentTypeReader<T>
         bool isReversed = (flags & 2) != 0;
         bool isPingPong = (flags & 4) != 0;
 
-        spriteSheet.AddAnimationDefinition(name, isLooping, isReversed, isPingPong, indexes);
+        _ = spriteSheet.CreateAnimation(name, indexes, isLooping, isReversed, isPingPong);
     }
 
     internal static TilesetCollection ReadTilesetCollection(ContentReader input)

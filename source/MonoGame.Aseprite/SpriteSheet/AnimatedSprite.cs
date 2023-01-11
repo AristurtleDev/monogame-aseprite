@@ -28,12 +28,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
-public sealed class AnimatedSprite : Sprite
+public class AnimatedSprite : Sprite
 {
     private readonly SpriteSheet _spriteSheet;
-    private SpriteSheetAnimation _currentAnimation;
+    private AnimationController _currentAnimation;
 
-    public SpriteSheetAnimation CurrentAnimation => _currentAnimation;
+    public AnimationController CurrentAnimation => _currentAnimation;
 
     public AnimatedSprite(SpriteSheet spriteSheet, string startingAnimation)
         : this(spriteSheet, startingAnimation, Vector2.Zero, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f) { }
@@ -54,20 +54,29 @@ public sealed class AnimatedSprite : Sprite
     [MemberNotNull(nameof(_currentAnimation))]
     private void SetCurrentAnimation(string name)
     {
-        SpriteSheetAnimationDefinition definition = _spriteSheet.GetAnimationDefinition(name);
+        SpriteSheetAnimation animation = _spriteSheet.GetAnimation(name);
+        // SpriteSheetAnimationDefinition definition = _spriteSheet.GetAnimationDefinition(name);
 
-        SpriteSheetFrame[] frames = new SpriteSheetFrame[definition.FrameIndexes.Length];
+        SpriteSheetFrame[] frames = new SpriteSheetFrame[animation.Frames.Length];
         for (int i = 0; i < frames.Length; i++)
         {
-            frames[i] = _spriteSheet.GetRegion(definition.FrameIndexes[i]);
+            frames[i] = _spriteSheet.GetFrame(animation.Frames[i]);
         }
 
-        _currentAnimation = new(definition.Name, frames, definition.IsLooping, definition.IsReversed, definition.IsPingPong);
+        // SpriteSheetFrame[] frames = new SpriteSheetFrame[definition.FrameIndexes.Length];
+        // for (int i = 0; i < frames.Length; i++)
+        // {
+        // frames[i] = _spriteSheet.GetRegion(definition.FrameIndexes[i]);
+        // }
+
+        _currentAnimation = new(animation.Name, frames, animation.IsLooping, animation.IsReversed, animation.IsPingPong);
+
+        // _currentAnimation = new(definition.Name, frames, definition.IsLooping, definition.IsReversed, definition.IsPingPong);
         SpriteSheetFrame = _currentAnimation.CurrentFrame;
 
     }
 
-    public SpriteSheetAnimation Play(string name, Action? onFrameBegin = default, Action? onFrameEnd = default, Action? onAnimationLoop = default, Action? onAnimationEnd = default)
+    public AnimationController Play(string name, Action? onFrameBegin = default, Action? onFrameEnd = default, Action? onAnimationLoop = default, Action? onAnimationEnd = default)
     {
         SetCurrentAnimation(name);
         _currentAnimation.OnFrameBegin = onFrameBegin;

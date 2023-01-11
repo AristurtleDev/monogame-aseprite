@@ -127,145 +127,154 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
     /// </returns>
     public override SpriteSheetContent Process(AsepriteFile input, ContentProcessorContext context)
     {
-        List<SpriteSheetFrameContent> frames = GenerateFrameAndImageData(input, out TextureContent textureContent);
+        CreateTextureContentResult textureContentResult = CreateTextureContent(input);
+        List<SpriteSheetFrameContent> frames = CreateSpriteSheetFrameContent(input, textureContentResult.DuplicateMap, textureContentResult.Columns);
         List<SpriteSheetAnimationDefinitionContent> tags = GenerateAnimationDefinitionData(input);
         GenerateFrameRegionData(input, frames);
 
-        return new SpriteSheetContent(input.Name, textureContent, frames, tags);
+        return new SpriteSheetContent(input.Name, textureContentResult.Content, frames, tags);
     }
 
-    private List<SpriteSheetFrameContent> GenerateFrameAndImageData(AsepriteFile file, out TextureContent textureContent)
+    private CreateTextureContentResult CreateTextureContent(AsepriteFile input)
     {
-        List<Color[]> flattenedFrames = new();
-
-        for (int i = 0; i < file.Frames.Count; i++)
-        {
-            flattenedFrames.Add(file.Frames[i].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer));
-        }
-
-        List<SpriteSheetFrameContent> frames = new();
-        int nFrames = flattenedFrames.Count;
-        Dictionary<int, SpriteSheetFrameContent> originalToDuplicateLookup = new();
         Dictionary<int, int> duplicateMap = new();
 
+        int totalFrames = input.Frames.Count;
+        Color[][] frames = new Color[totalFrames][];
+        FlattenFrames(input.Frames, frames);
+
+        int actualFrames = totalFrames;
         if (MergeDuplicateFrames)
         {
-            for (int i = 0; i < flattenedFrames.Count; i++)
-            {
-                for (int d = 0; d < i; d++)
-                {
-                    if (flattenedFrames[i].SequenceEqual(flattenedFrames[d]))
-                    {
-                        duplicateMap.Add(i, d);
-                        nFrames--;
-                        break;
-                    }
-                }
-            }
+            BuildDuplicateMap(duplicateMap, frames, totalFrames);
+            actualFrames -= duplicateMap.Count;
         }
 
-        //  Determine the number of columns and rows needed to pack frames into
-        //  a spritesheet image
-        double sqrt = Math.Sqrt(nFrames);
+        //  Calcualte Texture Grid?
+
+        double sqrt = Math.Sqrt(actualFrames);
         int columns = (int)Math.Floor(sqrt);
         if (Math.Abs(sqrt % 1) >= double.Epsilon)
         {
             columns++;
         }
 
-        int rows = nFrames / columns;
-        if (nFrames % columns != 0)
+        int rows = actualFrames / columns;
+        if (actualFrames % columns != 0)
         {
             rows++;
         }
 
-        //  Determine the final width and height of the spritesheet image based
-        //  on the number of columns and rows, adjusting for padding and spacing
-        int width = (columns * file.FrameSize.X) +
+        int width = (columns * input.FrameSize.X) +
                     (BorderPadding * 2) +
                     (Spacing * (columns - 1)) +
                     (InnerPadding * 2 * columns);
 
-        int height = (rows * file.FrameSize.Y) +
+        int height = (rows * input.FrameSize.Y) +
                      (BorderPadding * 2) +
-                     (Spacing * (rows - 1)) +
-                     (InnerPadding * 2 * rows);
+                     (Spacing * (columns - 1)) +
+                     (InnerPadding * 2 * columns);
 
         Color[] pixels = new Color[width * height];
-
-        //  Offset for when we detect merged frames
         int fOffset = 0;
 
-        for (int fNum = 0; fNum < flattenedFrames.Count; fNum++)
+        for (int fNum = 0; fNum < totalFrames; fNum++)
         {
-            if (!MergeDuplicateFrames || !duplicateMap.ContainsKey(fNum))
+            if (MergeDuplicateFrames && duplicateMap.ContainsKey(fNum))
             {
-                //  Calculate the x- and y-coordinate position of the frame's
-                //  top-left pixel relative to the top-left of the final
-                //  spritesheet image
-                int frameColumn = (fNum - fOffset) % columns;
-                int frameRow = (fNum - fOffset) / columns;
-
-                //  Inject the pixel color data from the frame into the final
-                //  spritesheet image
-                Color[] framePixels = flattenedFrames[fNum];
-
-                for (int p = 0; p < framePixels.Length; p++)
-                {
-                    int x = (p % file.FrameSize.X) + (frameColumn * file.FrameSize.X);
-                    int y = (p / file.FrameSize.X) + (frameRow * file.FrameSize.Y);
-
-                    //  Adjust x- and y-coordinate for any padding and/or
-                    //  spacing.
-                    x += BorderPadding +
-                         (Spacing * frameColumn) +
-                         (InnerPadding * (frameColumn + 1 + frameColumn));
-
-                    y += BorderPadding +
-                         (Spacing * frameRow) +
-                         (InnerPadding * (frameRow + 1 + frameRow));
-
-                    int index = y * width + x;
-                    pixels[index] = framePixels[p];
-                }
-
-                //  Now create the frame data
-                Rectangle sourceRectangle = new Rectangle
-                {
-                    X = frameColumn * file.FrameSize.X,
-                    Y = frameRow * file.FrameSize.Y,
-                    Width = file.FrameSize.X,
-                    Height = file.FrameSize.Y
-                };
-
-                sourceRectangle.X += BorderPadding +
-                                     (Spacing * frameColumn) +
-                                     (InnerPadding * (frameColumn + 1 + frameColumn));
-
-                sourceRectangle.Y += BorderPadding +
-                                     (Spacing * frameRow) +
-                                     (InnerPadding * (frameRow + 1 + frameRow));
-
-                SpriteSheetFrameContent frame = new($"frame_{fNum}", sourceRectangle, file.Frames[fNum].Duration);
-                // Frame frame = new(sourceRectangle, TimeSpan.FromMilliseconds(file.Frames[fNum].Duration));
-                frames.Add(frame);
-                originalToDuplicateLookup.Add(fNum, frame);
-            }
-            else
-            {
-                //  We are merging duplicates and it was detected that the
-                //  current frame to process is a duplicate.  so we still need
-                //  to create the frame data
-                SpriteSheetFrameContent original = originalToDuplicateLookup[duplicateMap[fNum]];
-                SpriteSheetFrameContent duplicate = new($"frame_{fNum}", original.Bounds, original.Duration);
-                frames.Add(duplicate);
                 fOffset++;
+                continue;
+            }
+
+            int fColumn = (fNum - fOffset) % columns;
+            int fRow = (fNum - fOffset) / columns;
+
+            Color[] fPixels = frames[fNum];
+
+            for (int p = 0; p < fPixels.Length; p++)
+            {
+                int x = (p % input.FrameSize.X) + (fColumn * input.FrameSize.X);
+                int y = (p / input.FrameSize.X) + (fRow * input.FrameSize.Y);
+
+                x += BorderPadding +
+                     (Spacing * fColumn) +
+                     (InnerPadding * (fColumn + 1 + fColumn));
+
+                y += BorderPadding +
+                     (Spacing * fRow) +
+                     (InnerPadding * (fRow + 1 + fRow));
+
+                int index = y * width + x;
+                pixels[index] = fPixels[p];
             }
         }
 
-        textureContent = new(new Point(width, height), pixels);
+        TextureContent content = new(new Point(width, height), pixels);
+        return new(content, duplicateMap, columns);
+    }
+
+    private List<SpriteSheetFrameContent> CreateSpriteSheetFrameContent(AsepriteFile input, Dictionary<int, int> duplicateMap, int columns)
+    {
+        List<SpriteSheetFrameContent> frames = new();
+        Dictionary<int, SpriteSheetFrameContent> originalToDuplicateLookup = new();
+
+        int fOffset = 0;
+
+        for (int fNum = 0; fNum < input.Frames.Count; fNum++)
+        {
+            if (MergeDuplicateFrames && duplicateMap.ContainsKey(fNum))
+            {
+                SpriteSheetFrameContent original = originalToDuplicateLookup[duplicateMap[fNum]];
+                SpriteSheetFrameContent duplicate = new($"frame_{fNum}", original.Bounds, input.Frames[fNum].Duration);
+                frames.Add(duplicate);
+                fOffset++;
+                continue;
+            }
+
+            int fColumn = (fNum - fOffset) % columns;
+            int fRow = (fNum - fOffset) / columns;
+
+            int x = (fColumn * input.FrameSize.X) +
+                    BorderPadding +
+                    (Spacing * fColumn) +
+                    (InnerPadding * (fColumn + 1 + fColumn));
+
+            int y = (fRow * input.FrameSize.Y) +
+                    BorderPadding +
+                    (Spacing * fRow) +
+                    (InnerPadding * (fRow + 1 + fRow));
+
+            Rectangle bounds = new(x, y, input.FrameSize.X, input.FrameSize.Y);
+            SpriteSheetFrameContent frame = new($"frame_{fNum}", bounds, input.Frames[fNum].Duration);
+            frames.Add(frame);
+            originalToDuplicateLookup.Add(fNum, frame);
+        }
 
         return frames;
+    }
+
+    private void FlattenFrames(List<Frame> frames, Color[][] result)
+    {
+        for (int i = 0; i < frames.Count; i++)
+        {
+            Frame frame = frames[i];
+            result[i] = frame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
+        }
+    }
+
+    private void BuildDuplicateMap(Dictionary<int, int> map, Color[][] frames, int nFrames)
+    {
+        for (int i = 0; i < nFrames; i++)
+        {
+            for (int d = 0; d < i; d++)
+            {
+                if (frames[i].SequenceEqual(frames[d]))
+                {
+                    map.Add(i, d);
+                    break;
+                }
+            }
+        }
     }
 
     private List<SpriteSheetAnimationDefinitionContent> GenerateAnimationDefinitionData(AsepriteFile file)
@@ -350,4 +359,6 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
             }
         }
     }
+
+    private record CreateTextureContentResult(TextureContent Content, Dictionary<int, int> DuplicateMap, int Columns);
 }
