@@ -29,19 +29,19 @@ namespace MonoGame.Aseprite;
 
 public class Sprite
 {
-    private SpriteSheetFrame _spriteSheetRegion;
+    private SpriteSheetFrame _spriteSheetFrame;
     private Vector2 _position;
     private Vector2 _scale;
     private SpriteEffects _spriteEffects;
 
     /// <summary>
-    ///     Gets or Sets the <see cref="SpriteSheetRegion"/> used by this
+    ///     Gets or Sets the <see cref="SpriteSheetFrame"/> used by this
     ///     <see cref="Sprite"/>.
     /// </summary>
-    public SpriteSheetFrame SpriteSheetRegion
+    public SpriteSheetFrame SpriteSheetFrame
     {
-        get => _spriteSheetRegion;
-        set => _spriteSheetRegion = value;
+        get => _spriteSheetFrame;
+        set => _spriteSheetFrame = value;
     }
 
     /// <summary>
@@ -84,12 +84,12 @@ public class Sprite
     ///     Gets the width, in pixels, of this <see cref="Sprite"/>.
     ///     Gets the width, in pixels, of this sprite.
     /// </summary>
-    public virtual int Width => _spriteSheetRegion.Bounds.Width;
+    public virtual int Width => _spriteSheetFrame.TextureAtlasRegion.Bounds.Width;
 
     /// <summary>
     ///     Gets the height, in pixels, of this <see cref="Sprite"/>.
     /// </summary>
-    public virtual int Height => _spriteSheetRegion.Bounds.Height;
+    public virtual int Height => _spriteSheetFrame.TextureAtlasRegion.Bounds.Height;
 
     /// <summary>
     ///     Gets or Sets the <see cref="Color"/> value to use as the color
@@ -198,7 +198,7 @@ public class Sprite
     ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetRegion"/> to be used by this
+    ///     The <see cref="SpriteSheetFrame"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
     public Sprite(SpriteSheetFrame region)
@@ -208,7 +208,7 @@ public class Sprite
     ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetRegion"/> to be used by this
+    ///     The <see cref="SpriteSheetFrame"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
     public Sprite(SpriteSheetFrame region, Vector2 position)
@@ -219,7 +219,7 @@ public class Sprite
     ///     the values provided.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetRegion"/> to be used by this
+    ///     The <see cref="SpriteSheetFrame"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
     /// <param name="position">
@@ -238,7 +238,7 @@ public class Sprite
     ///     the values provided.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetRegion"/> to be used by this
+    ///     The <see cref="SpriteSheetFrame"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
     /// <param name="position">
@@ -270,7 +270,7 @@ public class Sprite
     /// </param>
     public Sprite(SpriteSheetFrame region, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
     {
-        _spriteSheetRegion = region;
+        _spriteSheetFrame = region;
         _position = position;
         _scale = scale;
         _spriteEffects = effects;
@@ -301,9 +301,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetRegion.Texture,
+            texture: _spriteSheetFrame.TextureAtlasRegion.Texture,
             position: _position,
-            sourceRectangle: _spriteSheetRegion.Bounds,
+            sourceRectangle: _spriteSheetFrame.TextureAtlasRegion.Bounds,
             color: Color * Alpha,
             rotation: Rotation,
             origin: Origin,
@@ -352,9 +352,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetRegion.Texture,
+            texture: _spriteSheetFrame.TextureAtlasRegion.Texture,
             position: position ?? Position,
-            sourceRectangle: _spriteSheetRegion.Bounds,
+            sourceRectangle: _spriteSheetFrame.TextureAtlasRegion.Bounds,
             color: color ?? Color * Alpha,
             rotation: rotation ?? Rotation,
             origin: origin ?? Origin,
@@ -401,9 +401,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetRegion.Texture,
+            texture: _spriteSheetFrame.TextureAtlasRegion.Texture,
             destinationRectangle: destinationRectangle ?? new Rectangle((int)X, (int)Y, Width, Height),
-            sourceRectangle: _spriteSheetRegion.Bounds,
+            sourceRectangle: _spriteSheetFrame.TextureAtlasRegion.Bounds,
             color: color ?? Color * Alpha,
             rotation: rotation ?? Rotation,
             origin: origin ?? Origin,

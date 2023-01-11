@@ -22,54 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
-public sealed class Tileset
+public class TextureAtlasRegion
 {
-    private TilesetTile[] _tiles;
-
     public string Name { get; }
     public Texture2D Texture { get; }
-    public Point TileSize { get; }
-    public int TileCount { get; }
+    public Rectangle Bounds { get; }
 
-    public TilesetTile this[int id] => GetTile(id);
-
-    internal Tileset(string name, Texture2D texture, Point tileSize)
+    internal TextureAtlasRegion(string name, Texture2D texture, Rectangle bounds)
     {
         Name = name;
         Texture = texture;
-        TileSize = tileSize;
-        TileCount = Texture.Height / TileSize.Y;
-        GenerateTiles();
-    }
-
-    [MemberNotNull(nameof(_tiles))]
-    private void GenerateTiles()
-    {
-        _tiles = new TilesetTile[TileCount];
-
-        for (int i = 0; i < TileCount; i++)
-        {
-            int y = TileSize.Y * i;
-            Rectangle bounds = new(0, y, TileSize.X, TileSize.Y);
-            TilesetTile tile = new(i, $"{Name}_{i}", Texture, bounds);
-            _tiles[i] = tile;
-        }
-    }
-
-    public TilesetTile GetTile(int id)
-    {
-        if (id < 0 || id >= _tiles.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(id), $"{nameof(id)} cannot be less than zero or greater than or equal {nameof(TileCount)}.");
-        }
-
-        return _tiles[id];
+        Bounds = bounds;
     }
 }

@@ -63,7 +63,7 @@ public sealed class AnimatedSprite : Sprite
         }
 
         _currentAnimation = new(definition.Name, frames, definition.IsLooping, definition.IsReversed, definition.IsPingPong);
-        SpriteSheetRegion = _currentAnimation.CurrentFrame;
+        SpriteSheetFrame = _currentAnimation.CurrentFrame;
 
     }
 
@@ -87,6 +87,6 @@ public sealed class AnimatedSprite : Sprite
     public void Update(GameTime gameTime)
     {
         _currentAnimation.Update(gameTime);
-        SpriteSheetRegion = _currentAnimation.CurrentFrame;
+        SpriteSheetFrame = _currentAnimation.CurrentFrame;
     }
 }

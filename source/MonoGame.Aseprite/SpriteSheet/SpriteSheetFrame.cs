@@ -24,7 +24,6 @@ SOFTWARE.
 
 using System.Collections;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
@@ -32,21 +31,9 @@ public sealed class SpriteSheetFrame : IEnumerable<SpriteSheetFrameRegion>
 {
     private Dictionary<string, SpriteSheetFrameRegion> _regions = new();
 
-    /// <summary>
-    ///     Gets the name of this <see cref="SpriteSheetFrame"/>.
-    /// </summary>
+    public TextureAtlasRegion TextureAtlasRegion { get; }
+
     public string Name { get; }
-
-    /// <summary>
-    ///     Gets the <see cref="Texture2D"/> used by this
-    ///     <see cref="SpriteSheetFrame"/>.
-    /// </summary>
-    public Texture2D? Texture { get; }
-
-    /// <summary>
-    ///     Gets the rectangular bounds of this <see cref="SpriteSheetFrame"/>.
-    /// </summary>
-    public Rectangle Bounds { get; }
 
     /// <summary>
     ///     Gets the duration of this <see cref="SpriteSheetFrame"/> when it
@@ -60,8 +47,8 @@ public sealed class SpriteSheetFrame : IEnumerable<SpriteSheetFrameRegion>
     /// </summary>
     public int RegionCount => _regions.Count;
 
-    internal SpriteSheetFrame(string name, Texture2D? texture, Rectangle bounds, TimeSpan duration) =>
-        (Name, Texture, Bounds, Duration) = (name, texture, bounds, duration);
+    internal SpriteSheetFrame(string name, TextureAtlasRegion textureAtlasRegion, TimeSpan duration) =>
+        (Name, TextureAtlasRegion, Duration) = (name, textureAtlasRegion, duration);
 
     /// <summary>
     ///     Creates and adds a new <see cref="SpriteSheetFrameRegion"/> to this
@@ -110,7 +97,7 @@ public sealed class SpriteSheetFrame : IEnumerable<SpriteSheetFrameRegion>
 
         if (_regions.ContainsKey(name))
         {
-            throw new InvalidOperationException($"{nameof(SpriteSheetFrame)} '{Name}' already contains a {nameof(SpriteSheetFrameRegion)} named '{name}'.");
+            throw new InvalidOperationException();
         }
 
         SpriteSheetFrameRegion region = new(name, bounds, color, centerBounds, pivot);
@@ -140,7 +127,7 @@ public sealed class SpriteSheetFrame : IEnumerable<SpriteSheetFrameRegion>
             return region;
         }
 
-        throw new KeyNotFoundException($"{nameof(SpriteSheetFrame)} '{Name}' does not contain a {nameof(SpriteSheetFrameRegion)} with the name '{name}'.");
+        throw new KeyNotFoundException();
     }
 
     /// <summary>
