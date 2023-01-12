@@ -135,90 +135,129 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
         return new SpriteSheetContent(input.Name, textureContentResult.Content, frames, tags);
     }
 
+
     private CreateTextureContentResult CreateTextureContent(AsepriteFile input)
     {
-        Dictionary<int, int> duplicateMap = new();
+        int frameCount = input.FrameCount;
+        Color[][] frames = FlattenFrames(input.Frames);
+        Dictionary<int, int> duplicateMap = BuildDuplicateMap(frames);
 
-        int totalFrames = input.Frames.Count;
-        Color[][] frames = new Color[totalFrames][];
-        FlattenFrames(input.Frames, frames);
-
-        int actualFrames = totalFrames;
         if (MergeDuplicateFrames)
         {
-            BuildDuplicateMap(duplicateMap, frames, totalFrames);
-            actualFrames -= duplicateMap.Count;
+            frameCount -= duplicateMap.Count;
         }
 
-        //  Calcualte Texture Grid?
+        Point gridSize = CalculateGridSize(frameCount);
+        Point imageSize = CalculateImageSize(input.FrameSize, gridSize);
+        Color[] pixels = GenerateImage(frames, input.FrameSize, gridSize, imageSize, duplicateMap);
 
-        double sqrt = Math.Sqrt(actualFrames);
-        int columns = (int)Math.Floor(sqrt);
-        if (Math.Abs(sqrt % 1) >= double.Epsilon)
+        TextureContent textureContent = new(imageSize, pixels);
+        return new CreateTextureContentResult(textureContent, duplicateMap, gridSize.X);
+    }
+
+    private Color[][] FlattenFrames(List<Frame> frames)
+    {
+        Color[][] result = new Color[frames.Count][];
+
+        for (int i = 0; i < frames.Count; i++)
         {
-            columns++;
+            Frame frame = frames[i];
+            result[i] = frame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
         }
 
-        int rows = actualFrames / columns;
-        if (actualFrames % columns != 0)
+        return result;
+    }
+
+    private Dictionary<int, int> BuildDuplicateMap(Color[][] frames)
+    {
+        Dictionary<int, int> map = new();
+        HashSet<Color[]> seenFrames = new();
+
+        for (int i = 0; i < frames.GetLength(0); i++)
         {
-            rows++;
+            if (!seenFrames.Add(frames[i]))
+            {
+                map.Add(i, Array.IndexOf(frames, frames[i]));
+            }
         }
 
-        int width = (columns * input.FrameSize.X) +
+        return map;
+    }
+
+    private Point CalculateGridSize(int frameCount)
+    {
+        double sqrt = Math.Sqrt(frameCount);
+        int columns = (int)Math.Ceiling(sqrt);
+        int rows = (frameCount + columns - 1) / columns;
+        return new(columns, rows);
+    }
+
+    private Point CalculateImageSize(Point frameSize, Point gridSize)
+    {
+        int width = (gridSize.X * frameSize.X) +
                     (BorderPadding * 2) +
-                    (Spacing * (columns - 1)) +
-                    (InnerPadding * 2 * columns);
+                    (Spacing * (gridSize.X - 1)) +
+                    (InnerPadding * 2 * gridSize.X);
 
-        int height = (rows * input.FrameSize.Y) +
+        int height = (gridSize.Y * frameSize.Y) +
                      (BorderPadding * 2) +
-                     (Spacing * (columns - 1)) +
-                     (InnerPadding * 2 * columns);
+                     (Spacing * (gridSize.Y - 1)) +
+                     (InnerPadding * 2 * gridSize.Y);
 
-        Color[] pixels = new Color[width * height];
-        int fOffset = 0;
+        return new(width, height);
+    }
 
-        for (int fNum = 0; fNum < totalFrames; fNum++)
+    private Color[] GenerateImage(Color[][] frames, Point frameSize, Point gridSize, Point imageSize, Dictionary<int, int> duplicateMap)
+    {
+        Color[] image = new Color[imageSize.X * imageSize.Y];
+
+        int offset = 0;
+
+        for (int fNum = 0; fNum < frames.GetLength(0); fNum++)
         {
             if (MergeDuplicateFrames && duplicateMap.ContainsKey(fNum))
             {
-                fOffset++;
+                offset++;
                 continue;
             }
 
-            int fColumn = (fNum - fOffset) % columns;
-            int fRow = (fNum - fOffset) / columns;
+            int column = (fNum - offset) % gridSize.X;
+            int row = (fNum - offset) / gridSize.X;
 
-            Color[] fPixels = frames[fNum];
-
-            for (int p = 0; p < fPixels.Length; p++)
-            {
-                int x = (p % input.FrameSize.X) + (fColumn * input.FrameSize.X);
-                int y = (p / input.FrameSize.X) + (fRow * input.FrameSize.Y);
-
-                x += BorderPadding +
-                     (Spacing * fColumn) +
-                     (InnerPadding * (fColumn + 1 + fColumn));
-
-                y += BorderPadding +
-                     (Spacing * fRow) +
-                     (InnerPadding * (fRow + 1 + fRow));
-
-                int index = y * width + x;
-                pixels[index] = fPixels[p];
-            }
+            Color[] frame = frames[fNum];
+            CopyFrameToImage(frame, image, frameSize, imageSize, column, row);
         }
 
-        TextureContent content = new(new Point(width, height), pixels);
-        return new(content, duplicateMap, columns);
+        return image;
     }
+
+    private void CopyFrameToImage(Color[] frame, Color[] image, Point frameSize, Point imageSize, int column, int row)
+    {
+        for (int i = 0; i < frame.Length; i++)
+        {
+            int x = (i % frameSize.X) + (column * frameSize.X) +
+                    BorderPadding +
+                    (Spacing * column) +
+                    (InnerPadding * (column + column + 1));
+
+            int y = (i / frameSize.X) + (row * frameSize.Y) +
+                    BorderPadding +
+                    (Spacing * row) +
+                    (InnerPadding * (row + row + 1));
+
+            int index = y * imageSize.X + x;
+            image[index] = frame[i];
+        }
+    }
+
+
 
     private List<SpriteSheetFrameContent> CreateSpriteSheetFrameContent(AsepriteFile input, Dictionary<int, int> duplicateMap, int columns)
     {
         List<SpriteSheetFrameContent> frames = new();
         Dictionary<int, SpriteSheetFrameContent> originalToDuplicateLookup = new();
 
-        int fOffset = 0;
+        int offset = 0;
 
         for (int fNum = 0; fNum < input.Frames.Count; fNum++)
         {
@@ -227,54 +266,32 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
                 SpriteSheetFrameContent original = originalToDuplicateLookup[duplicateMap[fNum]];
                 SpriteSheetFrameContent duplicate = new($"frame_{fNum}", original.Bounds, input.Frames[fNum].Duration);
                 frames.Add(duplicate);
-                fOffset++;
+                offset++;
                 continue;
             }
 
-            int fColumn = (fNum - fOffset) % columns;
-            int fRow = (fNum - fOffset) / columns;
+            int column = (fNum - offset) % columns;
+            int row = (fNum - offset) / columns;
 
-            int x = (fColumn * input.FrameSize.X) +
-                    BorderPadding +
-                    (Spacing * fColumn) +
-                    (InnerPadding * (fColumn + 1 + fColumn));
+            Point location;
 
-            int y = (fRow * input.FrameSize.Y) +
-                    BorderPadding +
-                    (Spacing * fRow) +
-                    (InnerPadding * (fRow + 1 + fRow));
+            location.X = (column * input.FrameSize.X) +
+                         BorderPadding +
+                         (Spacing * column) +
+                         (InnerPadding * (column + column + 1));
 
-            Rectangle bounds = new(x, y, input.FrameSize.X, input.FrameSize.Y);
+            location.Y = (row * input.FrameSize.Y) +
+                         BorderPadding +
+                         (Spacing * row) +
+                         (InnerPadding * (row + row + 1));
+
+            Rectangle bounds = new(location, input.FrameSize);
             SpriteSheetFrameContent frame = new($"frame_{fNum}", bounds, input.Frames[fNum].Duration);
             frames.Add(frame);
             originalToDuplicateLookup.Add(fNum, frame);
         }
 
         return frames;
-    }
-
-    private void FlattenFrames(List<Frame> frames, Color[][] result)
-    {
-        for (int i = 0; i < frames.Count; i++)
-        {
-            Frame frame = frames[i];
-            result[i] = frame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
-        }
-    }
-
-    private void BuildDuplicateMap(Dictionary<int, int> map, Color[][] frames, int nFrames)
-    {
-        for (int i = 0; i < nFrames; i++)
-        {
-            for (int d = 0; d < i; d++)
-            {
-                if (frames[i].SequenceEqual(frames[d]))
-                {
-                    map.Add(i, d);
-                    break;
-                }
-            }
-        }
     }
 
     private List<SpriteSheetAnimationDefinitionContent> GenerateAnimationDefinitionData(AsepriteFile file)
