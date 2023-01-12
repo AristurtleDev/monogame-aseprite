@@ -93,7 +93,7 @@ public abstract class CommonWriter<T> : ContentTypeWriter<T>
         }
 
         output.Write(content.AnimationDefinitions.Count);
-        foreach (SpriteSheetAnimationDefinitionContent animationContent in content.AnimationDefinitions)
+        foreach (SpriteSheetAnimationContent animationContent in content.AnimationDefinitions)
         {
             WriteSpriteSheetAnimationDefinitionContent(output, animationContent);
         }
@@ -131,7 +131,7 @@ public abstract class CommonWriter<T> : ContentTypeWriter<T>
         }
     }
 
-    internal static void WriteSpriteSheetAnimationDefinitionContent(ContentWriter output, SpriteSheetAnimationDefinitionContent content)
+    internal static void WriteSpriteSheetAnimationDefinitionContent(ContentWriter output, SpriteSheetAnimationContent content)
     {
         output.Write(content.Name);
         output.Write(content.LoopReversePingPongMask);

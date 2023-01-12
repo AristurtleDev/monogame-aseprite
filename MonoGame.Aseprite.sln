@@ -3,63 +3,46 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{50C5DDEC-666B-428E-8C19-A8DBC0951D0F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{87EA71A5-5AB5-4A98-8C14-378D3EEFF55F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGame.Aseprite", "source\MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{5AA97036-A32D-48EC-976E-569F08F73E2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "source\MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{623EE4F5-5B24-4DC6-A884-455CE363E3FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGame.Aseprite.Content.Pipeline", "source\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Content.Pipeline", "source\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{7D7338B9-3AE7-4C12-BF4C-6767E431DBC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame", "source\DemoGame\DemoGame.csproj", "{65A9EE20-2BD5-4A7B-BB85-A36293BA35CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame", "source\DemoGame\DemoGame.csproj", "{1420D979-B337-4009-89C1-835733675848}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2E1E7B53-A567-4F28-8863-D90C52142B3C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Content.Pipeline.Tests", "tests\MonoGame.Aseprite.Content.Pipeline.Tests\MonoGame.Aseprite.Content.Pipeline.Tests.csproj", "{B611756E-61A2-451B-B7D4-16A8BC36F8EF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGAConsole", "source\MGAConsole\MGAConsole.csproj", "{D701AAD7-F6E5-4C4C-A12C-0B87B62B5DF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGAConsole", "source\MGAConsole\MGAConsole.csproj", "{04950AA7-6302-4CC0-A274-F4C29D0D1682}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5AA97036-A32D-48EC-976E-569F08F73E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AA97036-A32D-48EC-976E-569F08F73E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AA97036-A32D-48EC-976E-569F08F73E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AA97036-A32D-48EC-976E-569F08F73E2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65A9EE20-2BD5-4A7B-BB85-A36293BA35CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A9EE20-2BD5-4A7B-BB85-A36293BA35CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65A9EE20-2BD5-4A7B-BB85-A36293BA35CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65A9EE20-2BD5-4A7B-BB85-A36293BA35CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B611756E-61A2-451B-B7D4-16A8BC36F8EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B611756E-61A2-451B-B7D4-16A8BC36F8EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B611756E-61A2-451B-B7D4-16A8BC36F8EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B611756E-61A2-451B-B7D4-16A8BC36F8EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D701AAD7-F6E5-4C4C-A12C-0B87B62B5DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D701AAD7-F6E5-4C4C-A12C-0B87B62B5DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D701AAD7-F6E5-4C4C-A12C-0B87B62B5DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D701AAD7-F6E5-4C4C-A12C-0B87B62B5DF0}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{623EE4F5-5B24-4DC6-A884-455CE363E3FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{623EE4F5-5B24-4DC6-A884-455CE363E3FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{623EE4F5-5B24-4DC6-A884-455CE363E3FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{623EE4F5-5B24-4DC6-A884-455CE363E3FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D7338B9-3AE7-4C12-BF4C-6767E431DBC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D7338B9-3AE7-4C12-BF4C-6767E431DBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D7338B9-3AE7-4C12-BF4C-6767E431DBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D7338B9-3AE7-4C12-BF4C-6767E431DBC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1420D979-B337-4009-89C1-835733675848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1420D979-B337-4009-89C1-835733675848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1420D979-B337-4009-89C1-835733675848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1420D979-B337-4009-89C1-835733675848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04950AA7-6302-4CC0-A274-F4C29D0D1682}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04950AA7-6302-4CC0-A274-F4C29D0D1682}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04950AA7-6302-4CC0-A274-F4C29D0D1682}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04950AA7-6302-4CC0-A274-F4C29D0D1682}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5AA97036-A32D-48EC-976E-569F08F73E2A} = {50C5DDEC-666B-428E-8C19-A8DBC0951D0F}
-		{44F8CF29-4FF9-4D27-BFE8-C33D2E4DD65D} = {50C5DDEC-666B-428E-8C19-A8DBC0951D0F}
-		{65A9EE20-2BD5-4A7B-BB85-A36293BA35CB} = {50C5DDEC-666B-428E-8C19-A8DBC0951D0F}
-		{B611756E-61A2-451B-B7D4-16A8BC36F8EF} = {2E1E7B53-A567-4F28-8863-D90C52142B3C}
-		{D701AAD7-F6E5-4C4C-A12C-0B87B62B5DF0} = {50C5DDEC-666B-428E-8C19-A8DBC0951D0F}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F263F871-48AA-4F53-8D7F-AA02B7DE79CB}
-	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		source\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems*{44f8cf29-4ff9-4d27-bfe8-c33d2e4dd65d}*SharedItemsImports = 5
-		source\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems*{5aa97036-a32d-48ec-976e-569f08f73e2a}*SharedItemsImports = 5
-		source\MonoGame.Aseprite.Shared\MonoGame.Aseprite.Shared.projitems*{9f4b4619-7de6-4f51-8975-3e996de23ffe}*SharedItemsImports = 13
+		{623EE4F5-5B24-4DC6-A884-455CE363E3FA} = {87EA71A5-5AB5-4A98-8C14-378D3EEFF55F}
+		{7D7338B9-3AE7-4C12-BF4C-6767E431DBC7} = {87EA71A5-5AB5-4A98-8C14-378D3EEFF55F}
+		{1420D979-B337-4009-89C1-835733675848} = {87EA71A5-5AB5-4A98-8C14-378D3EEFF55F}
+		{04950AA7-6302-4CC0-A274-F4C29D0D1682} = {87EA71A5-5AB5-4A98-8C14-378D3EEFF55F}
 	EndGlobalSection
 EndGlobal

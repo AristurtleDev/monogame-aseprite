@@ -24,4 +24,16 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite;
 
-public sealed record SpriteSheetAnimationDefinition(int[] FrameIndexes, string Name, bool IsLooping, bool IsReversed, bool IsPingPong);
+/// <summary>
+///     Represents the content that is written to the file for a sprite sheet
+///     animation definition.
+/// </summary>
+public sealed class SpriteSheetAnimationContent
+{
+    internal int[] FrameIndexes { get; }
+    internal string Name { get; }
+    internal byte LoopReversePingPongMask { get; }
+
+    internal SpriteSheetAnimationContent(int[] frameIndexes, string name, byte loopReversePingPongMask) =>
+        (FrameIndexes, Name, LoopReversePingPongMask) = (frameIndexes, name, loopReversePingPongMask);
+}

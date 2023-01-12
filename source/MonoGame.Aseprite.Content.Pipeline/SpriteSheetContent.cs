@@ -35,8 +35,8 @@ public sealed class SpriteSheetContent
     internal string Name { get; }
     internal TextureContent TextureContent { get; }
     internal List<SpriteSheetFrameContent> Frames { get; }
-    internal List<SpriteSheetAnimationDefinitionContent> AnimationDefinitions { get; }
+    internal List<SpriteSheetAnimationContent> AnimationDefinitions { get; }
 
-    internal SpriteSheetContent(string name, TextureContent textureContent, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationDefinitionContent> animationDefinitions) =>
+    internal SpriteSheetContent(string name, TextureContent textureContent, List<SpriteSheetFrameContent> frames, List<SpriteSheetAnimationContent> animationDefinitions) =>
         (Name, TextureContent, Frames, AnimationDefinitions) = (name, textureContent, frames, animationDefinitions);
 }

@@ -22,24 +22,102 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
+/// <summary>
+///     Represents a collection of <see cref="Tileset"/> elements.
+/// </summary>
 public sealed class TilesetCollection
 {
     private List<Tileset> _tilesets = new();
     private Dictionary<string, Tileset> _tilesetByName = new();
 
+    /// <summary>
+    ///     Gets the total number of <see cref="Tileset"/> elements in this
+    ///     <see cref="TilesetCollection"/>.
+    /// </summary>
     public int Count => _tilesets.Count;
 
-    public Tileset this[int id] => GetTileset(id);
+    /// <summary>
+    ///     Returns the <see cref="Tileset"/> element at the specified
+    ///     <paramref name="index"/> from this <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="index">
+    ///     The index of the <see cref="Tileset"/> element.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> element at the specified
+    ///     <paramref name="index"/> from this <see cref="TilesetCollection"/>.
+    /// </returns>
+    public Tileset this[int index] => GetTileset(index);
+
+    /// <summary>
+    ///     Returns the <see cref="Tileset"/> element with the specified
+    ///     <paramref name="name"/> from this <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name of the <see cref="Tileset"/> element.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> element with the specified
+    ///     <paramref name="name"/> from this <see cref="TilesetCollection"/>.
+    /// </returns>
     public Tileset this[string name] => GetTileset(name);
 
-    internal TilesetCollection() { }
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="TilesetCollection"/>
+    ///     class.
+    /// </summary>
+    public TilesetCollection() { }
 
-    internal void AddTileset(Tileset tileset)
+    /// <summary>
+    ///     Creates a new instance of the <see cref="Tileset"/> class and adds
+    ///     it to this <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name of the <see cref="Tileset"/>.
+    /// </param>
+    /// <param name="texture">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> used
+    ///     by the <see cref="Tileset"/>.
+    /// </param>
+    /// <param name="tileSize">
+    ///     The width and height extents, in pixels, of each tile in the
+    ///     <see cref="Tileset"/>.
+    /// </param>
+    /// <returns>
+    ///     The instance of the <see cref="Tileset"/> class that is created
+    ///     by this method.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if this <see cref="TilesetCollection"/> already contains a
+    ///     <see cref="Tileset"/> element with the same
+    ///     <see cref="Tileset.Name"/> value as the one given.
+    /// </exception>
+    public Tileset AddTileset(string name, Texture2D texture, Point tileSize)
+    {
+        Tileset tileset = new(name, texture, tileSize);
+        AddTileset(tileset);
+        return tileset;
+    }
+
+    /// <summary>
+    ///     Adds the given <see cref="Tileset"/> to this
+    ///     <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="tileset">
+    ///     The <see cref="Tileset"/> to add.
+    /// </param>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if this <see cref="TilesetCollection"/> already contains a
+    ///     <see cref="Tileset"/> element with the same
+    ///     <see cref="Tileset.Name"/> value as the one given.
+    /// </exception>
+    public void AddTileset(Tileset tileset)
     {
         if (_tilesetByName.ContainsKey(tileset.Name))
         {
@@ -50,7 +128,48 @@ public sealed class TilesetCollection
         _tilesetByName.Add(tileset.Name, tileset);
     }
 
+    /// <summary>
+    ///     Returns the <see cref="Tileset"/> element at the specified
+    ///     <paramref name="index"/> from this <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="index">
+    ///     The index of the <see cref="Tileset"/> element.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> element at the specified
+    ///     <paramref name="index"/> from this <see cref="TilesetCollection"/>.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the specified <paramref name="index"/> is less than zero
+    ///     or is greater than or equal to the number of <see cref="Tileset"/>
+    ///     elements in this <see cref="TilesetCollection"/>.
+    /// </exception>
+    public Tileset GetTileset(int index)
+    {
+        if (index < 0 || index >= _tilesets.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the number of elements in this {nameof(TilesetCollection)}.");
+        }
 
+        return _tilesets[index];
+    }
+
+    /// <summary>
+    ///     Returns the <see cref="Tileset"/> element with the specified
+    ///     <paramref name="name"/> from this <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name of the <see cref="Tileset"/> element.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> element with specified
+    ///     <paramref name="name"/> from this <see cref="TilesetCollection"/>.
+    /// </returns>
+    /// <exception cref="KeyNotFoundException">
+    ///     Thrown if there is no <see cref="Tileset"/> element in this
+    ///     <see cref="TilesetCollection"/> with the specified
+    ///     <paramref name="name"/>.
+    /// </exception>
     public Tileset GetTileset(string name)
     {
         if (_tilesetByName.TryGetValue(name, out Tileset? tileset))
@@ -61,13 +180,54 @@ public sealed class TilesetCollection
         throw new KeyNotFoundException($"No {nameof(Tileset)} with the name '{name}' is present in this {nameof(TilesetCollection)}.");
     }
 
-    public Tileset GetTileset(int id)
+    /// <summary>
+    ///     Returns the <see cref="Tileset"/> element at the specified
+    ///     <paramref name="index"/> from this <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="index">
+    ///     The index of the <see cref="Tileset"/> element.
+    /// </param>
+    /// <param name="tileset">
+    ///     When this method returns, contains the <see cref="Tileset"/> element
+    ///     from this <see cref="TilesetCollection"/> at the specified
+    ///     <paramref name="index"/>, if the index if valid; otherwise,
+    ///     <see langword="null"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <paramref name="index"/> specified
+    ///     is valid; otherwise, <see langword="false"/>.
+    /// </returns>
+    public bool TryGetTileset(int index, [NotNullWhen(true)] out Tileset? tileset)
     {
-        if (id < 0 || id >= _tilesets.Count)
+        tileset = default;
+
+        if (index < 0 || index >= _tilesets.Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(id), $"{nameof(id)} cannot be less than zero or greater than or equal to the number of elements in this {nameof(TilesetCollection)}.");
+            return false;
         }
 
-        return _tilesets[id];
+        tileset = _tilesets[index];
+        return true;
     }
+
+    /// <summary>
+    ///     Returns the <see cref="Tileset"/> element with the specified
+    ///     <paramref name="name"/> from this <see cref="TilesetCollection"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name of the <see cref="Tileset"/> element.
+    /// </param>
+    /// <param name="tileset">
+    ///     When this method returns, contains the <see cref="Tileset"/> element
+    ///     from this <see cref="TilesetCollection"/> with the specified
+    ///     <paramref name="name"/>, if a match is found; otherwise,
+    ///     <see langword="null"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if a <see cref="Tileset"/> element was found
+    ///     in this <see cref="TilesetCollection"/> with the specified
+    ///     <paramref name="name"/>; otherwise, <see langword="false"/>.
+    /// </returns>
+    public bool TryGetTileset(string name, [NotNullWhen(true)] out Tileset? tileset) =>
+        _tilesetByName.TryGetValue(name, out tileset);
 }

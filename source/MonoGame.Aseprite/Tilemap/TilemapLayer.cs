@@ -22,18 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace MonoGame.Aseprite;
 
-/// <summary>
-///     Represents the content that is written to the file for a sprite sheet
-///     animation definition.
-/// </summary>
-public sealed class SpriteSheetAnimationDefinitionContent
+public sealed class TilemapLayer
 {
-    internal int[] FrameIndexes { get; }
-    internal string Name { get; }
-    internal byte LoopReversePingPongMask { get; }
+    //  Add a tile collection? Add tiles one by one?
+    private TilemapTile[] _tiles;
+    public string Name { get; }
+    public Point TileSize { get; }
+    public Tileset Tileset { get; }
 
-    internal SpriteSheetAnimationDefinitionContent(int[] frameIndexes, string name, byte loopReversePingPongMask) =>
-        (FrameIndexes, Name, LoopReversePingPongMask) = (frameIndexes, name, loopReversePingPongMask);
+    internal TilemapLayer(Tileset tileset, string name, Point tileSize, int tileCount)
+    {
+        Tileset = tileset;
+        Name = name;
+        TileSize = tileSize;
+        _tiles = new TilemapTile[tileCount];
+    }
 }

@@ -62,6 +62,21 @@ public sealed class Tileset
 
     public Tileset(string name, Texture2D texture, Point tileSize)
     {
+        if (tileSize.X < 1 || tileSize.Y < 1)
+        {
+            throw new ArgumentException(nameof(tileSize), $"{nameof(tileSize)} {tileSize} is invalid. The width and height components must be greater than zero");
+        }
+
+        if (texture.Width % tileSize.X != 0)
+        {
+            throw new InvalidOperationException($"The width of the texture '{texture.Width}' is not a multiple of the width of a tile '{tileSize.X}");
+        }
+
+        if (texture.Height % tileSize.Y != 0)
+        {
+            throw new InvalidOperationException($"The height of the texture '{texture.Height}' is not a multiple of the height of a tile '{tileSize.Y}");
+        }
+
         Name = name;
         Texture = texture;
         TileSize = tileSize;

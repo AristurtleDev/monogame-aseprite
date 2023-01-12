@@ -27,18 +27,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite;
 
-public sealed class TilemapLayer
+public sealed class TilemapFrame
 {
-    private TilemapTile[] _tiles;
-    public string Name { get; }
-    public Point TileSize { get; }
-    public Tileset Tileset { get; }
 
-    internal TilemapLayer(Tileset tileset, string name, Point tileSize, int tileCount)
-    {
-        Tileset = tileset;
-        Name = name;
-        TileSize = tileSize;
-        _tiles = new TilemapTile[tileCount];
-    }
+    public string Name { get; }
+    public TimeSpan Duration { get; }
+    public List<TilemapFrameLayer> Layers { get; } = new();
+
+    internal TilemapFrame(string name, TimeSpan duration) =>
+        (Name, Duration) = (name, duration);
 }

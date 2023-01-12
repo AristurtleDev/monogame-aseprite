@@ -127,15 +127,18 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
     /// </returns>
     public override SpriteSheetContent Process(AsepriteFile input, ContentProcessorContext context)
     {
+
         CreateTextureContentResult textureContentResult = CreateTextureContent(input);
         List<SpriteSheetFrameContent> frames = CreateSpriteSheetFrameContent(input, textureContentResult.DuplicateMap, textureContentResult.Columns);
-        List<SpriteSheetAnimationDefinitionContent> tags = GenerateAnimationDefinitionData(input);
+        List<SpriteSheetAnimationContent> tags = GenerateAnimationDefinitionData(input);
         GenerateFrameRegionData(input, frames);
 
         return new SpriteSheetContent(input.Name, textureContentResult.Content, frames, tags);
     }
 
-
+/*
+Knowing the precise rhythm and timing of the taps in "Outlaws" by Nobuo Uematsu from Final Fantasy IX
+*/
     private CreateTextureContentResult CreateTextureContent(AsepriteFile input)
     {
         int frameCount = input.FrameCount;
@@ -171,13 +174,17 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
     private Dictionary<int, int> BuildDuplicateMap(Color[][] frames)
     {
         Dictionary<int, int> map = new();
-        HashSet<Color[]> seenFrames = new();
+        Dictionary<Color[], int> checkedFrames = new();
 
         for (int i = 0; i < frames.GetLength(0); i++)
         {
-            if (!seenFrames.Add(frames[i]))
+            if (!checkedFrames.ContainsKey(frames[i]))
             {
-                map.Add(i, Array.IndexOf(frames, frames[i]));
+                checkedFrames.Add(frames[i], i);
+            }
+            else
+            {
+                map.Add(i, checkedFrames[frames[i]]);
             }
         }
 
@@ -250,8 +257,6 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
         }
     }
 
-
-
     private List<SpriteSheetFrameContent> CreateSpriteSheetFrameContent(AsepriteFile input, Dictionary<int, int> duplicateMap, int columns)
     {
         List<SpriteSheetFrameContent> frames = new();
@@ -294,9 +299,9 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
         return frames;
     }
 
-    private List<SpriteSheetAnimationDefinitionContent> GenerateAnimationDefinitionData(AsepriteFile file)
+    private List<SpriteSheetAnimationContent> GenerateAnimationDefinitionData(AsepriteFile file)
     {
-        List<SpriteSheetAnimationDefinitionContent> definitions = new();
+        List<SpriteSheetAnimationContent> definitions = new();
 
         for (int i = 0; i < file.Tags.Count; i++)
         {
@@ -318,7 +323,7 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
                 loopReversePingPongMask |= 4;
             }
 
-            SpriteSheetAnimationDefinitionContent definition = new(frameIndexes, aseTag.Name, loopReversePingPongMask);
+            SpriteSheetAnimationContent definition = new(frameIndexes, aseTag.Name, loopReversePingPongMask);
             definitions.Add(definition);
         }
 
