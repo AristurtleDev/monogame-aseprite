@@ -33,18 +33,18 @@ public class SpriteSheet
 {
     private static readonly TimeSpan s_defaultDuration = TimeSpan.FromMilliseconds(100);
 
-    private List<SpriteSheetFrame> _frames = new();
-    private Dictionary<string, SpriteSheetFrame> _frameLookup = new();
+    private List<TextureRegion> _regions = new();
+    private Dictionary<string, TextureRegion> _regionLookup = new();
 
-    private Dictionary<string, SpriteSheetAnimation> _animationsLookup = new();
+    private Dictionary<string, Animation> _animationsLookup = new();
 
 
     public string Name { get; }
     public Texture2D Texture { get; }
-    public int FrameCount => _frames.Count;
+    public int RegionCount => _regions.Count;
 
-    public SpriteSheetFrame this[int frameIndex] => GetFrame(frameIndex);
-    public SpriteSheetFrame this[string frameName] => GetFrame(frameName);
+    public TextureRegion this[int frameIndex] => GetRegion(frameIndex);
+    public TextureRegion this[string frameName] => GetRegion(frameName);
 
     public SpriteSheet(string name, Texture2D texture)
     {
@@ -52,56 +52,50 @@ public class SpriteSheet
         Texture = texture;
     }
 
-    #region Frames
+    #region Regions
 
-    private void AddFrame(SpriteSheetFrame frame)
+    private void AddRegion(TextureRegion region)
     {
-        if (_frameLookup.ContainsKey(frame.Name))
+        if (_regionLookup.ContainsKey(region.Name))
         {
             throw new InvalidOperationException();
         }
 
-        _frames.Add(frame);
-        _frameLookup.Add(frame.Name, frame);
+        _regions.Add(region);
+        _regionLookup.Add(region.Name, region);
     }
 
-    private void RemoveFrame(SpriteSheetFrame frame)
+    private void RemoveRegion(TextureRegion region)
     {
-        _frames.Remove(frame);
-        _frameLookup.Remove(frame.Name);
+        _regions.Remove(region);
+        _regionLookup.Remove(region.Name);
     }
 
-    public SpriteSheetFrame CreateFrame(string frameName, int x, int y, int width, int height) =>
-        CreateFrame(frameName, new Rectangle(x, y, width, height));
+    public TextureRegion CreateRegion(string name, int x, int y, int width, int height) =>
+        CreateRegion(name, new Rectangle(x, y, width, height));
 
-    public SpriteSheetFrame CreateFrame(string frameName, int x, int y, int width, int height, TimeSpan duration) =>
-        CreateFrame(frameName, new Rectangle(x, y, width, height), duration);
-
-    public SpriteSheetFrame CreateFrame(string frameName, Rectangle bounds) =>
-        CreateFrame(frameName, bounds, s_defaultDuration);
-
-    public SpriteSheetFrame CreateFrame(string frameName, Rectangle bounds, TimeSpan duration)
+    public TextureRegion CreateRegion(string name, Rectangle bounds)
     {
-        SpriteSheetFrame frame = new(frameName, Texture, bounds, duration);
-        AddFrame(frame);
-        return frame;
+        TextureRegion region = new(name, Texture, bounds);
+        AddRegion(region);
+        return region;
     }
 
-    public bool ContainsFrame(string frameName) => _frameLookup.ContainsKey(frameName);
+    public bool ContainsRegion(string name) => _regionLookup.ContainsKey(name);
 
-    public SpriteSheetFrame GetFrame(int frameIndex)
+    public TextureRegion GetRegion(int index)
     {
-        if (frameIndex < 0 || frameIndex >= _frames.Count)
+        if (index < 0 || index >= _regions.Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(frameIndex));
+            throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        return _frames[frameIndex];
+        return _regions[index];
     }
 
-    public SpriteSheetFrame GetFrame(string frameName)
+    public TextureRegion GetRegion(string name)
     {
-        if (_frameLookup.TryGetValue(frameName, out SpriteSheetFrame? frame))
+        if (_regionLookup.TryGetValue(name, out TextureRegion? frame))
         {
             return frame;
         }
@@ -109,68 +103,83 @@ public class SpriteSheet
         throw new KeyNotFoundException();
     }
 
-    public bool TryGetFrame(int frameIndex, [NotNullWhen(true)] out SpriteSheetFrame? frame)
+    public List<TextureRegion> GetRegions(params int[] indexes)
     {
-        frame = default;
+        List<TextureRegion> regions = new();
+        for (int i = 0; i < indexes.Length; i++)
+        {
+            regions.Add(GetRegion(indexes[i]));
+        }
 
-        if (frameIndex < 0 || frameIndex >= _frames.Count)
+        return regions;
+    }
+
+    public List<TextureRegion> GetRegions(params string[] names)
+    {
+        List<TextureRegion> regions = new();
+
+        for (int i = 0; i < names.Length; i++)
+        {
+            regions.Add(GetRegion(names[i]));
+        }
+
+        return regions;
+    }
+
+    public bool TryGetRegion(int index, [NotNullWhen(true)] out TextureRegion? region)
+    {
+        region = default;
+
+        if (index < 0 || index >= _regions.Count)
         {
             return false;
         }
 
-        frame = _frames[frameIndex];
+        region = _regions[index];
         return true;
     }
 
-    public bool TryGetFrame(string frameName, [NotNullWhen(true)] out SpriteSheetFrame? frame) =>
-        _frameLookup.TryGetValue(frameName, out frame);
+    public bool TryGetRegion(string name, [NotNullWhen(true)] out TextureRegion? region) =>
+        _regionLookup.TryGetValue(name, out region);
 
-    public void RemoveFrame(int frameIndex)
-    {
-        SpriteSheetFrame frame = GetFrame(frameIndex);
-        RemoveFrame(frame);
-    }
+    public void RemoveRegion(int index) => RemoveRegion(GetRegion(index));
 
-    public void RemoveFrame(string frameName)
-    {
-        SpriteSheetFrame frame = GetFrame(frameName);
-        RemoveFrame(frame);
-    }
+    public void RemoveRegion(string name) => RemoveRegion(GetRegion(name));
 
-    public bool TryRemoveFrame(int frameIndex)
+    public bool TryRemoveRegion(int index)
     {
-        if (TryGetFrame(frameIndex, out SpriteSheetFrame? frame))
+        if (TryGetRegion(index, out TextureRegion? region))
         {
-            RemoveFrame(frame);
+            RemoveRegion(region);
             return true;
         }
 
         return false;
     }
 
-    public bool TryRemoveFrame(string frameName)
+    public bool TryRemoveFrame(string name)
     {
-        if (TryGetFrame(frameName, out SpriteSheetFrame? frame))
+        if (TryGetRegion(name, out TextureRegion? region))
         {
-            RemoveFrame(frame);
+            RemoveRegion(region);
             return true;
         }
 
         return false;
     }
 
-    #endregion Frames
+    #endregion Regions
 
     #region Sprite
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetFrame"/> element from this
+    ///     <see cref="TextureRegion"/> element from this
     ///     <see cref="SpriteSheet"/> at the specified
-    ///     <paramref name="frameName"/>.
+    ///     <paramref name="regionIndex"/>.
     /// </summary>
-    /// <param name="frameName">
-    ///     The index of the <see cref="SpriteSheetFrame"/> element in this
+    /// <param name="regionIndex">
+    ///     The index of the <see cref="TextureRegion"/> element in this
     ///     <see cref="SpriteSheet"/> to use when creating the
     ///     <see cref="Sprite"/>.
     /// </param>
@@ -178,17 +187,17 @@ public class SpriteSheet
     ///     The instance of the <see cref="Sprite"/> class created by this
     ///     method.
     /// </returns>
-    public Sprite CreateSprite(int frameIndex) =>
-        CreateSprite(frameIndex, Vector2.Zero, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
+    public Sprite CreateSprite(int regionIndex) =>
+        CreateSprite(regionIndex, Vector2.Zero, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetFrame"/> element from this
+    ///     <see cref="TextureRegion"/> element from this
     ///     <see cref="SpriteSheet"/> at the specified
-    ///     <paramref name="frameIndex"/>.
+    ///     <paramref name="regionIndex"/>.
     /// </summary>
-    /// <param name="frameIndex">
-    ///     The index of the <see cref="SpriteSheetFrame"/> element in this
+    /// <param name="regionIndex">
+    ///     The index of the <see cref="TextureRegion"/> element in this
     ///     <see cref="SpriteSheet"/> to use when creating the
     ///     <see cref="Sprite"/>.
     /// </param>
@@ -205,17 +214,17 @@ public class SpriteSheet
     ///     The instance of the <see cref="Sprite"/> class created by this
     ///     method.
     /// </returns>
-    public Sprite CreateSprite(int frameIndex, Vector2 position, Color color) =>
-        CreateSprite(frameIndex, position, color, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
+    public Sprite CreateSprite(int regionIndex, Vector2 position, Color color) =>
+        CreateSprite(regionIndex, position, color, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetFrame"/> element from this
+    ///     <see cref="TextureRegion"/> element from this
     ///     <see cref="SpriteSheet"/> at the specified
-    ///     <paramref name="frameIndex"/>.
+    ///     <paramref name="regionIndex"/>.
     /// </summary>
-    /// <param name="frameIndex">
-    ///     The index of the <see cref="SpriteSheetFrame"/> element in this
+    /// <param name="regionIndex">
+    ///     The index of the <see cref="TextureRegion"/> element in this
     ///     <see cref="SpriteSheet"/> to use when creating the
     ///     <see cref="Sprite"/>.
     /// </param>
@@ -251,10 +260,10 @@ public class SpriteSheet
     ///     created by this method.
     /// </param>
     /// <returns></returns>
-    public Sprite CreateSprite(int frameIndex, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+    public Sprite CreateSprite(int regionIndex, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
     {
-        SpriteSheetFrame frame = GetFrame(frameIndex);
-        Sprite sprite = new(frame);
+        TextureRegion region = GetRegion(regionIndex);
+        Sprite sprite = new(region);
 
         sprite.Position = position;
         sprite.Color = color;
@@ -269,12 +278,12 @@ public class SpriteSheet
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetFrame"/> element from this
+    ///     <see cref="TextureRegion"/> element from this
     ///     <see cref="SpriteSheet"/> at the specified
-    ///     <paramref name="frameName"/>.
+    ///     <paramref name="regionName"/>.
     /// </summary>
-    /// <param name="frameName">
-    ///     The name of the <see cref="SpriteSheetFrame"/> element in this
+    /// <param name="regionName">
+    ///     The name of the <see cref="TextureRegion"/> element in this
     ///     <see cref="SpriteSheet"/> to use when creating the
     ///     <see cref="Sprite"/>.
     /// </param>
@@ -282,17 +291,17 @@ public class SpriteSheet
     ///     The instance of the <see cref="Sprite"/> class created by this
     ///     method.
     /// </returns>
-    public Sprite CreateSprite(string frameName) =>
-        CreateSprite(frameName, Vector2.Zero, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
+    public Sprite CreateSprite(string regionName) =>
+        CreateSprite(regionName, Vector2.Zero, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetFrame"/> element from this
+    ///     <see cref="TextureRegion"/> element from this
     ///     <see cref="SpriteSheet"/> at the specified
-    ///     <paramref name="frameName"/>.
+    ///     <paramref name="regionName"/>.
     /// </summary>
-    /// <param name="frameName">
-    ///     The name of the <see cref="SpriteSheetFrame"/> element in this
+    /// <param name="regionName">
+    ///     The name of the <see cref="TextureRegion"/> element in this
     ///     <see cref="SpriteSheet"/> to use when creating the
     ///     <see cref="Sprite"/>.
     /// </param>
@@ -309,17 +318,17 @@ public class SpriteSheet
     ///     The instance of the <see cref="Sprite"/> class created by this
     ///     method.
     /// </returns>
-    public Sprite CreateSprite(string frameName, Vector2 position, Color color) =>
-        CreateSprite(frameName, position, color, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
+    public Sprite CreateSprite(string regionName, Vector2 position, Color color) =>
+        CreateSprite(regionName, position, color, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f);
 
     /// <summary>
     ///     Creates a new instance of the <see cref="Sprite"/> class using the
-    ///     <see cref="SpriteSheetFrame"/> element from this
+    ///     <see cref="TextureRegion"/> element from this
     ///     <see cref="SpriteSheet"/> at the specified
-    ///     <paramref name="frameName"/>.
+    ///     <paramref name="regionName"/>.
     /// </summary>
-    /// <param name="frameName">
-    ///     The name of the <see cref="SpriteSheetFrame"/> element in this
+    /// <param name="regionName">
+    ///     The name of the <see cref="TextureRegion"/> element in this
     ///     <see cref="SpriteSheet"/> to use when creating the
     ///     <see cref="Sprite"/>.
     /// </param>
@@ -355,9 +364,9 @@ public class SpriteSheet
     ///     created by this method.
     /// </param>
     /// <returns></returns>
-    public Sprite CreateSprite(string frameName, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+    public Sprite CreateSprite(string regionName, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
     {
-        SpriteSheetFrame frame = GetFrame(frameName);
+        TextureRegion frame = GetRegion(regionName);
         Sprite sprite = new(frame);
 
         sprite.Position = position;
@@ -375,109 +384,136 @@ public class SpriteSheet
 
     #region Animations
 
-    /// <summary>
-    ///     Creates and adds a <see cref="SpriteSheetAnimation"/> element to
-    ///     this <see cref="SpriteSheet"/>
-    /// </summary>
-    /// <param name="name">
-    ///     The name to give the <see cref="SpriteSheetAnimation"/>.
-    /// </param>
-    /// <param name="frameIndexes">
-    ///     The indexes of the <see cref="SpriteSheetFrame"/> element that make
-    ///     up the <see cref="SpriteSheetAnimation"/> being created.  Order of
-    ///     frames should be from first to last.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="SpriteSheetAnimation"/> that is created by this
-    ///     method.
-    /// </returns>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown if a <see cref="SpriteSheetAnimation"/> has already been
-    ///     created by this <see cref="SpriteSheet"/> with the same
-    ///     <paramref name="name"/>.
-    /// </exception>
-    public SpriteSheetAnimation CreateAnimation(string name, params int[] frameIndexes) =>
-        CreateAnimation(name, frameIndexes, true, false, false);
+    // /// <summary>
+    // ///     Creates and adds a <see cref="Animation"/> element to
+    // ///     this <see cref="SpriteSheet"/>
+    // /// </summary>
+    // /// <param name="name">
+    // ///     The name to give the <see cref="Animation"/>.
+    // /// </param>
+    // /// <param name="frameIndexes">
+    // ///     The indexes of the <see cref="TextureRegion"/> element that make
+    // ///     up the <see cref="Animation"/> being created.  Order of
+    // ///     frames should be from first to last.
+    // /// </param>
+    // /// <returns>
+    // ///     The <see cref="Animation"/> that is created by this
+    // ///     method.
+    // /// </returns>
+    // /// <exception cref="InvalidOperationException">
+    // ///     Thrown if a <see cref="Animation"/> has already been
+    // ///     created by this <see cref="SpriteSheet"/> with the same
+    // ///     <paramref name="name"/>.
+    // /// </exception>
+    // public Animation CreateAnimation(string name, params int[] frameIndexes) =>
+    //     CreateAnimation(name, frameIndexes, true, false, false);
 
-    /// <summary>
-    ///     Creates and adds a <see cref="SpriteSheetAnimation"/> element to
-    ///     this <see cref="SpriteSheet"/>
-    /// </summary>
-    /// <param name="name">
-    ///     The name to give the <see cref="SpriteSheetAnimation"/>.
-    /// </param>
-    /// <param name="frameIndexes">
-    ///     The indexes of the <see cref="SpriteSheetFrame"/> element that make
-    ///     up the <see cref="SpriteSheetAnimation"/> being created.  Order of
-    ///     frames should be from first to last.
-    /// </param>
-    /// <param name="isLooping">
-    ///     Indicates whether the <see cref="SpriteSheetAnimation"/> defines
-    ///     that the animation playback should loop.
-    /// </param>
-    /// <param name="isReversed">
-    ///     Indicates whether the <see cref="SpriteSheetAnimation"/> defines
-    ///     that the animation playback should be in reverse frame order.
-    /// </param>
-    /// <param name="isPingPong">
-    ///     Indicates whether the <see cref="SpriteSheetAnimation"/> defines
-    ///     that the animation playback should ping-pong.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="SpriteSheetAnimation"/> that is created by this
-    ///     method.
-    /// </returns>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown if a <see cref="SpriteSheetAnimation"/> has already been
-    ///     created by this <see cref="SpriteSheet"/> with the same
-    ///     <paramref name="name"/>.
-    /// </exception>
-    public SpriteSheetAnimation CreateAnimation(string name, int[] frameIndexes, bool isLooping, bool isReversed, bool isPingPong)
+    // /// <summary>
+    // ///     Creates and adds a <see cref="Animation"/> element to
+    // ///     this <see cref="SpriteSheet"/>
+    // /// </summary>
+    // /// <param name="name">
+    // ///     The name to give the <see cref="Animation"/>.
+    // /// </param>
+    // /// <param name="frameIndexes">
+    // ///     The indexes of the <see cref="TextureRegion"/> element that make
+    // ///     up the <see cref="Animation"/> being created.  Order of
+    // ///     frames should be from first to last.
+    // /// </param>
+    // /// <param name="isLooping">
+    // ///     Indicates whether the <see cref="Animation"/> defines
+    // ///     that the animation playback should loop.
+    // /// </param>
+    // /// <param name="isReversed">
+    // ///     Indicates whether the <see cref="Animation"/> defines
+    // ///     that the animation playback should be in reverse frame order.
+    // /// </param>
+    // /// <param name="isPingPong">
+    // ///     Indicates whether the <see cref="Animation"/> defines
+    // ///     that the animation playback should ping-pong.
+    // /// </param>
+    // /// <returns>
+    // ///     The <see cref="Animation"/> that is created by this
+    // ///     method.
+    // /// </returns>
+    // /// <exception cref="InvalidOperationException">
+    // ///     Thrown if a <see cref="Animation"/> has already been
+    // ///     created by this <see cref="SpriteSheet"/> with the same
+    // ///     <paramref name="name"/>.
+    // /// </exception>
+    // public Animation CreateAnimation(string name, int[] frameIndexes, bool isLooping, bool isReversed, bool isPingPong)
+    // {
+    //     if (_animationsLookup.ContainsKey(name))
+    //     {
+    //         throw new InvalidOperationException();
+    //     }
+
+    //     Animation animation = new(name, frameIndexes, isLooping, isReversed, isPingPong);
+    //     _animationsLookup.Add(name, animation);
+    //     return animation;
+    // }
+
+    internal void AddAnimation(Animation animation)
     {
-        if (_animationsLookup.ContainsKey(name))
+        if(_animationsLookup.ContainsKey(animation.Name))
         {
             throw new InvalidOperationException();
         }
 
-        SpriteSheetAnimation animation = new(name, frameIndexes, isLooping, isReversed, isPingPong);
-        _animationsLookup.Add(name, animation);
+        _animationsLookup.Add(animation.Name, animation);
+    }
+
+
+    public Animation CreateAnimation(string name, Action<AnimationBuilder> buildAction)
+    {
+        if(_animationsLookup.ContainsKey(name))
+        {
+            throw new InvalidOperationException();
+        }
+
+        AnimationBuilder builder = new(name, this);
+        buildAction(builder);
+
+        Animation animation = builder.Build();
+        AddAnimation(animation);
+
         return animation;
     }
 
     /// <summary>
     ///     Returns a value that indicates whether this
     ///     <see cref="SpriteSheet"/> contains a
-    ///     <see cref="SpriteSheetAnimation"/> element with the specified
+    ///     <see cref="Animation"/> element with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetAnimation"/> element in this
+    ///     The name of the <see cref="Animation"/> element in this
     ///     <see cref="SpriteSheet"/> to locate.
     /// </param>
     /// <returns></returns>
     public bool ContainsAnimation(string name) => _animationsLookup.ContainsKey(name);
 
     /// <summary>
-    ///     Returns the <see cref="SpriteSheetAnimation"/> element from this
+    ///     Returns the <see cref="Animation"/> element from this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetAnimation"/> to get.
+    ///     The name of the <see cref="Animation"/> to get.
     /// </param>
     /// <returns>
-    ///     The <see cref="SpriteSheetAnimation"/> element in this
+    ///     The <see cref="Animation"/> element in this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if this <see cref="SpriteSheet"/> does not contain a
-    ///     <see cref="SpriteSheetAnimation"/> element with the specified
+    ///     <see cref="Animation"/> element with the specified
     ///     <paramref name="name"/>.
     /// </exception>
-    public SpriteSheetAnimation GetAnimation(string name)
+    public Animation GetAnimation(string name)
     {
-        if (TryGetAnimation(name, out SpriteSheetAnimation? animation))
+        if (TryGetAnimation(name, out Animation? animation))
         {
             return animation;
         }
@@ -486,44 +522,44 @@ public class SpriteSheet
     }
 
     /// <summary>
-    ///     Gets the <see cref="SpriteSheetAnimation"/> element from this
+    ///     Gets the <see cref="Animation"/> element from this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetAnimation"/> to get.
+    ///     The name of the <see cref="Animation"/> to get.
     /// </param>
     /// <param name="animation">
     ///     When this method returns, if <see langword="true"/>, contains the
-    ///     <see cref="SpriteSheetAnimation"/> element from this
+    ///     <see cref="Animation"/> element from this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>; otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
     ///     <see langword="true"/> if this <see cref="SpriteSheet"/> contains a
-    ///     <see cref="SpriteSheetAnimation"/> element with the specified
+    ///     <see cref="Animation"/> element with the specified
     ///     <paramref name="name"/>; otherwise, <see langword="false"/>.
     /// </returns>
-    public bool TryGetAnimation(string name, [NotNullWhen(true)] out SpriteSheetAnimation? animation) =>
+    public bool TryGetAnimation(string name, [NotNullWhen(true)] out Animation? animation) =>
         _animationsLookup.TryGetValue(name, out animation);
 
     /// <summary>
-    ///     Removes the <see cref="SpriteSheetAnimation"/> element from this
+    ///     Removes the <see cref="Animation"/> element from this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetAnimation"/> to remove from
+    ///     The name of the <see cref="Animation"/> to remove from
     ///     this <see cref="SpriteSheet"/>.
     /// </param>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if this <see cref="SpriteSheet"/> does not contain a
-    ///     <see cref="SpriteSheetAnimation"/> element with the specified
+    ///     <see cref="Animation"/> element with the specified
     ///     <paramref name="name"/>.
     /// </exception>
     public void RemoveAnimation(string name)
     {
-        if (!TryGetAnimation(name, out SpriteSheetAnimation? animation))
+        if (!TryGetAnimation(name, out Animation? animation))
         {
             throw new KeyNotFoundException();
         }
@@ -532,20 +568,20 @@ public class SpriteSheet
     }
 
     /// <summary>
-    ///     Removes the <see cref="SpriteSheetAnimation"/> element from this
+    ///     Removes the <see cref="Animation"/> element from this
     ///     <see cref="SpriteSheet"/> with the specified
     ///     <paramref name="name"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name of the <see cref="SpriteSheetAnimation"/> element to remove
+    ///     The name of the <see cref="Animation"/> element to remove
     ///     from this <see cref="SpriteSheet"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="SpriteSheetAnimation"/>
+    ///     <see langword="true"/> if the <see cref="Animation"/>
     ///     element was successfully found and removed; otherwise,
     ///     <see langword="false"/>.  This method returns
     ///     <see langword="false"/> if this <see cref="SpriteSheet"/> does not
-    ///     contain a <see cref="SpriteSheetAnimation"/> element with the
+    ///     contain a <see cref="Animation"/> element with the
     ///     specified <paramref name="name"/>.
     /// </returns>
     public bool TryRemoveAnimation(string name) => _animationsLookup.Remove(name);

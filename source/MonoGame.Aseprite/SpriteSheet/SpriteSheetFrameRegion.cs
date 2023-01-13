@@ -29,14 +29,14 @@ namespace MonoGame.Aseprite;
 
 /// <summary>
 ///     Represents a name rectangular region of a
-///     <see cref="SpriteSheetFrame"/>.
+///     <see cref="TextureRegion"/>.
 /// </summary>
 /// <param name="Name">
 ///     The name of this <see cref="SpriteSheetFrameRegion"/>.
 /// </param>
 /// <param name="Bounds">
 ///     The rectangular bounds of this <see cref="SpriteSheetFrameRegion"/>
-///     relative to the bounds of the <see cref="SpriteSheetFrame"/> it is in.
+///     relative to the bounds of the <see cref="TextureRegion"/> it is in.
 /// </param>
 /// <param name="Color">
 ///     The color of this <see cref="SpriteSheetFrameRegion"/>.

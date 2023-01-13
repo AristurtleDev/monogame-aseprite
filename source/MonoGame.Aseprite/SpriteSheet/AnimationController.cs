@@ -31,14 +31,18 @@ public sealed class AnimationController
     private int _currentIndex;
     private int _direction;
 
-    public string Name { get; }
-    public bool IsLooping { get; }
-    public bool IsReversed { get; }
-    public bool IsPingPong { get; }
+    public Animation Animation { get; }
+    // public string Name { get; }
+    // // public bool IsLooping { get; }
+    // // public bool IsReversed { get; }
+    // // public bool IsPingPong { get; }
     public bool IsPaused { get; set; }
     public bool IsAnimating { get; private set; }
-    public SpriteSheetFrame[] Frames { get; }
-    public SpriteSheetFrame CurrentFrame => Frames[_currentIndex];
+    public AnimationFrame CurrentFrame => Animation.Frames[_currentIndex];
+    // public AnimationFrame[] Frames { get; }
+    // public AnimationFrame CurrentFrame => Frames[_currentIndex];
+    // public TextureRegion[] Frames { get; }
+    // public TextureRegion CurrentFrame => Frames[_currentIndex];
     public Action? OnFrameBegin { get; set; } = default;
     public Action? OnFrameEnd { get; set; } = default;
     public Action? OnAnimationBegin { get; set; } = default;
@@ -47,19 +51,15 @@ public sealed class AnimationController
 
     public TimeSpan CurrentFrameTimeRemaining { get; private set; }
 
-    public AnimationController(string name, SpriteSheetFrame[] frames, bool isLooping = true, bool isReversed = true, bool isPingPong = true)
+    internal AnimationController(Animation animation)
     {
-        Name = name;
-        IsLooping = isLooping;
-        IsReversed = isReversed;
-        IsPingPong = isPingPong;
+        Animation = animation;
         IsAnimating = true;
-        Frames = frames;
 
-        if (isReversed)
+        if(animation.IsReversed)
         {
             _direction = -1;
-            _currentIndex = frames.Length - 1;
+            _currentIndex = animation.Frames.Length;
         }
         else
         {
@@ -67,6 +67,27 @@ public sealed class AnimationController
             _currentIndex = 0;
         }
     }
+
+    // public AnimationController(string name, AnimationFrame[] frames, bool isLooping = true, bool isReversed = true, bool isPingPong = true)
+    // {
+    //     Name = name;
+    //     IsLooping = isLooping;
+    //     IsReversed = isReversed;
+    //     IsPingPong = isPingPong;
+    //     IsAnimating = true;
+    //     Frames = frames;
+
+    //     if (isReversed)
+    //     {
+    //         _direction = -1;
+    //         _currentIndex = frames.Length - 1;
+    //     }
+    //     else
+    //     {
+    //         _direction = 1;
+    //         _currentIndex = 0;
+    //     }
+    // }
 
     public void Update(GameTime gameTime)
     {
@@ -94,7 +115,7 @@ public sealed class AnimationController
 
         _currentIndex += _direction;
 
-        switch (IsReversed, IsPingPong)
+        switch (Animation.IsReversed, Animation.IsPingPong)
         {
             case (true, true):
                 ReversePingPongLoopCheck();
@@ -115,16 +136,16 @@ public sealed class AnimationController
 
     private void LoopCheck()
     {
-        if (_currentIndex >= Frames.Length)
+        if (_currentIndex >= Animation.Frames.Length)
         {
-            if (IsLooping)
+            if (Animation.IsLooping)
             {
                 _currentIndex = 0;
                 OnAnimationLoop?.Invoke();
             }
             else
             {
-                _currentIndex = Frames.Length - 1;
+                _currentIndex = Animation.Frames.Length - 1;
                 IsAnimating = false;
                 OnAnimationEnd?.Invoke();
             }
@@ -135,9 +156,9 @@ public sealed class AnimationController
     {
         if (_currentIndex < 0)
         {
-            if (IsLooping)
+            if (Animation.IsLooping)
             {
-                _currentIndex = Frames.Length - 1;
+                _currentIndex = Animation.Frames.Length - 1;
                 OnAnimationLoop?.Invoke();
             }
             else
@@ -151,17 +172,17 @@ public sealed class AnimationController
 
     private void PingPongLoopCheck()
     {
-        if (_currentIndex < 0 || _currentIndex >= Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= Animation.Frames.Length)
         {
             _direction = -_direction;
 
             if (_direction == -1)
             {
-                _currentIndex = Frames.Length - 2;
+                _currentIndex = Animation.Frames.Length - 2;
             }
             else
             {
-                if (IsLooping)
+                if (Animation.IsLooping)
                 {
                     _currentIndex = 1;
                     OnAnimationLoop?.Invoke();
@@ -178,7 +199,7 @@ public sealed class AnimationController
 
     private void ReversePingPongLoopCheck()
     {
-        if (_currentIndex < 0 || _currentIndex >= Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= Animation.Frames.Length)
         {
             _direction = -_direction;
 
@@ -188,14 +209,14 @@ public sealed class AnimationController
             }
             else
             {
-                if (IsLooping)
+                if (Animation.IsLooping)
                 {
-                    _currentIndex = Frames.Length - 2;
+                    _currentIndex = Animation.Frames.Length - 2;
                     OnAnimationLoop?.Invoke();
                 }
                 else
                 {
-                    _currentIndex = Frames.Length - 1;
+                    _currentIndex = Animation.Frames.Length - 1;
                     IsAnimating = false;
                     OnAnimationEnd?.Invoke();
                 }

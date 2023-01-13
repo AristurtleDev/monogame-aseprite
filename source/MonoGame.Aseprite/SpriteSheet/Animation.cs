@@ -24,15 +24,16 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite;
 
-public class SpriteSheetAnimation
+public class Animation
 {
     public string Name { get; }
-    public int[] Frames { get; }
+    public AnimationFrame[] Frames { get; }
+    // public int[] Frames { get; }
     public bool IsLooping { get; set; }
     public bool IsReversed { get; set; }
     public bool IsPingPong { get; set; }
 
-    internal SpriteSheetAnimation(string name, int[] frames, bool isLooping, bool isReversed, bool isPingPong) =>
+    internal Animation(string name, AnimationFrame[] frames, bool isLooping, bool isReversed, bool isPingPong) =>
         (Name, Frames, IsLooping, IsReversed, IsPingPong) = (name, frames, isLooping, isReversed, isPingPong);
 }
 

@@ -83,123 +83,58 @@ public abstract class CommonReader<T> : ContentTypeReader<T>
         return texture;
     }
 
-    // internal static TextureAtlas ReadTextureAtlas(ContentReader input)
-    // {
-    //     string name = input.ReadString();
-    //     Texture2D texture = ReadTexture(input);
-
-    //     TextureAtlas atlas = new(name, texture);
-    //     ReadTextureAtlasRegions(input, atlas);
-    // }
-
-    // internal static void ReadTextureAtlasRegions(ContentReader input, TextureAtlas atlas)
-    // {
-    //     int count = input.ReadInt32();
-
-    //     for (int i = 0; i < count; i++)
-    //     {
-    //         string name = input.ReadString();
-    //         Rectangle bounds = ReadRectangle(input);
-
-    //         atlas.CreateRegion(name, bounds);
-    //     }
-    // }
-
-
     internal static SpriteSheet ReadSpriteSheet(ContentReader input)
     {
         string name = input.ReadString();
         Texture2D texture = ReadTexture(input);
 
         SpriteSheet spriteSheet = new(name, texture);
-        ReadSpritesheetFrames(input, spriteSheet);
-        ReadSpriteSheetAnimationDefinitions(input, spriteSheet);
+
+        ReadSpriteSheetRegions(input, spriteSheet);
+        ReadSpriteSheetAnimations(input, spriteSheet);
 
         return spriteSheet;
     }
 
-    internal static void ReadSpritesheetFrames(ContentReader input, SpriteSheet spriteSheet)
+    internal static void ReadSpriteSheetRegions(ContentReader input, SpriteSheet spriteSheet)
     {
         int count = input.ReadInt32();
-
         for (int i = 0; i < count; i++)
         {
-            ReadSpritesheetFrame(input, spriteSheet);
+            string name = input.ReadString();
+            Rectangle bounds = ReadRectangle(input);
+            spriteSheet.CreateRegion(name, bounds);
         }
     }
 
-    internal static void ReadSpritesheetFrame(ContentReader input, SpriteSheet spriteSheet)
-    {
-        string name = input.ReadString();
-        Rectangle bounds = ReadRectangle(input);
-        int durationInMilliseconds = input.ReadInt32();
-
-        TimeSpan duration = TimeSpan.FromMilliseconds(durationInMilliseconds);
-
-        SpriteSheetFrame frame = spriteSheet.CreateFrame(name, bounds, duration);
-
-        ReadSpriteSheetFrameRegions(input, frame);
-    }
-
-    internal static void ReadSpriteSheetFrameRegions(ContentReader input, SpriteSheetFrame frame)
+    internal static void ReadSpriteSheetAnimations(ContentReader input, SpriteSheet spriteSheet)
     {
         int count = input.ReadInt32();
-
         for (int i = 0; i < count; i++)
         {
-            ReadSpriteSheetFrameRegion(input, frame);
+            string name = input.ReadString();
+            byte flags = input.ReadByte();
+
+            bool isLooping = (flags & 1) != 0;
+            bool isReversed = (flags & 2) != 0;
+            bool isPingPong = (flags & 4) != 0;
+
+            int frameCount = input.ReadInt32();
+
+            AnimationBuilder builder = new(name, spriteSheet);
+            builder.IsLooping(isLooping)
+                   .SetIsReversed(isReversed)
+                   .IsPingPong(isPingPong);
+
+            for (int j = 0; j < frameCount; j++)
+            {
+                int index = input.ReadInt32();
+                long ticks = input.ReadInt64();
+                builder.AddFrame(index, TimeSpan.FromTicks(ticks));
+            }
+
+            spriteSheet.AddAnimation(builder.Build());
         }
-    }
-
-    internal static void ReadSpriteSheetFrameRegion(ContentReader input, SpriteSheetFrame frame)
-    {
-        string name = input.ReadString();
-        Color color = input.ReadColor();
-        Rectangle bounds = ReadRectangle(input);
-
-        Rectangle? centerBounds = default;
-        Point? pivot = default;
-
-        if (input.ReadBoolean())
-        {
-            centerBounds = ReadRectangle(input);
-        }
-
-        if (input.ReadBoolean())
-        {
-            pivot = ReadPoint(input);
-        }
-
-        frame.AddRegion(name, bounds, color, centerBounds, pivot);
-    }
-
-    internal static void ReadSpriteSheetAnimationDefinitions(ContentReader input, SpriteSheet spriteSheet)
-    {
-        int count = input.ReadInt32();
-
-        for (int i = 0; i < count; i++)
-        {
-            ReadSpriteSheetAnimationDefinition(input, spriteSheet);
-        }
-    }
-
-    internal static void ReadSpriteSheetAnimationDefinition(ContentReader input, SpriteSheet spriteSheet)
-    {
-        string name = input.ReadString();
-        byte flags = input.ReadByte();
-        int indexCount = input.ReadInt32();
-
-        int[] indexes = new int[indexCount];
-        for (int i = 0; i < indexCount; i++)
-        {
-            indexes[i] = input.ReadInt32();
-        }
-
-        bool isLooping = (flags & 1) != 0;
-        bool isReversed = (flags & 2) != 0;
-        bool isPingPong = (flags & 4) != 0;
-
-        _ = spriteSheet.CreateAnimation(name, indexes, isLooping, isReversed, isPingPong);
     }
 
     internal static TilesetCollection ReadTilesetCollection(ContentReader input)

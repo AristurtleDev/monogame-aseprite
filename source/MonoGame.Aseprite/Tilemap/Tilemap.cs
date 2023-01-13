@@ -37,6 +37,8 @@ public sealed class Tilemap
     /// </summary>
     public string Name { get; }
 
+    public Tileset Tileset { get; }
+
     /// <summary>
     ///     Gets or Sets the x- and y-coordinate position to render this
     ///     <see cref="Tilemap"/> at.
@@ -67,14 +69,13 @@ public sealed class Tilemap
         set => _position.Y = value;
     }
 
-    public Tilemap(string name)
-    {
-        Name = name;
-    }
+    public Tilemap(string name, Tileset tileSet)
+        : this(name, tileSet, Vector2.Zero) { }
 
-    public Tilemap(string name, Vector2 position)
+    public Tilemap(string name, Tileset tileset, Vector2 position)
     {
         Name = name;
+        Tileset = tileset;
         _position = position;
     }
 

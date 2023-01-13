@@ -63,53 +63,28 @@ public abstract class CommonWriter<T> : ContentTypeWriter<T>
         WritePixels(output, content.Pixels);
     }
 
-    // internal static void WriteTextureAtlasContent(ContentWriter output, TextureAtlasContent content)
-    // {
-    //     output.Write(content.Name);
-    //     WriteTextureContent(output, content.TextureContent);
-
-    //     output.Write(content.Regions.Count);
-    //     foreach (TextureAtlasRegionContent region in content.Regions)
-    //     {
-    //         WriteTextureAtlasRegionContent(output, region);
-    //     }
-    // }
-
-    // internal static void WriteTextureAtlasRegionContent(ContentWriter output, TextureAtlasRegionContent content)
-    // {
-    //     output.Write(content.Name);
-    //     WriteRectangle(output, content.Bounds);
-    // }
-
     internal static void WriteSpriteSheetContent(ContentWriter output, SpriteSheetContent content)
     {
         output.Write(content.Name);
         WriteTextureContent(output, content.TextureContent);
 
-        output.Write(content.Frames.Count);
-        foreach (SpriteSheetFrameContent frameContent in content.Frames)
+        output.Write(content.Regions.Count);
+        foreach (TextureRegionContent textureRegion in content.Regions)
         {
-            WriteSpriteSheetFrameContent(output, frameContent);
+            WriteTextureRegionContent(output, textureRegion);
         }
 
-        output.Write(content.AnimationDefinitions.Count);
-        foreach (SpriteSheetAnimationContent animationContent in content.AnimationDefinitions)
+        output.Write(content.Animations.Count);
+        foreach (AnimationContent animationContent in content.Animations)
         {
-            WriteSpriteSheetAnimationDefinitionContent(output, animationContent);
+            WriteAnimationContent(output, animationContent);
         }
     }
 
-    internal static void WriteSpriteSheetFrameContent(ContentWriter output, SpriteSheetFrameContent content)
+    internal static void WriteTextureRegionContent(ContentWriter output, TextureRegionContent content)
     {
         output.Write(content.Name);
         WriteRectangle(output, content.Bounds);
-        output.Write(content.Duration);
-
-        output.Write(content.Regions.Count);
-        foreach (KeyValuePair<string, SpriteSheetFrameRegionContent> kvp in content.Regions)
-        {
-            WriteSpriteSheetFrameRegionContent(output, kvp.Value);
-        }
     }
 
     internal static void WriteSpriteSheetFrameRegionContent(ContentWriter output, SpriteSheetFrameRegionContent content)
@@ -131,16 +106,22 @@ public abstract class CommonWriter<T> : ContentTypeWriter<T>
         }
     }
 
-    internal static void WriteSpriteSheetAnimationDefinitionContent(ContentWriter output, SpriteSheetAnimationContent content)
+    internal static void WriteAnimationContent(ContentWriter output, AnimationContent content)
     {
         output.Write(content.Name);
         output.Write(content.LoopReversePingPongMask);
 
-        output.Write(content.FrameIndexes.Length);
-        for (int i = 0; i < content.FrameIndexes.Length; i++)
+        output.Write(content.Frames.Length);
+        foreach(AnimationFrameContent animationFrame in content.Frames)
         {
-            output.Write(content.FrameIndexes[i]);
+            WriteAnimationFrameContent(output, animationFrame);
         }
+    }
+
+    internal static void WriteAnimationFrameContent(ContentWriter output, AnimationFrameContent content)
+    {
+        output.Write(content.FrameIndex);
+        output.Write(content.Duration.Ticks);
     }
 
     internal static void WriteTilesetCollectionContent(ContentWriter output, TilesetCollectionContent content)

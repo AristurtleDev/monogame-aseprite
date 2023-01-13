@@ -29,19 +29,19 @@ namespace MonoGame.Aseprite;
 
 public class Sprite
 {
-    private SpriteSheetFrame _spriteSheetFrame;
+    private TextureRegion _textureRegion;
     private Vector2 _position;
     private Vector2 _scale;
     private SpriteEffects _spriteEffects;
 
     /// <summary>
-    ///     Gets or Sets the <see cref="SpriteSheetFrame"/> used by this
+    ///     Gets or Sets the <see cref="TextureRegion"/> used by this
     ///     <see cref="Sprite"/>.
     /// </summary>
-    public SpriteSheetFrame SpriteSheetFrame
+    public TextureRegion TextureRegion
     {
-        get => _spriteSheetFrame;
-        set => _spriteSheetFrame = value;
+        get => _textureRegion;
+        set => _textureRegion = value;
     }
 
     /// <summary>
@@ -84,12 +84,12 @@ public class Sprite
     ///     Gets the width, in pixels, of this <see cref="Sprite"/>.
     ///     Gets the width, in pixels, of this sprite.
     /// </summary>
-    public virtual int Width => _spriteSheetFrame.Bounds.Width;
+    public virtual int Width => _textureRegion.Bounds.Width;
 
     /// <summary>
     ///     Gets the height, in pixels, of this <see cref="Sprite"/>.
     /// </summary>
-    public virtual int Height => _spriteSheetFrame.Bounds.Height;
+    public virtual int Height => _textureRegion.Bounds.Height;
 
     /// <summary>
     ///     Gets or Sets the <see cref="Color"/> value to use as the color
@@ -198,20 +198,20 @@ public class Sprite
     ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetFrame"/> to be used by this
+    ///     The <see cref="TextureRegion"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetFrame region)
+    public Sprite(TextureRegion region)
         : this(region, Vector2.Zero, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f) { }
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetFrame"/> to be used by this
+    ///     The <see cref="TextureRegion"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetFrame region, Vector2 position)
+    public Sprite(TextureRegion region, Vector2 position)
         : this(region, position, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f) { }
 
     /// <summary>
@@ -219,7 +219,7 @@ public class Sprite
     ///     the values provided.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetFrame"/> to be used by this
+    ///     The <see cref="TextureRegion"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
     /// <param name="position">
@@ -230,7 +230,7 @@ public class Sprite
     ///     The <see cref="Color"/> value to use as the color mask when
     ///     rendering this <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetFrame region, Vector2 position, Color color)
+    public Sprite(TextureRegion region, Vector2 position, Color color)
         : this(region, position, color, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.0f) { }
 
     /// <summary>
@@ -238,7 +238,7 @@ public class Sprite
     ///     the values provided.
     /// </summary>
     /// <param name="region">
-    ///     The <see cref="SpriteSheetFrame"/> to be used by this
+    ///     The <see cref="TextureRegion"/> to be used by this
     ///     <see cref="Sprite"/>.
     /// </param>
     /// <param name="position">
@@ -268,9 +268,9 @@ public class Sprite
     /// <param name="layerDepth">
     ///     The layer depth to apply when rendering this <see cref="Sprite"/>.
     /// </param>
-    public Sprite(SpriteSheetFrame region, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+    public Sprite(TextureRegion region, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
     {
-        _spriteSheetFrame = region;
+        _textureRegion = region;
         _position = position;
         _scale = scale;
         _spriteEffects = effects;
@@ -301,9 +301,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetFrame.Texture,
+            texture: _textureRegion.Texture,
             position: _position,
-            sourceRectangle: _spriteSheetFrame.Bounds,
+            sourceRectangle: _textureRegion.Bounds,
             color: Color * Alpha,
             rotation: Rotation,
             origin: Origin,
@@ -352,9 +352,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetFrame.Texture,
+            texture: _textureRegion.Texture,
             position: position ?? Position,
-            sourceRectangle: _spriteSheetFrame.Bounds,
+            sourceRectangle: _textureRegion.Bounds,
             color: color ?? Color * Alpha,
             rotation: rotation ?? Rotation,
             origin: origin ?? Origin,
@@ -401,9 +401,9 @@ public class Sprite
     {
         spriteBatch.Draw
         (
-            texture: _spriteSheetFrame.Texture,
+            texture: _textureRegion.Texture,
             destinationRectangle: destinationRectangle ?? new Rectangle((int)X, (int)Y, Width, Height),
-            sourceRectangle: _spriteSheetFrame.Bounds,
+            sourceRectangle: _textureRegion.Bounds,
             color: color ?? Color * Alpha,
             rotation: rotation ?? Rotation,
             origin: origin ?? Origin,

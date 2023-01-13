@@ -129,16 +129,13 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
     {
 
         CreateTextureContentResult textureContentResult = CreateTextureContent(input);
-        List<SpriteSheetFrameContent> frames = CreateSpriteSheetFrameContent(input, textureContentResult.DuplicateMap, textureContentResult.Columns);
-        List<SpriteSheetAnimationContent> tags = GenerateAnimationDefinitionData(input);
-        GenerateFrameRegionData(input, frames);
+        List<TextureRegionContent> regions = CreateSpriteSheetRegionContent(input, textureContentResult.DuplicateMap, textureContentResult.Columns);
+        List<AnimationContent> tags = CreateAnimationContent(input);
+        // GenerateFrameRegionData(input, regions);
 
-        return new SpriteSheetContent(input.Name, textureContentResult.Content, frames, tags);
+        return new SpriteSheetContent(input.Name, textureContentResult.Content, regions, tags);
     }
 
-/*
-Knowing the precise rhythm and timing of the taps in "Outlaws" by Nobuo Uematsu from Final Fantasy IX
-*/
     private CreateTextureContentResult CreateTextureContent(AsepriteFile input)
     {
         int frameCount = input.FrameCount;
@@ -257,10 +254,10 @@ Knowing the precise rhythm and timing of the taps in "Outlaws" by Nobuo Uematsu 
         }
     }
 
-    private List<SpriteSheetFrameContent> CreateSpriteSheetFrameContent(AsepriteFile input, Dictionary<int, int> duplicateMap, int columns)
+    private List<TextureRegionContent> CreateSpriteSheetRegionContent(AsepriteFile input, Dictionary<int, int> duplicateMap, int columns)
     {
-        List<SpriteSheetFrameContent> frames = new();
-        Dictionary<int, SpriteSheetFrameContent> originalToDuplicateLookup = new();
+        List<TextureRegionContent> frames = new();
+        Dictionary<int, TextureRegionContent> originalToDuplicateLookup = new();
 
         int offset = 0;
 
@@ -268,8 +265,8 @@ Knowing the precise rhythm and timing of the taps in "Outlaws" by Nobuo Uematsu 
         {
             if (MergeDuplicateFrames && duplicateMap.ContainsKey(fNum))
             {
-                SpriteSheetFrameContent original = originalToDuplicateLookup[duplicateMap[fNum]];
-                SpriteSheetFrameContent duplicate = new($"frame_{fNum}", original.Bounds, input.Frames[fNum].Duration);
+                TextureRegionContent original = originalToDuplicateLookup[duplicateMap[fNum]];
+                TextureRegionContent duplicate = new($"frame_{fNum}", original.Bounds);
                 frames.Add(duplicate);
                 offset++;
                 continue;
@@ -291,7 +288,7 @@ Knowing the precise rhythm and timing of the taps in "Outlaws" by Nobuo Uematsu 
                          (InnerPadding * (row + row + 1));
 
             Rectangle bounds = new(location, input.FrameSize);
-            SpriteSheetFrameContent frame = new($"frame_{fNum}", bounds, input.Frames[fNum].Duration);
+            TextureRegionContent frame = new($"frame_{fNum}", bounds);
             frames.Add(frame);
             originalToDuplicateLookup.Add(fNum, frame);
         }
@@ -299,17 +296,19 @@ Knowing the precise rhythm and timing of the taps in "Outlaws" by Nobuo Uematsu 
         return frames;
     }
 
-    private List<SpriteSheetAnimationContent> GenerateAnimationDefinitionData(AsepriteFile file)
+    private List<AnimationContent> CreateAnimationContent(AsepriteFile file)
     {
-        List<SpriteSheetAnimationContent> definitions = new();
+        List<AnimationContent> animations = new();
 
         for (int i = 0; i < file.Tags.Count; i++)
         {
             Tag aseTag = file.Tags[i];
-            int[] frameIndexes = new int[aseTag.To - aseTag.From + 1];
-            for (int f = 0; f < frameIndexes.Length; f++)
+            AnimationFrameContent[] frames = new AnimationFrameContent[aseTag.To - aseTag.From + 1];
+            for (int f = 0; f < frames.Length; f++)
             {
-                frameIndexes[f] = aseTag.From + f;
+                int index = aseTag.From + f;
+                int duration = file.Frames[index].Duration;
+                frames[f] = new AnimationFrameContent(index, TimeSpan.FromMilliseconds(duration));
             }
 
             byte loopReversePingPongMask = 1;
@@ -323,64 +322,65 @@ Knowing the precise rhythm and timing of the taps in "Outlaws" by Nobuo Uematsu 
                 loopReversePingPongMask |= 4;
             }
 
-            SpriteSheetAnimationContent definition = new(frameIndexes, aseTag.Name, loopReversePingPongMask);
-            definitions.Add(definition);
+            AnimationContent animation = new(aseTag.Name, frames, loopReversePingPongMask);
+
+            animations.Add(animation);
         }
 
-        return definitions;
+        return animations;
     }
 
-    private void GenerateFrameRegionData(AsepriteFile file, List<SpriteSheetFrameContent> frames)
-    {
-        List<SpriteSheetFrameRegionContent> regions = new();
+    // private void GenerateFrameRegionData(AsepriteFile file, List<TextureRegionContent> frames)
+    // {
+    //     List<SpriteSheetFrameRegionContent> regions = new();
 
-        //  Slice keys in Aseprite are defined with a frame index that indicates
-        //  the frame that the key starts on, but doesn't give a value for what
-        //  frame it ends on or may be transformed on.  So we'll interpolate the
-        //  keys to create the Slice elements
-        for (int i = 0; i < file.Slices.Count; i++)
-        {
-            Slice aseSlice = file.Slices[i];
-            string name = aseSlice.Name;
+    //     //  Slice keys in Aseprite are defined with a frame index that indicates
+    //     //  the frame that the key starts on, but doesn't give a value for what
+    //     //  frame it ends on or may be transformed on.  So we'll interpolate the
+    //     //  keys to create the Slice elements
+    //     for (int i = 0; i < file.Slices.Count; i++)
+    //     {
+    //         Slice aseSlice = file.Slices[i];
+    //         string name = aseSlice.Name;
 
-            //  If no color defined in user data, use Aseprite default for slice
-            //  color, which is just blue
-            Color color = aseSlice.UserData?.Color ?? new Color(0, 0, 255, 255);
+    //         //  If no color defined in user data, use Aseprite default for slice
+    //         //  color, which is just blue
+    //         Color color = aseSlice.UserData?.Color ?? new Color(0, 0, 255, 255);
 
-            SliceKey? lastKey = default;
+    //         SliceKey? lastKey = default;
 
-            for (int k = 0; k < aseSlice.Keys.Count; k++)
-            {
-                SliceKey key = aseSlice.Keys[k];
+    //         for (int k = 0; k < aseSlice.Keys.Count; k++)
+    //         {
+    //             SliceKey key = aseSlice.Keys[k];
 
-                SpriteSheetFrameRegionContent region = new(name, key.Bounds, color, key.CenterBounds, key.Pivot);
-                frames[key.FrameIndex].Regions.Add(name, region);
+    //             SpriteSheetFrameRegionContent region = new(name, key.Bounds, color, key.CenterBounds, key.Pivot);
+    //             frames[key.FrameIndex].Regions.Add(name, region);
 
-                //  Perform interpolation before caching last key
-                if (lastKey is not null && lastKey.FrameIndex < key.FrameIndex)
-                {
-                    for (int offset = 1; offset < key.FrameIndex - lastKey.FrameIndex; offset++)
-                    {
-                        SpriteSheetFrameRegionContent interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
-                        frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
-                    }
-                }
+    //             //  Perform interpolation before caching last key
+    //             if (lastKey is not null && lastKey.FrameIndex < key.FrameIndex)
+    //             {
+    //                 for (int offset = 1; offset < key.FrameIndex - lastKey.FrameIndex; offset++)
+    //                 {
+    //                     SpriteSheetFrameRegionContent interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
+    //                     frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
+    //                 }
+    //             }
 
-                lastKey = key;
-            }
+    //             lastKey = key;
+    //         }
 
-            //  Do we need to interpolate the last key given up to the final
-            //  frame?
-            if (lastKey?.FrameIndex < file.Frames.Count)
-            {
-                for (int offset = 1; offset < file.Frames.Count - lastKey.FrameIndex; offset++)
-                {
-                    SpriteSheetFrameRegionContent interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
-                    frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
-                }
-            }
-        }
-    }
+    //         //  Do we need to interpolate the last key given up to the final
+    //         //  frame?
+    //         if (lastKey?.FrameIndex < file.Frames.Count)
+    //         {
+    //             for (int offset = 1; offset < file.Frames.Count - lastKey.FrameIndex; offset++)
+    //             {
+    //                 SpriteSheetFrameRegionContent interpolatedRegion = new(name, lastKey.Bounds, color, lastKey.CenterBounds, lastKey.Pivot);
+    //                 frames[lastKey.FrameIndex + offset].Regions.Add(name, interpolatedRegion);
+    //             }
+    //         }
+    //     }
+    // }
 
     private record CreateTextureContentResult(TextureContent Content, Dictionary<int, int> DuplicateMap, int Columns);
 }

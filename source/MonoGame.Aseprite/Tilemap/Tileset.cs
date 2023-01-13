@@ -31,6 +31,8 @@ namespace MonoGame.Aseprite;
 
 public sealed class Tileset
 {
+    private TextureRegion[] _regions;
+
     /// <summary>
     ///     Gets the name of this <see cref="Tileset"/>.
     /// </summary>
@@ -46,7 +48,7 @@ public sealed class Tileset
     ///     Gets the width and height extents, in pixels, of each tile in this
     ///     <see cref="Tileset"/>.
     /// </summary>
-    public Point TileSize { get; }
+    public Size TileSize { get; }
 
     /// <summary>
     ///     Gets the total number of rows (i.e. how many tiles vertically) in
@@ -60,29 +62,93 @@ public sealed class Tileset
     /// </summary>
     public int Columns { get; }
 
-    public Tileset(string name, Texture2D texture, Point tileSize)
+    /// <summary>
+    ///     Gets the total number of regions (tiles) in this
+    ///     <see cref="Tileset"/>.
+    /// </summary>
+    public int TileCount { get; }
+
+    public Tileset(string name, Texture2D texture, Size tileSize)
     {
-        if (tileSize.X < 1 || tileSize.Y < 1)
+        if (tileSize.IsEmpty)
         {
-            throw new ArgumentException(nameof(tileSize), $"{nameof(tileSize)} {tileSize} is invalid. The width and height components must be greater than zero");
+            throw new ArgumentException();
         }
 
-        if (texture.Width % tileSize.X != 0)
+        if (texture.Width % tileSize.Width != 0)
         {
-            throw new InvalidOperationException($"The width of the texture '{texture.Width}' is not a multiple of the width of a tile '{tileSize.X}");
+            throw new InvalidOperationException();
         }
 
-        if (texture.Height % tileSize.Y != 0)
+        if (texture.Height % tileSize.Height != 0)
         {
-            throw new InvalidOperationException($"The height of the texture '{texture.Height}' is not a multiple of the height of a tile '{tileSize.Y}");
+            throw new InvalidOperationException();
         }
 
         Name = name;
         Texture = texture;
         TileSize = tileSize;
-        Columns = texture.Width / tileSize.X;
-        Rows = texture.Height / tileSize.Y;
+        Columns = texture.Width / tileSize.Width;
+        Rows = texture.Height / tileSize.Height;
+        TileCount = Columns * Rows;
+        CreateTextureRegions();
     }
+
+    [MemberNotNull(nameof(_regions))]
+    private void CreateTextureRegions()
+    {
+        _regions = new TextureRegion[TileCount];
+
+        for (int i = 0; i < TileCount; i++)
+        {
+            int x = (i % Columns) * TileSize.Width;
+            int y = (i / Columns) * TileSize.Height;
+
+            Rectangle bounds = new(x, y, TileSize.Width, TileSize.Height);
+            _regions[i] = new TextureRegion($"{Name}_{i}", Texture, bounds);
+        }
+    }
+
+    public TextureRegion GetTile(int index)
+    {
+        if(index < 0 || index >= TileCount)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+
+        return _regions[index];
+    }
+
+    public TextureRegion GetTile(Point location) => GetTile(location.X, location.Y);
+
+    public TextureRegion GetTile(int column, int row)
+    {
+        int index = row * Columns + column;
+        return GetTile(index);
+    }
+
+    public bool TryGetTile(int index, [NotNullWhen(true)] out TextureRegion? tile)
+    {
+        tile = default;
+
+        if(index < 0 || index >= TileCount)
+        {
+            return false;
+        }
+
+        tile = _regions[index];
+        return true;
+    }
+
+    public bool TryGetTile(Point location, [NotNullWhen(true)] out TextureRegion? tile) =>
+        TryGetTile(location.X, location.Y, out tile);
+
+    public bool TryGetTile(int column, int row, [NotNullWhen(true)] out TextureRegion? tile)
+    {
+        int index = row * Columns + column;
+        return TryGetTile(index, out tile);
+    }
+
 
     // private TilesetTile[] _tiles;
 

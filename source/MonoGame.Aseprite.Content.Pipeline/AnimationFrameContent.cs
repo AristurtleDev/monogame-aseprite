@@ -22,23 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite;
 
 
-/// <summary>
-///     Represents the content that is written to the file for a sprite sheet
-///     frame.
-/// </summary>
-public sealed class SpriteSheetFrameContent
+public sealed class AnimationFrameContent
 {
-    internal Dictionary<string, SpriteSheetFrameRegionContent> Regions { get; } = new();
+    internal int FrameIndex { get; }
+    internal TimeSpan Duration { get; }
 
-    internal string Name { get; }
-    internal Rectangle Bounds { get; }
-    internal int Duration { get; }
-
-    internal SpriteSheetFrameContent(string name, Rectangle bounds, int duration) =>
-        (Name, Bounds, Duration) = (name, bounds, duration);
+    internal AnimationFrameContent(int frameIndex, TimeSpan duration) =>
+        (FrameIndex, Duration) = (frameIndex, duration);
 }

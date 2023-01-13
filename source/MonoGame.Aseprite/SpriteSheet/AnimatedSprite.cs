@@ -54,25 +54,19 @@ public class AnimatedSprite : Sprite
     [MemberNotNull(nameof(_currentAnimation))]
     private void SetCurrentAnimation(string name)
     {
-        SpriteSheetAnimation animation = _spriteSheet.GetAnimation(name);
-        // SpriteSheetAnimationDefinition definition = _spriteSheet.GetAnimationDefinition(name);
+        Animation animation = _spriteSheet.GetAnimation(name);
 
-        SpriteSheetFrame[] frames = new SpriteSheetFrame[animation.Frames.Length];
-        for (int i = 0; i < frames.Length; i++)
-        {
-            frames[i] = _spriteSheet.GetFrame(animation.Frames[i]);
-        }
-
-        // SpriteSheetFrame[] frames = new SpriteSheetFrame[definition.FrameIndexes.Length];
+        // TextureRegion[] frames = new TextureRegion[animation.Frames.Length];
         // for (int i = 0; i < frames.Length; i++)
         // {
-        // frames[i] = _spriteSheet.GetRegion(definition.FrameIndexes[i]);
+        //     frames[i] = _spriteSheet.GetRegion(animation.Frames[i]);
         // }
 
-        _currentAnimation = new(animation.Name, frames, animation.IsLooping, animation.IsReversed, animation.IsPingPong);
 
-        // _currentAnimation = new(definition.Name, frames, definition.IsLooping, definition.IsReversed, definition.IsPingPong);
-        SpriteSheetFrame = _currentAnimation.CurrentFrame;
+
+        _currentAnimation = new(animation);
+
+        TextureRegion = _currentAnimation.CurrentFrame.TextureRegion;
 
     }
 
@@ -96,6 +90,6 @@ public class AnimatedSprite : Sprite
     public void Update(GameTime gameTime)
     {
         _currentAnimation.Update(gameTime);
-        SpriteSheetFrame = _currentAnimation.CurrentFrame;
+        TextureRegion = _currentAnimation.CurrentFrame.TextureRegion;
     }
 }

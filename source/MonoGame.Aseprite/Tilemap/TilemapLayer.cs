@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -29,17 +30,77 @@ namespace MonoGame.Aseprite;
 
 public sealed class TilemapLayer
 {
-    //  Add a tile collection? Add tiles one by one?
-    private TilemapTile[] _tiles;
-    public string Name { get; }
-    public Point TileSize { get; }
-    public Tileset Tileset { get; }
+    private Tile[] _tiles;
 
-    internal TilemapLayer(Tileset tileset, string name, Point tileSize, int tileCount)
+    public string Name { get; }
+    public Size Size { get; }
+    public Tileset Tileset { get; }
+    public int TileCount => _tiles.Length;
+
+    public Tile? this[int index] => GetTile(index);
+    public Tile? this[int column, int row] => GetTile(column, row);
+    public Tile? this[Point location] => GetTile(location);
+
+    //  Change size to int columns, int rows????
+    //  Since it's not a really a Size?
+    internal TilemapLayer(Tileset tileset, string name, Size size)
     {
         Tileset = tileset;
         Name = name;
-        TileSize = tileSize;
-        _tiles = new TilemapTile[tileCount];
+        Size = size;
+
+        _tiles = new Tile[size.Width * size.Height];
     }
+
+    public AddTile(Tile tile)
+    {
+        if(tile.TilesetIndex >= Tileset.)
+    }
+
+    public Tile? GetTile(int index)
+    {
+        if (index < 0 || index >= TileCount)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+
+        return _tiles[index];
+    }
+
+    public Tile? GetTile(int column, int row)
+    {
+        int index = row * Size.X + column;
+        return GetTile(index);
+    }
+
+    public Tile? GetTile(Point location) => GetTile(location.X, location.Y);
+
+    public bool TryGetTile(int index, [NotNullWhen(true)] out Tile? tile)
+    {
+        tile = default;
+        if (index < 0 || index >= TileCount)
+        {
+            return false;
+        }
+
+        tile = _tiles[index];
+        return tile is not null;
+    }
+
+    public bool TryGetTile(int column, int row, [NotNullWhen(true)] out Tile? tile)
+    {
+        tile = default;
+
+        if (column < 0 || column >= Size.X || row < 0 || row >= Size.Y)
+        {
+            return false;
+        }
+
+        int index = row * Size.X + column;
+        tile = _tiles[index];
+        return tile is not null;
+    }
+
+    public bool TryGetTile(Point location, [NotNullWhen(true)] out Tile? tile) =>
+        TryGetTile(location.X, location.Y, out tile);
 }

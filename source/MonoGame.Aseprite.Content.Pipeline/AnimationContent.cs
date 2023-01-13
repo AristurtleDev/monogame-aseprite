@@ -22,21 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Represents the content of a sprite sheet to be written to the output
-///     file.
+///     Represents the content that is written to the file for a sprite sheet
+///     animation definition.
 /// </summary>
-public sealed class SpriteSheetContent
+public sealed class AnimationContent
 {
     internal string Name { get; }
-    internal TextureContent TextureContent { get; }
-    internal List<TextureRegionContent> Regions { get; }
-    internal List<AnimationContent> Animations { get; }
+    internal AnimationFrameContent[] Frames { get; }
+    internal byte LoopReversePingPongMask { get; }
 
-    internal SpriteSheetContent(string name, TextureContent textureContent, List<TextureRegionContent> regions, List<AnimationContent> animations) =>
-        (Name, TextureContent, Regions, Animations) = (name, textureContent, regions, animations);
+    internal AnimationContent(string name, AnimationFrameContent[] frames, byte loopReversePingPongMask) =>
+        (Name, Frames, LoopReversePingPongMask) = (name, frames, loopReversePingPongMask);
 }

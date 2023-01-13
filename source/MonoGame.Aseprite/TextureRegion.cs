@@ -23,20 +23,19 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite;
 
-/// <summary>
-///     Represents the content of a sprite sheet to be written to the output
-///     file.
-/// </summary>
-public sealed class SpriteSheetContent
+public class TextureRegion
 {
-    internal string Name { get; }
-    internal TextureContent TextureContent { get; }
-    internal List<TextureRegionContent> Regions { get; }
-    internal List<AnimationContent> Animations { get; }
+    public string Name { get; }
+    public Texture2D Texture { get; }
+    public Rectangle Bounds { get; }
 
-    internal SpriteSheetContent(string name, TextureContent textureContent, List<TextureRegionContent> regions, List<AnimationContent> animations) =>
-        (Name, TextureContent, Regions, Animations) = (name, textureContent, regions, animations);
+    public TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
+        (Name, Texture, Bounds) = (name, texture, bounds);
+
+    public TextureRegion(string name, Texture2D texture, int x, int y, int width, int height) =>
+        (Name, Texture, Bounds) = (name, texture, new Rectangle(x, y, width, height));
 }
