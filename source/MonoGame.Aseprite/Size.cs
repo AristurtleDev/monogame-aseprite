@@ -23,6 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite;
 
@@ -42,42 +43,45 @@ public struct Size : IEquatable<Size>
     public override int GetHashCode() => HashCode.Combine(Width, Height);
     public override string ToString() => $"(Width={Width}, Height={Height})";
 
-    public static bool operator ==(Size first, Size second) => first.Equals(second);
-    public static bool operator !=(Size first, Size second) => !(first.Equals(second));
-    public static Size operator +(Size first, Size second) => Add(first, second);
-    public static Size operator -(Size first, Size second) => Subtract(first, second);
-    public static Size operator *(Size size, int value) => Multiply(size, value);
-    public static Size operator /(Size size, int value) => Divide(size, value);
+    public static bool operator ==(Size size1, Size size2) => size1.Equals(size2);
+    public static bool operator !=(Size size1, Size size2) => !(size1.Equals(size2));
+    public static Size operator +(Size size1, Size size2) => Add(size1, size2);
+    public static Size operator -(Size size1, Size size2) => Subtract(size1, size2);
+    public static Size operator *(Size size, int multiplier) => Multiply(size, multiplier);
+    public static Size operator /(Size size, int divisor) => Divide(size, divisor);
 
-    public static Size Add(Size first, Size second)
+    public static implicit operator Point(Size size) => new Point(size.Width, size.Height);
+    public static implicit operator Size(Point point) => new Size(point.X, point.Y);
+
+    public static Size Add(Size size1, Size size2)
     {
         Size newSize;
-        newSize.Width = first.Width + second.Width;
-        newSize.Height = first.Height + second.Height;
+        newSize.Width = size1.Width + size2.Width;
+        newSize.Height = size1.Height + size2.Height;
         return newSize;
     }
 
-    public static Size Subtract(Size first, Size second)
+    public static Size Subtract(Size size1, Size size2)
     {
         Size newSize;
-        newSize.Width = first.Width - second.Width;
-        newSize.Height = first.Height - second.Height;
+        newSize.Width = size1.Width - size2.Width;
+        newSize.Height = size1.Height - size2.Height;
         return newSize;
     }
 
-    public static Size Multiply(Size size, int value)
+    public static Size Multiply(Size size, int multiplier)
     {
         Size newSize;
-        newSize.Width = size.Width * value;
-        newSize.Height = size.Height * value;
+        newSize.Width = size.Width * multiplier;
+        newSize.Height = size.Height * multiplier;
         return newSize;
     }
 
-    public static Size Divide(Size size, int value)
+    public static Size Divide(Size size, int divisor)
     {
         Size newSize;
-        newSize.Width = size.Width / value;
-        newSize.Height = size.Height / value;
+        newSize.Width = size.Width / divisor;
+        newSize.Height = size.Height / divisor;
         return newSize;
     }
 }

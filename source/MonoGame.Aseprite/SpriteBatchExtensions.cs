@@ -33,102 +33,301 @@ namespace MonoGame.Aseprite;
 /// </summary>
 public static class SpriteBatchExtensions
 {
-    /// <summary>
-    ///     Draws this <see cref="Sprite"/> using the given
-    ///     <see cref="SpriteBatch"/>
-    /// </summary>
-    /// <remarks>
-    ///     The values for position, color, rotation, origin, scale, effects,
-    ///     and layer depth that are passed to the SpriteBatch are derived from
-    ///     the properties of this <see cref="Sprite"/> instance when using this
-    ///     method.  To use different values, use one of the other Draw method
-    ///     overloads instead.
-    /// </remarks>
-    /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when drawing this sprite.
-    /// </param>
-    /// <param name="sprite">
-    ///     The <see cref="Sprite"/> to draw.
-    /// </param>
-    public static void Draw(this SpriteBatch spriteBatch, Sprite sprite) =>
-        sprite.Draw(spriteBatch);
+    #region Texture Region
 
     /// <summary>
-    ///     Draws this <see cref="Sprite"/> using the given
-    ///     <see cref="SpriteBatch"/>.
+    ///     Draws a texture region using the sprite batch.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
+    ///     The sprite batch to use to draw the texture region.
     /// </param>
-    /// <param name="sprite">
-    ///     The <see cref="Sprite"/> to draw.
-    /// </param>
-    /// <param name="position">
-    ///     If a value is provided, overrides the <see cref="Sprite.Position"/>
-    ///     value during this render only.
-    /// </param>
-    /// <param name="color">
-    ///     If a value is provided, overrides the <see cref="Sprite.Color"/>
-    ///     value during this render only.
-    /// </param>
-    /// <param name="rotation">
-    ///     If a value is provided, overrides the <see cref="Sprite.Rotation"/>
-    ///     value during this render only.
-    /// </param>
-    /// <param name="origin">
-    ///     If a value is provided, overrides the <see cref="Sprite.Origin"/>
-    ///     value during this render only.
-    /// </param>
-    /// <param name="scale">
-    ///     If a value is provided, overrides the <see cref="Sprite.Scale"/>
-    ///     value during this render only.
-    /// </param>
-    /// <param name="effects">
-    ///     If a value is provided, overrides the
-    ///     <see cref="Sprite.SpriteEffects"/> value during this render only.
-    /// </param>
-    /// <param name="layerDepth">
-    ///     If a value is provided, overrides the
-    ///     <see cref="Sprite.LayerDepth"/> value during this render only.
-    /// </param>
-    public static void Draw(this SpriteBatch spriteBatch, Sprite sprite, Vector2? position = default, Color? color = default, float? rotation = default, Vector2? origin = default, Vector2? scale = default, SpriteEffects? effects = default, float? layerDepth = default) =>
-        sprite.Draw(spriteBatch, position, color, rotation, origin, scale, effects, layerDepth);
-
-    /// <summary>
-    ///     Draws this <see cref="Sprite"/> using the given
-    ///     <see cref="SpriteBatch"/>.
-    /// </summary>
-    /// <param name="spriteBatch">
-    ///     The SpriteBatch instance to use when rendering this sprite.
-    /// </param>
-    /// <param name="sprite">
-    ///     The <see cref="Sprite"/> to draw.
+    /// <param name="region">
+    ///     The texture region to draw.
     /// </param>
     /// <param name="destinationRectangle">
-    ///     If a value is provided, overrides the <see cref="Sprite.Position"/>
-    ///     and <see cref="Sprite.Scale"/> values to fit the sprite render into
-    ///     the bounds given during this render only.
+    ///     A rectangular bound that defines the destination to draw the texture
+    ///     region into.
     /// </param>
     /// <param name="color">
-    ///     If a value is provided, overrides the <see cref="Sprite.Color"/>
-    ///     value during this render only.
+    ///     The color mask to apply when drawing the texture region.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Rectangle destinationRectangle, Color color) =>
+        spriteBatch.Draw(region.Texture, destinationRectangle, region.Bounds, color);
+
+    /// <summary>
+    ///     Draws a texture region using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the texture region.
+    /// </param>
+    /// <param name="region">
+    ///     The texture region to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y- coordinate location to draw the texture region at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the texture region.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Vector2 position, Color color) =>
+        spriteBatch.Draw(region.Texture, position, region.Bounds, color);
+
+    /// <summary>
+    ///     Draws a texture region using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the texture region.
+    /// </param>
+    /// <param name="region">
+    ///     The texture region to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y- coordinate location to draw the texture region at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the texture region.
     /// </param>
     /// <param name="rotation">
-    ///     If a value is provided, overrides the <see cref="Sprite.Rotation"/>
-    ///     value during this render only.
+    ///     The amount of rotation, in radians, to apply when drawing the
+    ///     texture region.
     /// </param>
     /// <param name="origin">
-    ///     If a value is provided, overrides the <see cref="Sprite.Origin"/>
-    ///     value during this render only.
+    ///     The x- and y-coordinate point of origin to apply when drawing the
+    ///     texture region.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply to both the x-axis (horizontal) and
+    ///     y-axis (vertical) when drawing the texture region.
     /// </param>
     /// <param name="effects">
-    ///     If a value is provided, overrides the
-    ///     <see cref="Sprite.SpriteEffects"/> value during this render only.
+    ///     The sprite effects for horizontal and vertical axis flipping to
+    ///     apply when drawing the texture region.
     /// </param>
     /// <param name="layerDepth">
-    ///     If a value is provided, overrides the
-    ///     <see cref="Sprite.LayerDepth"/> value during this render only.
+    ///     The layer depth to apply when drawing the texture region.
     /// </param>
-    public static void Draw(this SpriteBatch spriteBatch, Sprite sprite, Rectangle? destinationRectangle = default, Color? color = default, float? rotation = default, Vector2? origin = default, SpriteEffects? effects = default, float? layerDepth = default) =>
-        sprite.Draw(spriteBatch, destinationRectangle, color, rotation, origin, effects, layerDepth);
+    public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth) =>
+        spriteBatch.Draw(region.Texture, position, region.Bounds, color, rotation, origin, scale, effects, layerDepth);
+
+    /// <summary>
+    ///     Draws a texture region using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the texture region.
+    /// </param>
+    /// <param name="region">
+    ///     The texture region to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y- coordinate location to draw the texture region at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the texture region.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when drawing the
+    ///     texture region.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when drawing the
+    ///     texture region.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of x-axis (horizontal) and y-axis (vertical) scaling to
+    ///     apply when drawing the texture regin.
+    /// </param>
+    /// <param name="effects">
+    ///     The sprite effects for horizontal and vertical axis flipping to
+    ///     apply when drawing the texture region.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when drawing the texture region.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth) =>
+        spriteBatch.Draw(region.Texture, position, region.Bounds, color, rotation, origin, scale, effects, layerDepth);
+
+    /// <summary>
+    ///     Draws a texture region using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the texture region.
+    /// </param>
+    /// <param name="region">
+    ///     The texture region to draw.
+    /// </param>
+    /// <param name="destinationRectangle">
+    ///     A rectangular bound that defines the destination to draw the texture
+    ///     region into.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the texture region.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when drawing the
+    ///     texture region.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when drawing the
+    ///     texture region.
+    /// </param>
+    /// <param name="effects">
+    ///     The sprite effects for horizontal and vertical axis flipping to
+    ///     apply when drawing the texture region.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when drawing the texture region.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Rectangle destinationRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth) =>
+        spriteBatch.Draw(region.Texture, destinationRectangle, region.Bounds, color, rotation, origin, effects, layerDepth);
+
+    #endregion Texture Region
+
+    #region Animation
+
+    /// <summary>
+    ///     Draws an animation using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the animation.
+    /// </param>
+    /// <param name="animation">
+    ///     The animation to draw.
+    /// </param>
+    /// <param name="destinationRectangle">
+    ///     A rectangular bound that defines the destination to draw the
+    ///     animation into.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the animation
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, Animation animation, Rectangle destinationRectangle, Color color) =>
+        Draw(spriteBatch, animation.CurrentFrame.TextureRegion, destinationRectangle, color);
+
+    /// <summary>
+    ///     Draws an animation using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the animation.
+    /// </param>
+    /// <param name="animation">
+    ///     The animation to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y- coordinate location to draw the animation at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the animation.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, Animation animation, Vector2 position, Color color) =>
+        Draw(spriteBatch, animation.CurrentFrame.TextureRegion, position, color);
+
+    /// <summary>
+    ///     Draws an animation using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the animation.
+    /// </param>
+    /// <param name="animation">
+    ///     The animation to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y- coordinate location to draw the animation at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the animation.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when drawing the
+    ///     animation.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when drawing the
+    ///     animation.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply to both the x-axis (horizontal) and
+    ///     y-axis (vertical) when drawing the animation.
+    /// </param>
+    /// <param name="effects">
+    ///     The sprite effects for horizontal and vertical axis flipping to
+    ///     apply when drawing the animation.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when drawing the animation.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, Animation animation, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth) =>
+        Draw(spriteBatch, animation.CurrentFrame.TextureRegion, position, color, rotation, origin, scale, effects, layerDepth);
+
+    /// <summary>
+    ///     Draws an animation using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the animation.
+    /// </param>
+    /// <param name="animation">
+    ///     The animation to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y- coordinate location to draw the animation at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the animation.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when drawing the
+    ///     animation.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when drawing the
+    ///     animation.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of x-axis (horizontal) and y-axis (vertical) scaling to
+    ///     apply when drawing the texture regin.
+    /// </param>
+    /// <param name="effects">
+    ///     The sprite effects for horizontal and vertical axis flipping to
+    ///     apply when drawing the animation.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when drawing the animation.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, Animation animation, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth) =>
+        Draw(spriteBatch, animation.CurrentFrame.TextureRegion, position, color, rotation, origin, scale, effects, layerDepth);
+
+    /// <summary>
+    ///     Draws an animation using the sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The sprite batch to use to draw the animation.
+    /// </param>
+    /// <param name="animation">
+    ///     The animation to draw.
+    /// </param>
+    /// <param name="destinationRectangle">
+    ///     A rectangular bound that defines the destination to draw the texture
+    ///     region into.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when drawing the animation.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when drawing the
+    ///     animation.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when drawing the
+    ///     animation.
+    /// </param>
+    /// <param name="effects">
+    ///     The sprite effects for horizontal and vertical axis flipping to
+    ///     apply when drawing the animation.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when drawing the animation.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, Animation animation, Rectangle destinationRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth) =>
+        Draw(spriteBatch, animation.CurrentFrame.TextureRegion, destinationRectangle, color, rotation, origin, effects, layerDepth);
+
+    #endregion Animation
 }

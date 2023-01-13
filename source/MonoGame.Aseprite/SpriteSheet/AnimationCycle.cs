@@ -25,21 +25,39 @@ SOFTWARE.
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Represents a single frame in an animation with a texture region and
-///     a duration.
+///     Represents the cycle of an animation including the frames and how it
+///     loops.
 /// </summary>
-public sealed class AnimationFrame
+public class AnimationCycle
 {
     /// <summary>
-    ///     Gets the texture region represented by this animation frame.
+    ///     The name of this animation cycle.
     /// </summary>
-    public TextureRegion TextureRegion { get; }
+    public string Name { get; }
 
     /// <summary>
-    ///     Get the duration of this animation frame.
+    ///     The animation frames that make up this animation cycle. The order
+    ///     of frames is from start to end.
     /// </summary>
-    public TimeSpan Duration { get; }
+    public AnimationFrame[] Frames { get; }
 
-    internal AnimationFrame(TextureRegion region, TimeSpan duration) =>
-        (TextureRegion, Duration) = (region, duration);
+    /// <summary>
+    ///     Get or Sets whether this animation cycle should loop.
+    /// </summary>
+    public bool IsLooping { get; set; }
+
+    /// <summary>
+    ///     Gets or Sets whether this animation cycle should have the
+    ///     frames played in reverse order.
+    /// </summary>
+    public bool IsReversed { get; set; }
+
+    /// <summary>
+    ///     Gets or Sets whether this animation cycle should ping-pong once
+    ///     reaching the end of the cycle.
+    /// </summary>
+    public bool IsPingPong { get; set; }
+
+    internal AnimationCycle(string name, AnimationFrame[] frames, bool isLooping, bool isReversed, bool isPingPong) =>
+        (Name, Frames, IsLooping, IsReversed, IsPingPong) = (name, frames, isLooping, isReversed, isPingPong);
 }

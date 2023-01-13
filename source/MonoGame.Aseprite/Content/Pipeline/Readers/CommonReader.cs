@@ -121,9 +121,9 @@ public abstract class CommonReader<T> : ContentTypeReader<T>
 
             int frameCount = input.ReadInt32();
 
-            AnimationBuilder builder = new(name, spriteSheet);
+            AnimationCycleBuilder builder = new(name, spriteSheet);
             builder.IsLooping(isLooping)
-                   .SetIsReversed(isReversed)
+                   .IsReversed(isReversed)
                    .IsPingPong(isPingPong);
 
             for (int j = 0; j < frameCount; j++)
@@ -133,7 +133,7 @@ public abstract class CommonReader<T> : ContentTypeReader<T>
                 builder.AddFrame(index, TimeSpan.FromTicks(ticks));
             }
 
-            spriteSheet.AddAnimation(builder.Build());
+            spriteSheet.AddAnimationCycle(builder.Build());
         }
     }
 
