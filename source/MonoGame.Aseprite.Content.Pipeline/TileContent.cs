@@ -22,17 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
-/// <summary>
-///     Represents the result of the <see cref="TilemapProcessor"/>.
-/// </summary>
-public sealed class TilemapProcessorResult
+
+public sealed class TileContent
 {
-    internal List<Tileset> Tilesets { get; }
-    internal List<TilemapFrameContent> Frames { get; }
-    internal TilemapProcessorResult(List<Tileset> tilesets, List<TilemapFrameContent> frames) =>
-        (Tilesets, Frames) = (tilesets, frames);
+    internal byte FlipFlag { get; }
+    internal float Rotation { get; }
+    internal int TilesetTileID { get; }
+
+    internal TileContent(byte flipFlag, float rotation, int tilesetTileID) =>
+        (FlipFlag, Rotation, TilesetTileID) = (flipFlag, rotation, tilesetTileID);
 }

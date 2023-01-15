@@ -32,9 +32,11 @@ internal sealed class Tileset
     internal Color[] Pixels { get; }
     internal int ID { get; }
     internal int TileCount { get; }
-    internal Point TileSize { get; }
+    internal int TileWidth { get; }
+    internal int TileHeight { get; }
     internal string Name { get; }
-    internal Point Size { get; }
+    internal int Width { get; }
+    internal int Height { get; }
 
     internal Color[] this[int tileId]
     {
@@ -45,20 +47,20 @@ internal sealed class Tileset
                 throw new ArgumentOutOfRangeException(nameof(tileId));
             }
 
-            int len = TileSize.X * TileSize.Y;
+            int len = TileWidth * TileHeight;
             return Pixels[(tileId * len)..((tileId * len) + len)];
         }
     }
 
-    internal Tileset(int id, int count, Point size, string name, Color[] pixels)
+    internal Tileset(int id, int count, int tileWidth, int tileHeight, string name, Color[] pixels)
     {
         ID = id;
         TileCount = count;
-        TileSize = size;
+        TileWidth = tileWidth;
+        TileHeight = tileHeight;
         Name = name;
         Pixels = pixels;
-
-        //  Aseprite stores tileset images as a vertical strip
-        Size = new(TileSize.X, TileSize.Y * TileCount);
+        Width = tileWidth;
+        Height = tileHeight * TileCount;
     }
 }

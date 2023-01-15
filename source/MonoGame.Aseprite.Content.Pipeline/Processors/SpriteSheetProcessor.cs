@@ -147,12 +147,12 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
             frameCount -= duplicateMap.Count;
         }
 
-        Point gridSize = CalculateGridSize(frameCount);
-        Point imageSize = CalculateImageSize(input.FrameSize, gridSize);
-        Color[] pixels = GenerateImage(frames, input.FrameSize, gridSize, imageSize, duplicateMap);
+        (int Columns, int Rows) grid = CalculateGridSize(frameCount);
+        (int Width, int Height) imageSize = CalculateImageSize(input.FrameWidth, input.FrameHeight, grid.Columns, grid.Rows);
+        Color[] pixels = GenerateImage(frames, input.FrameWidth, input.FrameHeight, grid.Columns, grid.Rows, imageSize.Width, imageSize.Height, duplicateMap);
 
-        TextureContent textureContent = new(imageSize, pixels);
-        return new CreateTextureContentResult(textureContent, duplicateMap, gridSize.X);
+        TextureContent textureContent = new(imageSize.Width, imageSize.Height, pixels);
+        return new CreateTextureContentResult(textureContent, duplicateMap, grid.Columns);
     }
 
     private Color[][] FlattenFrames(List<Frame> frames)
@@ -188,32 +188,32 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
         return map;
     }
 
-    private Point CalculateGridSize(int frameCount)
+    private (int Columns, int Rows) CalculateGridSize(int frameCount)
     {
         double sqrt = Math.Sqrt(frameCount);
         int columns = (int)Math.Ceiling(sqrt);
         int rows = (frameCount + columns - 1) / columns;
-        return new(columns, rows);
+        return (columns, rows);
     }
 
-    private Point CalculateImageSize(Point frameSize, Point gridSize)
+    private (int Width, int Height) CalculateImageSize(int frameWidth, int frameHeight, int columns, int rows)
     {
-        int width = (gridSize.X * frameSize.X) +
+        int width = (columns * frameWidth) +
                     (BorderPadding * 2) +
-                    (Spacing * (gridSize.X - 1)) +
-                    (InnerPadding * 2 * gridSize.X);
+                    (Spacing * (columns - 1)) +
+                    (InnerPadding * 2 * rows);
 
-        int height = (gridSize.Y * frameSize.Y) +
+        int height = (rows * frameHeight) +
                      (BorderPadding * 2) +
-                     (Spacing * (gridSize.Y - 1)) +
-                     (InnerPadding * 2 * gridSize.Y);
+                     (Spacing * (rows - 1)) +
+                     (InnerPadding * 2 * rows);
 
-        return new(width, height);
+        return (width, height);
     }
 
-    private Color[] GenerateImage(Color[][] frames, Point frameSize, Point gridSize, Point imageSize, Dictionary<int, int> duplicateMap)
+    private Color[] GenerateImage(Color[][] frames, int frameWidth, int frameHeight, int columns, int rows, int imageWidth, int imageHeight, Dictionary<int, int> duplicateMap)
     {
-        Color[] image = new Color[imageSize.X * imageSize.Y];
+        Color[] image = new Color[imageWidth * imageHeight];
 
         int offset = 0;
 
@@ -225,31 +225,31 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
                 continue;
             }
 
-            int column = (fNum - offset) % gridSize.X;
-            int row = (fNum - offset) / gridSize.X;
+            int column = (fNum - offset) % columns;
+            int row = (fNum - offset) / columns;
 
             Color[] frame = frames[fNum];
-            CopyFrameToImage(frame, image, frameSize, imageSize, column, row);
+            CopyFrameToImage(frame, image, frameWidth, frameHeight, imageWidth, imageHeight, column, row);
         }
 
         return image;
     }
 
-    private void CopyFrameToImage(Color[] frame, Color[] image, Point frameSize, Point imageSize, int column, int row)
+    private void CopyFrameToImage(Color[] frame, Color[] image, int frameWidth, int frameHeight, int imageWidth, int imageHeight, int column, int row)
     {
         for (int i = 0; i < frame.Length; i++)
         {
-            int x = (i % frameSize.X) + (column * frameSize.X) +
+            int x = (i % frameWidth) + (column * frameWidth) +
                     BorderPadding +
                     (Spacing * column) +
                     (InnerPadding * (column + column + 1));
 
-            int y = (i / frameSize.X) + (row * frameSize.Y) +
+            int y = (i / frameWidth) + (row * frameHeight) +
                     BorderPadding +
                     (Spacing * row) +
                     (InnerPadding * (row + row + 1));
 
-            int index = y * imageSize.X + x;
+            int index = y * imageWidth + x;
             image[index] = frame[i];
         }
     }
@@ -275,19 +275,17 @@ public sealed class SpritesheetProcessor : ContentProcessor<AsepriteFile, Sprite
             int column = (fNum - offset) % columns;
             int row = (fNum - offset) / columns;
 
-            Point location;
+            int x = (column * input.FrameWidth) +
+                    BorderPadding +
+                    (Spacing * column) +
+                    (InnerPadding * (column + column + 1));
 
-            location.X = (column * input.FrameSize.X) +
-                         BorderPadding +
-                         (Spacing * column) +
-                         (InnerPadding * (column + column + 1));
+            int y = (row * input.FrameHeight) +
+                    BorderPadding +
+                    (Spacing * row) +
+                    (InnerPadding * (row + row + 1));
 
-            location.Y = (row * input.FrameSize.Y) +
-                         BorderPadding +
-                         (Spacing * row) +
-                         (InnerPadding * (row + row + 1));
-
-            Rectangle bounds = new(location, input.FrameSize);
+            Rectangle bounds = new(x, y, input.FrameWidth, input.FrameHeight);
             TextureRegionContent frame = new($"frame_{fNum}", bounds);
             frames.Add(frame);
             originalToDuplicateLookup.Add(fNum, frame);

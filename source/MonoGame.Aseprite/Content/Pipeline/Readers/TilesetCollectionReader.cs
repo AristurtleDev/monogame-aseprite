@@ -22,7 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
@@ -30,8 +33,47 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 ///     Provides method for reading a <see cref="TilesetCollection"/> from an
 ///     xnb file that was generated with the MonoGame.Aseprite library.
 /// </summary>
-public sealed class TilesetCollectionReader : CommonReader<TilesetCollection>
+public sealed class TilesetCollectionReader : ContentTypeReader<TilesetCollection>
 {
-    protected override TilesetCollection Read(ContentReader input, TilesetCollection existingInstance) =>
-        existingInstance is not null ? existingInstance : ReadTilesetCollection(input);
+    protected override TilesetCollection Read(ContentReader input, TilesetCollection? existingInstance)
+    {
+        if(existingInstance is not null)
+        {
+            return existingInstance;
+        }
+
+        TilesetCollection collection = new();
+
+        int count = input.ReadInt32();
+
+        for (int i = 0; i < count; i++)
+        {
+            string name = input.ReadString();
+            int tileCount = input.ReadInt32();
+            int tileWidth = input.ReadInt32();
+            int tileHeight = input.ReadInt32();
+
+            //  Texture Content
+            int textureWidth = input.ReadInt32();
+            int textureHeight = input.ReadInt32();
+            int pixelCount = input.ReadInt32();
+            Color[] pixels = new Color[pixelCount];
+            for (int j = 0; j < pixelCount; j++)
+            {
+                pixels[j] = input.ReadColor();
+            }
+
+            //  Create texture
+            Texture2D texture = new(input.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
+            texture.SetData<Color>(pixels);
+
+            Tileset tileset = new(name, texture, tileWidth, tileHeight);
+
+            Debug.Assert(tileCount == tileset.TileCount);
+
+            collection.AddTileset(tileset);
+        }
+
+        return collection;
+    }
 }

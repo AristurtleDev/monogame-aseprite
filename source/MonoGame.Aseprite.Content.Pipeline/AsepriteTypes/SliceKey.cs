@@ -31,7 +31,6 @@ internal sealed class SliceKey
 {
     internal int FrameIndex { get; }
     internal Rectangle Bounds { get; }
-    internal Point Size => Bounds.Size;
     internal Rectangle? CenterBounds { get; }
     internal Point? Pivot { get; }
 

@@ -22,22 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-
 namespace MonoGame.Aseprite.Content.Pipeline;
 
-/// <summary>
-///     Represents the content that is written to the file for a tile map layer.
-/// </summary>
-public sealed class TilemapLayerContent
+public sealed class TilemapContent
 {
-    internal int TilesetID { get; }
-    internal string Name { get; }
-    internal int Columns { get; }
-    internal int Rows { get; }
-    internal TileContent[] Tiles { get; }
-    internal Point Offset { get; }
+    internal List<TilesetContent> Tilesets { get; }
+    internal List<TilemapLayerContent> Layers { get; }
 
-    internal TilemapLayerContent(string name, int tilesetId, int columns, int rows, Point offset, TileContent[] tiles) =>
-        (Name, TilesetID, Columns, Rows, Offset, Tiles) = (name, TilesetID, columns, rows, offset, tiles);
+    internal TilemapContent(List<TilesetContent> tilesets, List<TilemapLayerContent> layers) =>
+        (Tilesets, Layers) = (tilesets, layers);
 }

@@ -32,10 +32,18 @@ namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 ///     <see cref="TextureContent"/> class to an xnb file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class TextureWriter : CommonWriter<TextureContent>
+public sealed class TextureWriter : ContentTypeWriter<TextureContent>
 {
-    protected override void Write(ContentWriter output, TextureContent input) =>
-        WriteTextureContent(output, input);
+    protected override void Write(ContentWriter output, TextureContent input)
+    {
+        output.Write(input.Width);
+        output.Write(input.Height);
+        output.Write(input.Pixels.Length);
+        for (int i = 0; i < input.Pixels.Length; i++)
+        {
+            output.Write(input.Pixels[i]);
+        }
+    }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {

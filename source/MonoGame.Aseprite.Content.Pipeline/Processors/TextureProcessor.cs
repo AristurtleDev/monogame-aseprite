@@ -106,6 +106,6 @@ public sealed class TextureProcessor : ContentProcessor<AsepriteFile, TextureCon
 
         Color[] pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
 
-        return new TextureContent(file.FrameSize, pixels);
+        return new TextureContent(file.FrameWidth, file.FrameHeight, pixels);
     }
 }

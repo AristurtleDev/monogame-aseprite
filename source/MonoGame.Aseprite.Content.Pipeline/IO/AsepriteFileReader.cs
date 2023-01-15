@@ -57,10 +57,8 @@ internal static class AsepriteFileReader
         }
 
         file.FrameCount = ReadWord(reader);
-        ushort width = ReadWord(reader);
-        ushort height = ReadWord(reader);
-
-        file.FrameSize = new(width, height);
+        file.FrameWidth = ReadWord(reader);
+        file.FrameHeight = ReadWord(reader);
 
         file.ColorDepth = ReadWord(reader);
         uint flags = ReadDword(reader);
@@ -101,7 +99,7 @@ internal static class AsepriteFileReader
                            nChunksB :
                            nChunksA;
 
-            Frame frame = new(file.FrameSize, duration);
+            Frame frame = new(file.FrameWidth, file.FrameHeight, duration);
             file.Frames.Add(frame);
 
             //  Start iterator at -1 so after tags chunk is read, it'll
@@ -208,7 +206,7 @@ internal static class AsepriteFileReader
     {
         uint index = ReadDword(reader);
         Tileset tileset = file.Tilesets[(int)index];
-        return new(tileset, isVisible, isBackground, isReference, blend, opacity, name);
+        return new(tileset, (int)index, isVisible, isBackground, isReference, blend, opacity, name);
     }
 
     private static void ReadCelChunk(BinaryReader reader, AsepriteFile file, long chunkEnd)
@@ -244,10 +242,9 @@ internal static class AsepriteFileReader
         int len = (int)(chunkEnd - reader.BaseStream.Position);
         byte[] data = ReadBytes(reader, len);
 
-        Point size = new(width, height);
         Color[] pixels = ToColor(data, file.ColorDepth, file.TransparentIndex, file.Palette);
 
-        return new(size, pixels, layer, position, opacity);
+        return new(width, height, pixels, layer, position, opacity);
     }
 
     private static Cel ReadLinkedCel(BinaryReader reader, AsepriteFile file, Frame frame)
@@ -269,7 +266,7 @@ internal static class AsepriteFileReader
         Point size = new(width, height);
         Color[] pixels = ToColor(data, file.ColorDepth, file.TransparentIndex, file.Palette);
 
-        return new(size, pixels, layer, position, opacity);
+        return new(width, height, pixels, layer, position, opacity);
     }
 
     private static TilemapCel ReadCompressedTilemapCel(BinaryReader reader, Layer layer, Point position, byte opacity, long chunkEnd)
@@ -293,7 +290,7 @@ internal static class AsepriteFileReader
         int bytesPerTile = bitsPerTile / 8;
         int tileCount = data.Length / bytesPerTile;
 
-        TilemapCel cel = new(size, layer, position, opacity);
+        TilemapCel cel = new(width, height, layer, position, opacity);
 
         for (int i = 0, b = 0; i < tileCount; i++, b += bytesPerTile)
         {
@@ -439,7 +436,7 @@ internal static class AsepriteFileReader
         Color[] pixels = ToColor(data, file.ColorDepth, file.TransparentIndex, file.Palette);
         Point size = new(width, height);
 
-        Tileset tileset = new((int)id, (int)count, size, name, pixels);
+        Tileset tileset = new((int)id, (int)count, width, height, name, pixels);
         file.Tilesets.Add(tileset);
     }
 

@@ -26,11 +26,11 @@ namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
 internal sealed class Tile
 {
-    internal int TilesetTileId { get; }
+    internal int TilesetTileID { get; }
     internal int XFlip { get; }
     internal int YFlip { get; }
     internal int Rotation { get; }
 
     internal Tile(int tilesetTileId, int xFlip, int yFlip, int rotation) =>
-        (TilesetTileId, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);
+        (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);
 }

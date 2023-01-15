@@ -31,8 +31,9 @@ namespace MonoGame.Aseprite.Content.Pipeline;
 /// </summary>
 public sealed class TextureContent
 {
-    internal Point Size { get; }
+    internal int Width { get; }
+    internal int Height { get; }
     internal Color[] Pixels { get; }
 
-    internal TextureContent(Point size, Color[] pixels) => (Size, Pixels) = (size, pixels);
+    internal TextureContent(int width, int height, Color[] pixels) => (Width, Height, Pixels) = (width, height, pixels);
 }

@@ -32,10 +32,24 @@ namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 ///     <see cref="TilesetContent"/> class to an xnb file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class TilesetWriter : CommonWriter<TilesetContent>
+public sealed class TilesetWriter : ContentTypeWriter<TilesetContent>
 {
-    protected override void Write(ContentWriter output, TilesetContent value) =>
-        WriteTilesetContent(output, value);
+    protected override void Write(ContentWriter output, TilesetContent input)
+    {
+        output.Write(input.Name);
+        output.Write(input.TileCount);
+        output.Write(input.TileWidth);
+        output.Write(input.TileHeight);
+
+        //  Texture Content
+        output.Write(input.TextureContent.Width);
+        output.Write(input.TextureContent.Height);
+        output.Write(input.TextureContent.Pixels.Length);
+        for (int j = 0; j < input.TextureContent.Pixels.Length; j++)
+        {
+            output.Write(input.TextureContent.Pixels[j]);
+        }
+    }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {

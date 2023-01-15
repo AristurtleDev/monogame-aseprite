@@ -72,8 +72,8 @@ public sealed class TilesetProcessor : ContentProcessor<AsepriteFile, TilesetCon
     {
         if (TryGetTilesetByName(file.Tilesets, TilesetName, out Tileset? tileset))
         {
-            TextureContent textureContent = new(tileset.Size, tileset.Pixels);
-            return new(tileset.Name, tileset.TileCount, tileset.TileSize, textureContent);
+            TextureContent textureContent = new(tileset.Width, tileset.Height, tileset.Pixels);
+            return new(tileset.Name, tileset.TileCount, tileset.TileWidth, tileset.TileHeight, textureContent);
         }
 
         throw NoTilesetFound(file.Tilesets);

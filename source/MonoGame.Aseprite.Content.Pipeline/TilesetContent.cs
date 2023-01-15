@@ -33,9 +33,10 @@ public sealed class TilesetContent
 {
     internal string Name { get; }
     internal int TileCount { get; }
-    internal Point TileSize { get; }
+    internal int TileWidth { get; }
+    internal int TileHeight { get; }
     internal TextureContent TextureContent { get; set; }
 
-    internal TilesetContent(string name, int tileCount, Point tileSize, TextureContent textureContent) =>
-        (Name, TileCount, TileSize, TextureContent) = (name, tileCount, tileSize, textureContent);
+    internal TilesetContent(string name, int tileCount, int tileWidth, int tileHeight, TextureContent textureContent) =>
+        (Name, TileCount, TileWidth, TileHeight, TextureContent) = (name, tileCount, tileWidth, tileHeight, textureContent);
 }

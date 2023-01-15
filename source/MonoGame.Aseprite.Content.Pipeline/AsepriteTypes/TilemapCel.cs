@@ -29,8 +29,9 @@ namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 internal sealed class TilemapCel : Cel
 {
     internal List<Tile> Tiles { get; } = new();
-    internal Point Size { get; }
+    internal int Width { get; }
+    internal int Height { get; }
     internal Tileset Tileset => LayerAs<TilemapLayer>().Tileset;
-    internal TilemapCel(Point size, Layer layer, Point position, int opacity)
-        : base(layer, position, opacity) => Size = size;
+    internal TilemapCel(int width, int height, Layer layer, Point position, int opacity)
+        : base(layer, position, opacity) => (Width, Height) = (width, height);
 }

@@ -60,8 +60,8 @@ public sealed class TilesetCollectionProcessor : ContentProcessor<AsepriteFile, 
         for (int i = 0; i < file.Tilesets.Count; i++)
         {
             Tileset tileset = file.Tilesets[i];
-            TextureContent textureContent = new(tileset.Size, tileset.Pixels);
-            TilesetContent tilesetContent = new(tileset.Name, tileset.TileCount, tileset.TileSize, textureContent);
+            TextureContent textureContent = new(tileset.Width, tileset.Height, tileset.Pixels);
+            TilesetContent tilesetContent = new(tileset.Name, tileset.TileCount, tileset.TileWidth, tileset.TileHeight, textureContent);
             content.Tilesets.Add(tilesetContent);
         }
 

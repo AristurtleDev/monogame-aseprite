@@ -29,14 +29,15 @@ namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 internal sealed class Frame
 {
     internal List<Cel> Cels { get; } = new();
-    internal Point Size { get; }
+    internal int Width { get; }
+    internal int Height { get; }
     internal int Duration { get; }
 
-    internal Frame(Point size, int duration) => (Size, Duration) = (size, duration);
+    internal Frame(int width, int height, int duration) => (Width, Height, Duration) = (width, height, duration);
 
     internal Color[] FlattenFrame(bool onlyVisibleLayers = true, bool includeBackgroundLayer = false)
     {
-        Color[] result = new Color[Size.X * Size.Y];
+        Color[] result = new Color[Width * Height];
 
         for (int c = 0; c < Cels.Count; c++)
         {
@@ -57,16 +58,16 @@ internal sealed class Frame
             if (cel is ImageCel imageCel)
             {
                 pixels = imageCel.Pixels.ToArray();
-                celWidth = imageCel.Size.X;
-                celHeight = imageCel.Size.Y;
+                celWidth = imageCel.Width;
+                celHeight = imageCel.Height;
                 celX = imageCel.Position.X;
                 celY = imageCel.Position.Y;
             }
             else if (cel is TilemapCel tilemapCel)
             {
                 Tileset tileset = tilemapCel.Tileset;
-                celWidth = tilemapCel.Size.X * tileset.TileSize.X;
-                celHeight = tilemapCel.Size.Y * tileset.TileSize.Y;
+                celWidth = tilemapCel.Width * tileset.TileWidth;
+                celHeight = tilemapCel.Height* tileset.TileHeight;
                 celX = tilemapCel.Position.X;
                 celY = tilemapCel.Position.Y;
                 pixels = new Color[celWidth * celHeight];
@@ -74,14 +75,14 @@ internal sealed class Frame
                 for (int t = 0; t < tilemapCel.Tiles.Count; t++)
                 {
                     Tile tile = tilemapCel.Tiles[t];
-                    int column = t % tilemapCel.Size.X;
-                    int row = t / tilemapCel.Size.X;
-                    Color[] tilePixels = tileset[tile.TilesetTileId];
+                    int column = t % tilemapCel.Width;
+                    int row = t / tilemapCel.Width;
+                    Color[] tilePixels = tileset[tile.TilesetTileID];
 
                     for (int p = 0; p < tilePixels.Length; p++)
                     {
-                        int px = (p % tileset.TileSize.X) + (column * tileset.TileSize.X);
-                        int py = (p / tileset.TileSize.X) + (row * tileset.TileSize.Y);
+                        int px = (p % tileset.TileWidth) + (column * tileset.TileHeight);
+                        int py = (p / tileset.TileWidth) + (row * tileset.TileHeight);
                         int index = py * celWidth + px;
                         pixels[index] = tilePixels[p];
                     }
@@ -97,7 +98,7 @@ internal sealed class Frame
             {
                 int px = (p % celWidth) + celX;
                 int py = (p / celWidth) + celY;
-                int index = py * Size.X + px;
+                int index = py * Width + px;
 
                 //  Sometimes a cel can have a negative x and/or y value.  This
                 //  is caused by selecting an area in within Aseprite and then

@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -31,9 +32,30 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 ///     Provides method for reading a <see cref="Texture2D"/> from an xnb file
 ///     that was generated using the MonoGame.Aseprite library.
 /// </summary>
-public sealed class TextureReader : CommonReader<Texture2D>
+public sealed class TextureReader : ContentTypeReader<Texture2D>
 {
-    protected override Texture2D Read(ContentReader input, Texture2D existingInstance) =>
-        existingInstance is not null ? existingInstance : ReadTexture(input);
+    protected override Texture2D Read(ContentReader input, Texture2D? existingInstance)
+    {
+        if (existingInstance is not null)
+        {
+            return existingInstance;
+        }
+
+        int w = input.ReadInt32();
+        int h = input.ReadInt32();
+        int pixelCount = input.ReadInt32();
+        Color[] pixels = new Color[pixelCount];
+        for (int i = 0; i < pixelCount; i++)
+        {
+            pixels[i] = input.ReadColor();
+        }
+
+        //  Create texture
+        Texture2D texture = new(input.GetGraphicsDevice(), w, h, false, SurfaceFormat.Color);
+        texture.SetData<Color>(pixels);
+
+        return texture;
+
+    }
 
 }

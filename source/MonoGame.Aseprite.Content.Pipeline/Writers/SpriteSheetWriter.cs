@@ -32,10 +32,51 @@ namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 ///     <see cref="SpriteSheetContent"/> class to an xnb file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class SpriteSheetWriter : CommonWriter<SpriteSheetContent>
+public sealed class SpriteSheetWriter : ContentTypeWriter<SpriteSheetContent>
 {
-    protected override void Write(ContentWriter output, SpriteSheetContent value) =>
-        WriteSpriteSheetContent(output, value);
+    protected override void Write(ContentWriter output, SpriteSheetContent value)
+    {
+        output.Write(value.Name);
+
+        //  Texture content
+        output.Write(value.TextureContent.Width);
+        output.Write(value.TextureContent.Height);
+        output.Write(value.TextureContent.Pixels.Length);
+        for (int i = 0; i < value.TextureContent.Pixels.Length; i++)
+        {
+            output.Write(value.TextureContent.Pixels[i]);
+        }
+
+        //  Texture Region Content
+        output.Write(value.Regions.Count);
+        for (int i = 0; i < value.Regions.Count; i++)
+        {
+            TextureRegionContent region = value.Regions[i];
+            output.Write(region.Name);
+            output.Write(region.Bounds.X);
+            output.Write(region.Bounds.Y);
+            output.Write(region.Bounds.Width);
+            output.Write(region.Bounds.Height);
+        }
+
+        //  Animation Content
+        output.Write(value.Animations.Count);
+        for (int i = 0; i < value.Animations.Count; i++)
+        {
+            AnimationContent animation = value.Animations[i];
+            output.Write(animation.Name);
+            output.Write(animation.LoopReversePingPongMask);
+
+            //  Animation Frames
+            output.Write(animation.Frames.Length);
+            for (int j = 0; j < animation.Frames.Length; j++)
+            {
+                AnimationFrameContent frame = animation.Frames[j];
+                output.Write(frame.FrameIndex);
+                output.Write(frame.Duration.Ticks);
+            }
+        }
+    }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {

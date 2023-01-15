@@ -330,4 +330,44 @@ public static class SpriteBatchExtensions
         Draw(spriteBatch, animation.CurrentFrame.TextureRegion, destinationRectangle, color, rotation, origin, effects, layerDepth);
 
     #endregion Animation
+
+    #region Tilemap Layer
+
+    public static void Draw(this SpriteBatch spriteBatch, Tilemap tilemap, Vector2 position, Color color, Vector2 scale, float layerDepth)
+    {
+        foreach (TilemapLayer layer in tilemap)
+        {
+            if (layer.IsVisible)
+            {
+                Vector2 actualPosition = position + (layer.Offset * scale);
+                Draw(spriteBatch, layer, actualPosition, color, scale, layerDepth);
+            }
+        }
+    }
+
+    public static void Draw(this SpriteBatch spriteBatch, TilemapLayer layer, Vector2 position, Color color, Vector2 scale, float layerDepth)
+    {
+        Vector2 tPosition = position;
+
+        for (int column = 0; column < layer.ColumnCount; column++)
+        {
+            for (int row = 0; row < layer.RowCount; row++)
+            {
+                tPosition.X = position.X + (column * layer.Tileset.TileWidth * scale.X);
+                tPosition.Y = position.Y + (row * layer.Tileset.TileHeight * scale.Y);
+                Color renderColor = color * layer.Opacity;
+                Tile tile = layer.GetTile(column, row);
+                SpriteEffects flipEffects = SpriteEffects.None |
+                                            (tile.FlipVertically ? SpriteEffects.FlipVertically : 0) |
+                                            (tile.FlipHorizontally ? SpriteEffects.FlipHorizontally : 0);
+
+                Draw(spriteBatch, tile.TextureRegion, tPosition, renderColor, tile.Rotation, Vector2.Zero, scale, flipEffects, layerDepth);
+            }
+        }
+    }
+
+
+
+
+    #endregion Tilemap Layer
 }

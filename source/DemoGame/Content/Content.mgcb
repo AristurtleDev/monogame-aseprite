@@ -40,5 +40,11 @@
 #begin tileset-collection.aseprite
 /importer:AsepriteFileImporter
 /processor:TilesetProcessor
+/processorParam:TilesetName=
 /build:tileset-collection.aseprite
+
+#begin townmap.aseprite
+/importer:AsepriteFileImporter
+/processor:TilemapProcessor
+/build:townmap.aseprite
 

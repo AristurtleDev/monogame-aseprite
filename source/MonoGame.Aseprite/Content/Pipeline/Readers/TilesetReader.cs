@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,8 +33,37 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 ///     Provides method for reading a <see cref="Tileset"/> from an xnb file
 ///     that was generated using the MonoGame.Aseprite library.
 /// </summary>
-public sealed class TilesetReader : CommonReader<Tileset>
+public sealed class TilesetReader : ContentTypeReader<Tileset>
 {
-    protected override Tileset Read(ContentReader input, Tileset? existingInstance) =>
-        existingInstance is not null ? existingInstance : ReadTileset(input);
+    protected override Tileset Read(ContentReader input, Tileset? existingInstance)
+    {
+        if(existingInstance is not null)
+        {
+            return existingInstance;
+        }
+
+        string name = input.ReadString();
+        int tileCount = input.ReadInt32();
+        int tileWidth = input.ReadInt32();
+        int tileHeight = input.ReadInt32();
+
+        //  Texture Content
+        int textureWidth = input.ReadInt32();
+        int textureHeight = input.ReadInt32();
+        int pixelCount = input.ReadInt32();
+        Color[] pixels = new Color[pixelCount];
+        for (int i = 0; i < pixelCount; i++)
+        {
+            pixels[i] = input.ReadColor();
+        }
+
+        //  Create texture
+        Texture2D texture = new(input.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
+        texture.SetData<Color>(pixels);
+
+        Tileset tileset = new(name, texture, tileWidth, tileHeight);
+
+        Debug.Assert(tileCount == tileset.TileCount);
+        return tileset;
+    }
 }

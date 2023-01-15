@@ -116,7 +116,7 @@ public class Game1 : Game
     {
 
         _spriteBatch.Draw(_pixel, rect, color);
-        _spriteBatch.Draw(_sprite, position: new Vector2(rect.X, rect.Y), Color.White, 0.0f, Vector2.Zero, new Vector2(_scale, _scale), SpriteEffects.None, 0.0f);
+        _spriteBatch.Draw(_animatedSprite, position: new Vector2(rect.X, rect.Y), Color.White, 0.0f, Vector2.Zero, new Vector2(_scale, _scale), SpriteEffects.None, 0.0f);
 
         // _spriteBatch.Draw(_sprite, position: new Vector2(rect.X, rect.Y), scale: new Vector2(_scale, _scale));
     }

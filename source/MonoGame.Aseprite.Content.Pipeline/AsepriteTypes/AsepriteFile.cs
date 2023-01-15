@@ -38,7 +38,8 @@ public sealed class AsepriteFile
     internal Color[] Palette => _palette;
     internal int TransparentIndex { get; set; }
     internal string Name { get; set; }
-    internal Point FrameSize { get; set; }
+    internal int FrameWidth { get; set; }
+    internal int FrameHeight { get; set; }
     internal ushort ColorDepth { get; set; }
     internal int FrameCount { get; set; }
     internal bool LayerOpacityValid { get; set; }

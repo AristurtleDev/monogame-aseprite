@@ -24,13 +24,34 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite;
 
+/// <summary>
+///     Defines a tile with a texture region in a tilemap layer.
+/// </summary>
 public class Tile
 {
-    public int TilesetIndex { get; }
-    public bool FlipVertically { get; }
-    public bool FlipHorizontally { get; }
-    public float Rotation { get; }
+    /// <summary>
+    ///     Gets the texture region that represents this tile.
+    /// </summary>
+    public TextureRegion TextureRegion { get; }
 
-    public Tile(int tilesetIndex, bool flipVertically, bool flipHorizontally, float rotation) =>
-        (TilesetIndex, FlipVertically, FlipHorizontally, Rotation) = (tilesetIndex, flipVertically, flipHorizontally, rotation);
+    /// <summary>
+    ///     Gets or Sets a value that indicates whether this tile should be
+    ///     flipped on its vertical axis when rendered.
+    /// </summary>
+    public bool FlipVertically { get; set; }
+
+    /// <summary>
+    ///     Gets or Sets a value that indicates whether this tile should be
+    ///     flipped on its horizontal axis when rendered.
+    /// </summary>
+    public bool FlipHorizontally { get; set; }
+
+    /// <summary>
+    ///     Gets or Sets the amount of rotation, in radians, to apply to this
+    ///     tile when rendered.
+    /// </summary>
+    public float Rotation { get; set; }
+
+    internal Tile(TextureRegion textureRegion, bool flipVertically, bool flipHorizontally, float rotation) =>
+        (TextureRegion, FlipVertically, FlipHorizontally, Rotation) = (textureRegion, flipVertically, flipHorizontally, rotation);
 }

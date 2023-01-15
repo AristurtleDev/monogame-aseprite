@@ -30,8 +30,9 @@ namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 internal sealed class ImageCel : Cel
 {
     internal Color[] Pixels { get; }
-    internal Point Size { get; }
+    internal int Width { get; }
+    internal int Height { get; }
 
-    internal ImageCel(Point size, Color[] pixels, Layer layer, Point position, int opacity)
-        : base(layer, position, opacity) => (Size, Pixels) = (size, pixels);
+    internal ImageCel(int width, int height, Color[] pixels, Layer layer, Point position, int opacity)
+        : base(layer, position, opacity) => (Width, Height, Pixels) = (width, height, pixels);
 }

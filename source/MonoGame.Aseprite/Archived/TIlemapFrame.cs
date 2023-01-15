@@ -22,23 +22,18 @@
 // SOFTWARE.
 // ---------------------------------------------------------------------------- */
 
-// using Microsoft.Xna.Framework.Content.Pipeline;
-// using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+// using Microsoft.Xna.Framework;
+// using Microsoft.Xna.Framework.Graphics;
 
-// namespace MonoGame.Aseprite.Content.Pipeline.Writers;
+// namespace MonoGame.Aseprite;
 
-// /// <summary>
-// ///     Provides method for writing an instance of the
-// ///     <see cref="TextureAtlasContent"/> class to an xnb file.
-// /// </summary>
-// [ContentTypeWriter]
-// public sealed class TextureAtlasWriter : CommonWriter<TextureAtlasContent>
+// public sealed class TilemapFrame
 // {
-//     protected override void Write(ContentWriter output, TextureAtlasContent value) =>
-//         WriteTextureAtlasContent(output, value);
 
-//     public override string GetRuntimeReader(TargetPlatform targetPlatform)
-//     {
-//         return "MonoGame.Aseprite.Content.Pipeline.Readers.TextureAtlasReader, MonoGame.Aseprite";
-//     }
+//     public string Name { get; }
+//     public TimeSpan Duration { get; }
+//     public List<TilemapFrameLayer> Layers { get; } = new();
+
+//     internal TilemapFrame(string name, TimeSpan duration) =>
+//         (Name, Duration) = (name, duration);
 // }

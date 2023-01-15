@@ -26,8 +26,9 @@ namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
 internal sealed class TilemapLayer : Layer
 {
+    internal int TilesetID { get; }
     internal Tileset Tileset { get; }
 
-    internal TilemapLayer(Tileset tileset, bool isVisible, bool isBackground, bool isReference, ushort blend, byte opacity, string name)
-        : base(isVisible, isBackground, isReference, blend, opacity, name) => Tileset = tileset;
+    internal TilemapLayer(Tileset tileset, int tilesetID, bool isVisible, bool isBackground, bool isReference, ushort blend, byte opacity, string name)
+        : base(isVisible, isBackground, isReference, blend, opacity, name) => (Tileset, TilesetID) = (tileset, tilesetID);
 }
