@@ -30,7 +30,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 public sealed class TilemapReader : ContentTypeReader<Tilemap>
 {
-    protected override Tilemap Read(ContentReader input, Tilemap existingInstance)
+    protected override Tilemap Read(ContentReader reader, Tilemap existingInstance)
     {
         if (existingInstance is not null)
         {
@@ -39,27 +39,28 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
 
         //  Tileset content
         List<Tileset> tilesets = new();
-        int tilesetCount = input.ReadInt32();
+        int tilesetCount = reader.ReadInt32();
         for (int i = 0; i < tilesetCount; i++)
         {
-            string name = input.ReadString();
-            int tileCount = input.ReadInt32();
-            int tileWidth = input.ReadInt32();
-            int tileHeight = input.ReadInt32();
+            string name = reader.ReadString();
+            int tileCount = reader.ReadInt32();
+            int tileWidth = reader.ReadInt32();
+            int tileHeight = reader.ReadInt32();
 
             //  Texture content
-            int textureWidth = input.ReadInt32();
-            int textureHeight = input.ReadInt32();
-            int pixelCount = input.ReadInt32();
-            Color[] pixels = new Color[pixelCount];
-            for (int j = 0; j < pixelCount; j++)
-            {
-                pixels[j] = input.ReadColor();
-            }
+            Texture2D texture = ContentReaderHelper.ReadTexture(reader, null);
+            // int textureWidth = reader.ReadInt32();
+            // int textureHeight = reader.ReadInt32();
+            // int pixelCount = reader.ReadInt32();
+            // Color[] pixels = new Color[pixelCount];
+            // for (int j = 0; j < pixelCount; j++)
+            // {
+            //     pixels[j] = reader.ReadColor();
+            // }
 
-            //  Create texture
-            Texture2D texture = new(input.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
-            texture.SetData<Color>(pixels);
+            // //  Create texture
+            // Texture2D texture = new(reader.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
+            // texture.SetData<Color>(pixels);
 
             Tileset tileset = new(name, texture, tileWidth, tileHeight);
             tilesets.Add(tileset);
@@ -68,15 +69,15 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
         Tilemap tilemap = new("");
 
         //  TilemapLayer content
-        int layerCount = input.ReadInt32();
+        int layerCount = reader.ReadInt32();
         for (int i = 0; i < layerCount; i++)
         {
-            int tilesetID = input.ReadInt32();
-            string layerName = input.ReadString();
-            int columns = input.ReadInt32();
-            int rows = input.ReadInt32();
-            int offsetX = input.ReadInt32();
-            int offsetY = input.ReadInt32();
+            int tilesetID = reader.ReadInt32();
+            string layerName = reader.ReadString();
+            int columns = reader.ReadInt32();
+            int rows = reader.ReadInt32();
+            int offsetX = reader.ReadInt32();
+            int offsetY = reader.ReadInt32();
 
             Vector2 offset = new(offsetX, offsetY);
             Tileset tileset = tilesets[tilesetID];
@@ -84,12 +85,12 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
             TilemapLayer layer = new(layerName, tileset, columns, rows, offset);
 
             //  Tile content
-            int tileCount = input.ReadInt32();
+            int tileCount = reader.ReadInt32();
             for (int j = 0; j < tileCount; j++)
             {
-                byte flipFlag = input.ReadByte();
-                float rotation = input.ReadSingle();
-                int tilesetTileID = input.ReadInt32();
+                byte flipFlag = reader.ReadByte();
+                float rotation = reader.ReadSingle();
+                int tilesetTileID = reader.ReadInt32();
 
                 bool flipHorizontal = (flipFlag & 1) != 0;
                 bool flipVertical = (flipFlag & 2) != 0;

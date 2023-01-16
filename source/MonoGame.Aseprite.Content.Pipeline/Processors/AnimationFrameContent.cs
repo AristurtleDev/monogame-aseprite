@@ -22,31 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-
-namespace MonoGame.Aseprite.Content.Pipeline.Writers;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Provides method for writing an instance of the
-///     <see cref="TextureContent"/> class to an xnb file.
+///     Defines the content for a frame of animation.
 /// </summary>
-[ContentTypeWriter]
-public sealed class TextureWriter : ContentTypeWriter<TextureContent>
+public sealed class AnimationFrameContent
 {
-    protected override void Write(ContentWriter output, TextureContent input)
-    {
-        output.Write(input.Width);
-        output.Write(input.Height);
-        output.Write(input.Pixels.Length);
-        for (int i = 0; i < input.Pixels.Length; i++)
-        {
-            output.Write(input.Pixels[i]);
-        }
-    }
+    internal int FrameIndex { get; }
+    internal TimeSpan Duration { get; }
 
-    public override string GetRuntimeReader(TargetPlatform targetPlatform)
-    {
-        return "MonoGame.Aseprite.Content.Pipeline.Readers.TextureReader, MonoGame.Aseprite";
-    }
+    internal AnimationFrameContent(int frameIndex, TimeSpan duration) =>
+        (FrameIndex, Duration) = (frameIndex, duration);
 }

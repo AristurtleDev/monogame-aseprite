@@ -14,6 +14,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin adventurer-ase-export.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=54,136,153,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:adventurer-ase-export.png
+
 #begin adventurer.aseprite
 /importer:AsepriteFileImporter
 /processor:SpritesheetProcessor
@@ -23,28 +35,12 @@
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=0
-/build:adventurer.aseprite
-
-#begin aristurtle-pfp.png
-/importer:TextureImporter
-/processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
 /processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
+/processorParam:GenerateMipMaps=False
 /processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
+/processorParam:ResizePowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:aristurtle-pfp.png
-
-#begin tileset-collection.aseprite
-/importer:AsepriteFileImporter
-/processor:TilesetProcessor
-/processorParam:TilesetName=
-/build:tileset-collection.aseprite
-
-#begin townmap.aseprite
-/importer:AsepriteFileImporter
-/processor:TilemapProcessor
-/build:townmap.aseprite
+/build:adventurer.aseprite
 

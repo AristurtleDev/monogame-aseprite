@@ -23,44 +23,54 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
 ///     Provides method for writing an instance of the
-///     <see cref="TilesetCollectionProcessorResult"/> class to an xnb file.
+///     <see cref="TextureContent"/> class to an xnb file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class TilesetCollectionWriter : ContentTypeWriter<TilesetCollectionProcessorResult>
+public sealed class SingleFrameWriter : ContentTypeWriter<SingleFrameProcessorResult>
 {
-    protected override void Write(ContentWriter writer, TilesetCollectionProcessorResult content)
+    protected override void Write(ContentWriter writer, SingleFrameProcessorResult content)
     {
-        writer.Write(content.Tilesets.Count);
-        for (int i = 0; i < content.Tilesets.Count; i++)
-        {
-            TilesetContent tileset = content.Tilesets[i];
-            writer.Write(tileset.Name);
-            writer.Write(tileset.TileCount);
-            writer.Write(tileset.TileWidth);
-            writer.Write(tileset.TileHeight);
+        writer.WriteTextureContent(content.TextureContent);
+        // MipmapChain mipmaps = input.Mipmaps;
+        // BitmapContent level0 = mipmaps[0];
 
-            //  Texture Content
-            writer.WriteTextureContent(tileset.TextureContent);
-            // writer.Write(tileset.TextureContent.Width);
-            // writer.Write(tileset.TextureContent.Height);
-            // writer.Write(tileset.TextureContent.Pixels.Length);
-            // for (int j = 0; j < tileset.TextureContent.Pixels.Length; j++)
-            // {
-            //     writer.Write(tileset.TextureContent.Pixels[j]);
-            // }
+        // if(!level0.TryGetFormat(out SurfaceFormat format))
+        // {
+        //     throw new InvalidOperationException("Could not get format of texture content");
+        // }
 
-        }
+        // writer.Write((int)format);
+        // writer.Write(level0.Width);
+        // writer.Write(level0.Height);
+        // writer.Write(mipmaps.Count);
+
+        // foreach(BitmapContent level in mipmaps)
+        // {
+        //     byte[] pixelData = level.GetPixelData();
+        //     writer.Write(pixelData.Length);
+        //     writer.Write(pixelData);
+        // }
+
+        // output.Write(input.Width);
+        // output.Write(input.Height);
+        // output.Write(input.Pixels.Length);
+        // for (int i = 0; i < input.Pixels.Length; i++)
+        // {
+        //     output.Write(input.Pixels[i]);
+        // }
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {
-        return "MonoGame.Aseprite.Content.Pipeline.Readers.TilesetCollectionReader, MonoGame.Aseprite";
+        return "MonoGame.Aseprite.Content.Pipeline.Readers.TextureReader, MonoGame.Aseprite";
     }
 }

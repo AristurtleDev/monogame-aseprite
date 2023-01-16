@@ -30,50 +30,42 @@ using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Provides method for processing a single <see cref="Tileset"/> in an
-///     <see cref="AsepriteFile"/> as an instance of the
-///     <see cref="TilesetContent"/> class.
+///     Defines the method for processing a single tileset in an Aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
-public sealed class TilesetProcessor : ContentProcessor<AsepriteFile, TilesetContent>
+public sealed class TilesetProcessor : CommonProcessor<AsepriteFile, TilesetProcessorResult>
 {
     /// <summary>
-    ///     The name of the <see cref="Tileset"/> to process.
+    ///     Gets or Sets the name of the tileset in the Aseprite file to
+    ///     process.
     /// </summary>
-    /// <remarks>
-    ///     This value is set in the property window of the mgcb-editor
-    /// </remarks>
     [DisplayName("Frame Index")]
     public string TilesetName { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Processes a single <see cref="Tileset"/> in an
-    ///     <see cref="AsepriteFile"/>.  The result is a new instance of the
-    ///     <see cref="TilesetContent"/> class containing the content of the
-    ///     <see cref="Tileset"/> to be written to the xnb file.
+    ///     Processes a single tileset from the Aseprite file.
     /// </summary>
     /// <param name="file">
-    ///     The <see cref="AsepriteFile"/> to process.
+    ///     The Aseprite file to process.
     /// </param>
     /// <param name="context">
-    ///     The context of the content processor.
+    ///     The content processor context that contains contextual information
+    ///     about content being processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the <see cref="TilesetContent"/> class containing
-    ///     the content of the <see cref="Tileset"/> to be written to the
-    ///     xnb file.
+    ///     A new instance of the TilesetProcessorResult class that contains the
+    ///     content fo the tileset processed.
     /// </returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if the given <see cref="AsepriteFile"/> does not have a
-    ///     <see cref="Tileset"/> element that has a name equal to
-    ///     <see cref="TilesetName"/>.
+    ///     Thrown if the Aseprite file does not contain a tileset that has a
+    ///     name that equal to the value set for the TilesetName property.
     /// </exception>
-    public override TilesetContent Process(AsepriteFile file, ContentProcessorContext context)
+    public override TilesetProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
         if (TryGetTilesetByName(file.Tilesets, TilesetName, out Tileset? tileset))
         {
-            TextureContent textureContent = new(tileset.Width, tileset.Height, tileset.Pixels);
-            return new(tileset.Name, tileset.TileCount, tileset.TileWidth, tileset.TileHeight, textureContent);
+            TilesetContent tilesetContent = CreateTilesetContent(tileset, file.Name, context);
+            return new TilesetProcessorResult(tilesetContent);
         }
 
         throw NoTilesetFound(file.Tilesets);

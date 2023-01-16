@@ -35,7 +35,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 /// </summary>
 public sealed class TilesetCollectionReader : ContentTypeReader<TilesetCollection>
 {
-    protected override TilesetCollection Read(ContentReader input, TilesetCollection? existingInstance)
+    protected override TilesetCollection Read(ContentReader reader, TilesetCollection? existingInstance)
     {
         if(existingInstance is not null)
         {
@@ -44,28 +44,29 @@ public sealed class TilesetCollectionReader : ContentTypeReader<TilesetCollectio
 
         TilesetCollection collection = new();
 
-        int count = input.ReadInt32();
+        int count = reader.ReadInt32();
 
         for (int i = 0; i < count; i++)
         {
-            string name = input.ReadString();
-            int tileCount = input.ReadInt32();
-            int tileWidth = input.ReadInt32();
-            int tileHeight = input.ReadInt32();
+            string name = reader.ReadString();
+            int tileCount = reader.ReadInt32();
+            int tileWidth = reader.ReadInt32();
+            int tileHeight = reader.ReadInt32();
 
             //  Texture Content
-            int textureWidth = input.ReadInt32();
-            int textureHeight = input.ReadInt32();
-            int pixelCount = input.ReadInt32();
-            Color[] pixels = new Color[pixelCount];
-            for (int j = 0; j < pixelCount; j++)
-            {
-                pixels[j] = input.ReadColor();
-            }
+            Texture2D texture = ContentReaderHelper.ReadTexture(reader, null);
+            // int textureWidth = input.ReadInt32();
+            // int textureHeight = input.ReadInt32();
+            // int pixelCount = input.ReadInt32();
+            // Color[] pixels = new Color[pixelCount];
+            // for (int j = 0; j < pixelCount; j++)
+            // {
+            //     pixels[j] = input.ReadColor();
+            // }
 
-            //  Create texture
-            Texture2D texture = new(input.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
-            texture.SetData<Color>(pixels);
+            // //  Create texture
+            // Texture2D texture = new(input.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
+            // texture.SetData<Color>(pixels);
 
             Tileset tileset = new(name, texture, tileWidth, tileHeight);
 

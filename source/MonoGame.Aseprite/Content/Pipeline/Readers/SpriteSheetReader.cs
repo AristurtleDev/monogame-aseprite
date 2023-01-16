@@ -34,56 +34,58 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 /// </summary>
 public sealed class SpriteSheetReader : ContentTypeReader<SpriteSheet>
 {
-    protected override SpriteSheet Read(ContentReader input, SpriteSheet? existingInstance)
+    protected override SpriteSheet Read(ContentReader reader, SpriteSheet? existingInstance)
     {
         if (existingInstance is not null)
         {
             return existingInstance;
         }
 
-        string name = input.ReadString();
+        string name = reader.ReadString();
 
-        //  Texture Content
-        int textureWidth = input.ReadInt32();
-        int textureHeight = input.ReadInt32();
-        int pixelCount = input.ReadInt32();
-        Color[] pixels = new Color[pixelCount];
-        for (int i = 0; i < pixelCount; i++)
-        {
-            pixels[i] = input.ReadColor();
-        }
+        Texture2D texture = ContentReaderHelper.ReadTexture(reader, null);
 
-        //  Create texture
-        Texture2D texture = new(input.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
-        texture.SetData<Color>(pixels);
+        // //  Texture Content
+        // int textureWidth = reader.ReadInt32();
+        // int textureHeight = reader.ReadInt32();
+        // int pixelCount = reader.ReadInt32();
+        // Color[] pixels = new Color[pixelCount];
+        // for (int i = 0; i < pixelCount; i++)
+        // {
+        //     pixels[i] = reader.ReadColor();
+        // }
+
+        // //  Create texture
+        // Texture2D texture = new(reader.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
+        // texture.SetData<Color>(pixels);
 
         SpriteSheet spriteSheet = new(name, texture);
 
         //  Texture Region Content
-        int regionCount = input.ReadInt32();
+        int regionCount = reader.ReadInt32();
         for (int i = 0; i < regionCount; i++)
         {
-            string regionName = input.ReadString();
-            int x = input.ReadInt32();
-            int y = input.ReadInt32();
-            int w = input.ReadInt32();
-            int h = input.ReadInt32();
+            string regionName = reader.ReadString();
+            int x = reader.ReadInt32();
+            int y = reader.ReadInt32();
+            int w = reader.ReadInt32();
+            int h = reader.ReadInt32();
 
             _ = spriteSheet.CreateRegion(regionName, x, y, w, h);
         }
 
         //  Animation Content
-        int animationCount = input.ReadInt32();
+        int animationCount = reader.ReadInt32();
         for (int i = 0; i < animationCount; i++)
         {
-            string animationName = input.ReadString();
-            byte flags = input.ReadByte();
+            string animationName = reader.ReadString();
+            byte flags = reader.ReadByte();
 
             bool isLooping = (flags & 1) != 0;
             bool isReversed = (flags & 2) != 0;
             bool isPingPong = (flags & 4) != 0;
 
-            int frameCount = input.ReadInt32();
+            int frameCount = reader.ReadInt32();
 
             AnimationCycleBuilder builder = new(animationName, spriteSheet);
             builder.IsLooping(isLooping)
@@ -92,8 +94,8 @@ public sealed class SpriteSheetReader : ContentTypeReader<SpriteSheet>
 
             for (int j = 0; j < frameCount; j++)
             {
-                int index = input.ReadInt32();
-                long ticks = input.ReadInt64();
+                int index = reader.ReadInt32();
+                long ticks = reader.ReadInt64();
                 TimeSpan duration = TimeSpan.FromTicks(ticks);
 
                 builder.AddFrame(index, duration);

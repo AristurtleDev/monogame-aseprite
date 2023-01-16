@@ -22,20 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-
-namespace MonoGame.Aseprite.Content.Pipeline;
-
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Represents the content that is written to the file for a sprite sheet
-///     frame.
+///     Defines the result of processing a single tileset from an Aseprite file
+///     by the TilesetProcessor.
 /// </summary>
-public sealed class TextureRegionContent
+public sealed class TilesetProcessorResult
 {
-    internal string Name { get; }
-    internal Rectangle Bounds { get; }
-
-    internal TextureRegionContent(string name, Rectangle bounds) =>
-        (Name, Bounds) = (name, bounds);
+    internal TilesetContent Tileset { get; }
+    internal TilesetProcessorResult(TilesetContent tileset) => Tileset = tileset;
 }

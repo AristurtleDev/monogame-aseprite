@@ -24,19 +24,20 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Represents the content that is written to the file for a tileset.
+///     Defines the content of a tilemap layer.
 /// </summary>
-public sealed class TilesetContent
+public sealed class TilemapLayerContent
 {
+    internal int TilesetID { get; }
     internal string Name { get; }
-    internal int TileCount { get; }
-    internal int TileWidth { get; }
-    internal int TileHeight { get; }
-    internal TextureContent TextureContent { get; set; }
+    internal int Columns { get; }
+    internal int Rows { get; }
+    internal TileContent[] Tiles { get; }
+    internal Point Offset { get; }
 
-    internal TilesetContent(string name, int tileCount, int tileWidth, int tileHeight, TextureContent textureContent) =>
-        (Name, TileCount, TileWidth, TileHeight, TextureContent) = (name, tileCount, tileWidth, tileHeight, textureContent);
+    internal TilemapLayerContent(string name, int tilesetId, int columns, int rows, Point offset, TileContent[] tiles) =>
+        (Name, TilesetID, Columns, Rows, Offset, Tiles) = (name, TilesetID, columns, rows, offset, tiles);
 }

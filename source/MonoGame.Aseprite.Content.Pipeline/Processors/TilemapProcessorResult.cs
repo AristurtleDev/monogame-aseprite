@@ -22,14 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-
-public sealed class AnimationFrameContent
+/// <summary>
+///     Defines the result of processing an Aseprite file as a tilemap by the
+///     TilemapProcessor.
+/// </summary>
+public sealed class TilemapProcessorResult
 {
-    internal int FrameIndex { get; }
-    internal TimeSpan Duration { get; }
+    internal List<TilesetContent> Tilesets { get; } = new();
+    internal List<TilemapLayerContent> Layers { get; } = new();
 
-    internal AnimationFrameContent(int frameIndex, TimeSpan duration) =>
-        (FrameIndex, Duration) = (frameIndex, duration);
+    internal TilemapProcessorResult() { }
 }

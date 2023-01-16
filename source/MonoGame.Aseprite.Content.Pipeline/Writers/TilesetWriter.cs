@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
@@ -32,23 +33,24 @@ namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 ///     <see cref="TilesetContent"/> class to an xnb file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class TilesetWriter : ContentTypeWriter<TilesetContent>
+public sealed class TilesetWriter : ContentTypeWriter<TilesetProcessorResult>
 {
-    protected override void Write(ContentWriter output, TilesetContent input)
+    protected override void Write(ContentWriter writer, TilesetProcessorResult content)
     {
-        output.Write(input.Name);
-        output.Write(input.TileCount);
-        output.Write(input.TileWidth);
-        output.Write(input.TileHeight);
+        writer.Write(content.Tileset.Name);
+        writer.Write(content.Tileset.TileCount);
+        writer.Write(content.Tileset.TileWidth);
+        writer.Write(content.Tileset.TileHeight);
 
         //  Texture Content
-        output.Write(input.TextureContent.Width);
-        output.Write(input.TextureContent.Height);
-        output.Write(input.TextureContent.Pixels.Length);
-        for (int j = 0; j < input.TextureContent.Pixels.Length; j++)
-        {
-            output.Write(input.TextureContent.Pixels[j]);
-        }
+        writer.WriteTextureContent(content.Tileset.TextureContent);
+        // writer.Write(content.TextureContent.Width);
+        // writer.Write(content.TextureContent.Height);
+        // writer.Write(content.TextureContent.Pixels.Length);
+        // for (int j = 0; j < content.TextureContent.Pixels.Length; j++)
+        // {
+        //     writer.Write(content.TextureContent.Pixels[j]);
+        // }
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

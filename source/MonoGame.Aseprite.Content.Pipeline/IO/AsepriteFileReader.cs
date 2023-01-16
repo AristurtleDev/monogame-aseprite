@@ -325,7 +325,8 @@ internal static class AsepriteFileReader
             IgnoreByte(reader);
             string name = ReadString(reader);
 
-            Color color = Color.FromNonPremultiplied(r, g, b, 255);
+            // Color color = Color.FromNonPremultiplied(r, g, b, 255);
+            Color color = new Color(r, g, b, (byte)255);
 
             Tag tag = new(from, to, direction, color, name);
             file.Tags.Add(tag);
@@ -354,7 +355,8 @@ internal static class AsepriteFileReader
                 IgnoreString(reader);
             }
 
-            file.Palette[(int)entry] = Color.FromNonPremultiplied(r, g, b, a);
+            // file.Palette[(int)entry] = Color.FromNonPremultiplied(r, g, b, a);
+            file.Palette[(int)entry] = new Color(r, g, b, a);
         }
     }
 
@@ -459,7 +461,8 @@ internal static class AsepriteFileReader
             byte b = ReadByte(reader);
             byte a = ReadByte(reader);
 
-            color = Color.FromNonPremultiplied(r, g, b, a);
+            // color = Color.FromNonPremultiplied(r, g, b, a);
+            color = new Color(r, g, b, a);
         }
 
         switch (lastChunkType)
@@ -589,7 +592,8 @@ internal static class AsepriteFileReader
             byte rgb = data[b];
             byte alpha = data[b + 1];
 
-            result[i] = Color.FromNonPremultiplied(rgb, rgb, rgb, alpha);
+            // result[i] = Color.FromNonPremultiplied(rgb, rgb, rgb, alpha);
+            result[i] = new Color(rgb, rgb, rgb, alpha);
         }
 
         return result;
@@ -606,7 +610,8 @@ internal static class AsepriteFileReader
             byte blue = data[b + 2];
             byte alpha = data[b + 3];
 
-            result[i] = Color.FromNonPremultiplied(red, green, blue, alpha);
+            // result[i] = Color.FromNonPremultiplied(red, green, blue, alpha);
+            result[i] = new Color(red, green, blue, alpha);
         }
 
         return result;

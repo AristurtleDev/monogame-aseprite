@@ -22,13 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-public sealed class TilemapContent
+/// <summary>
+///     Defines the result of processing an Aseprite file as a collection of
+///     tilesets by the TilesetCollectionProcessor.
+/// </summary>
+public sealed class TilesetCollectionProcessorResult
 {
-    internal List<TilesetContent> Tilesets { get; }
-    internal List<TilemapLayerContent> Layers { get; }
-
-    internal TilemapContent(List<TilesetContent> tilesets, List<TilemapLayerContent> layers) =>
-        (Tilesets, Layers) = (tilesets, layers);
+    internal List<TilesetContent> Tilesets { get; } = new();
+    internal TilesetCollectionProcessorResult() { }
 }

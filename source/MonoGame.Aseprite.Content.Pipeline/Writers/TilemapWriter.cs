@@ -31,50 +31,51 @@ using MonoGame.Aseprite.Content.Pipeline.Processors;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-public sealed class TilemapWriter : ContentTypeWriter<TilemapContent>
+public sealed class TilemapWriter : ContentTypeWriter<TilemapProcessorResult>
 {
-    protected override void Write(ContentWriter output, TilemapContent value)
+    protected override void Write(ContentWriter writer, TilemapProcessorResult content)
     {
         //  Tileset content
-        output.Write(value.Tilesets.Count);
-        for (int i = 0; i < value.Tilesets.Count; i++)
+        writer.Write(content.Tilesets.Count);
+        for (int i = 0; i < content.Tilesets.Count; i++)
         {
-            TilesetContent tileset = value.Tilesets[i];
-            output.Write(tileset.Name);
-            output.Write(tileset.TileCount);
-            output.Write(tileset.TileWidth);
-            output.Write(tileset.TileHeight);
+            TilesetContent tileset = content.Tilesets[i];
+            writer.Write(tileset.Name);
+            writer.Write(tileset.TileCount);
+            writer.Write(tileset.TileWidth);
+            writer.Write(tileset.TileHeight);
 
             //  Texture Content
-            output.Write(tileset.TextureContent.Width);
-            output.Write(tileset.TextureContent.Height);
-            output.Write(tileset.TextureContent.Pixels.Length);
-            for (int j = 0; j < tileset.TextureContent.Pixels.Length; j++)
-            {
-                output.Write(tileset.TextureContent.Pixels[j]);
-            }
+            writer.WriteTextureContent(tileset.TextureContent);
+            // writer.Write(tileset.TextureContent.Width);
+            // writer.Write(tileset.TextureContent.Height);
+            // writer.Write(tileset.TextureContent.Pixels.Length);
+            // for (int j = 0; j < tileset.TextureContent.Pixels.Length; j++)
+            // {
+            //     writer.Write(tileset.TextureContent.Pixels[j]);
+            // }
         }
 
         //  Layer Content
-        output.Write(value.Layers.Count);
-        for (int i = 0; i < value.Layers.Count; i++)
+        writer.Write(content.Layers.Count);
+        for (int i = 0; i < content.Layers.Count; i++)
         {
-            TilemapLayerContent layer = value.Layers[i];
-            output.Write(layer.TilesetID);
-            output.Write(layer.Name);
-            output.Write(layer.Columns);
-            output.Write(layer.Rows);
-            output.Write(layer.Offset.X);
-            output.Write(layer.Offset.Y);
+            TilemapLayerContent layer = content.Layers[i];
+            writer.Write(layer.TilesetID);
+            writer.Write(layer.Name);
+            writer.Write(layer.Columns);
+            writer.Write(layer.Rows);
+            writer.Write(layer.Offset.X);
+            writer.Write(layer.Offset.Y);
 
             //  Tile content
-            output.Write(layer.Tiles.Length);
+            writer.Write(layer.Tiles.Length);
             for (int j = 0; j < layer.Tiles.Length; j++)
             {
                 TileContent tile = layer.Tiles[j];
-                output.Write(tile.FlipFlag);
-                output.Write(tile.Rotation);
-                output.Write(tile.TilesetTileID);
+                writer.Write(tile.FlipFlag);
+                writer.Write(tile.Rotation);
+                writer.Write(tile.TilesetTileID);
             }
 
         }

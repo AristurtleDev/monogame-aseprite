@@ -24,56 +24,58 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
 ///     Provides method for writing an instance of the
-///     <see cref="SpriteSheetContent"/> class to an xnb file.
+///     <see cref="SpriteSheetProcessorResult"/> class to an xnb file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class SpriteSheetWriter : ContentTypeWriter<SpriteSheetContent>
+public sealed class SpriteSheetWriter : ContentTypeWriter<SpriteSheetProcessorResult>
 {
-    protected override void Write(ContentWriter output, SpriteSheetContent value)
+    protected override void Write(ContentWriter writer, SpriteSheetProcessorResult content)
     {
-        output.Write(value.Name);
+        writer.Write(content.Name);
 
         //  Texture content
-        output.Write(value.TextureContent.Width);
-        output.Write(value.TextureContent.Height);
-        output.Write(value.TextureContent.Pixels.Length);
-        for (int i = 0; i < value.TextureContent.Pixels.Length; i++)
-        {
-            output.Write(value.TextureContent.Pixels[i]);
-        }
+        writer.WriteTextureContent(content.TextureContent);
+        // writer.Write(content.TextureContent.Width);
+        // writer.Write(content.TextureContent.Height);
+        // writer.Write(content.TextureContent.Pixels.Length);
+        // for (int i = 0; i < content.TextureContent.Pixels.Length; i++)
+        // {
+        //     writer.Write(content.TextureContent.Pixels[i]);
+        // }
 
         //  Texture Region Content
-        output.Write(value.Regions.Count);
-        for (int i = 0; i < value.Regions.Count; i++)
+        writer.Write(content.Regions.Count);
+        for (int i = 0; i < content.Regions.Count; i++)
         {
-            TextureRegionContent region = value.Regions[i];
-            output.Write(region.Name);
-            output.Write(region.Bounds.X);
-            output.Write(region.Bounds.Y);
-            output.Write(region.Bounds.Width);
-            output.Write(region.Bounds.Height);
+            TextureRegionContent region = content.Regions[i];
+            writer.Write(region.Name);
+            writer.Write(region.Bounds.X);
+            writer.Write(region.Bounds.Y);
+            writer.Write(region.Bounds.Width);
+            writer.Write(region.Bounds.Height);
         }
 
         //  Animation Content
-        output.Write(value.Animations.Count);
-        for (int i = 0; i < value.Animations.Count; i++)
+        writer.Write(content.Animations.Count);
+        for (int i = 0; i < content.Animations.Count; i++)
         {
-            AnimationContent animation = value.Animations[i];
-            output.Write(animation.Name);
-            output.Write(animation.LoopReversePingPongMask);
+            AnimationContent animation = content.Animations[i];
+            writer.Write(animation.Name);
+            writer.Write(animation.Flags);
 
             //  Animation Frames
-            output.Write(animation.Frames.Length);
+            writer.Write(animation.Frames.Length);
             for (int j = 0; j < animation.Frames.Length; j++)
             {
                 AnimationFrameContent frame = animation.Frames[j];
-                output.Write(frame.FrameIndex);
-                output.Write(frame.Duration.Ticks);
+                writer.Write(frame.FrameIndex);
+                writer.Write(frame.Duration.Ticks);
             }
         }
     }

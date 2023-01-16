@@ -1,3 +1,3 @@
 ﻿
-using var game = new DemoGame.Game_Tilemap();
+using var game = new DemoGame.Game1();
 game.Run();

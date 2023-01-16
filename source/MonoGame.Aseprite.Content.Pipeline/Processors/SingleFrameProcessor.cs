@@ -26,20 +26,25 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
 ///     Defines a processor that accepts an Aseprite file and generates a
-///     collection of the tilesets from the tilesets in the Aseprite file.
+///     texture based on a single frame in the Aseprite file.
 /// </summary>
-[ContentProcessor(DisplayName = "Aseprite Tileset Collection Processor - MonoGame.Aseprite")]
-public sealed class TilesetCollectionProcessor : CommonProcessor<AsepriteFile, TilesetCollectionProcessorResult>
+[ContentProcessor(DisplayName = "Aseprite Texture Processor - MonoGame.Aseprite")]
+public sealed class SingleFrameProcessor : CommonProcessor<AsepriteFile, SingleFrameProcessorResult>
 {
     /// <summary>
-    ///     Processes all tilesets in the Aseprite file.
+    ///     Gets or Sets the index of the frame in the Aseprite file to process.
+    /// </summary>
+    [DisplayName("(Aseprite) Frame Index")]
+    public int FrameIndex { get; set; } = 0;
+
+    /// <summary>
+    ///     Processes a single frame in an Aseprite file.
     /// </summary>
     /// <param name="file">
     ///     The Aseprite file to process.
@@ -49,21 +54,23 @@ public sealed class TilesetCollectionProcessor : CommonProcessor<AsepriteFile, T
     ///     about content being processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the TilesetCollectionProcessorResult class that
-    ///     contains the collection of tileset content from the tilesets
-    ///     processed.
+    ///     A new instance of the SingleFrameProcessorResult class that contains
+    ///     the texture content of the frame processed.
     /// </returns>
-    public override TilesetCollectionProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
+    /// <exception cref="IndexOutOfRangeException">
+    ///     Thrown if the FrameIndex property that was set in the mgcb-editor
+    ///     is less than zero or is greater than or equal to the total number
+    ///     of frames in the Aseprite file being processed.
+    /// </exception>
+    public override SingleFrameProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
-        TilesetCollectionProcessorResult content = new();
-
-        for (int i = 0; i < file.Tilesets.Count; i++)
+        if (FrameIndex < 0 || FrameIndex >= file.Frames.Count)
         {
-            Tileset tileset = file.Tilesets[i];
-            TilesetContent tilesetContent = CreateTilesetContent(tileset, file.Name, context);
-            content.Tilesets.Add(tilesetContent);
+            throw new IndexOutOfRangeException("The 'Frame Index' cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file");
         }
 
-        return content;
+        Color[] pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
+        TextureContent textureContent = CreateTextureContent(file.Name, pixels, file.FrameWidth, file.FrameHeight, context);
+        return new SingleFrameProcessorResult(textureContent);
     }
 }

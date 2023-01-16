@@ -24,15 +24,17 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 
-public sealed class TileContent
+/// <summary>
+///     Defines the content of a single texture region in a spritesheet.
+/// </summary>
+public sealed class TextureRegionContent
 {
-    internal byte FlipFlag { get; }
-    internal float Rotation { get; }
-    internal int TilesetTileID { get; }
+    internal string Name { get; }
+    internal Rectangle Bounds { get; }
 
-    internal TileContent(byte flipFlag, float rotation, int tilesetTileID) =>
-        (FlipFlag, Rotation, TilesetTileID) = (flipFlag, rotation, tilesetTileID);
+    internal TextureRegionContent(string name, Rectangle bounds) =>
+        (Name, Bounds) = (name, bounds);
 }

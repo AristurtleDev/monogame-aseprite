@@ -23,48 +23,42 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
+namespace MonoGame.Aseprite;
 
-/// <summary>
-///     Provides method for reading a <see cref="Tileset"/> from an xnb file
-///     that was generated using the MonoGame.Aseprite library.
-/// </summary>
-public sealed class TilesetReader : ContentTypeReader<Tileset>
+internal static class ContentReaderHelper
 {
-    protected override Tileset Read(ContentReader reader, Tileset? existingInstance)
+    public static Texture2D ReadTexture(this ContentReader reader, Texture2D? existingInstance)
     {
-        if(existingInstance is not null)
+        if (Assembly.GetAssembly(typeof(ContentReader)) is not Assembly assembly)
         {
-            return existingInstance;
+            throw new InvalidOperationException($"Unable to load Microsoft.Xna.Framework assembly");
         }
 
-        string name = reader.ReadString();
-        int tileCount = reader.ReadInt32();
-        int tileWidth = reader.ReadInt32();
-        int tileHeight = reader.ReadInt32();
+        if (assembly.GetType("Microsoft.Xna.Framework.Content.Texture2DReader") is not Type texture2DReaderType)
+        {
+            throw new InvalidOperationException($"Unable to load Texture2DReader type from assembly");
+        }
 
-        //  Texture Content
-        Texture2D texture = ContentReaderHelper.ReadTexture(reader, null);
-        // int textureWidth = reader.ReadInt32();
-        // int textureHeight = reader.ReadInt32();
-        // int pixelCount = reader.ReadInt32();
-        // Color[] pixels = new Color[pixelCount];
-        // for (int i = 0; i < pixelCount; i++)
-        // {
-        //     pixels[i] = reader.ReadColor();
-        // }
+        if (Activator.CreateInstance(texture2DReaderType) is not object texture2DReaderInstance)
+        {
+            throw new InvalidOperationException($"Unable to create instance of Texture2DReader");
+        }
 
-        // //  Create texture
-        // Texture2D texture = new(reader.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
-        // texture.SetData<Color>(pixels);
+        if (texture2DReaderType.GetMethod("Read", BindingFlags.NonPublic | BindingFlags.Instance, new [] {typeof(ContentReader), typeof(Texture2D)}) is not MethodInfo readMethod)
+        {
+            throw new InvalidOperationException($"Unable to get Process method form Texture2DReader type");
+        }
 
-        Tileset tileset = new(name, texture, tileWidth, tileHeight);
+        if (readMethod.Invoke(texture2DReaderInstance, new object?[] { reader, existingInstance }) is not Texture2D texture)
+        {
+            throw new InvalidOperationException("$Unable to create texture from Texture2DReader.Read method");
+        }
 
-        Debug.Assert(tileCount == tileset.TileCount);
-        return tileset;
+        return texture;
     }
 }
