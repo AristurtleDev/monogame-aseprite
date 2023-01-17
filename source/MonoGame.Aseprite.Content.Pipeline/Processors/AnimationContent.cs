@@ -29,10 +29,12 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// </summary>
 public sealed class AnimationContent
 {
+    private AnimationFrameContent[] _frames;
+
     internal string Name { get; }
-    internal AnimationFrameContent[] Frames { get; }
+    internal ReadOnlySpan<AnimationFrameContent> Frames => _frames;
     internal byte Flags { get; }
 
     internal AnimationContent(string name, AnimationFrameContent[] frames, byte flags) =>
-        (Name, Frames, Flags) = (name, frames, flags);
+        (Name, _frames, Flags) = (name, frames, flags);
 }

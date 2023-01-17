@@ -22,23 +22,73 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteTileset
+/// <summary>
+///     Defines a tileset in an Aseprite file used by <see cref="AsepriteTilemapLayer"/> and
+///     <see cref="AsepriteTilemapCel"/>.
+/// </summary>
+public sealed class AsepriteTileset
 {
-    internal Color[] Pixels { get; }
-    internal int ID { get; }
-    internal int TileCount { get; }
-    internal int TileWidth { get; }
-    internal int TileHeight { get; }
-    internal string Name { get; }
-    internal int Width { get; }
-    internal int Height { get; }
+    private Color[] _pixels;
 
-    internal Color[] this[int tileId]
+    /// <summary>
+    ///     Gets a <see cref="ReadOnlySpan{T}"/> of <see cref="Microsoft.Xna.Framework.Color"/> values that represent
+    ///     the pixel data for the full image of this <see cref="AsepriteTileset"/>.  Pixel order is from top-to-bottom,
+    ///     read left-to-right.
+    /// </summary>
+    public ReadOnlySpan<Color> Pixels => _pixels;
+
+    /// <summary>
+    ///     Gets the ID of this <see cref="AsepriteTileset"/>.
+    /// </summary>
+    public int ID { get; }
+
+    /// <summary>
+    ///     Gets the total number of tiles in this this <see cref="AsepriteTileset"/>.
+    /// </summary>
+    public int TileCount { get; }
+
+    /// <summary>
+    ///     Gets the width, in pixels, of each tile in this this <see cref="AsepriteTileset"/>.
+    /// </summary>
+    public int TileWidth { get; }
+
+    /// <summary>
+    ///     Gets the height, in pixels, of each tile in this this <see cref="AsepriteTileset"/>.
+    /// </summary>
+    public int TileHeight { get; }
+
+    /// <summary>
+    ///     Gets the name of this <see cref="AsepriteTileset"/>.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    ///     Gets the width, in pixels, of this <see cref="AsepriteTileset"/>.
+    /// </summary>
+    public int Width { get; }
+
+    /// <summary>
+    ///     Gets the height, in pixels, of this <see cref="AsepriteTileset"/>.
+    /// </summary>
+    public int Height { get; }
+
+    /// <summary>
+    ///     Gets a <see cref="ReadOnlySpan{T}"/> of <see cref="Microsoft.Xna.Framework.Color"/> values that represent
+    ///     the pixel data for the tile in this <see cref="AsepriteTileset"/> with the specified
+    ///     <paramref name="tileId"/>.  Pixel order is from top-to-bottom, read left-to-right.
+    /// </summary>
+    /// <param name="tileId">
+    ///     The ID of the tile in this <see cref="AsepriteTileset"/>.
+    /// </param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the specified <paramref name="tileId"/> is less than zero or is greater than or equal to the total
+    ///     number of tiles in this <see cref="AsepriteTileset"/>.
+    /// </exception>
+    public ReadOnlySpan<Color> this[int tileId]
     {
         get
         {
@@ -48,7 +98,7 @@ internal sealed class AsepriteTileset
             }
 
             int len = TileWidth * TileHeight;
-            return Pixels[(tileId * len)..((tileId * len) + len)];
+            return Pixels.Slice(tileId * len, len);
         }
     }
 
@@ -59,7 +109,7 @@ internal sealed class AsepriteTileset
         TileWidth = tileWidth;
         TileHeight = tileHeight;
         Name = name;
-        Pixels = pixels;
+        _pixels = pixels;
         Width = tileWidth;
         Height = tileHeight * TileCount;
     }

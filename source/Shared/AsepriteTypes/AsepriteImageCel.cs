@@ -22,17 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteImageCel : AsepriteCel
+/// <summary>
+///     Defines a single cel in a frame that contains image pixel data.
+/// </summary>
+public sealed class AsepriteImageCel : AsepriteCel
 {
-    internal Color[] Pixels { get; }
-    internal int Width { get; }
-    internal int Height { get; }
+    private Color[] _pixels { get; }
+
+    /// <summary>
+    ///     Gets a <see cref="ReadOnlySpan{T}"/> of the image pixel data for this <see cref="AsepriteImageCel"/>. Pixel
+    ///     order is from top-to-bottom, read left-to-right.
+    /// </summary>
+    public ReadOnlySpan<Color> Pixels => _pixels;
+
+    /// <summary>
+    ///     Gets the width, in pixels, of this <see cref="AsepriteImageCel"/>.
+    /// </summary>
+    public int Width { get; }
+
+    /// <summary>
+    ///     Gets the height, in pixels, of this <see cref="AsepriteImageCel"/>.
+    /// </summary>
+    public int Height { get; }
 
     internal AsepriteImageCel(int width, int height, Color[] pixels, AsepriteLayer layer, Point position, int opacity)
-        : base(layer, position, opacity) => (Width, Height, Pixels) = (width, height, pixels);
+        : base(layer, position, opacity) => (Width, Height, _pixels) = (width, height, pixels);
 }

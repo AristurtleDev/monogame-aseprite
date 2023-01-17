@@ -28,8 +28,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines the result of processing an Aseprite file as a spritesheet by
-///     the SpriteSheetProcessor.
+///     Defines the result of processing a <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFile"/> as a spritesheet.
 /// </summary>
 public sealed class SpriteSheetProcessorResult
 {

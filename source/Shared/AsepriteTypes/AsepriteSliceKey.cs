@@ -27,18 +27,51 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteSliceKey
+/// <summary>
+///     Defines the values of a slice during a key frame.
+/// </summary>
+public sealed class AsepriteSliceKey
 {
-    internal int FrameIndex { get; }
-    internal Rectangle Bounds { get; }
-    internal Rectangle? CenterBounds { get; }
-    internal Point? Pivot { get; }
+    /// <summary>
+    ///     Gets the index of the <see cref="AsepriteFrame"/> that this <see cref="AsepriteSliceKey"/> is valid starting
+    ///     on.
+    /// </summary>
+    public int FrameIndex { get; }
 
+    /// <summary>
+    ///     Gets the rectangular bounds of the <see cref="AsepriteSlice"/> during this <see cref="AsepriteSliceKey"/>.
+    /// </summary>
+    public Rectangle Bounds { get; }
+
+    /// <summary>
+    ///     Gets the rectangular bounds of the center rectangle of the <see cref="AsepriteSlice"/>, relative to the
+    ///     <see cref="Bounds"/>, during this <see cref="AsepriteSliceKey"/>, if the <see cref="AsepriteSlice"/> is a
+    ///     nine-patch slice; otherwise, <see langword="null"/>.
+    /// </summary>
+    public Rectangle? CenterBounds { get; }
+
+    /// <summary>
+    ///     Gets the x- and y-coordinate location of the pivot point of the <see cref="AsepriteSlice"/>, relative to the
+    ///     <see cref="Bounds"/>, during this <see cref="AsepriteSliceKey"/>, if the <see cref="AsepriteSlice"/> has
+    ///     pivot values; otherwise, <see langword="null"/>.
+    /// </summary>
+    public Point? Pivot { get; }
+
+    /// <summary>
+    ///     Gets a value that indicates if this <see cref="AsepriteSliceKey"/> is for a nine-patch
+    ///     <see cref="AsepriteSlice"/>.  When <see langword="true"/>, guarantees that
+    ///     <see cref="AsepriteSliceKey.CenterBounds"/> is not <see langword="null"/>.
+    /// </summary>
     [MemberNotNullWhen(true, nameof(CenterBounds))]
-    internal bool IsNinePatch => CenterBounds is not null;
+    public bool IsNinePatch => CenterBounds is not null;
 
+    /// <summary>
+    ///     Gets a value that indicates if this <see cref="AsepriteSliceKey"/> is for a <see cref="AsepriteSlice"/> with
+    ///     pivot values.  When <see langword="true"/>, guarantees that <see cref="AsepriteSliceKey.Pivot"/> is not
+    ///     <see langword="null"/>.
+    /// </summary>
     [MemberNotNullWhen(true, nameof(Pivot))]
-    internal bool HasPivot => Pivot is not null;
+    public bool HasPivot => Pivot is not null;
 
     internal AsepriteSliceKey(int frameIndex, Rectangle bounds, Rectangle? centerBounds, Point? pivot) =>
         (FrameIndex, Bounds, CenterBounds, Pivot) = (frameIndex, bounds, centerBounds, pivot);

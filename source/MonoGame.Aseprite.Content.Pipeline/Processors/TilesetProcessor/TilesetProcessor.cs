@@ -30,35 +30,35 @@ using MonoGame.Aseprite.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines the method for processing a single tileset in an Aseprite file.
+///     Defines a content processor that processes a single <see cref="AsepriteTileset"/> in an
+///     <see cref="AsepriteFile"/>.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
 public sealed class TilesetProcessor : CommonProcessor<AsepriteFile, TilesetProcessorResult>
 {
     /// <summary>
-    ///     Gets or Sets the name of the tileset in the Aseprite file to
+    ///     Gets or SEts the name of the <see cref="AsepriteTileset"/> element in the <see cref="AsepriteFile"/> to
     ///     process.
     /// </summary>
     [DisplayName("Frame Index")]
     public string TilesetName { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Processes a single tileset from the Aseprite file.
+    ///     Processes a single <see cref="AsepriteTileset"/> in an <see cref="AsepriteFile"/>.
     /// </summary>
     /// <param name="file">
-    ///     The Aseprite file to process.
+    ///     The <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <param name="context">
-    ///     The content processor context that contains contextual information
-    ///     about content being processed.
+    ///     The <see cref="ContentProcessorContext"/> that provides contextual information  about the content being
+    ///     processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the TilesetProcessorResult class that contains the
-    ///     content fo the tileset processed.
+    ///     A new instance of the <see cref="TilesetProcessorResult"/> class that contains the result of this method.
     /// </returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if the Aseprite file does not contain a tileset that has a
-    ///     name that equal to the value set for the TilesetName property.
+    ///     Thrown if the <see cref="AsepriteFile"/> does not contain a <see cref="AsepriteTileset"/> element with the
+    ///     name specified in the <see cref="TilesetName"/> property.
     /// </exception>
     public override TilesetProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
@@ -71,11 +71,11 @@ public sealed class TilesetProcessor : CommonProcessor<AsepriteFile, TilesetProc
         throw NoTilesetFound(file.Tilesets);
     }
 
-    private static bool TryGetTilesetByName(List<AsepriteTileset> tilesets, string name, [NotNullWhen(true)] out AsepriteTileset? tileset)
+    private static bool TryGetTilesetByName(ReadOnlySpan<AsepriteTileset> tilesets, string name, [NotNullWhen(true)] out AsepriteTileset? tileset)
     {
         tileset = default;
 
-        for (int i = 0; i < tilesets.Count; i++)
+        for (int i = 0; i < tilesets.Length; i++)
         {
 
             if (tilesets[i].Name == name)
@@ -88,10 +88,10 @@ public sealed class TilesetProcessor : CommonProcessor<AsepriteFile, TilesetProc
         return tileset is not null;
     }
 
-    private static Exception NoTilesetFound(List<AsepriteTileset> tilesets)
+    private static Exception NoTilesetFound(ReadOnlySpan<AsepriteTileset> tilesets)
     {
-        string[] names = new string[tilesets.Count];
-        for (int i = 0; i < tilesets.Count; i++)
+        string[] names = new string[tilesets.Length];
+        for (int i = 0; i < tilesets.Length; i++)
         {
             names[i] = tilesets[i].Name;
         }

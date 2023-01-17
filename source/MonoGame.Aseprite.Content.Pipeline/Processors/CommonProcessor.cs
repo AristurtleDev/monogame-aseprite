@@ -44,32 +44,6 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
 {
     // ************************************************************************
-    //  The following properties are common to all MonoGame.Aseprite processors
-    //  that generate a texture, which pretty much all of them do. These
-    //  properties are exposed through the mgcb-editor in the property
-    //  panel for users to set when using the mgcb-editor to import an Aseprite
-    //  file.
-    //  The display name for each of these properties begins with (Aseprite) so
-    //  that they are listed first in the property panel since the mgcb-editor
-    //  does not support the [CategoryAttribute] for properties in the
-    //  content processor.
-    // ************************************************************************
-
-    // /// <summary>
-    // ///     Gets or Sets whether only cel elements that are on visible layers
-    // ///     should be processed.
-    // /// </summary>
-    // [DisplayName("(Aseprite) Only Visible Layers")]
-    // public bool OnlyVisibleLayers { get; set; } = true;
-
-    // /// <summary>
-    // ///     Gets or Sets whether cel elements that are on a layer that was
-    // ///     marked as the background layer in Aseprite should be processed.
-    // /// </summary>
-    // [DisplayName("(Aseprite) Include Background Layer")]
-    // public bool IncludeBackgroundLayer { get; set; } = false;
-
-    // ************************************************************************
     //  The following properties are those that are provided by MonoGame when
     //  importing an image as a Texture2D.  Since all of the processors for
     //  MonoGame.Aseprite generate a texture in some fashion, and use the
@@ -78,7 +52,7 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
     // ************************************************************************
 
     /// <summary>
-    ///     Gets or Sets the color value to treat as the color that represents
+    ///     Gets or Sets a <see cref="Microsoft.Xna.Framework.Color"/> value that should be treated as the color of
     ///     transparency in the image.
     /// </summary>
     [DisplayName("Color Key Color")]
@@ -86,50 +60,50 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
     public Color ColorKeyColor { get; set; } = new Color(255, 0, 255, 255);
 
     /// <summary>
-    ///     Gets or Sets whether the color key value is enabled.
+    ///     Gets or Sets a value that indicates whether the <see cref="ColorKeyColor"/> value is enabled.
     /// </summary>
     [DisplayName("Color Key Enabled")]
     [DefaultValue(true)]
     public bool ColorKeyEnabled { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets whether mipmaps will be generated.
+    ///     Gets or Sets a value that indicates whether mipmaps will be generated for the texture.
     /// </summary>
     [DisplayName("Generate MipMaps")]
     [DefaultValue(false)]
     public bool GenerateMipMaps { get; set; } = false;
 
     /// <summary>
-    ///     Gets or Sets whether all pixel color values should be recalculated
-    ///     by performing alpha pre-multiplication.
+    ///     Gets or Sets a value that indicates whether the value of each <see cref="Microsoft.Xna.Framework.Color"/>
+    ///     element should have the alpha pre-multiplied when generating color data.
     /// </summary>
     [DisplayName("Premultiply Alpha")]
     [DefaultValue(true)]
     public bool PremultiplyAlpha { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets whether the texture should be resized to the nearest
-    ///     power of two for the width and/or height.
+    ///     Gets or Sets a value that indicates whether the texture content generated should be resized to a power of
+    ///     two for the width and/or height.
     /// </summary>
     [DisplayName("Resize to Power of Two")]
     [DefaultValue(false)]
     public bool ResizePowerOfTwo { get; set; } = false;
 
     /// <summary>
-    ///     Gets whether the texture should be resized so that the width and
-    ///     height are equal (square texture).
+    ///     Gets or Sets a value that indicates whether the texture content generated should be resized so that the
+    ///     width and height are equal (square texture).
     /// </summary>
     [DisplayName("Make Square")]
     [DefaultValue(false)]
     public bool MakeSquare { get; set; } = false;
 
     /// <summary>
-    ///     Gets or Sets the texture format to use when processing the texture.
+    ///     Gets or Sets the <see cref="TextureProcessorOutputFormat"/> to use when generating the texture.
     /// </summary>
     [DisplayName("Texture Format")]
     public TextureProcessorOutputFormat TextureFormat { get; set; }
 
-    protected TextureContent CreateTextureContent(string sourceName, Color[] pixels, int imageWidth, int imageHeight, ContentProcessorContext processorContext)
+    protected TextureContent CreateTextureContent(string sourceName, ReadOnlySpan<Color> pixels, int imageWidth, int imageHeight, ContentProcessorContext processorContext)
     {
         //  During the Aseprite file import, no matter the color mode that was
         //  set in Aseprite, all color data was translated to 32-bits per pixel.
@@ -170,7 +144,7 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
         return content;
     }
 
-    private static void PixelsToBytes(Color[] src, byte[] dest)
+    private static void PixelsToBytes(ReadOnlySpan<Color> src, Span<byte> dest)
     {
         for (int i = 0, b = 0; i < src.Length; i++, b += 4)
         {
@@ -199,8 +173,8 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
         //        having to get the layer as then pulling it from the layer
         //        since the cel already has access to the Tileset???
         int tilesetID = cel.LayerAs<AsepriteTilemapLayer>().TilesetID;
-        int columns = cel.Width;
-        int rows = cel.Height;
+        int columns = cel.Columns;
+        int rows = cel.Rows;
         Point offset = cel.Position;
         string tilesetName = cel.Tileset.Name;
         TileContent[] tiles = CreateCelTileContent(cel);
@@ -210,9 +184,9 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
 
     internal TileContent[] CreateCelTileContent(AsepriteTilemapCel cel)
     {
-        TileContent[] tiles = new TileContent[cel.Tiles.Count];
+        TileContent[] tiles = new TileContent[cel.TileCount];
 
-        for (int i = 0; i < cel.Tiles.Count; i++)
+        for (int i = 0; i < cel.TileCount; i++)
         {
             AsepriteTile tile = cel.Tiles[i];
 

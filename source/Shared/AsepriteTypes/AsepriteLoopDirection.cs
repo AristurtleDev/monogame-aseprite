@@ -22,14 +22,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-public sealed class AsepritePalette
+/// <summary>
+///     Defines the values that represent the loop direction for an <see cref="AsepriteTag"/>.
+/// </summary>
+public enum AsepriteLoopDirection : byte
 {
-    internal Color[] Colors { get; }
-    internal int TransparentIndex { get; }
+    /// <summary>
+    ///     Defines that the loop direction is forward from <see cref="AsepriteTag.From"/> to
+    ///     <see cref="AsepriteTag.To"/>.
+    /// </summary>
+    Forward = 0,
 
-    internal AsepritePalette(Color[] colors, int transparentIndex) => (Colors, TransparentIndex) = (colors, transparentIndex);
+    /// <summary>
+    ///     Defines tha the loop direction is reversed from <see cref="AsepriteTag.To"/> to
+    ///     <see cref="AsepriteTag.From"/>.
+    /// </summary>
+    Reverse = 1,
+
+    /// <summary>
+    ///     Defines that the loop direction ping-pongs by first going from <see cref="AsepriteTag.From"/> to
+    ///     <see cref="AsepriteTag.To"/>, then reversed by going from <see cref="AsepriteTag.To"/> to
+    ///     <see cref="AsepriteTag.From"/>.
+    /// </summary>
+    PingPong = 2
 }

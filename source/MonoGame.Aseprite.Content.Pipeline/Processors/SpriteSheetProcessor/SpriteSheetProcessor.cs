@@ -26,76 +26,72 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines a processor that accepts an Aseprite file and generates a
-///     spritesheet, including texture regions for each frame in the Aseprite
-///     file and animation data based on the tags in the Aseprite file.
+///     Defines a content process that processes all <see cref="AsepriteFrame"/>, <see cref="AsepriteTag"/>, and
+///     <see cref="AsepriteSlice"/> elements in a <see cref="AsepriteFile"/> and generates a spritesheet.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
 public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteSheetProcessorResult>
 {
     /// <summary>
-    ///     Gets or Sets whether only cel elements that are on visible layers
-    ///     should be processed.
+    ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements that are on a visible
+    ///     <see cref="AsepriteLayer"/> should be processed.
     /// </summary>
     [DisplayName("(Aseprite) Only Visible Layers")]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets whether cel elements that are on a layer that was
+    ///     Gets or Sets whether <see cref="AsepriteCel"/> elements that are on a <see cref="AsepriteLayer"/> that was
     ///     marked as the background layer in Aseprite should be processed.
     /// </summary>
     [DisplayName("(Aseprite) Include Background Layer")]
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
-    ///     Gets or Sets whether frames that are detected as being duplicates
-    ///     should be merged into a single frame.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteFrame"/> elements that are detected as
+    ///     duplicates should be merged into a single element.
     /// </summary>
     [DisplayName("(Aseprite) Merge Duplicate Frames")]
     public bool MergeDuplicateFrames { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets the amount of transparent pixels to add between the
-    ///     edge of the generated texture for the spritesheet and the frame
-    ///     regions within it.
+    ///     Gets or Sets the amount of transparent pixels to add between the edge of the generated texture for the
+    ///     spritesheet and the frame regions within it.
     /// </summary>
     [DisplayName("(Aseprite) Border Padding")]
     public int BorderPadding { get; set; } = 0;
 
     /// <summary>
-    ///     Gets or Sets the amount of transparent pixels to add between each
-    ///     frame region in the generated texture for the spritesheet.
+    ///     Gets or Sets the amount of transparent pixels to add between each frame region in the generated texture for
+    ///     the spritesheet.
     /// </summary>
     [DisplayName("(Aseprite) Spacing")]
     public int Spacing { get; set; } = 0;
 
     /// <summary>
-    ///     Gets or Sets the amount of transparent pixels to add around the
-    ///     edge of each frame region in the generated texture for the
-    ///     spritesheet.
+    ///     Gets or Sets the amount of transparent pixels to add around the edge of each frame region in the generated
+    ///     texture for the spritesheet.
     /// </summary>
     [DisplayName("(Aseprite) Inner Padding")]
     public int InnerPadding { get; set; } = 0;
 
     /// <summary>
-    ///     Process a spritesheet from an Aseprite file.
+    ///     Processes a spritesheet from an <see cref="AsepriteFile"/>.
     /// </summary>
     /// <param name="file">
-    ///     The Aseprite file to process.
+    ///     The <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <param name="context">
-    ///     The content processor context that contains contextual information
-    ///     about the content being processed.
+    ///     The <see cref="ContentProcessorContext"/> that provides contextual information  about the content being
+    ///     processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the SpriteSheetProcessorResult class that contains
-    ///     the spritesheet content processed from the Aseprite file.
+    ///     A new instance of the <see cref="SpriteSheetProcessorResult"/> class that contains the results of this
+    ///     method.
     /// </returns>
     public override SpriteSheetProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
@@ -115,17 +111,17 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
         int columns = (int)Math.Ceiling(sqrt);
         int rows = (frameCount + columns - 1) / columns;
 
-        int width = (columns * file.FrameWidth) +
+        int width = (columns * file.CanvasWidth) +
                     (BorderPadding * 2) +
                     (Spacing * (columns - 1)) +
                     (InnerPadding * 2 * columns);
 
-        int height = (rows * file.FrameHeight) +
+        int height = (rows * file.CanvasHeight) +
                      (BorderPadding * 2) +
                      (Spacing * (rows - 1)) +
                      (InnerPadding * 2 * rows);
 
-        Color[] pixels = GenerateImage(frames, file.FrameWidth, file.FrameHeight, columns, rows, width, height, duplicateMap);
+        Color[] pixels = GenerateImage(frames, file.CanvasWidth, file.CanvasHeight, columns, rows, width, height, duplicateMap);
         TextureContent textureContent = CreateTextureContent(file.Name, pixels, width, height, context);
 
         SpriteSheetProcessorResult content = new(file.Name, textureContent);
@@ -136,7 +132,7 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
         Dictionary<int, TextureRegionContent> originalToDuplicateLookup = new();
         int offset = 0;
 
-        for (int fNum = 0; fNum < file.Frames.Count; fNum++)
+        for (int fNum = 0; fNum < file.FrameCount; fNum++)
         {
             if (MergeDuplicateFrames && duplicateMap.ContainsKey(fNum))
             {
@@ -150,17 +146,17 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
             int column = (fNum - offset) % columns;
             int row = (fNum - offset) / columns;
 
-            int x = (column * file.FrameWidth) +
+            int x = (column * file.CanvasWidth) +
                     BorderPadding +
                     (Spacing * column) +
                     (InnerPadding * (column + column + 1));
 
-            int y = (row * file.FrameHeight) +
+            int y = (row * file.CanvasHeight) +
                     BorderPadding +
                     (Spacing * row) +
                     (InnerPadding * (row + row + 1));
 
-            Rectangle bounds = new(x, y, file.FrameWidth, file.FrameHeight);
+            Rectangle bounds = new(x, y, file.CanvasWidth, file.CanvasHeight);
             TextureRegionContent region = new($"frame_{fNum}", bounds);
             content.Regions.Add(region);
             originalToDuplicateLookup.Add(fNum, region);
@@ -169,7 +165,7 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
         // *********************************************************************
         //  Generate the animation content
         // *********************************************************************
-        for (int i = 0; i < file.Tags.Count; i++)
+        for (int i = 0; i < file.TagCount; i++)
         {
             AsepriteTag aseTag = file.Tags[i];
             AnimationFrameContent[] animationFrames = new AnimationFrameContent[aseTag.To - aseTag.From + 1];
@@ -180,18 +176,18 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
                 animationFrames[f] = new AnimationFrameContent(index, TimeSpan.FromMilliseconds(duration));
             }
 
-            byte loopReversePingPongMask = 1;
-            if (aseTag.Direction == 1)
+            byte animationFlags = 1;
+            if (aseTag.Direction == AsepriteLoopDirection.Reverse)
             {
-                loopReversePingPongMask |= 2;
+                animationFlags |= 2;
             }
 
-            if (aseTag.Direction == 2)
+            if (aseTag.Direction == AsepriteLoopDirection.PingPong)
             {
-                loopReversePingPongMask |= 4;
+                animationFlags |= 4;
             }
 
-            AnimationContent animation = new(aseTag.Name, animationFrames, loopReversePingPongMask);
+            AnimationContent animation = new(aseTag.Name, animationFrames, animationFlags);
 
             content.Animations.Add(animation);
         }
@@ -199,11 +195,11 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
         return content;
     }
 
-    private Color[][] FlattenFrames(List<AsepriteFrame> frames)
+    private Color[][] FlattenFrames(ReadOnlySpan<AsepriteFrame> frames)
     {
-        Color[][] result = new Color[frames.Count][];
+        Color[][] result = new Color[frames.Length][];
 
-        for (int i = 0; i < frames.Count; i++)
+        for (int i = 0; i < frames.Length; i++)
         {
             AsepriteFrame frame = frames[i];
             result[i] = frame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);

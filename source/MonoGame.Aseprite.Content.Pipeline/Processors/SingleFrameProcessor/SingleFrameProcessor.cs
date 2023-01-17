@@ -31,60 +31,60 @@ using MonoGame.Aseprite.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines a processor that accepts an Aseprite file and generates a
-///     texture based on a single frame in the Aseprite file.
+///     Defines a content process that processes a single <see cref="AsepriteFrame"/> in a <see cref="AsepriteFile"/>
+///     and generates a texture based on the frame.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Texture Processor - MonoGame.Aseprite")]
 public sealed class SingleFrameProcessor : CommonProcessor<AsepriteFile, SingleFrameProcessorResult>
 {
     /// <summary>
-    ///     Gets or Sets the index of the frame in the Aseprite file to process.
+    ///     Gets or Sets the index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> to process.
     /// </summary>
     [DisplayName("(Aseprite) Frame Index")]
     public int FrameIndex { get; set; } = 0;
 
     /// <summary>
-    ///     Gets or Sets whether only cel elements that are on visible layers
-    ///     should be processed.
+    ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements that are on a visible
+    ///     <see cref="AsepriteLayer"/> should be processed.
     /// </summary>
     [DisplayName("(Aseprite) Only Visible Layers")]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets whether cel elements that are on a layer that was
+    ///     Gets or Sets whether <see cref="AsepriteCel"/> elements that are on a <see cref="AsepriteLayer"/> that was
     ///     marked as the background layer in Aseprite should be processed.
     /// </summary>
     [DisplayName("(Aseprite) Include Background Layer")]
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
+    ///     Processes a single <see cref="AsepriteFrame"/> in the given <see cref="AsepriteFile"/>.
     ///     Processes a single frame in an Aseprite file.
     /// </summary>
     /// <param name="file">
-    ///     The Aseprite file to process.
+    ///     The <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <param name="context">
-    ///     The content processor context that contains contextual information
-    ///     about content being processed.
+    ///     The <see cref="ContentProcessorContext"/> that provides contextual information  about the content being
+    ///     processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the SingleFrameProcessorResult class that contains
-    ///     the texture content of the frame processed.
+    ///     A new instance of the <see cref="SingleFrameProcessorResult"/> class that contains the result of this
+    ///     method.
     /// </returns>
     /// <exception cref="IndexOutOfRangeException">
-    ///     Thrown if the FrameIndex property that was set in the mgcb-editor
-    ///     is less than zero or is greater than or equal to the total number
-    ///     of frames in the Aseprite file being processed.
+    ///     Thrown if the <see cref="FrameIndex"/> property is less than zero or is greater than or equal to the total
+    ///     number of <see cref="AsepriteFrame"/> elements in the <see cref="AsepriteFile"/> being processed.
     /// </exception>
     public override SingleFrameProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
-        if (FrameIndex < 0 || FrameIndex >= file.Frames.Count)
+        if (FrameIndex < 0 || FrameIndex >= file.FrameCount)
         {
             throw new IndexOutOfRangeException("The 'Frame Index' cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file");
         }
 
         Color[] pixels = file.Frames[FrameIndex].FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
-        TextureContent textureContent = CreateTextureContent(file.Name, pixels, file.FrameWidth, file.FrameHeight, context);
+        TextureContent textureContent = CreateTextureContent(file.Name, pixels, file.CanvasWidth, file.CanvasHeight, context);
         return new SingleFrameProcessorResult(textureContent);
     }
 }

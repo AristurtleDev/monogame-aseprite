@@ -24,11 +24,22 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteTilemapLayer : AsepriteLayer
+/// <summary>
+///     Defines a layer in which <see cref="AsepriteTilemapCel"/> elements are are placed on in Aseprite.
+/// </summary>
+public sealed class AsepriteTilemapLayer : AsepriteLayer
 {
-    internal int TilesetID { get; }
-    internal AsepriteTileset Tileset { get; }
+    /// <summary>
+    ///     Gets the index of the <see cref="AsepriteTileset"/> that is used by this <see cref="AsepriteTilemapLayer"/>.
+    /// </summary>
+    public int TilesetID { get; }
 
-    internal AsepriteTilemapLayer(AsepriteTileset tileset, int tilesetID, bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name)
-        : base(isVisible, isBackground, isReference, blend, opacity, name) => (Tileset, TilesetID) = (tileset, tilesetID);
+    /// <summary>
+    ///     Gets a reference to the <see cref="AsepriteTileset"/> that is used by this
+    ///     <see cref="AsepriteTilemapLayer"/>.
+    /// </summary>
+    public AsepriteTileset Tileset { get; }
+
+    internal AsepriteTilemapLayer(AsepriteTileset tileset, int tilesetID, ushort flags, BlendMode blend, byte opacity, string name)
+        : base(flags, blend, opacity, name) => (Tileset, TilesetID) = (tileset, tilesetID);
 }

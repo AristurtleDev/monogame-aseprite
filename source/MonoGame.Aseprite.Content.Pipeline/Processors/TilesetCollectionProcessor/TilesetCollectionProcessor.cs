@@ -28,32 +28,31 @@ using MonoGame.Aseprite.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines a processor that accepts an Aseprite file and generates a
-///     collection of the tilesets from the tilesets in the Aseprite file.
+///     Defines a content processor that processes all <see cref="AsepriteTileset"/> elements in an
+///     <see cref="AsepriteFile"/> as a collection.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tileset Collection Processor - MonoGame.Aseprite")]
 public sealed class TilesetCollectionProcessor : CommonProcessor<AsepriteFile, TilesetCollectionProcessorResult>
 {
     /// <summary>
-    ///     Processes all tilesets in the Aseprite file.
+    ///     Processes all <see cref="AsepriteTileset"/> elements in an <see cref="AsepriteFile"/> as a collection.
     /// </summary>
     /// <param name="file">
-    ///     The Aseprite file to process.
+    ///     The <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <param name="context">
-    ///     The content processor context that contains contextual information
-    ///     about content being processed.
+    ///     The <see cref="ContentProcessorContext"/> that provides contextual information  about the content being
+    ///     processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the TilesetCollectionProcessorResult class that
-    ///     contains the collection of tileset content from the tilesets
-    ///     processed.
+    ///     A new instance of the <see cref="TilesetCollectionProcessorResult"/> class that contains the result of this
+    ///     method.
     /// </returns>
     public override TilesetCollectionProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
         TilesetCollectionProcessorResult content = new();
 
-        for (int i = 0; i < file.Tilesets.Count; i++)
+        for (int i = 0; i < file.TilesetCount; i++)
         {
             AsepriteTileset tileset = file.Tilesets[i];
             TilesetContent tilesetContent = CreateTilesetContent(tileset, file.Name, context);

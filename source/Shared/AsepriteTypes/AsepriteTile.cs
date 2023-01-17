@@ -24,12 +24,52 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteTile
+/// <summary>
+///     Defines a single tile in a <see cref="AsepriteTilemapCel"/>.
+/// </summary>
+public sealed class AsepriteTile
 {
-    internal int TilesetTileID { get; }
-    internal int XFlip { get; }
-    internal int YFlip { get; }
-    internal int Rotation { get; }
+    /// <summary>
+    ///     Gets the ID of the tile in the <see cref="AsepriteTileset"/> that contains the image pixel data for this
+    ///     <see cref="AsepriteTile"/>.
+    /// </summary>
+    public int TilesetTileID { get; }
+
+    /// <summary>
+    ///     Gets the x-flip value for this <see cref="AsepriteTile"/>.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         As of the current Aseprite 1.3-beta-21, tile x-flip has not been implemented.  As such, this value will
+    ///         always be 0.
+    ///     </para>
+    ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+    /// </remarks>
+    public int XFlip { get; }
+
+    /// <summary>
+    ///     Gets the y-flip value for this <see cref="AsepriteTile"/>.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         As of the current Aseprite 1.3-beta-21, tile y-flip has not been implemented.  As such, this value will
+    ///         always be 0.
+    ///     </para>
+    ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+    /// </remarks>
+    public int YFlip { get; }
+
+    /// <summary>
+    ///     Gets the 90deg clockwise rotation value for this <see cref="AsepriteTile"/>.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         As of the current Aseprite 1.3-beta-21, tile rotation has not been implemented.  As such, this value
+    ///         will always be 0.
+    ///     </para>
+    ///     <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+    /// </remarks>
+    public int Rotation { get; }
 
     internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int rotation) =>
         (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);

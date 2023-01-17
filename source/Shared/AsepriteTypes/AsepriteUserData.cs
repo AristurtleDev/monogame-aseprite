@@ -27,36 +27,35 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Represents custom user data that a user can set for a cel, layer, slice,
-///     or tag in an Aseprite image.
+///     Represents custom user data that a user can set for a <see cref="AsepriteCel"/>, <see cref="AsepriteLayer"/>,
+///     <see cref="AsepriteSlice"/>, or <see cref="AsepriteTag"/> in Aseprite.
 /// </summary>
 public sealed class AsepriteUserData
 {
     /// <summary>
-    ///     Indicates whether this user data has a text value.
+    ///     Gets a value that indicates whether this <see cref="AsepriteUserData"/> contains a <see cref="Text"/> value.
+    ///     When this is <see langword="true"/>, guarantees that <see cref="Text"/> is not <see langword="null"/>.
     /// </summary>
     [MemberNotNullWhen(true, nameof(Text))]
     public bool HasText => Text is not null;
 
     /// <summary>
-    ///     The text value for this user data, if one was set in Aseprite;
-    ///     otherwise, null.
+    ///     Gets the custom text that was set for this <see cref="AsepriteUserData"/>, if any was set in Aseprite;
+    ///     otherwise, <see langword="null"/>.
     /// </summary>
     public string? Text { get; internal set; } = default;
 
     /// <summary>
-    ///     Indicates whether this user data has a color value.
-    /// </summary>
-    [MemberNotNullWhen(true, nameof(Color))]
+    ///     Gets a value that indicates whether this <see cref="AsepriteUserData"/> contains a <see cref="Color"/>
+    ///     value. When this is <see langword="true"/>, guarantees that <see cref="Color"/> is not <see langword="null"/>.
+    /// </summary>en(true, nameof(Color))]
     public bool HasColor => Color is not null;
 
     /// <summary>
-    ///     The color value for this user data, if one was set in Aseprite;
-    ///     otherwise, null.
+    ///     Gets the custom color that was set for this <see cref="AsepriteUserData"/>, if any was set in Aseprite;
+    ///     otherwise, <see langword="null"/>.
     /// </summary>
     public Color? Color { get; internal set; } = default;
-
-
 
     internal AsepriteUserData() { }
 }

@@ -24,14 +24,40 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteSlice
+/// <summary>
+///     Defines a named slice region with frame keys.
+/// </summary>
+public sealed class AsepriteSlice
 {
-    internal List<AsepriteSliceKey> Keys { get; } = new();
-    internal bool IsNinePatch { get; }
-    internal bool HasPivot { get; }
-    internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
+    private AsepriteSliceKey[] _keys;
 
-    internal AsepriteSlice(string name, bool isNine, bool hasPivot) =>
-        (Name, IsNinePatch, HasPivot) = (name, isNine, hasPivot);
+    /// <summary>
+    ///     Gets a <see cref="ReadOnlySpan{T}"/> of the <see cref="AsepriteSliceKey"/> elements in this
+    ///     <see cref="AsepriteSlice"/>.
+    /// </summary>
+    public ReadOnlySpan<AsepriteSliceKey> Keys => _keys;
+
+    /// <summary>
+    ///     Gets a value that indicates if this <see cref="AsepriteSlice"/> and its keys represent a nine-patch region.
+    /// </summary>
+    public bool IsNinePatch { get; }
+
+    /// <summary>
+    ///     Gets a value that indicates if this <see cref="AsepriteSlice"/> and its keys have pivot values.
+    /// </summary>
+    public bool HasPivot { get; }
+
+    /// <summary>
+    ///     Gets the name of this <see cref="AsepriteSlice"/>.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteSlice"/>> in
+    ///     Aseprite.
+    /// </summary>
+    public AsepriteUserData UserData { get; } = new();
+
+    internal AsepriteSlice(string name, bool isNine, bool hasPivot, AsepriteSliceKey[] keys) =>
+        (Name, IsNinePatch, HasPivot, _keys) = (name, isNine, hasPivot, keys);
 }

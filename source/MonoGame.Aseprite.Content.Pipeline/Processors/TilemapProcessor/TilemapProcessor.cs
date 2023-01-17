@@ -29,33 +29,32 @@ using MonoGame.Aseprite.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines a processor that accepts an Aseprite file and generates a
-///     tilemap based on a single frame in the Aseprite file.
+///     Defines a content processor that processes a single <see cref="AsepriteFrame"/>, that contains
+///     <see cref="AsepriteTilemapCel"/> elements, and generates a tilemap.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
 public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProcessorResult>
 {
     /// <summary>
-    ///     Gets or Sets whether only cel elements that are on visible layers
-    ///     should be processed.
+    ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements that are on a visible
+    ///     <see cref="AsepriteLayer"/> should be processed.
     /// </summary>
     [DisplayName("(Aseprite) Only Visible Layers")]
     public bool OnlyVisibleLayers { get; set; } = true;
 
 
     /// <summary>
-    ///     Processes a single frame in an Aseprite file as a tilemap.
+    ///     Processes a single <see cref="AsepriteFrame"/> in an <see cref="AsepriteFile"/> as a tilemap.
     /// </summary>
     /// <param name="file">
-    ///     The Aseprite file to process.
+    ///     The <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <param name="context">
-    ///     The content processor context that contains contextual information
-    ///     about content being processed.
+    ///     The <see cref="ContentProcessorContext"/> that provides contextual information  about the content being
+    ///     processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the TilemapProcessResult class that contains the
-    ///     tilemap content of the frame processed.
+    ///     A new instance of the <see cref="TilemapProcessorResult"/> class that contains the result of this method.
     /// </returns>
     public override TilemapProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
@@ -64,7 +63,7 @@ public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProc
         // *********************************************************************
         //  Generate the tileset content for each tileset
         // *********************************************************************
-        for (int i = 0; i < file.Tilesets.Count; i++)
+        for (int i = 0; i < file.TilesetCount; i++)
         {
             AsepriteTileset tileset = file.Tilesets[i];
             TilesetContent tilesetContent = CreateTilesetContent(tileset, file.Name, context);
@@ -76,7 +75,7 @@ public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProc
         // *********************************************************************
         AsepriteFrame frame = file.Frames[0];
 
-        for (int i = 0; i < frame.Cels.Count; i++)
+        for (int i = 0; i < frame.CelCount; i++)
         {
             if (frame.Cels[i] is AsepriteTilemapCel cel && (OnlyVisibleLayers && !cel.Layer.IsVisible))
             {
@@ -87,45 +86,4 @@ public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProc
 
         return result;
     }
-
-
-
-    // private List<TilemapLayerContent> GetLayers(AsepriteFile file)
-    // {
-    //     List<TilemapLayerContent> content = new();
-
-    //     Frame frame = file.Frames[0];
-
-    //     for (int i = 0; i < frame.Cels.Count; i++)
-    //     {
-    //         if (frame.Cels[i] is TilemapCel tilemapCel && tilemapCel.Layer.IsVisible)
-    //         {
-    //             string name = tilemapCel.Layer.Name;
-    //             int tilesetID = tilemapCel.LayerAs<TilemapLayer>().TilesetID;
-    //             int columns = tilemapCel.Width;
-    //             int rows = tilemapCel.Height;
-    //             Point offset = new(tilemapCel.Position.X, tilemapCel.Position.Y);
-    //             int x = tilemapCel.Position.X;
-    //             int y = tilemapCel.Position.Y;
-    //             string tilesetName = tilemapCel.Tileset.Name;
-
-    //             TileContent[] tiles = new TileContent[tilemapCel.Tiles.Count];
-
-    //             for (int j = 0; j < tilemapCel.Tiles.Count; j++)
-    //             {
-    //                 Tile tile = tilemapCel.Tiles[j];
-    //                 byte flipFlag = (byte)(0 |
-    //                                 (tile.XFlip != 0 ? 1 : 0) |
-    //                                 (tile.YFlip != 0 ? 2 : 0));
-    //                 TileContent tileContent = new(flipFlag, tile.Rotation, tile.TilesetTileID);
-    //                 tiles[j] = tileContent;
-    //             }
-
-    //             TilemapLayerContent layerContent = new(name, tilesetID, columns, rows, offset, tiles);
-    //             content.Add(layerContent);
-    //         }
-    //     }
-
-    //     return content;
-    // }
 }

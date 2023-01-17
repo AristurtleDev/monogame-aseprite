@@ -25,8 +25,8 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines the result of processing an Aseprite file as a tilemap by the
-///     TilemapProcessor.
+///     Defines the result of processing a single <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFrame"/> in an
+///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFile"/> as a tilemap.
 /// </summary>
 public sealed class TilemapProcessorResult
 {

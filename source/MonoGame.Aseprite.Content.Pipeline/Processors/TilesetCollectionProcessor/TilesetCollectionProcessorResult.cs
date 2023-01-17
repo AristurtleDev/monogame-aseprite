@@ -25,8 +25,8 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines the result of processing an Aseprite file as a collection of
-///     tilesets by the TilesetCollectionProcessor.
+///     Defines the result of processing all <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTileset"/> elements in
+///     an <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFile"/> as a collection.
 /// </summary>
 public sealed class TilesetCollectionProcessorResult
 {

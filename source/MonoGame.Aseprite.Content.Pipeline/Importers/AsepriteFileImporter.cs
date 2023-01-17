@@ -29,8 +29,7 @@ using MonoGame.Aseprite.IO;
 namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 
 /// <summary>
-///     The content pipeline importer for importing the contents of an
-///     Aseprite file.
+///     Defines the content pipeline importer for importing the contents of an Aseprite file.
 /// </summary>
 [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = "AsepriteSpritesheetProcessor")]
 public class AsepriteFileImporter : ContentImporter<ContentImporterResult<AsepriteFile>>
@@ -43,12 +42,11 @@ public class AsepriteFileImporter : ContentImporter<ContentImporterResult<Asepri
     ///     import.
     /// </param>
     /// <param name="context">
-    ///     The importer context. This is provided by the MonoGame framework
-    ///     when called from the mgcb-editor.
+    ///     The <see cref="ContentImporterContext"/> that provides contexture information about the file being imported.
     /// </param>
     /// <returns>
-    ///     A new instance of the <see cref="AsepriteFile"/> class containing
-    ///     the data imported from the Aseprite file.
+    ///     A new instance of the <see cref="ContentImporterResult{T}"/> class containing the <see cref="AsepriteFile"/>
+    ///     data that was imported.
     /// </returns>
     public override ContentImporterResult<AsepriteFile> Import(string filePath, ContentImporterContext context)
     {

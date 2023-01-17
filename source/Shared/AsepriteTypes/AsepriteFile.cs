@@ -30,29 +30,40 @@ public sealed class AsepriteFile
 {
     private Color[] _palette = Array.Empty<Color>();
 
-    internal List<AsepriteFrame> Frames { get; } = new();
-    internal List<AsepriteLayer> Layers { get; } = new();
-    internal List<AsepriteTag> Tags { get; } = new();
-    internal List<AsepriteSlice> Slices { get; } = new();
-    internal List<AsepriteTileset> Tilesets { get; } = new();
-    internal Color[] Palette => _palette;
-    internal int TransparentIndex { get; set; }
-    internal string Name { get; set; }
-    internal int FrameWidth { get; set; }
-    internal int FrameHeight { get; set; }
-    internal ushort ColorDepth { get; set; }
-    internal int FrameCount { get; set; }
-    internal bool LayerOpacityValid { get; set; }
+    private AsepriteFrame[] _frames;
+    private AsepriteLayer[] _layers;
+    private AsepriteTag[] _tags;
+    private AsepriteSlice[] _slices;
+    private AsepriteTileset[] _tilesets;
 
-    internal AsepriteFile(string name) => Name = name;
+    public ReadOnlySpan<AsepriteFrame> Frames => _frames;
+    public ReadOnlySpan<AsepriteLayer> Layers => _layers;
+    public ReadOnlySpan<AsepriteTag> Tags => _tags;
+    public ReadOnlySpan<AsepriteSlice> Slices => _slices;
+    public ReadOnlySpan<AsepriteTileset> Tilesets => _tilesets;
+    public ReadOnlySpan<Color> Palette => _palette;
 
-    internal void ResizePalette(int newSize)
+    public int TransparentIndex { get; }
+    public string Name { get; }
+    public int CanvasWidth { get; }
+    public int CanvasHeight { get; }
+    public int FrameCount => _frames.Length;
+    public int TagCount => _tags.Length;
+    public int SliceCount => _slices.Length;
+    public int LayerCount => _layers.Length;
+    public int TilesetCount => _tilesets.Length;
+
+    internal AsepriteFile(string name, int width, int height, int transparentIndex, Color[] palette, AsepriteFrame[] frames, AsepriteLayer[] layers, AsepriteTag[] tags, AsepriteSlice[] slices, AsepriteTileset[] tilesets)
     {
-        if (newSize > 0 && newSize > _palette.Length)
-        {
-            Color[] tmp = new Color[newSize];
-            Array.Copy(_palette, tmp, _palette.Length);
-            _palette = tmp;
-        }
+        Name = name;
+        CanvasWidth = width;
+        CanvasHeight = height;
+        TransparentIndex = transparentIndex;
+        _palette = palette;
+        _frames = frames;
+        _layers = layers;
+        _tags = tags;
+        _slices = slices;
+        _tilesets = tilesets;
     }
 }

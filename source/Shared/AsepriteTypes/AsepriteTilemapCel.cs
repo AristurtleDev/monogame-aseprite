@@ -26,12 +26,40 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteTilemapCel : AsepriteCel
+/// <summary>
+///     Defines a single cel in a frame that contains tile data for a tilemap.
+/// </summary>
+public sealed class AsepriteTilemapCel : AsepriteCel
 {
-    internal List<AsepriteTile> Tiles { get; } = new();
-    internal int Width { get; }
-    internal int Height { get; }
-    internal AsepriteTileset Tileset => LayerAs<AsepriteTilemapLayer>().Tileset;
-    internal AsepriteTilemapCel(int width, int height, AsepriteLayer layer, Point position, int opacity)
-        : base(layer, position, opacity) => (Width, Height) = (width, height);
+    private AsepriteTile[] _tiles;
+
+    /// <summary>
+    ///     Gets a <see cref="ReadOnlySpan{T}"/> of the <see cref="AsepriteTile"/> elements in this
+    ///     <see cref="AsepriteTilemapCel"/>.
+    /// </summary>
+    public ReadOnlySpan<AsepriteTile> Tiles => _tiles;
+
+    /// <summary>
+    ///     Gets the total number of columns in this <see cref="AsepriteTilemapCel"/>.
+    /// </summary>
+    public int Columns { get; }
+
+    /// <summary>
+    ///     Gets the total number of rows in this <see cref="AsepriteTilemapCel"/>.
+    /// </summary>
+    public int Rows { get; }
+
+    /// <summary>
+    ///     Gets the total number of <see cref="AsepriteTile"/> elements in this <see cref="AsepriteTilemapCel"/>.
+    /// </summary>
+    public int TileCount => _tiles.Length;
+
+    /// <summary>
+    ///     Gets a reference to the <see cref="AsepriteTileset"/> used by the <see cref="AsepriteTile"/> elements in
+    ///     this <see cref="AsepriteTilemapCel"/>.
+    /// </summary>
+    public AsepriteTileset Tileset => LayerAs<AsepriteTilemapLayer>().Tileset;
+
+    internal AsepriteTilemapCel(int columns, int rows, AsepriteTile[] tiles, AsepriteLayer layer, Point position, int opacity)
+        : base(layer, position, opacity) => (Columns, Rows, _tiles) = (columns, rows, tiles);
 }

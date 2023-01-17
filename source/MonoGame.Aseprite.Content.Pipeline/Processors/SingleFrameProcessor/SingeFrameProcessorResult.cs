@@ -27,8 +27,8 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-///     Defines the result of processing a single frame of an Aseprite file by
-///     the SingleFrameProcessor.
+///     Defines the result of processing a single <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFrame"/> in an
+///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFile"/>.
 /// </summary>
 public sealed class SingleFrameProcessorResult
 {

@@ -26,17 +26,49 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class AsepriteTag
+/// <summary>
+///     Defines an animation tag from an Aseprite file, which is a series of frames that are grouped together to
+///     represent an animation.
+/// </summary>
+public sealed class AsepriteTag
 {
     private Color _tagColor;
 
-    internal int From { get; }
-    internal int To { get; }
-    internal byte Direction { get; }
-    internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
-    internal Color Color => UserData.Color ?? _tagColor;
+    /// <summary>
+    ///     Gets the index of the <see cref="AsepriteFile"/> the animation defined by this <see cref="AsepriteTag"/>
+    ///     starts on.
+    /// </summary>
+    public int From { get; }
 
-    internal AsepriteTag(ushort from, ushort to, byte direction, Color color, string name) =>
+    /// <summary>
+    ///     Gets the index of the <see cref="AsepriteFile"/> the animation defined by this <see cref="AsepriteTag"/>
+    ///     ends on.
+    /// </summary>
+    public int To { get; }
+
+    /// <summary>
+    ///     Gets a <see cref="AsepriteLoopDirection"/> value that defines the direction the animation defined by this
+    ///     <see cref="AsepriteTag"/> loops.
+    /// </summary>
+    public AsepriteLoopDirection Direction { get; }
+
+    /// <summary>
+    ///     Gets the name of this <see cref="AsepriteTag"/>.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteTag"/>> in
+    ///     Aseprite.
+    /// </summary>
+    public AsepriteUserData UserData { get; } = new();
+
+    /// <summary>
+    ///     Gets a <see cref="Microsoft.Xna.Framework.Color"/> value that represents the color of this
+    ///     <see cref="AsepriteTag"/>.
+    /// </summary>
+    public Color Color => UserData.Color ?? _tagColor;
+
+    internal AsepriteTag(ushort from, ushort to, AsepriteLoopDirection direction, Color color, string name) =>
         (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
 }

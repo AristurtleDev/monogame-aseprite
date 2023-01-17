@@ -26,17 +26,50 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal abstract class AsepriteCel
+/// <summary>
+///     Defines a single cel of a frame in an Aseprite image.
+/// </summary>
+public abstract class AsepriteCel
 {
-    internal AsepriteLayer Layer { get; }
+    /// <summary>
+    ///     Gets a reference to the <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on.
+    /// </summary>
+    public AsepriteLayer Layer { get; }
+
+    /// <summary>
+    ///     Gets the x- and y-coordinate location of this <see cref="AsepriteCel"/> relative to the bounds of the
+    ///     <see cref="AsepriteFrame"/> it is in.
+    /// </summary>
     internal Point Position { get; }
+
+    /// <summary>
+    ///     Gets the opacity level of this <see cref="AsepriteCel"/>.
+    /// </summary>
     internal int Opacity { get; }
+
+    /// <summary>
+    ///     Gets the <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteCel"/>.
+    /// </summary>
     internal AsepriteUserData UserData { get; } = new();
 
     internal AsepriteCel(AsepriteLayer layer, Point position, int opacity) =>
         (Layer, Position, Opacity) = (layer, position, opacity);
 
-    internal T LayerAs<T>() where T : AsepriteLayer
+    /// <summary>
+    ///     Return the <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on as derived type
+    ///     <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">
+    ///     A derived type of <see cref="AsepriteLayer"/>.
+    /// </typeparam>
+    /// <returns>
+    ///     The <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on as type <typeparamref name="T"/>.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if the <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on is not of the derived type
+    ///     <typeparamref name="T"/>.
+    /// </exception>
+    public T LayerAs<T>() where T : AsepriteLayer
     {
         if (Layer is T asT)
         {

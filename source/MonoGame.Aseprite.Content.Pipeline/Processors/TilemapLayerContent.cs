@@ -31,13 +31,15 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// </summary>
 public sealed class TilemapLayerContent
 {
+    private TileContent[] _tiles;
+
     internal int TilesetID { get; }
     internal string Name { get; }
     internal int Columns { get; }
     internal int Rows { get; }
-    internal TileContent[] Tiles { get; }
+    internal ReadOnlySpan<TileContent> Tiles => _tiles;
     internal Point Offset { get; }
 
     internal TilemapLayerContent(string name, int tilesetId, int columns, int rows, Point offset, TileContent[] tiles) =>
-        (Name, TilesetID, Columns, Rows, Offset, Tiles) = (name, TilesetID, columns, rows, offset, tiles);
+        (Name, TilesetID, Columns, Rows, Offset, _tiles) = (name, TilesetID, columns, rows, offset, tiles);
 }
