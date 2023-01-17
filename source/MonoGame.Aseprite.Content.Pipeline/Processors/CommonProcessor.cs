@@ -27,7 +27,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -55,19 +55,19 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
     //  content processor.
     // ************************************************************************
 
-    /// <summary>
-    ///     Gets or Sets whether only cel elements that are on visible layers
-    ///     should be processed.
-    /// </summary>
-    [DisplayName("(Aseprite) Only Visible Layers")]
-    public bool OnlyVisibleLayers { get; set; } = true;
+    // /// <summary>
+    // ///     Gets or Sets whether only cel elements that are on visible layers
+    // ///     should be processed.
+    // /// </summary>
+    // [DisplayName("(Aseprite) Only Visible Layers")]
+    // public bool OnlyVisibleLayers { get; set; } = true;
 
-    /// <summary>
-    ///     Gets or Sets whether cel elements that are on a layer that was
-    ///     marked as the background layer in Aseprite should be processed.
-    /// </summary>
-    [DisplayName("(Aseprite) Include Background Layer")]
-    public bool IncludeBackgroundLayer { get; set; } = false;
+    // /// <summary>
+    // ///     Gets or Sets whether cel elements that are on a layer that was
+    // ///     marked as the background layer in Aseprite should be processed.
+    // /// </summary>
+    // [DisplayName("(Aseprite) Include Background Layer")]
+    // public bool IncludeBackgroundLayer { get; set; } = false;
 
     // ************************************************************************
     //  The following properties are those that are provided by MonoGame when
@@ -185,20 +185,20 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
     //        but would rather logically mark this as protected. If still
     //        considering moving the file import stuff to a separate library,
     //        that might work then.
-    internal TilesetContent CreateTilesetContent(Tileset tileset, string fileName, ContentProcessorContext processorContext)
+    internal TilesetContent CreateTilesetContent(AsepriteTileset tileset, string fileName, ContentProcessorContext processorContext)
     {
         string sourceName = $"{fileName} {tileset.Name}.aseprite";
         TextureContent textureContent = CreateTextureContent(sourceName, tileset.Pixels, tileset.Width, tileset.Height, processorContext);
         return new(tileset.Name, tileset.TileCount, tileset.TileWidth, tileset.TileHeight, textureContent);
     }
 
-    internal TilemapLayerContent CreateTilemapLayerContent(TilemapCel cel)
+    internal TilemapLayerContent CreateTilemapLayerContent(AsepriteTilemapCel cel)
     {
         string name = cel.Layer.Name;
         //  TODO: Can the TilesetID be added to the Tileset itself instead of
         //        having to get the layer as then pulling it from the layer
         //        since the cel already has access to the Tileset???
-        int tilesetID = cel.LayerAs<TilemapLayer>().TilesetID;
+        int tilesetID = cel.LayerAs<AsepriteTilemapLayer>().TilesetID;
         int columns = cel.Width;
         int rows = cel.Height;
         Point offset = cel.Position;
@@ -208,13 +208,13 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
         return new TilemapLayerContent(name, tilesetID, columns, rows, offset, tiles);
     }
 
-    internal TileContent[] CreateCelTileContent(TilemapCel cel)
+    internal TileContent[] CreateCelTileContent(AsepriteTilemapCel cel)
     {
         TileContent[] tiles = new TileContent[cel.Tiles.Count];
 
         for (int i = 0; i < cel.Tiles.Count; i++)
         {
-            Tile tile = cel.Tiles[i];
+            AsepriteTile tile = cel.Tiles[i];
 
             byte flag = 0;
             flag |= (byte)(tile.XFlip != 0 ? 1 : 0);

@@ -21,42 +21,46 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-using System.Diagnostics.CodeAnalysis;
+
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-/// <summary>
-///     Represents custom user data that a user can set for a cel, layer, slice,
-///     or tag in an Aseprite image.
-/// </summary>
-public sealed class AsepriteUserData
+internal sealed class AsepriteTileset
 {
-    /// <summary>
-    ///     Indicates whether this user data has a text value.
-    /// </summary>
-    [MemberNotNullWhen(true, nameof(Text))]
-    public bool HasText => Text is not null;
+    internal Color[] Pixels { get; }
+    internal int ID { get; }
+    internal int TileCount { get; }
+    internal int TileWidth { get; }
+    internal int TileHeight { get; }
+    internal string Name { get; }
+    internal int Width { get; }
+    internal int Height { get; }
 
-    /// <summary>
-    ///     The text value for this user data, if one was set in Aseprite;
-    ///     otherwise, null.
-    /// </summary>
-    public string? Text { get; internal set; } = default;
+    internal Color[] this[int tileId]
+    {
+        get
+        {
+            if (tileId < 0 || tileId >= TileCount)
+            {
+                throw new ArgumentOutOfRangeException(nameof(tileId));
+            }
 
-    /// <summary>
-    ///     Indicates whether this user data has a color value.
-    /// </summary>
-    [MemberNotNullWhen(true, nameof(Color))]
-    public bool HasColor => Color is not null;
+            int len = TileWidth * TileHeight;
+            return Pixels[(tileId * len)..((tileId * len) + len)];
+        }
+    }
 
-    /// <summary>
-    ///     The color value for this user data, if one was set in Aseprite;
-    ///     otherwise, null.
-    /// </summary>
-    public Color? Color { get; internal set; } = default;
-
-
-
-    internal AsepriteUserData() { }
+    internal AsepriteTileset(int id, int count, int tileWidth, int tileHeight, string name, Color[] pixels)
+    {
+        ID = id;
+        TileCount = count;
+        TileWidth = tileWidth;
+        TileHeight = tileHeight;
+        Name = name;
+        Pixels = pixels;
+        Width = tileWidth;
+        Height = tileHeight * TileCount;
+    }
 }

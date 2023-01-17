@@ -22,21 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class Tag
+internal sealed class AsepriteImageCel : AsepriteCel
 {
-    private Color _tagColor;
+    internal Color[] Pixels { get; }
+    internal int Width { get; }
+    internal int Height { get; }
 
-    internal int From { get; }
-    internal int To { get; }
-    internal byte Direction { get; }
-    internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
-    internal Color Color => UserData.Color ?? _tagColor;
-
-    internal Tag(ushort from, ushort to, byte direction, Color color, string name) =>
-        (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
+    internal AsepriteImageCel(int width, int height, Color[] pixels, AsepriteLayer layer, Point position, int opacity)
+        : base(layer, position, opacity) => (Width, Height, Pixels) = (width, height, pixels);
 }

@@ -22,17 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-
-internal sealed class ImageCel : Cel
+internal sealed class AsepriteTilemapLayer : AsepriteLayer
 {
-    internal Color[] Pixels { get; }
-    internal int Width { get; }
-    internal int Height { get; }
+    internal int TilesetID { get; }
+    internal AsepriteTileset Tileset { get; }
 
-    internal ImageCel(int width, int height, Color[] pixels, Layer layer, Point position, int opacity)
-        : base(layer, position, opacity) => (Width, Height, Pixels) = (width, height, pixels);
+    internal AsepriteTilemapLayer(AsepriteTileset tileset, int tilesetID, bool isVisible, bool isBackground, bool isReference, BlendMode blend, byte opacity, string name)
+        : base(isVisible, isBackground, isReference, blend, opacity, name) => (Tileset, TilesetID) = (tileset, tilesetID);
 }

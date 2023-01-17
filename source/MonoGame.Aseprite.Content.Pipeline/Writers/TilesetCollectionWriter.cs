@@ -47,15 +47,7 @@ public sealed class TilesetCollectionWriter : ContentTypeWriter<TilesetCollectio
             writer.Write(tileset.TileHeight);
 
             //  Texture Content
-            writer.WriteTextureContent(tileset.TextureContent);
-            // writer.Write(tileset.TextureContent.Width);
-            // writer.Write(tileset.TextureContent.Height);
-            // writer.Write(tileset.TextureContent.Pixels.Length);
-            // for (int j = 0; j < tileset.TextureContent.Pixels.Length; j++)
-            // {
-            //     writer.Write(tileset.TextureContent.Pixels[j]);
-            // }
-
+            writer.Write(tileset.TextureContent);
         }
     }
 

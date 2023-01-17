@@ -22,45 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-
-internal sealed class Tileset
+internal class AsepriteLayer
 {
-    internal Color[] Pixels { get; }
-    internal int ID { get; }
-    internal int TileCount { get; }
-    internal int TileWidth { get; }
-    internal int TileHeight { get; }
+    internal bool IsVisible { get; }
+    internal bool IsBackground { get; }
+    internal bool IsReference { get; }
+    internal BlendMode BlendMode { get; }
+    internal int Opacity { get; }
     internal string Name { get; }
-    internal int Width { get; }
-    internal int Height { get; }
+    internal AsepriteUserData UserData { get; } = new();
 
-    internal Color[] this[int tileId]
-    {
-        get
-        {
-            if (tileId < 0 || tileId >= TileCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(tileId));
-            }
-
-            int len = TileWidth * TileHeight;
-            return Pixels[(tileId * len)..((tileId * len) + len)];
-        }
-    }
-
-    internal Tileset(int id, int count, int tileWidth, int tileHeight, string name, Color[] pixels)
-    {
-        ID = id;
-        TileCount = count;
-        TileWidth = tileWidth;
-        TileHeight = tileHeight;
-        Name = name;
-        Pixels = pixels;
-        Width = tileWidth;
-        Height = tileHeight * TileCount;
-    }
+    internal AsepriteLayer(bool isVisible, bool isBackground, bool isReference, BlendMode blendMode, int opacity, string name) =>
+        (IsVisible, IsBackground, IsReference, BlendMode, Opacity, Name) = (isVisible, isBackground, isReference, blendMode, opacity, name);
 }

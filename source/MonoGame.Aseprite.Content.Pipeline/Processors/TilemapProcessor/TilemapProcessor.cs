@@ -22,8 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -34,6 +35,14 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
 public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProcessorResult>
 {
+    /// <summary>
+    ///     Gets or Sets whether only cel elements that are on visible layers
+    ///     should be processed.
+    /// </summary>
+    [DisplayName("(Aseprite) Only Visible Layers")]
+    public bool OnlyVisibleLayers { get; set; } = true;
+
+
     /// <summary>
     ///     Processes a single frame in an Aseprite file as a tilemap.
     /// </summary>
@@ -57,7 +66,7 @@ public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProc
         // *********************************************************************
         for (int i = 0; i < file.Tilesets.Count; i++)
         {
-            Tileset tileset = file.Tilesets[i];
+            AsepriteTileset tileset = file.Tilesets[i];
             TilesetContent tilesetContent = CreateTilesetContent(tileset, file.Name, context);
             result.Tilesets.Add(tilesetContent);
         }
@@ -65,11 +74,11 @@ public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProc
         // *********************************************************************
         //  Generate the layer data for each layer in the tilemap
         // *********************************************************************
-        Frame frame = file.Frames[0];
+        AsepriteFrame frame = file.Frames[0];
 
         for (int i = 0; i < frame.Cels.Count; i++)
         {
-            if (frame.Cels[i] is TilemapCel cel && (OnlyVisibleLayers && !cel.Layer.IsVisible))
+            if (frame.Cels[i] is AsepriteTilemapCel cel && (OnlyVisibleLayers && !cel.Layer.IsVisible))
             {
                 TilemapLayerContent layer = CreateTilemapLayerContent(cel);
                 result.Layers.Add(layer);

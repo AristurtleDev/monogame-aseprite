@@ -25,7 +25,7 @@ SOFTWARE.
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -62,7 +62,7 @@ public sealed class TilesetProcessor : CommonProcessor<AsepriteFile, TilesetProc
     /// </exception>
     public override TilesetProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
     {
-        if (TryGetTilesetByName(file.Tilesets, TilesetName, out Tileset? tileset))
+        if (TryGetTilesetByName(file.Tilesets, TilesetName, out AsepriteTileset? tileset))
         {
             TilesetContent tilesetContent = CreateTilesetContent(tileset, file.Name, context);
             return new TilesetProcessorResult(tilesetContent);
@@ -71,7 +71,7 @@ public sealed class TilesetProcessor : CommonProcessor<AsepriteFile, TilesetProc
         throw NoTilesetFound(file.Tilesets);
     }
 
-    private static bool TryGetTilesetByName(List<Tileset> tilesets, string name, [NotNullWhen(true)] out Tileset? tileset)
+    private static bool TryGetTilesetByName(List<AsepriteTileset> tilesets, string name, [NotNullWhen(true)] out AsepriteTileset? tileset)
     {
         tileset = default;
 
@@ -88,7 +88,7 @@ public sealed class TilesetProcessor : CommonProcessor<AsepriteFile, TilesetProc
         return tileset is not null;
     }
 
-    private static Exception NoTilesetFound(List<Tileset> tilesets)
+    private static Exception NoTilesetFound(List<AsepriteTileset> tilesets)
     {
         string[] names = new string[tilesets.Count];
         for (int i = 0; i < tilesets.Count; i++)

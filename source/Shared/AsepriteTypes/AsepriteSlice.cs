@@ -22,18 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal class Layer
+internal sealed class AsepriteSlice
 {
-    internal bool IsVisible { get; }
-    internal bool IsBackground { get; }
-    internal bool IsReference { get; }
-    internal ushort BlendMode { get; }
-    internal int Opacity { get; }
+    internal List<AsepriteSliceKey> Keys { get; } = new();
+    internal bool IsNinePatch { get; }
+    internal bool HasPivot { get; }
     internal string Name { get; }
     internal AsepriteUserData UserData { get; } = new();
 
-    internal Layer(bool isVisible, bool isBackground, bool isReference, ushort blendMode, int opacity, string name) =>
-        (IsVisible, IsBackground, IsReference, BlendMode, Opacity, Name) = (isVisible, isBackground, isReference, blendMode, opacity, name);
+    internal AsepriteSlice(string name, bool isNine, bool hasPivot) =>
+        (Name, IsNinePatch, HasPivot) = (name, isNine, hasPivot);
 }

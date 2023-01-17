@@ -26,9 +26,9 @@ using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.Xna.Framework;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.IO;
+namespace MonoGame.Aseprite.IO;
 
 internal static class AsepriteFileReader
 {
@@ -99,7 +99,7 @@ internal static class AsepriteFileReader
                            nChunksB :
                            nChunksA;
 
-            Frame frame = new(file.FrameWidth, file.FrameHeight, duration);
+            AsepriteFrame frame = new(file.FrameWidth, file.FrameHeight, duration);
             file.Frames.Add(frame);
 
             //  Start iterator at -1 so after tags chunk is read, it'll
@@ -163,7 +163,7 @@ internal static class AsepriteFileReader
                 throw new InvalidOperationException($"Unknown chunk type (0x{type:X4})");
         }
 
-        if(type == 0x2020)
+        if (type == 0x2020)
         {
             return lastChunkType;
         }
@@ -192,9 +192,9 @@ internal static class AsepriteFileReader
         bool isBackground = HasFlag(flags, 8);
         bool isReference = HasFlag(flags, 64);
 
-        Layer layer = type switch
+        AsepriteLayer layer = type switch
         {
-            0 or 1 => new Layer(isVisible, isBackground, isReference, blend, opacity, name),
+            0 or 1 => new AsepriteLayer(isVisible, isBackground, isReference, (BlendMode)blend, opacity, name),
             2 => ReadTilemapLayerChunk(reader, file, isVisible, isBackground, isReference, blend, opacity, name),
             _ => throw new InvalidOperationException($"Unknown layer type '{type}'")
         };
@@ -202,11 +202,11 @@ internal static class AsepriteFileReader
         file.Layers.Add(layer);
     }
 
-    private static TilemapLayer ReadTilemapLayerChunk(BinaryReader reader, AsepriteFile file, bool isVisible, bool isBackground, bool isReference, ushort blend, byte opacity, string name)
+    private static AsepriteTilemapLayer ReadTilemapLayerChunk(BinaryReader reader, AsepriteFile file, bool isVisible, bool isBackground, bool isReference, ushort blend, byte opacity, string name)
     {
         uint index = ReadDword(reader);
-        Tileset tileset = file.Tilesets[(int)index];
-        return new(tileset, (int)index, isVisible, isBackground, isReference, blend, opacity, name);
+        AsepriteTileset tileset = file.Tilesets[(int)index];
+        return new(tileset, (int)index, isVisible, isBackground, isReference, (BlendMode)blend, opacity, name);
     }
 
     private static void ReadCelChunk(BinaryReader reader, AsepriteFile file, long chunkEnd)
@@ -218,11 +218,11 @@ internal static class AsepriteFileReader
         ushort type = ReadWord(reader);
         IgnoreBytes(reader, 7);
 
-        Frame frame = file.Frames[file.Frames.Count - 1];
-        Layer layer = file.Layers[index];
+        AsepriteFrame frame = file.Frames[file.Frames.Count - 1];
+        AsepriteLayer layer = file.Layers[index];
         Point position = new(x, y);
 
-        Cel cel = type switch
+        AsepriteCel cel = type switch
         {
             0 => ReadRawImageCel(reader, file, layer, position, opacity, chunkEnd),
             1 => ReadLinkedCel(reader, file, frame),
@@ -234,7 +234,7 @@ internal static class AsepriteFileReader
         frame.Cels.Add(cel);
     }
 
-    private static ImageCel ReadRawImageCel(BinaryReader reader, AsepriteFile file, Layer layer, Point position, byte opacity, long chunkEnd)
+    private static AsepriteImageCel ReadRawImageCel(BinaryReader reader, AsepriteFile file, AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
     {
         ushort width = ReadWord(reader);
         ushort height = ReadWord(reader);
@@ -247,13 +247,13 @@ internal static class AsepriteFileReader
         return new(width, height, pixels, layer, position, opacity);
     }
 
-    private static Cel ReadLinkedCel(BinaryReader reader, AsepriteFile file, Frame frame)
+    private static AsepriteCel ReadLinkedCel(BinaryReader reader, AsepriteFile file, AsepriteFrame frame)
     {
         ushort frameIndex = ReadWord(reader);
         return file.Frames[frameIndex].Cels[frame.Cels.Count];
     }
 
-    private static ImageCel ReadCompressedImageCel(BinaryReader reader, AsepriteFile file, Layer layer, Point position, byte opacity, long chunkEnd)
+    private static AsepriteImageCel ReadCompressedImageCel(BinaryReader reader, AsepriteFile file, AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
     {
         ushort width = ReadWord(reader);
         ushort height = ReadWord(reader);
@@ -269,7 +269,7 @@ internal static class AsepriteFileReader
         return new(width, height, pixels, layer, position, opacity);
     }
 
-    private static TilemapCel ReadCompressedTilemapCel(BinaryReader reader, Layer layer, Point position, byte opacity, long chunkEnd)
+    private static AsepriteTilemapCel ReadCompressedTilemapCel(BinaryReader reader, AsepriteLayer layer, Point position, byte opacity, long chunkEnd)
     {
         ushort width = ReadWord(reader);
         ushort height = ReadWord(reader);
@@ -290,7 +290,7 @@ internal static class AsepriteFileReader
         int bytesPerTile = bitsPerTile / 8;
         int tileCount = data.Length / bytesPerTile;
 
-        TilemapCel cel = new(width, height, layer, position, opacity);
+        AsepriteTilemapCel cel = new(width, height, layer, position, opacity);
 
         for (int i = 0, b = 0; i < tileCount; i++, b += bytesPerTile)
         {
@@ -301,7 +301,7 @@ internal static class AsepriteFileReader
             uint yFlip = (value & yFlipBitmask);
             uint rotation = (value & rotationBitmask);
 
-            Tile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
+            AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
             cel.Tiles.Add(tile);
         }
 
@@ -328,7 +328,7 @@ internal static class AsepriteFileReader
             // Color color = Color.FromNonPremultiplied(r, g, b, 255);
             Color color = new Color(r, g, b, (byte)255);
 
-            Tag tag = new(from, to, direction, color, name);
+            AsepriteTag tag = new(from, to, direction, color, name);
             file.Tags.Add(tag);
         }
     }
@@ -370,7 +370,7 @@ internal static class AsepriteFileReader
         bool isNinePatch = HasFlag(flags, 1);
         bool hasPivot = HasFlag(flags, 2);
 
-        Slice slice = new(name, isNinePatch, hasPivot);
+        AsepriteSlice slice = new(name, isNinePatch, hasPivot);
 
         for (uint keyNum = 0; keyNum < count; keyNum++)
         {
@@ -402,7 +402,7 @@ internal static class AsepriteFileReader
                 pivot = new(px, py);
             }
 
-            SliceKey key = new((int)start, bounds, center, pivot);
+            AsepriteSliceKey key = new((int)start, bounds, center, pivot);
             slice.Keys.Add(key);
         }
 
@@ -438,7 +438,7 @@ internal static class AsepriteFileReader
         Color[] pixels = ToColor(data, file.ColorDepth, file.TransparentIndex, file.Palette);
         Point size = new(width, height);
 
-        Tileset tileset = new((int)id, (int)count, width, height, name, pixels);
+        AsepriteTileset tileset = new((int)id, (int)count, width, height, name, pixels);
         file.Tilesets.Add(tileset);
     }
 
@@ -486,29 +486,29 @@ internal static class AsepriteFileReader
 
     private static void SetLastCelUserData(AsepriteFile file, string? text, Color? color)
     {
-        Frame frame = file.Frames[file.Frames.Count - 1];
-        Cel cel = frame.Cels[frame.Cels.Count - 1];
+        AsepriteFrame frame = file.Frames[file.Frames.Count - 1];
+        AsepriteCel cel = frame.Cels[frame.Cels.Count - 1];
         cel.UserData.Text = text;
         cel.UserData.Color = color;
     }
 
     private static void SetLastLayerUserData(AsepriteFile file, string? text, Color? color)
     {
-        Layer layer = file.Layers[file.Layers.Count - 1];
+        AsepriteLayer layer = file.Layers[file.Layers.Count - 1];
         layer.UserData.Text = text;
         layer.UserData.Color = color;
     }
 
     private static void SetLastSliceUserData(AsepriteFile file, string? text, Color? color)
     {
-        Slice slice = file.Slices[file.Slices.Count - 1];
+        AsepriteSlice slice = file.Slices[file.Slices.Count - 1];
         slice.UserData.Text = text;
         slice.UserData.Color = color;
     }
 
     private static void SetNextTagUserData(AsepriteFile file, int tagIterator, string? text, Color? color)
     {
-        Tag tag = file.Tags[tagIterator];
+        AsepriteTag tag = file.Tags[tagIterator];
         tag.UserData.Text = text;
         tag.UserData.Color = color;
     }

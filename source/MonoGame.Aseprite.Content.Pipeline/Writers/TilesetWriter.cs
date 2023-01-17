@@ -43,14 +43,7 @@ public sealed class TilesetWriter : ContentTypeWriter<TilesetProcessorResult>
         writer.Write(content.Tileset.TileHeight);
 
         //  Texture Content
-        writer.WriteTextureContent(content.Tileset.TextureContent);
-        // writer.Write(content.TextureContent.Width);
-        // writer.Write(content.TextureContent.Height);
-        // writer.Write(content.TextureContent.Pixels.Length);
-        // for (int j = 0; j < content.TextureContent.Pixels.Length; j++)
-        // {
-        //     writer.Write(content.TextureContent.Pixels[j]);
-        // }
+        writer.Write(content.Tileset.TextureContent);
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

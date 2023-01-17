@@ -22,16 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 
-internal sealed class Slice
+namespace MonoGame.Aseprite.AsepriteTypes;
+
+internal sealed class AsepriteSliceKey
 {
-    internal List<SliceKey> Keys { get; } = new();
-    internal bool IsNinePatch { get; }
-    internal bool HasPivot { get; }
-    internal string Name { get; }
-    internal AsepriteUserData UserData { get; } = new();
+    internal int FrameIndex { get; }
+    internal Rectangle Bounds { get; }
+    internal Rectangle? CenterBounds { get; }
+    internal Point? Pivot { get; }
 
-    internal Slice(string name, bool isNine, bool hasPivot) =>
-        (Name, IsNinePatch, HasPivot) = (name, isNine, hasPivot);
+    [MemberNotNullWhen(true, nameof(CenterBounds))]
+    internal bool IsNinePatch => CenterBounds is not null;
+
+    [MemberNotNullWhen(true, nameof(Pivot))]
+    internal bool HasPivot => Pivot is not null;
+
+    internal AsepriteSliceKey(int frameIndex, Rectangle bounds, Rectangle? centerBounds, Point? pivot) =>
+        (FrameIndex, Bounds, CenterBounds, Pivot) = (frameIndex, bounds, centerBounds, pivot);
 }

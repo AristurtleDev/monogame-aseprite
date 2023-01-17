@@ -22,24 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-internal sealed class SliceKey
+/// <summary>
+///     Provides method for reading a <see cref="Texture2D"/> from an xnb file
+///     that was generated using the MonoGame.Aseprite library.
+/// </summary>
+public sealed class SingleFrameReader : ContentTypeReader<Texture2D>
 {
-    internal int FrameIndex { get; }
-    internal Rectangle Bounds { get; }
-    internal Rectangle? CenterBounds { get; }
-    internal Point? Pivot { get; }
-
-    [MemberNotNullWhen(true, nameof(CenterBounds))]
-    internal bool IsNinePatch => CenterBounds is not null;
-
-    [MemberNotNullWhen(true, nameof(Pivot))]
-    internal bool HasPivot => Pivot is not null;
-
-    internal SliceKey(int frameIndex, Rectangle bounds, Rectangle? centerBounds, Point? pivot) =>
-        (FrameIndex, Bounds, CenterBounds, Pivot) = (frameIndex, bounds, centerBounds, pivot);
+    protected override Texture2D Read(ContentReader reader, Texture2D? existingInstance)
+    {
+        return reader.ReadTexture2D(existingInstance);
+    }
 }

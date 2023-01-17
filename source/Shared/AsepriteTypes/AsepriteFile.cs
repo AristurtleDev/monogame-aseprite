@@ -24,17 +24,17 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
 public sealed class AsepriteFile
 {
     private Color[] _palette = Array.Empty<Color>();
 
-    internal List<Frame> Frames { get; } = new();
-    internal List<Layer> Layers { get; } = new();
-    internal List<Tag> Tags { get; } = new();
-    internal List<Slice> Slices { get; } = new();
-    internal List<Tileset> Tilesets { get; } = new();
+    internal List<AsepriteFrame> Frames { get; } = new();
+    internal List<AsepriteLayer> Layers { get; } = new();
+    internal List<AsepriteTag> Tags { get; } = new();
+    internal List<AsepriteSlice> Slices { get; } = new();
+    internal List<AsepriteTileset> Tilesets { get; } = new();
     internal Color[] Palette => _palette;
     internal int TransparentIndex { get; set; }
     internal string Name { get; set; }
@@ -43,9 +43,6 @@ public sealed class AsepriteFile
     internal ushort ColorDepth { get; set; }
     internal int FrameCount { get; set; }
     internal bool LayerOpacityValid { get; set; }
-
-
-    // internal Palette Palette { get; }
 
     internal AsepriteFile(string name) => Name = name;
 
@@ -58,21 +55,4 @@ public sealed class AsepriteFile
             _palette = tmp;
         }
     }
-
-    // internal AsepriteFile(string name, Point frameSize, Palette palette, List<Frame> frames, List<Layer> layers, List<Tag> tags, List<Slice> slices, List<Tileset> tilesets) =>
-    //     (Name, FrameSize, Palette, Frames, Layers, Tags, Slices, Tilesets) = (name, frameSize, palette, frames, layers, tags, slices, tilesets);
-
-
-    // public static AsepriteFile Load(string path)
-    // {
-    //     if (!File.Exists(path))
-    //     {
-    //         throw new FileNotFoundException($"No file exists at the path '{path}'");
-    //     }
-
-    //     using (AsepriteFileReader reader = new(path))
-    //     {
-    //         return reader.ReadFile();
-    //     }
-    // }
 }

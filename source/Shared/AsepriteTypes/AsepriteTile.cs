@@ -22,15 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class Tile
+internal sealed class AsepriteTile
 {
     internal int TilesetTileID { get; }
     internal int XFlip { get; }
     internal int YFlip { get; }
     internal int Rotation { get; }
 
-    internal Tile(int tilesetTileId, int xFlip, int yFlip, int rotation) =>
+    internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int rotation) =>
         (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);
 }

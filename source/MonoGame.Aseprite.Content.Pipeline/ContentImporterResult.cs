@@ -22,27 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-
-internal abstract class Cel
+public sealed class ContentImporterResult<T>
 {
-    internal Layer Layer { get; }
-    internal Point Position { get; }
-    internal int Opacity { get; }
-    internal AsepriteUserData UserData { get; } = new();
+    public string FilePath { get; }
+    public string FileName => Path.GetFileName(FilePath);
+    public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FilePath);
+    public T Data { get; }
 
-    internal Cel(Layer layer, Point position, int opacity) =>
-        (Layer, Position, Opacity) = (layer, position, opacity);
-
-    internal T LayerAs<T>() where T : Layer
-    {
-        if (Layer is T asT)
-        {
-            return asT;
-        }
-
-        throw new InvalidOperationException($"The layer of this cel is not of type '{typeof(T)}'.  It is of type '{Layer.GetType()}'");
-    }
+    public ContentImporterResult(string filePath, T data) => (FilePath, Data) = (filePath, data);
 }

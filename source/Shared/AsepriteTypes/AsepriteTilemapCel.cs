@@ -24,12 +24,14 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-public sealed class Palette
+internal sealed class AsepriteTilemapCel : AsepriteCel
 {
-    internal Color[] Colors { get; }
-    internal int TransparentIndex { get; }
-
-    internal Palette(Color[] colors, int transparentIndex) => (Colors, TransparentIndex) = (colors, transparentIndex);
+    internal List<AsepriteTile> Tiles { get; } = new();
+    internal int Width { get; }
+    internal int Height { get; }
+    internal AsepriteTileset Tileset => LayerAs<AsepriteTilemapLayer>().Tileset;
+    internal AsepriteTilemapCel(int width, int height, AsepriteLayer layer, Point position, int opacity)
+        : base(layer, position, opacity) => (Width, Height) = (width, height);
 }

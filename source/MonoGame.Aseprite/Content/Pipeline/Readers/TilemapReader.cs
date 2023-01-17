@@ -48,19 +48,7 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
             int tileHeight = reader.ReadInt32();
 
             //  Texture content
-            Texture2D texture = ContentReaderHelper.ReadTexture(reader, null);
-            // int textureWidth = reader.ReadInt32();
-            // int textureHeight = reader.ReadInt32();
-            // int pixelCount = reader.ReadInt32();
-            // Color[] pixels = new Color[pixelCount];
-            // for (int j = 0; j < pixelCount; j++)
-            // {
-            //     pixels[j] = reader.ReadColor();
-            // }
-
-            // //  Create texture
-            // Texture2D texture = new(reader.GetGraphicsDevice(), textureWidth, textureHeight, false, SurfaceFormat.Color);
-            // texture.SetData<Color>(pixels);
+            Texture2D texture = reader.ReadTexture2D(existingInstance: null);
 
             Tileset tileset = new(name, texture, tileWidth, tileHeight);
             tilesets.Add(tileset);

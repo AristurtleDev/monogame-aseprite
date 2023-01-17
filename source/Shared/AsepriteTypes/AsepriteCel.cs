@@ -24,14 +24,25 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class TilemapCel : Cel
+internal abstract class AsepriteCel
 {
-    internal List<Tile> Tiles { get; } = new();
-    internal int Width { get; }
-    internal int Height { get; }
-    internal Tileset Tileset => LayerAs<TilemapLayer>().Tileset;
-    internal TilemapCel(int width, int height, Layer layer, Point position, int opacity)
-        : base(layer, position, opacity) => (Width, Height) = (width, height);
+    internal AsepriteLayer Layer { get; }
+    internal Point Position { get; }
+    internal int Opacity { get; }
+    internal AsepriteUserData UserData { get; } = new();
+
+    internal AsepriteCel(AsepriteLayer layer, Point position, int opacity) =>
+        (Layer, Position, Opacity) = (layer, position, opacity);
+
+    internal T LayerAs<T>() where T : AsepriteLayer
+    {
+        if (Layer is T asT)
+        {
+            return asT;
+        }
+
+        throw new InvalidOperationException($"The layer of this cel is not of type '{typeof(T)}'.  It is of type '{Layer.GetType()}'");
+    }
 }

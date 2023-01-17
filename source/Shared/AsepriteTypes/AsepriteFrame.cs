@@ -24,16 +24,16 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal sealed class Frame
+internal sealed class AsepriteFrame
 {
-    internal List<Cel> Cels { get; } = new();
+    internal List<AsepriteCel> Cels { get; } = new();
     internal int Width { get; }
     internal int Height { get; }
     internal int Duration { get; }
 
-    internal Frame(int width, int height, int duration) => (Width, Height, Duration) = (width, height, duration);
+    internal AsepriteFrame(int width, int height, int duration) => (Width, Height, Duration) = (width, height, duration);
 
     internal Color[] FlattenFrame(bool onlyVisibleLayers = true, bool includeBackgroundLayer = false)
     {
@@ -41,7 +41,7 @@ internal sealed class Frame
 
         for (int c = 0; c < Cels.Count; c++)
         {
-            Cel cel = Cels[c];
+            AsepriteCel cel = Cels[c];
 
             //  Are we only processing cels on visible layers?
             if (onlyVisibleLayers && !cel.Layer.IsVisible) { continue; }
@@ -50,12 +50,12 @@ internal sealed class Frame
             if (cel.Layer.IsBackground && !includeBackgroundLayer) { continue; }
 
             //  Premultiply the opacity of the cell and the opacity of the layer
-            byte opacity = BlendFunctions.MUL_UN8(cel.Opacity, cel.Layer.Opacity);
+            byte opacity = ColorUtils.MUL_UN8(cel.Opacity, cel.Layer.Opacity);
 
             Color[] pixels;
             int celWidth, celHeight, celX, celY;
 
-            if (cel is ImageCel imageCel)
+            if (cel is AsepriteImageCel imageCel)
             {
                 pixels = imageCel.Pixels.ToArray();
                 celWidth = imageCel.Width;
@@ -63,9 +63,9 @@ internal sealed class Frame
                 celX = imageCel.Position.X;
                 celY = imageCel.Position.Y;
             }
-            else if (cel is TilemapCel tilemapCel)
+            else if (cel is AsepriteTilemapCel tilemapCel)
             {
-                Tileset tileset = tilemapCel.Tileset;
+                AsepriteTileset tileset = tilemapCel.Tileset;
                 celWidth = tilemapCel.Width * tileset.TileWidth;
                 celHeight = tilemapCel.Height* tileset.TileHeight;
                 celX = tilemapCel.Position.X;
@@ -74,7 +74,7 @@ internal sealed class Frame
 
                 for (int t = 0; t < tilemapCel.Tiles.Count; t++)
                 {
-                    Tile tile = tilemapCel.Tiles[t];
+                    AsepriteTile tile = tilemapCel.Tiles[t];
                     int column = t % tilemapCel.Width;
                     int row = t / tilemapCel.Width;
                     Color[] tilePixels = tileset[tile.TilesetTileID];
@@ -110,7 +110,7 @@ internal sealed class Frame
 
                 Color backdrop = result[index];
                 Color source = pixels[p];
-                result[index] = BlendFunctions.Blend(cel.Layer.BlendMode, backdrop, source, opacity);
+                result[index] = ColorUtils.Blend(cel.Layer.BlendMode, backdrop, source, opacity);
             }
         }
 

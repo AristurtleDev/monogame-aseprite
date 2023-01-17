@@ -27,7 +27,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
+using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -39,6 +39,20 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 [ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
 public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteSheetProcessorResult>
 {
+    /// <summary>
+    ///     Gets or Sets whether only cel elements that are on visible layers
+    ///     should be processed.
+    /// </summary>
+    [DisplayName("(Aseprite) Only Visible Layers")]
+    public bool OnlyVisibleLayers { get; set; } = true;
+
+    /// <summary>
+    ///     Gets or Sets whether cel elements that are on a layer that was
+    ///     marked as the background layer in Aseprite should be processed.
+    /// </summary>
+    [DisplayName("(Aseprite) Include Background Layer")]
+    public bool IncludeBackgroundLayer { get; set; } = false;
+
     /// <summary>
     ///     Gets or Sets whether frames that are detected as being duplicates
     ///     should be merged into a single frame.
@@ -157,7 +171,7 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
         // *********************************************************************
         for (int i = 0; i < file.Tags.Count; i++)
         {
-            Tag aseTag = file.Tags[i];
+            AsepriteTag aseTag = file.Tags[i];
             AnimationFrameContent[] animationFrames = new AnimationFrameContent[aseTag.To - aseTag.From + 1];
             for (int f = 0; f < animationFrames.Length; f++)
             {
@@ -185,13 +199,13 @@ public sealed class SpritesheetProcessor : CommonProcessor<AsepriteFile, SpriteS
         return content;
     }
 
-    private Color[][] FlattenFrames(List<Frame> frames)
+    private Color[][] FlattenFrames(List<AsepriteFrame> frames)
     {
         Color[][] result = new Color[frames.Count][];
 
         for (int i = 0; i < frames.Count; i++)
         {
-            Frame frame = frames[i];
+            AsepriteFrame frame = frames[i];
             result[i] = frame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer);
         }
 

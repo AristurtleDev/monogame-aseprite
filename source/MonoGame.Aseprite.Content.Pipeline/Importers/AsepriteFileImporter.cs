@@ -23,8 +23,8 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
-using MonoGame.Aseprite.Content.Pipeline.IO;
+using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.IO;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 ///     Aseprite file.
 /// </summary>
 [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = "AsepriteSpritesheetProcessor")]
-public class AsepriteFileImporter : ContentImporter<AsepriteFile>
+public class AsepriteFileImporter : ContentImporter<ContentImporterResult<AsepriteFile>>
 {
     /// <summary>
     ///     Imports the Aseprite file at the specified file path.
@@ -50,8 +50,9 @@ public class AsepriteFileImporter : ContentImporter<AsepriteFile>
     ///     A new instance of the <see cref="AsepriteFile"/> class containing
     ///     the data imported from the Aseprite file.
     /// </returns>
-    public override AsepriteFile Import(string filePath, ContentImporterContext context)
+    public override ContentImporterResult<AsepriteFile> Import(string filePath, ContentImporterContext context)
     {
-        return AsepriteFileReader.ReadFile(filePath);
+        AsepriteFile aseFile = AsepriteFileReader.ReadFile(filePath);
+        return new(filePath, aseFile);
     }
 }

@@ -22,10 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Pipeline.AsepriteTypes;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
@@ -39,45 +37,14 @@ public sealed class TilemapWriter : ContentTypeWriter<TilemapProcessorResult>
         writer.Write(content.Tilesets.Count);
         for (int i = 0; i < content.Tilesets.Count; i++)
         {
-            TilesetContent tileset = content.Tilesets[i];
-            writer.Write(tileset.Name);
-            writer.Write(tileset.TileCount);
-            writer.Write(tileset.TileWidth);
-            writer.Write(tileset.TileHeight);
-
-            //  Texture Content
-            writer.WriteTextureContent(tileset.TextureContent);
-            // writer.Write(tileset.TextureContent.Width);
-            // writer.Write(tileset.TextureContent.Height);
-            // writer.Write(tileset.TextureContent.Pixels.Length);
-            // for (int j = 0; j < tileset.TextureContent.Pixels.Length; j++)
-            // {
-            //     writer.Write(tileset.TextureContent.Pixels[j]);
-            // }
+            writer.Write(content.Tilesets[i]);
         }
 
         //  Layer Content
         writer.Write(content.Layers.Count);
         for (int i = 0; i < content.Layers.Count; i++)
         {
-            TilemapLayerContent layer = content.Layers[i];
-            writer.Write(layer.TilesetID);
-            writer.Write(layer.Name);
-            writer.Write(layer.Columns);
-            writer.Write(layer.Rows);
-            writer.Write(layer.Offset.X);
-            writer.Write(layer.Offset.Y);
-
-            //  Tile content
-            writer.Write(layer.Tiles.Length);
-            for (int j = 0; j < layer.Tiles.Length; j++)
-            {
-                TileContent tile = layer.Tiles[j];
-                writer.Write(tile.FlipFlag);
-                writer.Write(tile.Rotation);
-                writer.Write(tile.TilesetTileID);
-            }
-
+            writer.Write(content.Layers[i]);
         }
     }
 

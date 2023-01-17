@@ -38,45 +38,19 @@ public sealed class SpriteSheetWriter : ContentTypeWriter<SpriteSheetProcessorRe
     protected override void Write(ContentWriter writer, SpriteSheetProcessorResult content)
     {
         writer.Write(content.Name);
-
-        //  Texture content
-        writer.WriteTextureContent(content.TextureContent);
-        // writer.Write(content.TextureContent.Width);
-        // writer.Write(content.TextureContent.Height);
-        // writer.Write(content.TextureContent.Pixels.Length);
-        // for (int i = 0; i < content.TextureContent.Pixels.Length; i++)
-        // {
-        //     writer.Write(content.TextureContent.Pixels[i]);
-        // }
-
-        //  Texture Region Content
+        writer.Write(content.TextureContent);
         writer.Write(content.Regions.Count);
+
         for (int i = 0; i < content.Regions.Count; i++)
         {
-            TextureRegionContent region = content.Regions[i];
-            writer.Write(region.Name);
-            writer.Write(region.Bounds.X);
-            writer.Write(region.Bounds.Y);
-            writer.Write(region.Bounds.Width);
-            writer.Write(region.Bounds.Height);
+            writer.Write(content.Regions[i]);
         }
 
-        //  Animation Content
         writer.Write(content.Animations.Count);
+
         for (int i = 0; i < content.Animations.Count; i++)
         {
-            AnimationContent animation = content.Animations[i];
-            writer.Write(animation.Name);
-            writer.Write(animation.Flags);
-
-            //  Animation Frames
-            writer.Write(animation.Frames.Length);
-            for (int j = 0; j < animation.Frames.Length; j++)
-            {
-                AnimationFrameContent frame = animation.Frames[j];
-                writer.Write(frame.FrameIndex);
-                writer.Write(frame.Duration.Ticks);
-            }
+            writer.Write(content.Animations[i]);
         }
     }
 

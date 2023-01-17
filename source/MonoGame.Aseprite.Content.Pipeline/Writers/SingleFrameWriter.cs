@@ -39,34 +39,7 @@ public sealed class SingleFrameWriter : ContentTypeWriter<SingleFrameProcessorRe
 {
     protected override void Write(ContentWriter writer, SingleFrameProcessorResult content)
     {
-        writer.WriteTextureContent(content.TextureContent);
-        // MipmapChain mipmaps = input.Mipmaps;
-        // BitmapContent level0 = mipmaps[0];
-
-        // if(!level0.TryGetFormat(out SurfaceFormat format))
-        // {
-        //     throw new InvalidOperationException("Could not get format of texture content");
-        // }
-
-        // writer.Write((int)format);
-        // writer.Write(level0.Width);
-        // writer.Write(level0.Height);
-        // writer.Write(mipmaps.Count);
-
-        // foreach(BitmapContent level in mipmaps)
-        // {
-        //     byte[] pixelData = level.GetPixelData();
-        //     writer.Write(pixelData.Length);
-        //     writer.Write(pixelData);
-        // }
-
-        // output.Write(input.Width);
-        // output.Write(input.Height);
-        // output.Write(input.Pixels.Length);
-        // for (int i = 0; i < input.Pixels.Length; i++)
-        // {
-        //     output.Write(input.Pixels[i]);
-        // }
+        writer.Write(content.TextureContent);
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

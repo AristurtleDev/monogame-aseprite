@@ -22,39 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Writers;
+namespace MonoGame.Aseprite.AsepriteTypes;
 
-internal static class ContentWriterHelpers
+internal sealed class AsepriteTag
 {
-    internal static void WriteTextureContent(this ContentWriter writer, TextureContent content)
-    {
-        if(content is not Texture2DContent texture2DContent)
-        {
-            throw new InvalidOperationException($"Invalid content type");
-        }
+    private Color _tagColor;
 
-        MipmapChain mipmaps = texture2DContent.Mipmaps;
-        BitmapContent level0 = mipmaps[0];
+    internal int From { get; }
+    internal int To { get; }
+    internal byte Direction { get; }
+    internal string Name { get; }
+    internal AsepriteUserData UserData { get; } = new();
+    internal Color Color => UserData.Color ?? _tagColor;
 
-        if (!level0.TryGetFormat(out SurfaceFormat format))
-        {
-            throw new InvalidOperationException("Could not get format of texture content");
-        }
-
-        writer.Write((int)format);
-        writer.Write(level0.Width);
-        writer.Write(level0.Height);
-        writer.Write(mipmaps.Count);
-
-        foreach(BitmapContent level in mipmaps)
-        {
-            byte[] pixelData = level.GetPixelData();
-            writer.Write(pixelData.Length);
-            writer.Write(pixelData);
-        }
-    }
+    internal AsepriteTag(ushort from, ushort to, byte direction, Color color, string name) =>
+        (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
 }
