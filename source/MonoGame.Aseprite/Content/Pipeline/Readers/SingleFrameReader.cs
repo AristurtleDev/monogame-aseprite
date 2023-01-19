@@ -28,13 +28,23 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
+///     Defines a content type reader that reads a <see cref="Texture2D"/>
 ///     Provides method for reading a <see cref="Texture2D"/> from an xnb file
 ///     that was generated using the MonoGame.Aseprite library.
 /// </summary>
-public sealed class SingleFrameReader : ContentTypeReader<Texture2D>
+internal sealed class SingleFrameReader : ContentTypeReader<Texture2D>
 {
+
     protected override Texture2D Read(ContentReader reader, Texture2D? existingInstance)
     {
-        return reader.ReadTexture2D(existingInstance);
+        if(existingInstance is not null)
+        {
+            return existingInstance;
+        }
+
+        string name = reader.ReadString();
+        Texture2D texture = reader.ReadTexture2D();
+        texture.Name = name;
+        return texture;
     }
 }

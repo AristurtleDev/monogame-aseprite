@@ -24,12 +24,18 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.Content.Pipeline;
 
+/// <summary>
+///     Defines a generic result of a content importer.
+/// </summary>
+/// <typeparam name="T">
+///     The type of data that was imported.
+/// </typeparam>
 public sealed class ContentImporterResult<T>
 {
-    public string FilePath { get; }
-    public string FileName => Path.GetFileName(FilePath);
-    public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FilePath);
-    public T Data { get; }
+    internal string FilePath { get; }
+    internal string FileName => Path.GetFileName(FilePath);
+    internal string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FilePath);
+    internal T Data { get; }
 
-    public ContentImporterResult(string filePath, T data) => (FilePath, Data) = (filePath, data);
+    internal ContentImporterResult(string filePath, T data) => (FilePath, Data) = (filePath, data);
 }

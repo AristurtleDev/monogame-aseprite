@@ -50,7 +50,7 @@ public class AsepriteFileImporter : ContentImporter<ContentImporterResult<Asepri
     /// </returns>
     public override ContentImporterResult<AsepriteFile> Import(string filePath, ContentImporterContext context)
     {
-        AsepriteFile aseFile = AsepriteFileReader.ReadFile(filePath);
-        return new(filePath, aseFile);
+        AsepriteFile file = AsepriteFile.Load(filePath);
+        return new(filePath, file);
     }
 }

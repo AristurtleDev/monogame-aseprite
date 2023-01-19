@@ -1,0 +1,2 @@
+cd ./source/DemoGame
+dotnet mgcb -d /@:"/Users/ChrisWhitley/Desktop/AsepriteDotNet/monogame-aseprite/source/DemoGame/Content/Content.mgcb" /platform:DesktopGL /outputDir:"/Users/ChrisWhitley/Desktop/AsepriteDotNet/monogame-aseprite/source/DemoGame/Content/bin/DesktopGL/Content" /intermediateDir:"/Users/ChrisWhitley/Desktop/AsepriteDotNet/monogame-aseprite/source/DemoGame/Content/obj/DesktopGL/net6.0/Content" /workingDir:"/Users/ChrisWhitley/Desktop/AsepriteDotNet/monogame-aseprite/source/DemoGame/Content/"

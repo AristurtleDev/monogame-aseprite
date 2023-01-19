@@ -49,7 +49,7 @@ public class Game1 : Game
 
         // TODO: use this.Content to load your game content here
         _sheet = Content.Load<SpriteSheet>("adventurer");
-        _sprite = _sheet.GetRegion("frame_0");
+        _sprite = _sheet.GetRegion("adventurer 0");
         _animatedSprite = _sheet.CreateAnimation("attack3");
 
         _pixel = new Texture2D(GraphicsDevice, 1, 1);

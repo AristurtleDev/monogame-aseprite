@@ -12,6 +12,12 @@
         </PackageReference>
     </ItemGroup>
 
-    <Import Project="../Shared/MonoGame.Aseprite.Shared.targets" />
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>MonoGame.Aseprite.Content.Pipeline</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <!-- <Import Project="../Shared/MonoGame.Aseprite.Shared.targets" /> -->
 
 </Project>

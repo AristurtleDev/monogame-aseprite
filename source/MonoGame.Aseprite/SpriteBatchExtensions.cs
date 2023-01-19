@@ -366,8 +366,5 @@ public static class SpriteBatchExtensions
         }
     }
 
-
-
-
     #endregion Tilemap Layer
 }

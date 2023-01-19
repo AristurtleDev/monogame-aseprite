@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/source/MGAConsole/bin/Debug/net6.0/MGAConsole.dll",
+            "program": "${workspaceFolder}/source/DemoGame/bin/Debug/net6.0/DemoGame.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/source/MGAConsole",
+            "cwd": "${workspaceFolder}/source/DemoGame",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

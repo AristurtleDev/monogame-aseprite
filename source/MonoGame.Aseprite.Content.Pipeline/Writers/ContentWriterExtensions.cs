@@ -79,29 +79,6 @@ internal static class ContentWriterExtensions
         }
     }
 
-    internal static void Write(this ContentWriter writer, TextureRegionContent region)
-    {
-        writer.Write(region.Name);
-        writer.Write(region.Bounds);
-    }
-
-    internal static void Write(this ContentWriter writer, MonoGame.Aseprite.Content.Pipeline.Processors.AnimationContent animation)
-    {
-        writer.Write(animation.Name);
-        writer.Write(animation.Flags);
-        writer.Write(animation.Frames.Length);
-
-        for (int i = 0; i < animation.Frames.Length; i++)
-        {
-            writer.Write(animation.Frames[i]);
-        }
-    }
-
-    internal static void Write(this ContentWriter writer, AnimationFrameContent animationFrame)
-    {
-        writer.Write(animationFrame.FrameIndex);
-        writer.Write(animationFrame.Duration);
-    }
 
     internal static void Write(this ContentWriter writer, TilesetContent tileset)
     {

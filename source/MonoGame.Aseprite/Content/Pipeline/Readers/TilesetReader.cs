@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -43,16 +41,10 @@ public sealed class TilesetReader : ContentTypeReader<Tileset>
         }
 
         string name = reader.ReadString();
-        int tileCount = reader.ReadInt32();
         int tileWidth = reader.ReadInt32();
         int tileHeight = reader.ReadInt32();
-
-        //  Texture Content
         Texture2D texture = reader.ReadTexture2D(existingInstance: null);
-
         Tileset tileset = new(name, texture, tileWidth, tileHeight);
-
-        Debug.Assert(tileCount == tileset.TileCount);
         return tileset;
     }
 }

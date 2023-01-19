@@ -49,16 +49,13 @@ public sealed class TilesetCollectionReader : ContentTypeReader<TilesetCollectio
         for (int i = 0; i < count; i++)
         {
             string name = reader.ReadString();
-            int tileCount = reader.ReadInt32();
             int tileWidth = reader.ReadInt32();
             int tileHeight = reader.ReadInt32();
 
             //  Texture Content
-            Texture2D texture = reader.ReadTexture2D(existingInstance: null);
+            Texture2D texture = reader.ReadTexture2D();
 
             Tileset tileset = new(name, texture, tileWidth, tileHeight);
-
-            Debug.Assert(tileCount == tileset.TileCount);
 
             collection.AddTileset(tileset);
         }

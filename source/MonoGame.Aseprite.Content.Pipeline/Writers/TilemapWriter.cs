@@ -28,21 +28,26 @@ using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
+/// <summary>
+///     Defines a content writer that writes the content of a <see cref="TilemapProcessorResult"/> to an xnb file.
+/// </summary>
 [ContentTypeWriter]
 public sealed class TilemapWriter : ContentTypeWriter<TilemapProcessorResult>
 {
     protected override void Write(ContentWriter writer, TilemapProcessorResult content)
     {
         //  Tileset content
-        writer.Write(content.Tilesets.Count);
-        for (int i = 0; i < content.Tilesets.Count; i++)
+        ReadOnlySpan<TilesetContent> tilesets = content.Tilesets;
+        writer.Write(tilesets.Length);
+        for (int i = 0; i < tilesets.Length; i++)
         {
             writer.Write(content.Tilesets[i]);
         }
 
         //  Layer Content
-        writer.Write(content.Layers.Count);
-        for (int i = 0; i < content.Layers.Count; i++)
+        ReadOnlySpan<TilemapLayerContent> layers = content.Layers;
+        writer.Write(layers.Length);
+        for (int i = 0; i < layers.Length; i++)
         {
             writer.Write(content.Layers[i]);
         }

@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 ///     <see cref="AsepriteTilemapCel"/> elements, and generates a tilemap.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
-public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProcessorResult>
+public sealed class TilemapProcessor : CommonProcessor<ContentImporterResult<AsepriteFile>, TilemapProcessorResult>
 {
     /// <summary>
     ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements that are on a visible
@@ -46,7 +46,7 @@ public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProc
     /// <summary>
     ///     Processes a single <see cref="AsepriteFrame"/> in an <see cref="AsepriteFile"/> as a tilemap.
     /// </summary>
-    /// <param name="file">
+    /// <param name="content">
     ///     The <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <param name="context">
@@ -56,34 +56,34 @@ public sealed class TilemapProcessor : CommonProcessor<AsepriteFile, TilemapProc
     /// <returns>
     ///     A new instance of the <see cref="TilemapProcessorResult"/> class that contains the result of this method.
     /// </returns>
-    public override TilemapProcessorResult Process(AsepriteFile file, ContentProcessorContext context)
+    public override TilemapProcessorResult Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
     {
-        TilemapProcessorResult result = new();
 
         // *********************************************************************
         //  Generate the tileset content for each tileset
         // *********************************************************************
-        for (int i = 0; i < file.TilesetCount; i++)
+        ReadOnlySpan<AsepriteTileset> tilesets = content.Data.Tilesets;
+        TilesetContent[] tilesetContent = new TilesetContent[tilesets.Length];
+        for (int i = 0; i < tilesets.Length; i++)
         {
-            AsepriteTileset tileset = file.Tilesets[i];
-            TilesetContent tilesetContent = CreateTilesetContent(tileset, file.Name, context);
-            result.Tilesets.Add(tilesetContent);
+            AsepriteTileset tileset = tilesets[i];
+            tilesetContent[i] = CreateTilesetContent(tileset, content.FileNameWithoutExtension, context);
         }
 
         // *********************************************************************
         //  Generate the layer data for each layer in the tilemap
         // *********************************************************************
-        AsepriteFrame frame = file.Frames[0];
-
-        for (int i = 0; i < frame.CelCount; i++)
+        ReadOnlySpan<AsepriteCel> cels = content.Data.Frames[0].Cels;
+        List<TilemapLayerContent> layerContent = new();
+        for (int i = 0; i < cels.Length; i++)
         {
-            if (frame.Cels[i] is AsepriteTilemapCel cel && (OnlyVisibleLayers && !cel.Layer.IsVisible))
+            if (cels[i] is AsepriteTilemapCel cel && (cel.Layer.IsVisible || !OnlyVisibleLayers))
             {
                 TilemapLayerContent layer = CreateTilemapLayerContent(cel);
-                result.Layers.Add(layer);
+                layerContent.Add(layer);
             }
         }
 
-        return result;
+        return new(tilesetContent, layerContent.ToArray());
     }
 }

@@ -22,7 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
@@ -39,7 +41,44 @@ public sealed class SpriteSheetReader : ContentTypeReader<SpriteSheet>
             return existingInstance;
         }
 
-        SpriteSheet spriteSheet = reader.ReadSpriteSheet();
+        string name = reader.ReadString();
+        Texture2D texture = reader.ReadTexture2D(existingInstance: null);
+
+        SpriteSheet spriteSheet = new(name, texture);
+
+        int regionCount = reader.ReadInt32();
+        for (int i = 0; i < regionCount; i++)
+        {
+            Rectangle bounds = reader.ReadRectangle();
+            spriteSheet.CreateRegion($"{name} {i}", bounds);
+        }
+
+        int cycleCount = reader.ReadInt32();
+        for (int i = 0; i < cycleCount; i++)
+        {
+            string cycleName = reader.ReadString();
+            AnimationCycleBuilder builder = new(cycleName, spriteSheet);
+
+            int frameCount = reader.ReadInt32();
+
+            for (int j = 0; j < frameCount; j++)
+            {
+                int index = reader.ReadInt32();
+                int ms = reader.ReadInt32();
+                builder.AddFrame(index, TimeSpan.FromMilliseconds(ms));
+            }
+
+            bool isLooping = reader.ReadBoolean();
+            bool isReversed = reader.ReadBoolean();
+            bool isPingPong = reader.ReadBoolean();
+
+            builder.IsLooping(isLooping)
+                   .IsReversed(isReversed)
+                   .IsPingPong(isPingPong);
+
+            spriteSheet.AddAnimationCycle(builder.Build());
+        }
+
         return spriteSheet;
     }
 }

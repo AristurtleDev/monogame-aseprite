@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/source/MGAConsole/MGAConsole.csproj",
+                "${workspaceFolder}/source/DemoGame/DemoGame.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/source/MGAConsole/MGAConsole.csproj",
+                "${workspaceFolder}/source/DemoGame/DemoGame.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/source/MGAConsole/MGAConsole.csproj"
+                "${workspaceFolder}/source/DemoGame/DemoGame.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

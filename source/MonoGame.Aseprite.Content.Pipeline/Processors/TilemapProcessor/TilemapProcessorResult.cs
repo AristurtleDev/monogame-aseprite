@@ -30,8 +30,12 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// </summary>
 public sealed class TilemapProcessorResult
 {
-    internal List<TilesetContent> Tilesets { get; } = new();
-    internal List<TilemapLayerContent> Layers { get; } = new();
+    private TilesetContent[] _tilesets;
+    private TilemapLayerContent[] _layers;
 
-    internal TilemapProcessorResult() { }
+    internal ReadOnlySpan<TilesetContent> Tilesets => _tilesets;
+    internal ReadOnlySpan<TilemapLayerContent> Layers => _layers;
+
+    internal TilemapProcessorResult(TilesetContent[] tilesets, TilemapLayerContent[] layers) =>
+        (_tilesets, _layers) = (tilesets, layers);
 }

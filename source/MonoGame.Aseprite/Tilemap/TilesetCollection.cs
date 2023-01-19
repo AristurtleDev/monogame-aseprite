@@ -29,7 +29,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a collection of uniquely named tilesets.
+///     Defines a collection of uniquely named <see cref="Tileset"/> elements.
 /// </summary>
 public sealed class TilesetCollection : IEnumerable<Tileset>
 {
@@ -37,72 +37,73 @@ public sealed class TilesetCollection : IEnumerable<Tileset>
     private Dictionary<string, Tileset> _tilesetByName = new();
 
     /// <summary>
-    ///     Gets the total number of tilesets in this tileset collection.
+    ///     Gets the total number of <see cref="Tileset"/> elements in this <see cref="TilesetCollection"/>.
     /// </summary>
     public int Count => _tilesets.Count;
 
     /// <summary>
-    ///     Gets the tileset located at the specified index in this tileset
-    ///     collection.
+    ///     Gets the <see cref="Tileset"/> element from this <see cref="TilesetCollection"/> at the specified index.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tileset to locate in this tileset collection.
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="Tileset"/> element in this <see cref="TilesetCollection"/> to locate.
     /// </param>
     /// <returns>
-    ///     The tileset located at the specified index in this tileset
-    ///     collection.
+    ///     The <see cref="Tileset"/> element that was located at the specified index in this
+    ///     <see cref="TilesetCollection"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than
-    ///     or equal to the total number of tilesets in this tileset collection.
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
+    ///     <see cref="Tileset"/> elements in this <see cref="TilesetCollection"/>.  Use
+    ///     <see cref="TilesetCollection.Count"/> to determine the total number of elements.
     /// </exception>
-    public Tileset this[int index] => GetTileset(index);
+    public Tileset this[int tilesetIndex] => GetTileset(tilesetIndex);
 
     /// <summary>
-    ///     Gets the tileset with the specified name in this tileset collection.
+    ///     Gets the <see cref="Tileset"/> element from this <see cref="TilesetCollection"/> with the specified name.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tileset to locate in this tileset collection.
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="Tileset"/> element in this <see cref="TilesetCollection"/> to locate.
     /// </param>
     /// <returns>
-    ///     The tileset located with the specified name in this tileset
-    ///     collection.
+    ///     The <see cref="Tileset"/> element that was located with the specified name in this
+    ///     <see cref="SpriteSheet"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if this tileset collection does not contain a tileset with
-    ///     the specified name.
+    ///     Thrown if this <see cref="TilesetCollection"/> does not contain a <see cref="Tileset"/> element with the
+    ///     specified name.
     /// </exception>
-    public Tileset this[string name] => GetTileset(name);
+    public Tileset this[string tilesetName] => GetTileset(tilesetName);
 
     /// <summary>
-    ///     Creates a new tileset collection.
+    ///     Initializes a new instance of the <see cref="TilesetCollection"/> class.
     /// </summary>
     public TilesetCollection() { }
 
     /// <summary>
-    ///     Creates a new tileset and adds it to this tileset collection.
+    ///     Creates a new <see cref="Tileset"/> and adds it to this <see cref="TilesetCollection"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name to give the tileset that is created by this method.
+    ///     The name to give the <see cref="Tileset"/> that is created by this method.  Must be unique for this
+    ///     <see cref="TilesetCollection"/>.
     /// </param>
     /// <param name="texture">
-    ///     The Texture2D to give to give to the tileset that is created by this
-    ///     method.
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> that is represented by the
+    ///     <see cref="Tileset"/> created by this method.
     /// </param>
     /// <param name="tileWidth">
-    ///     The width, in pixels, of each tile in the tileset.
+    ///     The width, in pixels, to set for each tile in the <see cref="Tileset"/> created by this method.
     /// </param>
     /// <param name="tileHeight">
-    ///     The height, in pixels, of each tile in the tileset.
+    ///     The height, in pixels, to set for each tile in the <see cref="Tileset"/> created by this method.
     /// </param>
     /// <returns>
-    ///     The tileset that is created by this method.
+    ///     The <see cref="Tileset"/> that is created by this method.
     /// </returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if this tileset collection already contains a tileset with
-    ///     the name specified.
+    ///     Thrown if this <see cref="TilesetCollection"/> already contains a <see cref="Tileset"/> element with the
+    ///     specified name.
     /// </exception>
-    public Tileset AddTileset(string name, Texture2D texture, int tileWidth, int tileHeight)
+    public Tileset CreateTileset(string name, Texture2D texture, int tileWidth, int tileHeight)
     {
         Tileset tileset = new(name, texture, tileWidth, tileHeight);
         AddTileset(tileset);
@@ -110,14 +111,14 @@ public sealed class TilesetCollection : IEnumerable<Tileset>
     }
 
     /// <summary>
-    ///     Adds the given tileset to this tileset collection.
+    ///     Adds te given <see cref="Tileset"/> to this <see cref="TilesetCollection"/>.
     /// </summary>
     /// <param name="tileset">
-    ///     The tileset to add.
+    ///     The <see cref="Tileset"/> to add.
     /// </param>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if this tileset collection already contains a tileset with
-    ///     same name as the tileset given.
+    ///     Thrown if this <see cref="TilesetCollection"/> already contains a <see cref="Tileset"/> element with the
+    ///     specified name.
     /// </exception>
     public void AddTileset(Tileset tileset)
     {
@@ -131,156 +132,153 @@ public sealed class TilesetCollection : IEnumerable<Tileset>
     }
 
     /// <summary>
-    ///     Gets the tileset located at the specified index in this tileset
-    ///     collection.
+    ///     Returns a value that indicates whether this <see cref="TilesetCollection"/> contains a <see cref="Tileset"/>
+    ///     element with the specified name.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tileset to locate in this tileset collection.
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="Tileset"/> element to locate in this <see cref="TilesetCollection"/>.
     /// </param>
     /// <returns>
-    ///     The tileset located at the specified index in this tileset
-    ///     collection.
+    ///     <see langword="true"/> if this <see cref="TilesetCollection"/> contains a <see cref="Tileset"/> with the
+    ///     specified name; otherwise, <see langword="false"/>.
+    /// </returns>
+    public void ContainsTileset(string tilesetName) => _tilesetByName.ContainsKey(tilesetName);
+
+    /// <summary>
+    ///     Gets the <see cref="Tileset"/> element from this <see cref="TilesetCollection"/> at the specified index.
+    /// </summary>
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="Tileset"/> element in this <see cref="TilesetCollection"/> to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> element that was located at the specified index in this
+    ///     <see cref="TilesetCollection"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than
-    ///     or equal to the total number of tilesets in this tileset collection.
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
+    ///     <see cref="Tileset"/> elements in this <see cref="TilesetCollection"/>.  Use
+    ///     <see cref="TilesetCollection.Count"/> to determine the total number of elements.
     /// </exception>
-    public Tileset GetTileset(int index)
+    public Tileset GetTileset(int tilesetIndex)
     {
-        if (index < 0 || index >= _tilesets.Count)
+        if (tilesetIndex < 0 || tilesetIndex >= _tilesets.Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the number of tilesets in this {nameof(TilesetCollection)}.");
+            throw new ArgumentOutOfRangeException(nameof(tilesetIndex), $"{nameof(tilesetIndex)} cannot be less than zero or greater than or equal to the number of tilesets in this {nameof(TilesetCollection)}.");
         }
 
-        return _tilesets[index];
+        return _tilesets[tilesetIndex];
     }
 
     /// <summary>
-    ///     Gets the tileset with the specified name in this tileset collection.
+    ///     Gets the <see cref="Tileset"/> element from this <see cref="TilesetCollection"/> with the specified name.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tileset to locate in this tileset collection.
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="Tileset"/> element in this <see cref="TilesetCollection"/> to locate.
     /// </param>
     /// <returns>
-    ///     The tileset located with the specified name in this tileset
-    ///     collection.
+    ///     The <see cref="Tileset"/> element that was located with the specified name in this
+    ///     <see cref="TilesetCollection"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if this tileset collection does not contain a tileset with
-    ///     the specified name.
+    ///     Thrown if this <see cref="TilesetCollection"/> does not contain a <see cref="Tileset"/> element with the
+    ///     specified name.
     /// </exception>
-    public Tileset GetTileset(string name)
+    public Tileset GetTileset(string tilesetName)
     {
-        if (_tilesetByName.TryGetValue(name, out Tileset? tileset))
+        if (_tilesetByName.TryGetValue(tilesetName, out Tileset? tileset))
         {
             return tileset;
         }
 
-        throw new KeyNotFoundException($"No {nameof(Tileset)} with the name '{name}' is present in this {nameof(TilesetCollection)}.");
+        throw new KeyNotFoundException($"No {nameof(Tileset)} with the name '{tilesetName}' is present in this {nameof(TilesetCollection)}.");
     }
 
     /// <summary>
-    ///     Returns a new collection containing all of the tilesets from this
-    ///     tileset collection.
+    ///     Gets the <see cref="Tileset"/> element from this <see cref="TilesetCollection"/> at the specified index.
     /// </summary>
-    /// <returns>
-    ///     A new collection containing all of the tilesets from this tileset
-    ///     collection.
-    /// </returns>
-    public List<Tileset> GetTilesets() => new List<Tileset>(_tilesets);
-
-    /// <summary>
-    ///     Gets the tileset located at the specified index in this tileset
-    ///     collection.
-    /// </summary>
-    /// <param name="index">
-    ///     The index of the tileset to locate in this tileset collection.
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="Tileset"/> element in this <see cref="TilesetCollection"/> to locate.
     /// </param>
     /// <param name="tileset">
-    ///     When this method returns, contains the tileset that was located, if
-    ///     the index specified is valid; otherwise, null.
+    ///     When this method returns <see langword="true"/>, contains the <see cref="Tileset"/> located; otherwise,
+    ///     <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     true if the index specified is valid; otherwise, false.  This method
-    ///     returns false if the index is less than zero or is greater than or
-    ///     equal to the total number of tilesets in this tileset collection.
+    ///     <see langword="true"/> if a <see cref="Tileset"/> element was located at the specified index; otherwise,
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if the index specified is less than
+    ///     zero or is greater than or equal to the total number of <see cref="Tileset"/> elements in this
+    ///     <see cref="TilesetCollection"/>.  Use <see cref="TilesetCollection.Count"/> to determine the total number of
+    ///     elements.
     /// </returns>
-    public bool TryGetTileset(int index, [NotNullWhen(true)] out Tileset? tileset)
+    public bool TryGetTileset(int tilesetIndex, [NotNullWhen(true)] out Tileset? tileset)
     {
         tileset = default;
 
-        if (index < 0 || index >= _tilesets.Count)
+        if (tilesetIndex < 0 || tilesetIndex >= _tilesets.Count)
         {
             return false;
         }
 
-        tileset = _tilesets[index];
+        tileset = _tilesets[tilesetIndex];
         return true;
     }
 
     /// <summary>
-    ///     Gets the tileset with the specified name in this tileset collection.
+    ///     Gets the <see cref="Tileset"/> element from this <see cref="TilesetCollection"/> with the specified name.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tileset to locate in this tileset collection.
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="Tileset"/> element in this <see cref="TilesetCollection"/> to locate.
     /// </param>
     /// <param name="tileset">
-    ///     When this method returns, contains the tileset that was located, if
-    ///     this tileset collection contains a tileset with the specified name;
-    ///     otherwise, null.
+    ///     When this method returns <see langword="true"/>, contains the <see cref="Tileset"/> located; otherwise,
+    ///     <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     true if this tileset contains a tileset with the specified name;
-    ///     otherwise, false.  This method returns false if this tileset does
-    ///     not contain a tileset with the specified name.
+    ///     <see langword="true"/> if a <see cref="Tileset"/> element was located with the specified name; otherwise,
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this
+    ///     <see cref="TilesetCollection"/> does not contain a <see cref="Tileset"/> element with the specified name.
     /// </returns>
-    public bool TryGetTileset(string name, [NotNullWhen(true)] out Tileset? tileset) =>
-        _tilesetByName.TryGetValue(name, out tileset);
-
+    public bool TryGetTileset(string tilesetName, [NotNullWhen(true)] out Tileset? tileset) =>
+        _tilesetByName.TryGetValue(tilesetName, out tileset);
 
     /// <summary>
-    ///     Removes the tileset located at the specified index from this tileset
-    ///     collection.
+    ///     Removes the <see cref="Tileset"/> element at the specified index from this <see cref="TilesetCollection"/>.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tileset to locate and remove from this tileset
-    ///     collection.
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="Tileset"/> element to remove from this <see cref="TilesetCollection"/>.
     /// </param>
     /// <returns>
-    ///     true if the tileset located at the specified index was removed
-    ///     successfully from this tileset collection; otherwise, false.  This
-    ///     method returns false if the index specified is less than zero or is
-    ///     greater than or equal to the total number of tilesets in this
-    ///     tileset collection.
+    ///     <see langword="true"/> if the <see cref="Tileset"/> was removed successfully; otherwise,
+    ///     <see langword="false"/>.  This method return <see langword="false"/> if the specified index is less than
+    ///     zero or is greater than or equal to the total number of <see cref="Tileset"/> elements in this
+    ///     <see cref="TilesetCollection"/>.  Use <see cref="TilesetCollection.Count"/> to determine the total number of
+    ///     elements.
     /// </returns>
-    public bool RemoveTileset(int index)
+    public bool RemoveTileset(int tilesetIndex)
     {
-        if (index < 0 || index >= Count)
+        if (tilesetIndex < 0 || tilesetIndex >= Count)
         {
             return false;
         }
 
-        Tileset tileset = _tilesets[index];
+        Tileset tileset = _tilesets[tilesetIndex];
         return RemoveTileset(tileset);
     }
 
     /// <summary>
-    ///     Removes the tileset with the specified name from this tileset
-    ///     collection.
+    ///     Removes the <see cref="Tileset"/> element with the specified name from this <see cref="TilesetCollection"/>.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tileset to locate and remove from this tileset
-    ///     collection.
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="Tileset"/> element to remove.
     /// </param>
     /// <returns>
-    ///     true if the tileset with the specified name was successfully removed
-    ///     from this tileset collection; otherwise, false.  This method returns
-    ///     false if this tileset collection does not contain a tileset with the
-    ///     specified name.
+    ///     <see langword="true"/> if the <see cref="Tileset"/> was removed successfully; otherwise,
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this
+    ///     <see cref="TilesetCollection"/> does not contain a <see cref="Tileset"/> element with the specified name.
     /// </returns>
-    public bool RemoveTileset(string name)
+    public bool RemoveTileset(string tilesetName)
     {
-        if (_tilesetByName.TryGetValue(name, out Tileset? tileset))
+        if (_tilesetByName.TryGetValue(tilesetName, out Tileset? tileset))
         {
             return RemoveTileset(tileset);
         }
@@ -289,21 +287,21 @@ public sealed class TilesetCollection : IEnumerable<Tileset>
     }
 
     /// <summary>
-    ///     Removes the given tileset from this tileset collection.
+    ///     Removes the given <see cref="Tileset"/> from this <see cref="TilesetCollection"/>.
     /// </summary>
     /// <param name="tileset">
-    ///     The tileset to remove from this tileset collection.
+    ///     The <see cref="Tileset"/> to remove from this <see cref="TilesetCollection"/>.
     /// </param>
     /// <returns>
-    ///     true if the tileset given was successfully removed from this tileset
-    ///     collection; otherwise, false.  This method returns false if this
-    ///     tileset collection does not contain the given tileset.
+    ///     <see langword="true"/> if the <see cref="Tileset"/> was removed successfully; otherwise,
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this
+    ///     <see cref="TilesetCollection"/> does not contain the given <see cref="Tileset"/>.
     /// </returns>
     public bool RemoveTileset(Tileset tileset) =>
         _tilesets.Remove(tileset) && _tilesetByName.Remove(tileset.Name);
 
     /// <summary>
-    ///     Removes all tilesets from this tileset collection.
+    ///     Removes all <see cref="Tileset"/> elements from this <see cref="TilesetCollection"/>.
     /// </summary>
     public void Clear()
     {
@@ -312,22 +310,22 @@ public sealed class TilesetCollection : IEnumerable<Tileset>
     }
 
     /// <summary>
-    ///     Returns an enumerator that iterates through all of the tilesets in
-    ///     this tileset collection.
+    ///     Returns an enumerator that iterates through all of the <see cref="Tileset"/> elements in this
+    ///     <see cref="TilesetCollection"/>.
     /// </summary>
     /// <returns>
-    ///     An enumerator that iterates through all of the tilesets in this
-    ///     tileset collection.
+    ///     An enumerator that iterates through all of the <see cref="Tileset"/> elements in this
+    ///     <see cref="TilesetCollection"/>.
     /// </returns>
     public IEnumerator<Tileset> GetEnumerator() => _tilesets.GetEnumerator();
 
     /// <summary>
-    ///     Returns an enumerator that iterates through all of the tilesets in
-    ///     this tileset collection.
+    ///     Returns an enumerator that iterates through all of the <see cref="Tileset"/> elements in this
+    ///     <see cref="TilesetCollection"/>.
     /// </summary>
     /// <returns>
-    ///     An enumerator that iterates through all of the tilesets in this
-    ///     tileset collection.
+    ///     An enumerator that iterates through all of the <see cref="Tileset"/> elements in this
+    ///     <see cref="TilesetCollection"/>.
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
