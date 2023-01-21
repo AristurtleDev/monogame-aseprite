@@ -38,8 +38,13 @@ public sealed class SingleFrameContentWriter : ContentTypeWriter<SingleFrameCont
 
     protected override void Write(ContentWriter writer, SingleFrameContentProcessorResult content)
     {
-        writer.Write(content.TextureContent.Name);
         writer.Write(content.TextureContent);
+        writer.Write(content.TextureContent.Name);
+    }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform)
+    {
+        return "Microsoft.Xna.Framework.Graphics.Texture2D, MonoGame.Framework";
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

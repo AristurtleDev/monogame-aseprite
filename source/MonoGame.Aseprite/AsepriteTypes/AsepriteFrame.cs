@@ -23,6 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.Utilities;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
@@ -108,7 +109,7 @@ public sealed class AsepriteFrame
     private void BlendTilemapCel(Span<Color> backdrop, AsepriteTilemapCel cel)
     {
         //  Premultiply the opacity of the cel and the opacity of the layer
-        byte opacity = ColorUtils.MUL_UN8(cel.Opacity, cel.Layer.Opacity);
+        byte opacity = BlendFunctions.MUL_UN8(cel.Opacity, cel.Layer.Opacity);
 
         AsepriteTileset tileset = cel.Tileset;
         int width = cel.Columns * tileset.TileWidth;
@@ -155,8 +156,8 @@ public sealed class AsepriteFrame
 
             Color b = backdrop[index];
             Color s = source[i];
-            byte opacity = ColorUtils.MUL_UN8(celOpacity, layerOpacity);
-            backdrop[index] = ColorUtils.Blend(blendMode, b, s, opacity);
+            byte opacity = BlendFunctions.MUL_UN8(celOpacity, layerOpacity);
+            backdrop[index] = BlendFunctions.Blend(blendMode, b, s, opacity);
         }
     }
 }

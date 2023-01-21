@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using MonoGame.Aseprite.Processors;
+
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
@@ -30,7 +33,12 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// </summary>
 public sealed class TilesetCollectionContentProcessorResult
 {
-    private TilesetContentProcessorResult[] _tilesets;
-    internal ReadOnlySpan<TilesetContentProcessorResult> Tilesets => _tilesets;
-    internal TilesetCollectionContentProcessorResult(TilesetContentProcessorResult[] tilesets) => _tilesets = tilesets;
+    private RawTileset[] _tilesets;
+    private TextureContent[] _textures;
+
+    internal ReadOnlySpan<RawTileset> Tilesets => _tilesets;
+    internal ReadOnlySpan<TextureContent> Textures => _textures;
+
+    internal TilesetCollectionContentProcessorResult(RawTileset[] tilesets, TextureContent[] textures) =>
+        (_tilesets, _textures) = (tilesets, textures);
 }

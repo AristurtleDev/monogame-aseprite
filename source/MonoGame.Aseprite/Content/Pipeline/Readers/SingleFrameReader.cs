@@ -34,7 +34,6 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 /// </summary>
 internal sealed class SingleFrameReader : ContentTypeReader<Texture2D>
 {
-
     protected override Texture2D Read(ContentReader reader, Texture2D? existingInstance)
     {
         if(existingInstance is not null)
@@ -42,9 +41,8 @@ internal sealed class SingleFrameReader : ContentTypeReader<Texture2D>
             return existingInstance;
         }
 
-        string name = reader.ReadString();
         Texture2D texture = reader.ReadTexture2D();
-        texture.Name = name;
+        texture.Name = reader.ReadString();
         return texture;
     }
 }

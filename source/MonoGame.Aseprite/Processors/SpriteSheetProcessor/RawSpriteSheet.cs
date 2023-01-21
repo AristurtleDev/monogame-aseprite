@@ -26,9 +26,15 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Processors;
 
-internal sealed record SpriteSheetProcessorResult(string Name,
-                                                  Color[] Pixels,
-                                                  int Width,
-                                                  int Height,
-                                                  List<Rectangle> Regions,
-                                                  Dictionary<string, (int[], int[], bool, bool, bool)> Animations);
+public sealed class RawSpriteSheet
+{
+    private Rectangle[] _regions;
+    public string Name { get; }
+    internal RawTexture Texture { get; }
+    internal ReadOnlySpan<Rectangle> Regions => _regions;
+    internal Dictionary<string, RawAnimationCycle> Cycles { get; }
+
+    internal RawSpriteSheet(string name, RawTexture texture, Rectangle[] regions, Dictionary<string, RawAnimationCycle> cycles) =>
+        (Name, Texture, _regions, Cycles) = (name, texture, regions, cycles);
+
+}

@@ -23,34 +23,96 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
-///     Defines a content writer that writes the content of a <see cref="TilemapProcessorResult"/> to an xnb file.
+///     Defines a content writer that writes the content of a <see cref="TileMapContentProcessorResult"/> to an xnb file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class TilemapWriter : ContentTypeWriter<TilemapProcessorResult>
+public sealed class TilemapWriter : ContentTypeWriter<TileMapContentProcessorResult>
 {
-    protected override void Write(ContentWriter writer, TilemapProcessorResult content)
+    protected override void Write(ContentWriter writer, TileMapContentProcessorResult content)
     {
-        //  Tileset content
-        ReadOnlySpan<TilesetContent> tilesets = content.Tilesets;
-        writer.Write(tilesets.Length);
-        for (int i = 0; i < tilesets.Length; i++)
-        {
-            writer.Write(content.Tilesets[i]);
-        }
+        writer.Write(content.Tilemap.Name);
+        WriteTilesets(writer, content.Tilemap.Tilesets, content.Textures);
+        WriteLayers(writer, content.Tilemap.Layers);
+    }
 
-        //  Layer Content
-        ReadOnlySpan<TilemapLayerContent> layers = content.Layers;
-        writer.Write(layers.Length);
-        for (int i = 0; i < layers.Length; i++)
+    private void WriteTilesets(ContentWriter writer, ReadOnlySpan<RawTileset> tilesets, ReadOnlySpan<TextureContent> textures)
+    {
+        int count = tilesets.Length;
+        writer.Write(count);
+
+        for (int i = 0; i < count; i++)
         {
-            writer.Write(content.Layers[i]);
+            WriteTexture(writer, textures[i]);
+            WriteTileset(writer, tilesets[i]);
         }
+    }
+
+    private void WriteTexture(ContentWriter writer, TextureContent textureContent)
+    {
+        writer.Write(textureContent);
+        writer.Write(textureContent.Name);
+    }
+
+    private void WriteTileset(ContentWriter writer, RawTileset tileset)
+    {
+        writer.Write(tileset.ID);
+        writer.Write(tileset.Name);
+        writer.Write(tileset.TileWidth);
+        writer.Write(tileset.TileHeight);
+    }
+
+    private void WriteLayers(ContentWriter writer, ReadOnlySpan<RawTilemapLayer> layers)
+    {
+        int count = layers.Length;
+        writer.Write(count);
+        for (int i = 0; i < count; i++)
+        {
+            WriteLayer(writer, layers[i]);
+        }
+    }
+
+    private void WriteLayer(ContentWriter writer, RawTilemapLayer layer)
+    {
+        writer.Write(layer.Name);
+        writer.Write(layer.TilesetID);
+        writer.Write(layer.Columns);
+        writer.Write(layer.Rows);
+        writer.Write(layer.Offset);
+        WriteTiles(writer, layer.Tiles);
+
+    }
+
+    private void WriteTiles(ContentWriter writer, ReadOnlySpan<RawTilemapLayerTile> tiles)
+    {
+        int count = tiles.Length;
+        writer.Write(count);
+        for (int i = 0; i < count; i++)
+        {
+            WriteTile(writer, tiles[i]);
+        }
+    }
+
+    private void WriteTile(ContentWriter writer, RawTilemapLayerTile tile)
+    {
+        writer.Write(tile.TilesetTileID);
+        writer.Write(tile.XFlip);
+        writer.Write(tile.YFlip);
+        writer.Write(tile.Rotation);
+    }
+
+
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform)
+    {
+        return "MonoGame.Aseprite.Tilemap, MonoGame.Aseprite";
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

@@ -22,13 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-
 namespace MonoGame.Aseprite.Processors;
 
-internal sealed record TilesetProcessorResult(string Name,
-                                              Color[] Pixels,
-                                              int Width,
-                                              int Height,
-                                              int TileWidth,
-                                              int TileHeight);
+public class TilemapProcessorConfiguration
+{
+    public int FrameIndex { get; set; } = 0;
+    public bool OnlyVisibleLayers { get; set; } = true;
+
+    public TilemapProcessorConfiguration() { }
+
+    public TilemapProcessorConfiguration(int frameIndex, bool onlyVisibleLayers) =>
+        (FrameIndex, OnlyVisibleLayers) = (frameIndex, onlyVisibleLayers);
+
+}

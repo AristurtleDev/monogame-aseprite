@@ -25,6 +25,7 @@ SOFTWARE.
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite;
 
@@ -107,6 +108,14 @@ public class SpriteSheet
     {
         Name = spritesheetName;
         Texture = texture;
+    }
+
+    internal SpriteSheet(string spriteSheetName, Texture2D texture, ReadOnlySpan<Rectangle> regions, Dictionary<string, RawAnimationCycle> cycles)
+    {
+        Name = spriteSheetName;
+        Texture = texture;
+        AddRegions(regions);
+        AddAnimationCycles(cycles);
     }
 
     #region Regions
@@ -200,6 +209,14 @@ public class SpriteSheet
         TextureRegion region = new(regionName, Texture, regionBounds);
         AddRegion(region);
         return region;
+    }
+
+    internal void AddRegions(ReadOnlySpan<Rectangle> regions)
+    {
+        for (int i = 0; i < regions.Length; i++)
+        {
+            CreateRegion($"{Name} {i}", regions[i]);
+        }
     }
 
     /// <summary>
@@ -438,6 +455,29 @@ public class SpriteSheet
         AddAnimationCycle(cycle);
 
         return cycle;
+    }
+
+    internal void AddAnimationCycles(Dictionary<string, RawAnimationCycle> cycles)
+    {
+        foreach(KeyValuePair<string, RawAnimationCycle> kvp in cycles)
+        {
+            string name = kvp.Key;
+            RawAnimationCycle animation = kvp.Value;
+
+            CreateAnimationCycle(name, builder =>
+            {
+                for (int i = 0; i < animation.FrameIndexes.Length; i++)
+                {
+                    int index = animation.FrameIndexes[i];
+                    TimeSpan duration = TimeSpan.FromMilliseconds(animation.FrameDurations[i]);
+                    builder.AddFrame(index, duration);
+                }
+
+                builder.IsLooping(animation.IsLooping);
+                builder.IsReversed(animation.IsReversed);
+                builder.IsPingPong(animation.IsPingPong);
+            });
+        }
     }
 
     /// <summary>

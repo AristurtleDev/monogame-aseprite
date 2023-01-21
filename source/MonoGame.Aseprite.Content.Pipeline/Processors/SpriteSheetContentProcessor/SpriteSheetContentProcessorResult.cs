@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -32,11 +33,9 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// </summary>
 public sealed class SpriteSheetContentProcessorResult
 {
-    internal string Name { get; }
+    internal RawSpriteSheet RawSpriteSheet { get; }
     internal TextureContent TextureContent { get; }
-    internal List<Rectangle> Regions { get; }
-    internal Dictionary<string, (int[], int[], bool, bool, bool)> Animations { get; }
 
-    internal SpriteSheetContentProcessorResult(string name, TextureContent textureContent, List<Rectangle> regions, Dictionary<string, (int[], int[], bool, bool, bool)> animations) =>
-        (Name, TextureContent, Regions, Animations) = (name, textureContent, regions, animations);
+    internal SpriteSheetContentProcessorResult(RawSpriteSheet rawSpriteSheet, TextureContent textureContent) =>
+        (RawSpriteSheet, TextureContent) = (rawSpriteSheet, textureContent);
 }

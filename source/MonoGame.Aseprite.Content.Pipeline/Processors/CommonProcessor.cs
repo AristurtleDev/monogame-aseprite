@@ -28,6 +28,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -103,7 +104,7 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
     [DisplayName("Texture Format")]
     public TextureProcessorOutputFormat TextureFormat { get; set; }
 
-    protected TextureContent CreateTextureContent(string sourceName, ReadOnlySpan<Color> pixels, int imageWidth, int imageHeight, ContentProcessorContext processorContext)
+    protected TextureContent CreateTextureContent(RawTexture rawTexture, string sourceFilePath, ContentProcessorContext processorContext)
     {
         //  During the Aseprite file import, no matter the color mode that was
         //  set in Aseprite, all color data was translated to 32-bits per pixel.
@@ -116,15 +117,15 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
         //        the color translation works, we'll just keep doing this, but
         //        there's no need to translate it once on import just to
         //        translate it back to byte data here
-        byte[] data = new byte[((imageWidth * imageHeight * bpp - 1) / 8) + 1];
-        PixelsToBytes(pixels, data);
+        byte[] data = new byte[((rawTexture.Width * rawTexture.Height * bpp - 1) / 8) + 1];
+        PixelsToBytes(rawTexture.Pixels, data);
 
         //  Create the BitmapContent
-        BitmapContent face = new PixelBitmapContent<Color>(imageWidth, imageHeight);
+        BitmapContent face = new PixelBitmapContent<Color>(rawTexture.Width, rawTexture.Height);
         face.SetPixelData(data);
 
         //  Create the Texture2D content
-        TextureContent content = new Texture2DContent() { Identity = new ContentIdentity(sourceName) };
+        TextureContent content = new Texture2DContent() { Identity = new ContentIdentity(sourceFilePath) };
         content.Faces[0].Add(face);
 
         //  Make use of the native MonoGame Texture Processor instead of
@@ -141,8 +142,50 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
         };
 
         content = nativeProcessor.Process(content, processorContext);
+        content.Name = rawTexture.Name;
         return content;
     }
+
+    // protected TextureContent CreateTextureContent(ReadOnlySpan<Color> pixels, int imageWidth, int imageHeight, string sourceFilePath, ContentProcessorContext processorContext)
+    // {
+    //     //  During the Aseprite file import, no matter the color mode that was
+    //     //  set in Aseprite, all color data was translated to 32-bits per pixel.
+    //     const int bpp = 32;
+
+    //     //  Translate the pixel color data in the image to byte data
+    //     //  TODO: Look into not translating the color data in Aseprite to Color
+    //     //        value types, and instead just keep the byte[] of the raw image
+    //     //        data and see if that can be used.  For now, since doing the
+    //     //        the color translation works, we'll just keep doing this, but
+    //     //        there's no need to translate it once on import just to
+    //     //        translate it back to byte data here
+    //     byte[] data = new byte[((imageWidth * imageHeight * bpp - 1) / 8) + 1];
+    //     PixelsToBytes(pixels, data);
+
+    //     //  Create the BitmapContent
+    //     BitmapContent face = new PixelBitmapContent<Color>(imageWidth, imageHeight);
+    //     face.SetPixelData(data);
+
+    //     //  Create the Texture2D content
+    //     TextureContent content = new Texture2DContent() { Identity = new ContentIdentity(sourceFilePath) };
+    //     content.Faces[0].Add(face);
+
+    //     //  Make use of the native MonoGame Texture Processor instead of
+    //     //  implementing something custom.  Why reinvent the wheel?
+    //     TextureProcessor nativeProcessor = new()
+    //     {
+    //         ColorKeyColor = ColorKeyColor,
+    //         ColorKeyEnabled = ColorKeyEnabled,
+    //         GenerateMipmaps = GenerateMipMaps,
+    //         PremultiplyAlpha = PremultiplyAlpha,
+    //         ResizeToPowerOfTwo = ResizePowerOfTwo,
+    //         MakeSquare = MakeSquare,
+    //         TextureFormat = TextureFormat
+    //     };
+
+    //     content = nativeProcessor.Process(content, processorContext);
+    //     return content;
+    // }
 
     private static void PixelsToBytes(ReadOnlySpan<Color> src, Span<byte> dest)
     {
@@ -155,49 +198,49 @@ public abstract class CommonProcessor<TIn, TOut> : ContentProcessor<TIn, TOut>
         }
     }
 
-    //  TODO: This is marked internal since Tileset accessability is internal
-    //        but would rather logically mark this as protected. If still
-    //        considering moving the file import stuff to a separate library,
-    //        that might work then.
-    internal TilesetContent CreateTilesetContent(AsepriteTileset tileset, string fileName, ContentProcessorContext processorContext)
-    {
-        string sourceName = $"{fileName} {tileset.Name}.aseprite";
-        TextureContent textureContent = CreateTextureContent(sourceName, tileset.Pixels, tileset.Width, tileset.Height, processorContext);
-        return new(tileset.Name, tileset.TileCount, tileset.TileWidth, tileset.TileHeight, textureContent);
-    }
+    // //  TODO: This is marked internal since Tileset accessability is internal
+    // //        but would rather logically mark this as protected. If still
+    // //        considering moving the file import stuff to a separate library,
+    // //        that might work then.
+    // internal TilesetContent CreateTilesetContent(AsepriteTileset tileset, string fileName, ContentProcessorContext processorContext)
+    // {
+    //     string sourceName = $"{fileName} {tileset.Name}.aseprite";
+    //     TextureContent textureContent = CreateTextureContent(sourceName, tileset.Pixels, tileset.Width, tileset.Height, processorContext);
+    //     return new(tileset.Name, tileset.TileCount, tileset.TileWidth, tileset.TileHeight, textureContent);
+    // }
 
-    internal TilemapLayerContent CreateTilemapLayerContent(AsepriteTilemapCel cel)
-    {
-        string name = cel.Layer.Name;
-        //  TODO: Can the TilesetID be added to the Tileset itself instead of
-        //        having to get the layer as then pulling it from the layer
-        //        since the cel already has access to the Tileset???
-        int tilesetID = cel.LayerAs<AsepriteTilemapLayer>().TilesetID;
-        int columns = cel.Columns;
-        int rows = cel.Rows;
-        Point offset = cel.Position;
-        string tilesetName = cel.Tileset.Name;
-        TileContent[] tiles = CreateCelTileContent(cel);
+    // internal TilemapLayerContent CreateTilemapLayerContent(AsepriteTilemapCel cel)
+    // {
+    //     string name = cel.Layer.Name;
+    //     //  TODO: Can the TilesetID be added to the Tileset itself instead of
+    //     //        having to get the layer as then pulling it from the layer
+    //     //        since the cel already has access to the Tileset???
+    //     int tilesetID = cel.LayerAs<AsepriteTilemapLayer>().TilesetID;
+    //     int columns = cel.Columns;
+    //     int rows = cel.Rows;
+    //     Point offset = cel.Position;
+    //     string tilesetName = cel.Tileset.Name;
+    //     TileContent[] tiles = CreateCelTileContent(cel);
 
-        return new TilemapLayerContent(name, tilesetID, columns, rows, offset, tiles);
-    }
+    //     return new TilemapLayerContent(name, tilesetID, columns, rows, offset, tiles);
+    // }
 
-    internal TileContent[] CreateCelTileContent(AsepriteTilemapCel cel)
-    {
-        TileContent[] tiles = new TileContent[cel.TileCount];
+    // internal TileContent[] CreateCelTileContent(AsepriteTilemapCel cel)
+    // {
+    //     TileContent[] tiles = new TileContent[cel.TileCount];
 
-        for (int i = 0; i < cel.TileCount; i++)
-        {
-            AsepriteTile tile = cel.Tiles[i];
+    //     for (int i = 0; i < cel.TileCount; i++)
+    //     {
+    //         AsepriteTile tile = cel.Tiles[i];
 
-            byte flag = 0;
-            flag |= (byte)(tile.XFlip != 0 ? 1 : 0);
-            flag |= (byte)(tile.YFlip != 0 ? 2 : 0);
+    //         byte flag = 0;
+    //         flag |= (byte)(tile.XFlip != 0 ? 1 : 0);
+    //         flag |= (byte)(tile.YFlip != 0 ? 2 : 0);
 
-            TileContent tileContent = new(flag, tile.Rotation, tile.TilesetTileID);
-            tiles[i] = tileContent;
-        }
+    //         TileContent tileContent = new(flag, tile.Rotation, tile.TilesetTileID);
+    //         tiles[i] = tileContent;
+    //     }
 
-        return tiles;
-    }
+    //     return tiles;
+    // }
 }

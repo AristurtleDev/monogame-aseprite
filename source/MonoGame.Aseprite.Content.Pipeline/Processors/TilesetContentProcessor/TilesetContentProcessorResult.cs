@@ -23,6 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -30,7 +31,11 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 ///     Defines the result of processing a single <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTileset"/> from an
 ///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFile"/>.
 /// </summary>
-public sealed record TilesetContentProcessorResult(string Name,
-                                                   int TileWidth,
-                                                   int TileHeight,
-                                                   TextureContent TextureContent);
+public sealed class TilesetContentProcessorResult
+{
+    internal RawTileset RawTileset { get; }
+    internal TextureContent TextureContent { get; }
+
+    internal TilesetContentProcessorResult(RawTileset rawTileset, TextureContent textureContent) =>
+        (RawTileset, TextureContent) = (rawTileset, textureContent);
+}

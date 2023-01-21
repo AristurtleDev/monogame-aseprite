@@ -23,7 +23,6 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
@@ -64,9 +63,9 @@ public sealed class TilesetContentProcessor : CommonProcessor<ContentImporterRes
     /// </exception>
     public override TilesetContentProcessorResult Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
     {
-        TilesetProcessorResult result = TilesetProcessor.Process(content.Data, TilesetName);
-        TextureContent textureContent = CreateTextureContent(content.FileName, result.Pixels, result.Width, result.Height, context);
-        textureContent.Name = result.Name;
-        return new(result.Name, result.TileWidth, result.TileHeight, textureContent);
+        RawTileset rawTileset = TilesetProcessor.GetRawTileset(content.Data, TilesetName);
+        TextureContent textureContent = CreateTextureContent(rawTileset.Texture, content.FilePath, context);
+        textureContent.Name = rawTileset.Texture.Name;
+        return new(rawTileset, textureContent);
     }
 }

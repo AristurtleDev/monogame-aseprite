@@ -22,19 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Processors;
 
-/// <summary>
-///     Defines the result of processing a single <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFrame"/> in an
-///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFile"/>.
-/// </summary>
-public sealed class SingleFrameContentProcessorResult
+public sealed class RawTexture
 {
-    internal string Name { get; set; }
-    internal TextureContent TextureContent { get; }
+    internal string Name { get; }
+    internal Color[] Pixels { get; }
+    internal int Width { get; }
+    internal int Height { get; }
 
-    internal SingleFrameContentProcessorResult(string name, TextureContent content) =>
-        (Name, TextureContent) = (name, content);
+    internal RawTexture(string name, Color[] pixels, int width, int height) =>
+        (Name, Pixels, Width, Height) = (name, pixels, width, height);
+
 }

@@ -52,17 +52,22 @@ public sealed class TilesetCollectionContentProcessor : CommonProcessor<ContentI
     /// </returns>
     public override TilesetCollectionContentProcessorResult Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
     {
-        TilesetProcessorResult[] processorResult = TilesetCollectionProcessor.Process(content.Data);
-        TilesetContentProcessorResult[] processedContent = new TilesetContentProcessorResult[processorResult.Length];
+        RawTileset[] tilesets = TilesetCollectionProcessor.Process(content.Data);
+        TextureContent[] textures = ProcessTextures(tilesets, content.FilePath, context);
 
-        for (int i = 0; i < processorResult.Length; i++)
+        return new(tilesets, textures);
+    }
+
+    private TextureContent[] ProcessTextures(ReadOnlySpan<RawTileset> tilesets, string sourceFilePath, ContentProcessorContext context)
+    {
+        TextureContent[] textures = new TextureContent[tilesets.Length];
+        for (int i = 0; i < tilesets.Length; i++)
         {
-            TilesetProcessorResult result = processorResult[i];
-            TextureContent textureContent = CreateTextureContent(content.FileName, result.Pixels, result.Width, result.Height, context);
-            textureContent.Name = result.Name;
-            processedContent[i] = new(result.Name, result.TileWidth, result.TileHeight, textureContent);
+            RawTileset tileset = tilesets[i];
+            TextureContent texture = CreateTextureContent(tileset.Texture, sourceFilePath, context);
+            texture.Name = tileset.Texture.Name;
+            textures[i] = texture;
         }
-
-        return new(processedContent);
+        return textures;
     }
 }

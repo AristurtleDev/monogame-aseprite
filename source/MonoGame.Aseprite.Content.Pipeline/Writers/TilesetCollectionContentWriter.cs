@@ -23,8 +23,10 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
@@ -37,18 +39,32 @@ public sealed class TilesetCollectionContentWriter : ContentTypeWriter<TilesetCo
 {
     protected override void Write(ContentWriter writer, TilesetCollectionContentProcessorResult content)
     {
-        ReadOnlySpan<TilesetContentProcessorResult> tilesets = content.Tilesets;
+        int count = content.Tilesets.Length;
+        writer.Write(count);
 
-        writer.Write(tilesets.Length);
-        for (int i = 0; i < tilesets.Length; i++)
+        for (int i = 0; i < count; i++)
         {
-            TilesetContentProcessorResult tileset = tilesets[i];
-
-            writer.Write(tileset.Name);
-            writer.Write(tileset.TileWidth);
-            writer.Write(tileset.TileHeight);
-            writer.Write(tileset.TextureContent);
+            WriteTexture(writer, content.Textures[i]);
+            WriteTileset(writer, content.Tilesets[i]);
         }
+    }
+
+    private void WriteTexture(ContentWriter writer, TextureContent textureContent)
+    {
+        writer.Write(textureContent);
+        writer.Write(textureContent.Name);
+    }
+
+    private void WriteTileset(ContentWriter writer, RawTileset tileset)
+    {
+        writer.Write(tileset.Name);
+        writer.Write(tileset.TileWidth);
+        writer.Write(tileset.TileHeight);
+    }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform)
+    {
+        return "MonoGame.Aseprite.TilesetCollection, MonoGame.Aseprite";
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

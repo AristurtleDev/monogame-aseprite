@@ -23,7 +23,6 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
@@ -36,16 +35,8 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 ///     <see cref="AsepriteSlice"/> elements in a <see cref="AsepriteFile"/> and generates a spritesheet.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
-public sealed class SpriteSheetContentProcessor : CommonProcessor<ContentImporterResult<AsepriteFile>, SpriteSheetContentProcessorResult>
+internal sealed class SpriteSheetContentProcessor : CommonProcessor<ContentImporterResult<AsepriteFile>, SpriteSheetContentProcessorResult>
 {
-    // private Dictionary<int, int> _duplicateMap = new();
-    // private int _columns;
-    // private int _rows;
-    // private int _width;
-    // private int _height;
-    // private int _frameWidth;
-    // private int _frameHeight;
-
     /// <summary>
     ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements that are on a visible
     ///     <see cref="AsepriteLayer"/> should be processed.
@@ -99,7 +90,7 @@ public sealed class SpriteSheetContentProcessor : CommonProcessor<ContentImporte
     ///     processed.
     /// </param>
     /// <returns>
-    ///     A new instance of the <see cref="SpriteSheetProcessorResult"/> class that contains the results of this
+    ///     A new instance of the <see cref="RawSpriteSheet"/> class that contains the results of this
     ///     method.
     /// </returns>
     public override SpriteSheetContentProcessorResult Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
@@ -114,10 +105,10 @@ public sealed class SpriteSheetContentProcessor : CommonProcessor<ContentImporte
             Spacing = Spacing
         };
 
-        SpriteSheetProcessorResult result = SpriteSheetProcessor.Process(content.Data, options);
-        TextureContent textureContent = CreateTextureContent(content.FileNameWithoutExtension, result.Pixels, result.Width, result.Height, context);
-        return new(content.FileNameWithoutExtension, textureContent, result.Regions, result.Animations);
-
+        RawSpriteSheet rawSpriteSheet = SpriteSheetProcessor.GetRawSpriteSheet(content.Data, options);
+        TextureContent textureContent = CreateTextureContent(rawSpriteSheet.Texture, content.FilePath, context);
+        textureContent.Name = rawSpriteSheet.Texture.Name;
+        return new(rawSpriteSheet, textureContent);
     }
 
     // /// <summary>

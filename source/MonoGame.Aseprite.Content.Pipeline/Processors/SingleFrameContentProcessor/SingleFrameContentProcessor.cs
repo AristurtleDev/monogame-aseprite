@@ -83,9 +83,9 @@ public sealed class SingleFrameContentProcessor : CommonProcessor<ContentImporte
             OnlyVisibleLayers = OnlyVisibleLayers
         };
 
-        SingleFrameProcessorResult result = SingleFrameProcessor.Process(content.Data, options);
-        TextureContent textureContent = CreateTextureContent(content.FileName, result.Pixels, result.Width, result.Height, context);
-        textureContent.Name = result.Name;
-        return new SingleFrameContentProcessorResult(textureContent);
+        RawTexture rawTexture = SingleFrameProcessor.CreateRawTexture(content.Data, options);
+        TextureContent textureContent = CreateTextureContent(rawTexture, content.FilePath, context);
+        textureContent.Name = rawTexture.Name;
+        return new SingleFrameContentProcessorResult(rawTexture.Name, textureContent);
     }
 }

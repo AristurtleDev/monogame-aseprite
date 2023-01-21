@@ -25,6 +25,7 @@ SOFTWARE.
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
@@ -41,44 +42,65 @@ public sealed class SpriteSheetReader : ContentTypeReader<SpriteSheet>
             return existingInstance;
         }
 
+        Texture2D texture = ReadTexture(reader);
+        SpriteSheet spriteSheet = ReadSpriteSheet(reader, texture);
+        return spriteSheet;
+    }
+
+    private Texture2D ReadTexture(ContentReader reader)
+    {
+        Texture2D texture = reader.ReadTexture2D();
+        texture.Name = reader.ReadString();
+        return texture;
+    }
+
+    private SpriteSheet ReadSpriteSheet(ContentReader reader, Texture2D texture)
+    {
         string name = reader.ReadString();
-        Texture2D texture = reader.ReadTexture2D(existingInstance: null);
-
         SpriteSheet spriteSheet = new(name, texture);
+        ReadRegions(reader, spriteSheet);
+        ReadCycles(reader, spriteSheet);
+        return spriteSheet;
+    }
 
-        int regionCount = reader.ReadInt32();
-        for (int i = 0; i < regionCount; i++)
+    private void ReadRegions(ContentReader reader, SpriteSheet spriteSheet)
+    {
+        int count = reader.ReadInt32();
+        for (int i = 0; i < count; i++)
         {
             Rectangle bounds = reader.ReadRectangle();
-            spriteSheet.CreateRegion($"{name} {i}", bounds);
+            _ = spriteSheet.CreateRegion($"{spriteSheet.Name} {i}", bounds);
         }
+    }
 
-        int cycleCount = reader.ReadInt32();
-        for (int i = 0; i < cycleCount; i++)
+    private void ReadCycles(ContentReader reader, SpriteSheet spriteSheet)
+    {
+        int count = reader.ReadInt32();
+        for (int i = 0; i < count; i++)
         {
-            string cycleName = reader.ReadString();
-            AnimationCycleBuilder builder = new(cycleName, spriteSheet);
-
-            int frameCount = reader.ReadInt32();
-
-            for (int j = 0; j < frameCount; j++)
-            {
-                int index = reader.ReadInt32();
-                int ms = reader.ReadInt32();
-                builder.AddFrame(index, TimeSpan.FromMilliseconds(ms));
-            }
-
+            string name = reader.ReadString();
             bool isLooping = reader.ReadBoolean();
             bool isReversed = reader.ReadBoolean();
             bool isPingPong = reader.ReadBoolean();
 
-            builder.IsLooping(isLooping)
-                   .IsReversed(isReversed)
-                   .IsPingPong(isPingPong);
-
+            AnimationCycleBuilder builder = new(name, spriteSheet);
+            builder.IsLooping(isLooping);
+            builder.IsReversed(isReversed);
+            builder.IsPingPong(isPingPong);
+            ReadCycleFrameData(reader, builder);
             spriteSheet.AddAnimationCycle(builder.Build());
         }
+    }
 
-        return spriteSheet;
+    private void ReadCycleFrameData(ContentReader reader, AnimationCycleBuilder builder)
+    {
+        int count = reader.ReadInt32();
+        for (int i = 0; i < count; i++)
+        {
+            int index = reader.ReadInt32();
+            int ms = reader.ReadInt32();
+            TimeSpan duration = TimeSpan.FromMilliseconds(ms);
+            builder.AddFrame(index, duration);
+        }
     }
 }

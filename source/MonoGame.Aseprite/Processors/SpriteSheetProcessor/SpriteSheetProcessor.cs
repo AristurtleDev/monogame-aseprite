@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Processors;
 /// </summary>
 public static class SpriteSheetProcessor
 {
-    private record GenerateImageResult(Color[] Pixels, int Width, int Height, int FrameWidth, int FrameHeight, int Columns, int Rows, Dictionary<int, int> DuplicateMap);
+    private record SpriteSheetData(RawTexture RawTexture, int FrameWidth, int FrameHeight, int Columns, int Rows, Dictionary<int, int> DuplicateMap);
 
     /// <summary>
     ///     Processes the contents of an <see cref="AsepriteFile"/> as a <see cref="SpriteSheet"/>.
@@ -53,36 +53,13 @@ public static class SpriteSheetProcessor
     /// </returns>
     public static SpriteSheet Process(GraphicsDevice device, AsepriteFile file, SpriteSheetProcessorConfiguration configuration)
     {
-        SpriteSheetProcessorResult result = Process(file, configuration);
-        Texture2D texture = new(device, result.Width, result.Height, mipmap: false, SurfaceFormat.Color);
-        texture.SetData<Color>(result.Pixels);
+        RawSpriteSheet rawSpriteSheet = GetRawSpriteSheet(file, configuration);
+        RawTexture rawTexture = rawSpriteSheet.Texture;
 
-        SpriteSheet spriteSheet = new(result.Name, texture);
+        Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
+        texture.SetData<Color>(rawTexture.Pixels);
 
-        for (int i = 0; i < result.Regions.Count; i++)
-        {
-            //  Use the same naming convention as Aseprite when you do export spritesheet
-            //  which is "{fileName} {frameNumber}.aseprite"
-            spriteSheet.CreateRegion($"{result.Name} {i}.aseprite", result.Regions[i]);
-        }
-
-        foreach (var entry in result.Animations)
-        {
-            spriteSheet.CreateAnimationCycle(entry.Key, builder =>
-            {
-                for (int i = 0; i < entry.Value.Item1.Length; i++)
-                {
-                    int index = entry.Value.Item1[i];
-                    TimeSpan duration = TimeSpan.FromMilliseconds(entry.Value.Item2[i]);
-                    builder.AddFrame(index, duration);
-                }
-
-                builder.IsLooping(entry.Value.Item3)
-                       .IsReversed(entry.Value.Item4)
-                       .IsPingPong(entry.Value.Item5);
-            });
-        }
-
+        SpriteSheet spriteSheet = new(rawTexture.Name, texture, rawSpriteSheet.Regions, rawSpriteSheet.Cycles);
         return spriteSheet;
     }
 
@@ -109,16 +86,16 @@ public static class SpriteSheetProcessor
         return Process(device, file, configuration);
     }
 
-    internal static SpriteSheetProcessorResult Process(AsepriteFile file, SpriteSheetProcessorConfiguration configuration)
+    internal static RawSpriteSheet GetRawSpriteSheet(AsepriteFile file, SpriteSheetProcessorConfiguration configuration)
     {
-        GenerateImageResult image = GenerateImage(file, configuration);
-        List<Rectangle> regions = GenerateTextureRegionBounds(file.Frames, image, configuration);
-        Dictionary<string, (int[], int[], bool, bool, bool)> animations = GenerateAnimationCycles(file.Tags, file.Frames);
+        SpriteSheetData spriteSheetData = GenerateSpriteSheetData(file, configuration);
+        Rectangle[] regions = GenerateRawTextureRegions(file.Frames, spriteSheetData, configuration);
+        Dictionary<string, RawAnimationCycle> animations = GenerateRawAnimationCycles(file.Tags, file.Frames);
 
-        return new(file.Name, image.Pixels, image.Width, image.Height, regions, animations);
+        return new(file.Name, spriteSheetData.RawTexture, regions, animations);
     }
 
-    private static GenerateImageResult GenerateImage(AsepriteFile file, SpriteSheetProcessorConfiguration configuration)
+    private static SpriteSheetData GenerateSpriteSheetData(AsepriteFile file, SpriteSheetProcessorConfiguration configuration)
     {
         int frameWidth = file.CanvasWidth;
         int frameHeight = file.CanvasHeight;
@@ -136,17 +113,17 @@ public static class SpriteSheetProcessor
         int columns = (int)Math.Ceiling(sqrt);
         int rows = (frameCount + columns - 1) / columns;
 
-        int imageWidth = (columns * frameWidth)
-                         + (configuration.BorderPadding * 2)
-                         + (configuration.Spacing * (columns - 1))
-                         + (configuration.InnerPadding * 2 * columns);
+        int rawImageWidth = (columns * frameWidth)
+                            + (configuration.BorderPadding * 2)
+                            + (configuration.Spacing * (columns - 1))
+                            + (configuration.InnerPadding * 2 * columns);
 
-        int imageHeight = (rows * frameHeight)
-                          + (configuration.BorderPadding * 2)
-                          + (configuration.Spacing * (rows - 1))
-                          + (configuration.InnerPadding * 2 * rows);
+        int rawImageHeight = (rows * frameHeight)
+                             + (configuration.BorderPadding * 2)
+                             + (configuration.Spacing * (rows - 1))
+                             + (configuration.InnerPadding * 2 * rows);
 
-        Color[] image = new Color[imageWidth * imageHeight];
+        Color[] rawImagePixels = new Color[rawImageWidth * rawImageHeight];
 
         int offset = 0;
         for (int i = 0; i < flattenedFrames.GetLength(0); i++)
@@ -160,10 +137,11 @@ public static class SpriteSheetProcessor
             int column = (i - offset) % columns;
             int row = (i - offset) / columns;
             Color[] frame = flattenedFrames[i];
-            CopyFrameToImage(frame, image, column, row, frameWidth, frameHeight, imageWidth, configuration);
+            CopyFrameToRawImage(frame, rawImagePixels, column, row, frameWidth, frameHeight, rawImageWidth, configuration);
         }
 
-        return new(image, imageWidth, imageHeight, frameWidth, frameHeight, columns, rows, duplicateMap);
+        RawTexture rawTexture = new(file.Name, rawImagePixels, rawImageWidth, rawImageHeight);
+        return new(rawTexture, frameWidth, frameHeight, columns, rows, duplicateMap);
     }
 
     private static Color[][] FlattenFrames(ReadOnlySpan<AsepriteFrame> frames, SpriteSheetProcessorConfiguration configuration)
@@ -198,7 +176,7 @@ public static class SpriteSheetProcessor
         return map;
     }
 
-    private static void CopyFrameToImage(ReadOnlySpan<Color> frame, Span<Color> image, int column, int row, int frameWidth, int frameHeight, int imageWidth, SpriteSheetProcessorConfiguration configuration)
+    private static void CopyFrameToRawImage(ReadOnlySpan<Color> frame, Span<Color> image, int column, int row, int frameWidth, int frameHeight, int imageWidth, SpriteSheetProcessorConfiguration configuration)
     {
         for (int i = 0; i < frame.Length; i++)
         {
@@ -220,9 +198,9 @@ public static class SpriteSheetProcessor
         }
     }
 
-    private static List<Rectangle> GenerateTextureRegionBounds(ReadOnlySpan<AsepriteFrame> frames, GenerateImageResult image, SpriteSheetProcessorConfiguration configuration)
+    private static Rectangle[] GenerateRawTextureRegions(ReadOnlySpan<AsepriteFrame> frames, SpriteSheetData image, SpriteSheetProcessorConfiguration configuration)
     {
-        List<Rectangle> regionBounds = new();
+        Rectangle[] rawRegions = new Rectangle[frames.Length];
         Dictionary<int, Rectangle> originalToDuplicateLookup = new();
         int offset = 0;
 
@@ -232,7 +210,7 @@ public static class SpriteSheetProcessor
             {
                 Rectangle original = originalToDuplicateLookup[image.DuplicateMap[i]];
                 Rectangle duplicate = original;
-                regionBounds.Add(duplicate);
+                rawRegions[i] = duplicate;
                 offset++;
                 continue;
             }
@@ -250,31 +228,31 @@ public static class SpriteSheetProcessor
                     + (configuration.Spacing * row)
                     + (configuration.InnerPadding * (row * row + 1));
 
-            Rectangle bounds = new(x, y, image.FrameWidth, image.FrameHeight);
-            regionBounds.Add(bounds);
-            originalToDuplicateLookup.Add(i, bounds);
+            Rectangle rawRegion = new(x, y, image.FrameWidth, image.FrameHeight);
+            rawRegions[i] = rawRegion;
+            originalToDuplicateLookup.Add(i, rawRegion);
         }
 
-        return regionBounds;
+        return rawRegions;
     }
 
-    private static Dictionary<string, (int[], int[], bool, bool, bool)> GenerateAnimationCycles(ReadOnlySpan<AsepriteTag> tags, ReadOnlySpan<AsepriteFrame> frames)
+    private static Dictionary<string, RawAnimationCycle> GenerateRawAnimationCycles(ReadOnlySpan<AsepriteTag> tags, ReadOnlySpan<AsepriteFrame> frames)
     {
-        Dictionary<string, (int[], int[], bool, bool, bool)> animations = new();
+        Dictionary<string, RawAnimationCycle> rawAnimations = new();
 
 
         for (int i = 0; i < tags.Length; i++)
         {
             AsepriteTag tag = tags[i];
             int frameCount = tag.To - tag.From + 1;
-            int[] animationFrames = new int[frameCount];
-            int[] frameDurations = new int[frameCount];
+            int[] rawAnimationFrames = new int[frameCount];
+            int[] rawAnimationFrameDurations = new int[frameCount];
 
             for (int j = 0; j < frameCount; j++)
             {
                 int index = tag.From + j;
-                animationFrames[j] = index;
-                frameDurations[j] = frames[index].Duration;
+                rawAnimationFrames[j] = index;
+                rawAnimationFrameDurations[j] = frames[index].Duration;
             }
 
             //  All aseprite animations are looping by default
@@ -282,10 +260,14 @@ public static class SpriteSheetProcessor
             bool isReversed = tag.Direction == AsepriteLoopDirection.Reverse;
             bool isPingPong = tag.Direction == AsepriteLoopDirection.PingPong;
 
-            animations.Add(tag.Name, (animationFrames, frameDurations, isLooping, isReversed, isPingPong));
+            RawAnimationCycle rawAnimation = new(rawAnimationFrames, rawAnimationFrameDurations, isLooping, isReversed, isPingPong);
+            if (!rawAnimations.TryAdd(tag.Name, rawAnimation))
+            {
+                throw new InvalidOperationException($"{nameof(SpriteSheet)} animations must have a unique name. Please check that you do not have duplicate Tag names in your Aseprite file");
+            }
         }
 
-        return animations;
+        return rawAnimations;
     }
 }
 

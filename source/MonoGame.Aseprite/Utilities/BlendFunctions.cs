@@ -51,9 +51,9 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Utilities;
 
-internal static class ColorUtils
+internal static class BlendFunctions
 {
     private const byte RGBA_R_SHIFT = 0;
     private const byte RGBA_G_SHIFT = 8;

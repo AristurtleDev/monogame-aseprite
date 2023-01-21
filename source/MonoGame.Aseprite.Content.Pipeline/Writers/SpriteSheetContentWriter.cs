@@ -22,9 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
@@ -37,29 +40,61 @@ public sealed class SpriteSheetContentWriter : ContentTypeWriter<SpriteSheetCont
 {
     protected override void Write(ContentWriter writer, SpriteSheetContentProcessorResult content)
     {
-        writer.Write(content.Name);
-        writer.Write(content.TextureContent);
+        WriteTexture(writer, content.TextureContent);
+        WriteSpriteSheet(writer, content.RawSpriteSheet);
+    }
 
-        writer.Write(content.Regions.Count);
-        for (int i = 0; i < content.Regions.Count; i++)
-        {
-            writer.Write(content.Regions[i]);
-        }
+    private void WriteTexture(ContentWriter writer, TextureContent textureContent)
+    {
+        writer.Write(textureContent);
+        writer.Write(textureContent.Name);
+    }
 
-        writer.Write(content.Animations.Count);
-        foreach (var entry in content.Animations)
+    private void WriteSpriteSheet(ContentWriter writer, RawSpriteSheet spriteSheet)
+    {
+        writer.Write(spriteSheet.Name);
+        WriteRegions(writer, spriteSheet.Regions);
+        WriteCycles(writer, spriteSheet.Cycles);
+    }
+
+    private void WriteRegions(ContentWriter writer, ReadOnlySpan<Rectangle> regions)
+    {
+        writer.Write(regions.Length);
+        for (int i = 0; i < regions.Length; i++)
         {
-            writer.Write(entry.Key);
-            writer.Write(entry.Value.Item1.Length);
-            for (int i = 0; i < entry.Value.Item1.Length; i++)
-            {
-                writer.Write(entry.Value.Item1[i]);
-                writer.Write(entry.Value.Item2[i]);
-            }
-            writer.Write(entry.Value.Item3);
-            writer.Write(entry.Value.Item4);
-            writer.Write(entry.Value.Item5);
+            writer.Write(regions[i]);
         }
+    }
+
+    private void WriteCycles(ContentWriter writer, Dictionary<string, RawAnimationCycle> cycles)
+    {
+        writer.Write(cycles.Count);
+        foreach (KeyValuePair<string, RawAnimationCycle> kvp in cycles)
+        {
+            string name = kvp.Key;
+            RawAnimationCycle cycle = kvp.Value;
+
+            writer.Write(name);
+            writer.Write(cycle.IsLooping);
+            writer.Write(cycle.IsReversed);
+            writer.Write(cycle.IsPingPong);
+            WriteCycleFrameData(writer, cycle.FrameIndexes, cycle.FrameDurations);
+        }
+    }
+
+    private void WriteCycleFrameData(ContentWriter writer, ReadOnlySpan<int> indexes, ReadOnlySpan<int> durations)
+    {
+        writer.Write(indexes.Length);
+        for (int i = 0; i < indexes.Length; i++)
+        {
+            writer.Write(indexes[i]);
+            writer.Write(durations[i]);
+        }
+    }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform)
+    {
+        return "MonoGame.Aseprite.SpriteSheet, MonoGame.Aseprite";
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

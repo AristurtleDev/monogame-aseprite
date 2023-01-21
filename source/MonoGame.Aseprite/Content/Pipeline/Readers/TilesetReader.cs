@@ -35,16 +35,29 @@ public sealed class TilesetReader : ContentTypeReader<Tileset>
 {
     protected override Tileset Read(ContentReader reader, Tileset? existingInstance)
     {
-        if(existingInstance is not null)
+        if (existingInstance is not null)
         {
             return existingInstance;
         }
 
+        Texture2D texture = ReadTexture(reader);
+        Tileset tileset = ReadTileset(reader, texture);
+        return tileset;
+    }
+
+    private Texture2D ReadTexture(ContentReader reader)
+    {
+        Texture2D texture = reader.ReadTexture2D();
+        texture.Name = reader.ReadString();
+        return texture;
+    }
+
+    private Tileset ReadTileset(ContentReader reader, Texture2D texture)
+    {
         string name = reader.ReadString();
         int tileWidth = reader.ReadInt32();
         int tileHeight = reader.ReadInt32();
-        Texture2D texture = reader.ReadTexture2D(existingInstance: null);
-        Tileset tileset = new(name, texture, tileWidth, tileHeight);
-        return tileset;
+
+        return new(name, texture, tileWidth, tileHeight);
     }
 }

@@ -50,10 +50,8 @@ public static class SingleFrameProcessor
     /// </returns>
     public static Texture2D Process(GraphicsDevice device, AsepriteFile file, SingleFrameProcessorConfiguration configuration)
     {
-        SingleFrameProcessorResult result = Process(file, configuration);
-        Texture2D texture = new(device, result.Width, result.Height, mipmap: false, SurfaceFormat.Color);
-        texture.SetData<Color>(result.Pixels);
-        return texture;
+        RawTexture rawTexture = CreateRawTexture(file, configuration);
+        return CreateTexture(device, rawTexture);
     }
 
     /// <summary>
@@ -79,15 +77,23 @@ public static class SingleFrameProcessor
         return Process(device, file, configuration);
     }
 
-    internal static SingleFrameProcessorResult Process(AsepriteFile file, SingleFrameProcessorConfiguration configuration)
+    internal static RawTexture CreateRawTexture(AsepriteFile file, SingleFrameProcessorConfiguration configuration)
     {
         if (configuration.FrameIndex < 0 || configuration.FrameIndex >= file.Frames.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(configuration.FrameIndex),
                                                   $"{configuration.FrameIndex} cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file.");
         }
+
         Color[] pixels = file.Frames[configuration.FrameIndex].FlattenFrame(configuration.OnlyVisibleLayers, configuration.IncludeBackgroundLayer);
 
         return new(file.Name, pixels, file.CanvasWidth, file.CanvasHeight);
+    }
+
+    internal static Texture2D CreateTexture(GraphicsDevice device, RawTexture rawTexture)
+    {
+        Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
+        texture.SetData<Color>(rawTexture.Pixels);
+        return texture;
     }
 }

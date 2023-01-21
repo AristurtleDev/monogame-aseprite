@@ -22,20 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Processors;
 
-/// <summary>
-///     Defines the result of processing a single <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFrame"/> in an
-///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFile"/> as a tilemap.
-/// </summary>
-public sealed class TilemapProcessorResult
+public sealed class RawAnimationCycle
 {
-    private TilesetContent[] _tilesets;
-    private TilemapLayerContent[] _layers;
+    private int[] _frameIndexes;
+    private int[] _frameDurations;
 
-    internal ReadOnlySpan<TilesetContent> Tilesets => _tilesets;
-    internal ReadOnlySpan<TilemapLayerContent> Layers => _layers;
+    internal ReadOnlySpan<int> FrameIndexes => _frameIndexes;
+    internal ReadOnlySpan<int> FrameDurations => _frameDurations;
+    internal bool IsLooping { get; }
+    internal bool IsReversed { get; }
+    internal bool IsPingPong { get; }
 
-    internal TilemapProcessorResult(TilesetContent[] tilesets, TilemapLayerContent[] layers) =>
-        (_tilesets, _layers) = (tilesets, layers);
+    internal RawAnimationCycle(int[] frameIndexes, int[] frameDurations, bool isLooping, bool isReversed, bool isPingPong) =>
+        (_frameIndexes, _frameDurations, IsLooping, IsReversed, IsPingPong) = (frameIndexes, frameDurations, isLooping, isReversed, isPingPong);
 }

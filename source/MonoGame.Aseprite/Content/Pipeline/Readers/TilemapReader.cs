@@ -30,6 +30,8 @@ namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 public sealed class TilemapReader : ContentTypeReader<Tilemap>
 {
+    Dictionary<int, Tileset> _tilesetsById = new();
+
     protected override Tilemap Read(ContentReader reader, Tilemap existingInstance)
     {
         if (existingInstance is not null)
@@ -37,58 +39,83 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
             return existingInstance;
         }
 
-        //  Tileset content
-        List<Tileset> tilesets = new();
-        int tilesetCount = reader.ReadInt32();
-        for (int i = 0; i < tilesetCount; i++)
-        {
-            string name = reader.ReadString();
-            int tileCount = reader.ReadInt32();
-            int tileWidth = reader.ReadInt32();
-            int tileHeight = reader.ReadInt32();
+        string name = reader.ReadString();
 
-            //  Texture content
-            Texture2D texture = reader.ReadTexture2D(existingInstance: null);
-
-            Tileset tileset = new(name, texture, tileWidth, tileHeight);
-            tilesets.Add(tileset);
-        }
-
-        Tilemap tilemap = new("");
-
-        //  TilemapLayer content
-        int layerCount = reader.ReadInt32();
-        for (int i = 0; i < layerCount; i++)
-        {
-            int tilesetID = reader.ReadInt32();
-            string layerName = reader.ReadString();
-            int columns = reader.ReadInt32();
-            int rows = reader.ReadInt32();
-            int offsetX = reader.ReadInt32();
-            int offsetY = reader.ReadInt32();
-
-            Vector2 offset = new(offsetX, offsetY);
-            Tileset tileset = tilesets[tilesetID];
-
-            TilemapLayer layer = new(layerName, tileset, columns, rows, offset);
-
-            //  Tile content
-            int tileCount = reader.ReadInt32();
-            for (int j = 0; j < tileCount; j++)
-            {
-                byte flipFlag = reader.ReadByte();
-                float rotation = reader.ReadSingle();
-                int tilesetTileID = reader.ReadInt32();
-
-                bool flipHorizontal = (flipFlag & 1) != 0;
-                bool flipVertical = (flipFlag & 2) != 0;
-
-                layer.SetTile(j, tilesetTileID, flipVertical, flipHorizontal, rotation);
-            }
-
-            tilemap.AddLayer(layer);
-        }
-
+        Tilemap tilemap = new(name);
+        ReadTilesets(reader);
+        ReadLayers(reader, tilemap);
         return tilemap;
+    }
+
+    private void ReadTilesets(ContentReader reader)
+    {
+        int count = reader.ReadInt32();
+        for (int i = 0; i < count; i++)
+        {
+            Texture2D texture = ReadTexture(reader);
+            ReadTileset(reader, texture);
+        }
+    }
+
+    private Texture2D ReadTexture(ContentReader reader)
+    {
+        Texture2D texture = reader.ReadTexture2D();
+        texture.Name = reader.ReadString();
+        return texture;
+    }
+
+    private void ReadTileset(ContentReader reader, Texture2D texture)
+    {
+        int id = reader.ReadInt32();
+        string name = reader.ReadString();
+        int tileWidth = reader.ReadInt32();
+        int tileHeight = reader.ReadInt32();
+
+        Tileset tileset =  new(name, texture, tileWidth, tileHeight);
+        _tilesetsById.Add(id, tileset);
+    }
+
+    private void ReadLayers(ContentReader reader, Tilemap tilemap)
+    {
+        int count = reader.ReadInt32();
+
+        for (int i = 0; i < count; i++)
+        {
+            ReadLayer(reader, tilemap);
+        }
+    }
+
+    private void ReadLayer(ContentReader reader, Tilemap tilemap)
+    {
+        string name = reader.ReadString();
+        int tilesetID = reader.ReadInt32();
+        int columns = reader.ReadInt32();
+        int rows = reader.ReadInt32();
+        Point offset = reader.ReadPoint();
+
+        Tileset tileset = _tilesetsById[tilesetID];
+        TilemapLayer layer = new(name, tileset, columns, rows, offset.ToVector2());
+        ReadTiles(reader, layer);
+
+        tilemap.AddLayer(layer);
+    }
+
+    private void ReadTiles(ContentReader reader, TilemapLayer layer)
+    {
+        int count = reader.ReadInt32();
+        for (int i = 0; i < count; i++)
+        {
+            ReadTile(reader, layer, i);
+        }
+    }
+
+    private void ReadTile(ContentReader reader, TilemapLayer layer, int index)
+    {
+        int tilesetTileID = reader.ReadInt32();
+        bool xFlip = reader.ReadBoolean();
+        bool yFlip = reader.ReadBoolean();
+        float rotation = reader.ReadSingle();
+
+        layer.SetTile(index, tilesetTileID, xFlip, yFlip, rotation);
     }
 }

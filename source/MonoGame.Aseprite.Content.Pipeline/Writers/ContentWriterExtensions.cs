@@ -79,6 +79,15 @@ internal static class ContentWriterExtensions
         }
     }
 
+    internal static void Write(this ContentWriter writer, TilesetContentProcessorResult tileset)
+    {
+        writer.Write(tileset.RawTileset.ID);
+        writer.Write(tileset.RawTileset.Name);
+        writer.Write(tileset.RawTileset.TileWidth);
+        writer.Write(tileset.RawTileset.TileHeight);
+        writer.Write(tileset.TextureContent);
+    }
+
 
     internal static void Write(this ContentWriter writer, TilesetContent tileset)
     {
@@ -98,7 +107,7 @@ internal static class ContentWriterExtensions
         writer.Write(layer.Offset);
         writer.Write(layer.Tiles.Length);
 
-        for(int i = 0; i < layer.Tiles.Length; i++)
+        for (int i = 0; i < layer.Tiles.Length; i++)
         {
             writer.Write(layer.Tiles[i]);
         }

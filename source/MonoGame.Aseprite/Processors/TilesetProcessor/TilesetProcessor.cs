@@ -51,7 +51,7 @@ public static class TilesetProcessor
     /// </returns>
     public static Tileset Process(GraphicsDevice device, AsepriteFile file, string tilesetName)
     {
-        TilesetProcessorResult result = Process(file, tilesetName);
+        RawTileset result = GetRawTileset(file, tilesetName);
         return CreateTileset(device, result);
     }
 
@@ -69,29 +69,32 @@ public static class TilesetProcessor
     /// </returns>
     public static Tileset Process(GraphicsDevice device, AsepriteTileset tileset)
     {
-        TilesetProcessorResult result = Process(tileset);
+        RawTileset result = GetRawTileset(tileset);
         return CreateTileset(device, result);
     }
 
-    internal static TilesetProcessorResult Process(AsepriteFile file, string tilesetName)
+    internal static RawTileset GetRawTileset(AsepriteFile file, string tilesetName)
     {
         if (TryGetTilesetByName(file.Tilesets, tilesetName, out AsepriteTileset? tileset))
         {
-            return Process(tileset);
+            return GetRawTileset(tileset);
         }
 
         throw NoTilesetFound(file.Tilesets, tilesetName);
     }
 
-    internal static TilesetProcessorResult Process(AsepriteTileset tileset) =>
-        new(tileset.Name, tileset.Pixels.ToArray(), tileset.Width, tileset.Height, tileset.TileWidth, tileset.TileHeight);
-
-    internal static Tileset CreateTileset(GraphicsDevice device, TilesetProcessorResult result)
+    internal static RawTileset GetRawTileset(AsepriteTileset tileset)
     {
-        Texture2D texture = new(device, result.Width, result.Height, mipmap: false, SurfaceFormat.Color);
-        texture.SetData<Color>(result.Pixels);
-        texture.Name = result.Name;
-        return new(result.Name, texture, result.TileWidth, result.TileHeight);
+        RawTexture texture = new(tileset.Name, tileset.Pixels.ToArray(), tileset.Width, tileset.Height);
+        return new(tileset.ID, tileset.Name, texture, tileset.TileWidth, tileset.TileHeight);
+    }
+
+    internal static Tileset CreateTileset(GraphicsDevice device, RawTileset rawTileset)
+    {
+        Texture2D texture = new(device, rawTileset.Texture.Width, rawTileset.Texture.Height, mipmap: false, SurfaceFormat.Color);
+        texture.SetData<Color>(rawTileset.Texture.Pixels);
+        texture.Name = rawTileset.Texture.Name;
+        return new(rawTileset.Name, texture, rawTileset.TileWidth, rawTileset.TileHeight);
     }
 
     private static bool TryGetTilesetByName(ReadOnlySpan<AsepriteTileset> tilesets, string name, [NotNullWhen(true)] out AsepriteTileset? tileset)

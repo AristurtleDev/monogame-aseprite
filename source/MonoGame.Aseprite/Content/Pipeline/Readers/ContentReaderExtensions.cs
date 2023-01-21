@@ -152,12 +152,14 @@ internal static class ContentReaderExtensions
         return spriteSheet;
     }
 
-    internal static void ReadTileset(this ContentReader reader)
+    internal static Tileset ReadTileset(this ContentReader reader)
     {
+        int id = reader.ReadInt32();
         string name = reader.ReadString();
-        int tileCount = reader.ReadInt32();
         int tileWidth = reader.ReadInt32();
         int tileHeight = reader.ReadInt32();
         Texture2D texture = reader.ReadTexture2D(existingInstance: null);
+        Tileset tileset = new(name, texture, tileWidth, tileHeight);
+        return tileset;
     }
 }

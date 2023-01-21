@@ -43,7 +43,7 @@ public static class TilesetCollectionProcessor
     /// </returns>
     public static TilesetCollection Process(GraphicsDevice device, AsepriteFile file)
     {
-        TilesetProcessorResult[] results = Process(file);
+        RawTileset[] results = Process(file);
         TilesetCollection collection = new();
 
         for (int i = 0; i < results.Length; i++)
@@ -54,14 +54,23 @@ public static class TilesetCollectionProcessor
         return collection;
     }
 
-    internal static TilesetProcessorResult[] Process(AsepriteFile file)
+    internal static RawTileset[] Process(AsepriteFile file)
     {
         ReadOnlySpan<AsepriteTileset> tilesets = file.Tilesets;
-        TilesetProcessorResult[] processedTilesets = new TilesetProcessorResult[tilesets.Length];
+        RawTileset[] processedTilesets = new RawTileset[tilesets.Length];
+        HashSet<string> names = new();
 
         for (int i = 0; i < tilesets.Length; i++)
         {
-            processedTilesets[i] = TilesetProcessor.Process(tilesets[i]);
+            AsepriteTileset tileset = tilesets[i];
+
+            if (names.Contains(tileset.Name))
+            {
+                throw new InvalidOperationException($"Duplicate tileset name found: '{tileset.Name}'.  Tilesets must have unique names for a {nameof(TilesetCollection)}.");
+            }
+
+            processedTilesets[i] = TilesetProcessor.GetRawTileset(tileset);
+            names.Add(tileset.Name);
         }
 
         return processedTilesets;

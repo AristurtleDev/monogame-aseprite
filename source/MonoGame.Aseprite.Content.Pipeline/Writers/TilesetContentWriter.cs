@@ -23,8 +23,10 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
+using MonoGame.Aseprite.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
@@ -36,10 +38,26 @@ public sealed class TilesetContentWriter : ContentTypeWriter<TilesetContentProce
 {
     protected override void Write(ContentWriter writer, TilesetContentProcessorResult content)
     {
-        writer.Write(content.Name);
-        writer.Write(content.TileWidth);
-        writer.Write(content.TileHeight);
-        writer.Write(content.TextureContent);
+        WriteTexture(writer, content.TextureContent);
+        WriteTileset(writer, content.RawTileset);
+    }
+
+    private void WriteTexture(ContentWriter writer, TextureContent textureContent)
+    {
+        writer.Write(textureContent);
+        writer.Write(textureContent.Name);
+    }
+
+    private void WriteTileset(ContentWriter writer, RawTileset tileset)
+    {
+        writer.Write(tileset.Name);
+        writer.Write(tileset.TileWidth);
+        writer.Write(tileset.TileHeight);
+    }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform)
+    {
+        return "MonoGame.Aseprite.Tileset, MonoGame.Aseprite";
     }
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
