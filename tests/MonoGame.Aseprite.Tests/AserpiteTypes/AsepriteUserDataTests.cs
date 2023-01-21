@@ -22,24 +22,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.AsepriteTypes;
+using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.AsepriteTypes;
 
-/// <summary>
-///     Defines a layer in which <see cref="AsepriteTilemapCel"/> elements are are placed on in Aseprite.
-/// </summary>
-public sealed class AsepriteTilemapLayer : AsepriteLayer
+namespace MonoGame.Aseprite.Tests;
+
+public sealed class AsepriteUserDataTests
 {
-    // /// <summary>
-    // ///     Gets the index of the <see cref="AsepriteTileset"/> that is used by this <see cref="AsepriteTilemapLayer"/>.
-    // /// </summary>
-    // public int TilesetID { get; }
+    [Fact]
+    public void AsepriteUserData_HasText_TrueTest()
+    {
+        AsepriteUserData userData = new();
+        userData.Text = "Hello World";
+        Assert.True(userData.HasText);
+    }
 
-    /// <summary>
-    ///     Gets a reference to the <see cref="AsepriteTileset"/> that is used by this
-    ///     <see cref="AsepriteTilemapLayer"/>.
-    /// </summary>
-    public AsepriteTileset Tileset { get; }
+    [Fact]
+    public void AsepriteUserData_HasText_FalseTest()
+    {
+        AsepriteUserData userData = new();
+        Assert.False(userData.HasText);
+    }
 
-    internal AsepriteTilemapLayer(AsepriteTileset tileset, /*int tilesetID,*/ AsepriteLayerFlags flags, AsepriteBlendMode blend, byte opacity, string name)
-        : base(flags, blend, opacity, name) => (Tileset/*, TilesetID*/) = (tileset/*, tilesetID*/);
+    [Fact]
+    public void AsepriteUserData_HasColor_TrueTest()
+    {
+        AsepriteUserData userData = new();
+        userData.Color = Color.Red;
+        Assert.True(userData.HasColor);
+    }
+
+    [Fact]
+    public void AsepriteUserData_HasColor_FalseTest()
+    {
+        AsepriteUserData userData = new();
+        Assert.False(userData.HasColor);
+    }
 }

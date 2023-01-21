@@ -76,7 +76,7 @@ public static class TilemapProcessor
                 //  TODO: Can the TilesetID be added to the Tileset itself instead of
                 //        having to get the layer as then pulling it from the layer
                 //        since the cel already has access to the Tileset???
-                int tilesetID = cel.LayerAs<AsepriteTilemapLayer>().TilesetID;
+                int tilesetID = cel.Tileset.ID;
 
                 RawTilemapLayerTile[] tiles = new RawTilemapLayerTile[cel.TileCount];
                 CopyAsepriteTileToRawTile(cel.Tiles, tiles);

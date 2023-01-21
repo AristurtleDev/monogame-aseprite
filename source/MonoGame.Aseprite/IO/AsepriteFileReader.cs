@@ -206,7 +206,7 @@ internal static class AsepriteFileReader
         const int GROUP_LAYER_TYPE = 1;
         const int TILEMAP_LAYER_TYPE = 2;
 
-        ushort flags = ReadWord(reader);
+        ushort flagsValue = ReadWord(reader);
         ushort type = ReadWord(reader);
         IgnoreWord(reader);
         IgnoreWord(reader);
@@ -215,6 +215,8 @@ internal static class AsepriteFileReader
         byte opacity = ReadByte(reader);
         IgnoreBytes(reader, 3);
         string name = ReadString(reader);
+
+        AsepriteLayerFlags flags = (AsepriteLayerFlags)flagsValue;
 
         switch (type)
         {
@@ -230,7 +232,7 @@ internal static class AsepriteFileReader
         }
     }
 
-    private static void ReadTilemapLayerChunk(BinaryReader reader, AsepriteFileBuilder builder, ushort flags, ushort blend, byte opacity, string name)
+    private static void ReadTilemapLayerChunk(BinaryReader reader, AsepriteFileBuilder builder, AsepriteLayerFlags flags, ushort blend, byte opacity, string name)
     {
         uint index = ReadDword(reader);
         builder.AddTilemapLayer(index, flags, blend, opacity, name);

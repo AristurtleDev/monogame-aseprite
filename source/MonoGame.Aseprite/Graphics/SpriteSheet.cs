@@ -522,6 +522,8 @@ public class SpriteSheet
     public bool TryGetAnimationCycle(string cycleName, [NotNullWhen(true)] out AnimationCycle? animation) =>
         _animationCycleLookup.TryGetValue(cycleName, out animation);
 
+    public List<string> GetAnimationCycleNames() => _animationCycleLookup.Keys.ToList();
+
     /// <summary>
     ///     Returns a value that indicates whether this <see cref="SpriteSheet"/> contains an
     ///     <see cref="AnimationCycle"/> element with the specified name.

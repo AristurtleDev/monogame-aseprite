@@ -71,7 +71,7 @@ public sealed class AsepriteFrame
     ///     was marked as the background layer should be included.
     /// </param>
     /// <returns></returns>
-    public Color[] FlattenFrame(bool onlyVisibleLayers = true, bool includeBackgroundLayer = false)
+    public Color[] FlattenFrame(bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapCel = true)
     {
         Color[] result = new Color[Width * Height];
 
@@ -96,7 +96,7 @@ public sealed class AsepriteFrame
                          celOpacity: imageCel.Opacity,
                          layerOpacity: imageCel.Layer.Opacity);
             }
-            else if (cel is AsepriteTilemapCel tilemapCel)
+            else if (includeTilemapCel && cel is AsepriteTilemapCel tilemapCel)
             {
                 BlendTilemapCel(backdrop: result,
                                 cel: tilemapCel);

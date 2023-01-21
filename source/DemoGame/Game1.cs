@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Aseprite;
@@ -10,10 +11,11 @@ public class Game1 : Game
     private SpriteSheet _sheet;
     private TextureRegion _sprite;
     private Animation _animatedSprite;
+    private List<string> _cycles;
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private int _frameIndex = 0;
+    private int _animationIndex = 0;
     private KeyboardState _curState;
     private KeyboardState _prevState;
 
@@ -50,7 +52,8 @@ public class Game1 : Game
         // TODO: use this.Content to load your game content here
         _sheet = Content.Load<SpriteSheet>("adventurer");
         _sprite = _sheet.GetRegion("adventurer 0");
-        _animatedSprite = _sheet.CreateAnimation("attack3");
+        _cycles = _sheet.GetAnimationCycleNames();
+        _animatedSprite = _sheet.CreateAnimation("idle");
 
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData<Color>(new Color[] { Color.White });
@@ -66,26 +69,26 @@ public class Game1 : Game
 
         if (_curState.IsKeyDown(Keys.Down) && _prevState.IsKeyUp(Keys.Down))
         {
-            _frameIndex--;
-            if (_frameIndex < 0) { _frameIndex = 0; }
-            _sprite = _sheet.GetRegion($"frame_{_frameIndex}");
+            _scale++;
+            if (_scale > 10) { _scale = 10; }
         }
         else if (_curState.IsKeyDown(Keys.Up) && _prevState.IsKeyUp(Keys.Up))
-        {
-            _frameIndex++;
-            if (_frameIndex >= _sheet.RegionCount) { _frameIndex--; }
-            _sprite = _sheet.GetRegion($"frame_{_frameIndex}");
-        }
-
-        if (_curState.IsKeyDown(Keys.Left) && _prevState.IsKeyUp(Keys.Left))
         {
             _scale--;
             if (_scale < 1) { _scale = 1; }
         }
+
+        if (_curState.IsKeyDown(Keys.Left) && _prevState.IsKeyUp(Keys.Left))
+        {
+            _animationIndex--;
+            if (_animationIndex < 0) { _animationIndex = 0; }
+            _animatedSprite = _sheet.CreateAnimation(_cycles[_animationIndex]);
+        }
         else if (_curState.IsKeyDown(Keys.Right) && _prevState.IsKeyUp(Keys.Right))
         {
-            _scale++;
-            if (_scale > 10) { _scale = 10; }
+            _animationIndex++;
+            if (_animationIndex >= _cycles.Count) { _animationIndex--; }
+            _animatedSprite = _sheet.CreateAnimation(_cycles[_animationIndex]);
         }
 
         _animatedSprite.Update(gameTime);

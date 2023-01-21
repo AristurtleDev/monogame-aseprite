@@ -150,7 +150,7 @@ public static class SpriteSheetProcessor
 
         for (int i = 0; i < frames.Length; i++)
         {
-            result[i] = frames[i].FlattenFrame(configuration.OnlyVisibleLayers, configuration.IncludeBackgroundLayer);
+            result[i] = frames[i].FlattenFrame(configuration.OnlyVisibleLayers, configuration.IncludeBackgroundLayer, configuration.IncludeTilemapLayers);
         }
 
         return result;
@@ -226,7 +226,7 @@ public static class SpriteSheetProcessor
             int y = (row * image.FrameHeight)
                     + configuration.BorderPadding
                     + (configuration.Spacing * row)
-                    + (configuration.InnerPadding * (row * row + 1));
+                    + (configuration.InnerPadding * (row + row + 1));
 
             Rectangle rawRegion = new(x, y, image.FrameWidth, image.FrameHeight);
             rawRegions[i] = rawRegion;

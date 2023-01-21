@@ -85,7 +85,7 @@ public static class SingleFrameProcessor
                                                   $"{configuration.FrameIndex} cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file.");
         }
 
-        Color[] pixels = file.Frames[configuration.FrameIndex].FlattenFrame(configuration.OnlyVisibleLayers, configuration.IncludeBackgroundLayer);
+        Color[] pixels = file.Frames[configuration.FrameIndex].FlattenFrame(configuration.OnlyVisibleLayers, configuration.IncludeBackgroundLayer, configuration.IncludeTilemapLayers);
 
         return new(file.Name, pixels, file.CanvasWidth, file.CanvasHeight);
     }

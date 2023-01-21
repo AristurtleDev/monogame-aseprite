@@ -41,6 +41,11 @@ public sealed class SpriteSheetProcessorConfiguration
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
+    ///     Gets or Sets a value that indicates whether cels on a tilemap layer should be processed.
+    /// </summary>
+    public bool IncludeTilemapLayers { get; set; } = true;
+
+    /// <summary>
     ///     Gets or Sets a value that indicates whether duplicate frames should be merged.
     /// </summary>
     public bool MergeDuplicateFrames { get; set; } = true;
@@ -82,6 +87,9 @@ public sealed class SpriteSheetProcessorConfiguration
     /// <param name="includeBackgroundLayer">
     ///     Indicates whether cels on the layer set as the background layer in Aseprite should be processed.
     /// </param>
+    /// <param name="includeTilemapLayers">
+    ///     Indicates whether cels on a tilemap layer should be processed.
+    /// </param>
     /// <param name="mergeDuplicates">
     ///     Indicates whether duplicate frames should be merged.
     /// </param>
@@ -97,10 +105,11 @@ public sealed class SpriteSheetProcessorConfiguration
     ///     The amount of transparent pixels to add around the edge of each region in the generated image for the
     ///     spritesheet.
     /// </param>
-    public SpriteSheetProcessorConfiguration(bool onlyVisibleLayers, bool includeBackgroundLayer, bool mergeDuplicates, int borderPadding, int spacing, int innerPadding)
+    public SpriteSheetProcessorConfiguration(bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers, bool mergeDuplicates, int borderPadding, int spacing, int innerPadding)
     {
         OnlyVisibleLayers = onlyVisibleLayers;
         IncludeBackgroundLayer = includeBackgroundLayer;
+        IncludeTilemapLayers = includeTilemapLayers;
         MergeDuplicateFrames = mergeDuplicates;
         BorderPadding = borderPadding;
         Spacing = spacing;

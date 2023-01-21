@@ -58,6 +58,13 @@ public sealed class SingleFrameContentProcessor : CommonProcessor<ContentImporte
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
+    ///     Gets or Sets whether <see cref="AsepriteCel"/> elements that are on a <see cref="AsepriteTilemapLayer"/>
+    ///     should be processed.
+    /// </summary>
+    [DisplayName("(Aseprite) Include Tilemap Layers")]
+    public bool IncludeTilemapLayers { get; set; } = true;
+
+    /// <summary>
     ///     Processes the image of a single frame in an Aseprite file.
     /// </summary>
     /// <param name="content">
@@ -80,6 +87,7 @@ public sealed class SingleFrameContentProcessor : CommonProcessor<ContentImporte
         {
             FrameIndex = FrameIndex,
             IncludeBackgroundLayer = IncludeBackgroundLayer,
+            IncludeTilemapLayers = IncludeTilemapLayers,
             OnlyVisibleLayers = OnlyVisibleLayers
         };
 

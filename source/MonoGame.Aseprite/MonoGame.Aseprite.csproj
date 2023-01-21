@@ -18,6 +18,12 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>MonoGame.Aseprite.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
     <!-- <Import Project="../Shared/MonoGame.Aseprite.Shared.targets" /> -->
 
 </Project>

@@ -45,6 +45,11 @@ public class SingleFrameProcessorConfiguration
     public bool IncludeBackgroundLayer { get; set; } = true;
 
     /// <summary>
+    ///     Gets or Sets a value that indicates whether cels on a tilemap layer should be processed.
+    /// </summary>
+    public bool IncludeTilemapLayers { get; set; } = true;
+
+    /// <summary>
     ///     Initializes a new instance of the <see cref="SingleFrameProcessorConfiguration"/> class with the default
     ///     values.
     /// </summary>
@@ -62,6 +67,9 @@ public class SingleFrameProcessorConfiguration
     /// <param name="includeBackgroundLayer">
     ///     Indicates whether cels on the layer set as the background layer in Aseprite should be processed.
     /// </param>
-    public SingleFrameProcessorConfiguration(int frameIndex, bool onlyVisibleLayers, bool includeBackgroundLayer) =>
-        (FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer) = (frameIndex, onlyVisibleLayers, includeBackgroundLayer);
+    /// <param name="includeTilemapLayers">
+    ///     Indicates whether cels on a tilemap layer should be processed.
+    /// </param>
+    public SingleFrameProcessorConfiguration(int frameIndex, bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers) =>
+        (FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers) = (frameIndex, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
 }

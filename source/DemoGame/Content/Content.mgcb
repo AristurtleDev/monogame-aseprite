@@ -28,10 +28,13 @@
 
 #begin adventurer.aseprite
 /importer:AsepriteFileImporter
-/processor:SingleFrameContentProcessor
-/processorParam:FrameIndex=0
+/processor:SpriteSheetContentProcessor
 /processorParam:OnlyVisibleLayers=True
 /processorParam:IncludeBackgroundLayer=False
+/processorParam:MergeDuplicateFrames=True
+/processorParam:BorderPadding=0
+/processorParam:Spacing=0
+/processorParam:InnerPadding=10
 /processorParam:ColorKeyColor=255,0,255,255
 /processorParam:ColorKeyEnabled=True
 /processorParam:GenerateMipMaps=False

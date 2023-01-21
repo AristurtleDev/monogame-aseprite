@@ -22,24 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.AsepriteTypes;
+using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.AsepriteTypes;
 
-/// <summary>
-///     Defines a layer in which <see cref="AsepriteTilemapCel"/> elements are are placed on in Aseprite.
-/// </summary>
-public sealed class AsepriteTilemapLayer : AsepriteLayer
+namespace MonoGame.Aseprite.Tests;
+
+public sealed class AsepriteCelTests
 {
-    // /// <summary>
-    // ///     Gets the index of the <see cref="AsepriteTileset"/> that is used by this <see cref="AsepriteTilemapLayer"/>.
-    // /// </summary>
-    // public int TilesetID { get; }
+    [Fact]
+    public void AsepriteCel_LayerAs_ReturnsLayer()
+    {
+        AsepriteTileset tileset = new(0, 0, 0, 0, string.Empty, Array.Empty<Color>());
+        AsepriteTilemapLayer layer = new(tileset, 0, AsepriteBlendMode.Normal, 255, string.Empty);
+        AsepriteCel cel = new AsepriteImageCel(0, 0, Array.Empty<Color>(), layer, Point.Zero, 0);
 
-    /// <summary>
-    ///     Gets a reference to the <see cref="AsepriteTileset"/> that is used by this
-    ///     <see cref="AsepriteTilemapLayer"/>.
-    /// </summary>
-    public AsepriteTileset Tileset { get; }
-
-    internal AsepriteTilemapLayer(AsepriteTileset tileset, /*int tilesetID,*/ AsepriteLayerFlags flags, AsepriteBlendMode blend, byte opacity, string name)
-        : base(flags, blend, opacity, name) => (Tileset/*, TilesetID*/) = (tileset/*, tilesetID*/);
+        AsepriteTilemapLayer actual = cel.LayerAs<AsepriteTilemapLayer>();
+        Assert.Equal(layer, actual);
+    }
 }

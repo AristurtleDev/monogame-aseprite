@@ -57,7 +57,7 @@ internal class AsepriteFileBuilder
         _frames.Add(frame);
     }
 
-    internal void AddLayer(ushort flags, ushort blend, byte opacity, string name)
+    internal void AddLayer(AsepriteLayerFlags flags, ushort blend, byte opacity, string name)
     {
         if (!_layerOpacityValid)
         {
@@ -68,10 +68,10 @@ internal class AsepriteFileBuilder
         _layers.Add(layer);
     }
 
-    internal void AddTilemapLayer(uint tilesetIndex, ushort flags, ushort blend, byte opacity, string name)
+    internal void AddTilemapLayer(uint tilesetIndex, AsepriteLayerFlags flags, ushort blend, byte opacity, string name)
     {
         AsepriteTileset tileset = _tilesets[(int)tilesetIndex];
-        AsepriteTilemapLayer layer = new(tileset, (int)tilesetIndex, flags, (AsepriteBlendMode)blend, opacity, name);
+        AsepriteTilemapLayer layer = new(tileset, /*(int)tilesetIndex,*/ flags, (AsepriteBlendMode)blend, opacity, name);
         _layers.Add(layer);
     }
 

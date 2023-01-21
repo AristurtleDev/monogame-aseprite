@@ -52,6 +52,13 @@ internal sealed class SpriteSheetContentProcessor : CommonProcessor<ContentImpor
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
+    ///     Gets or Sets whether <see cref="AsepriteCel"/> elements that are on a <see cref="AsepriteTilemapLayer"/>
+    ///     should be processed.
+    /// </summary>
+    [DisplayName("(Aseprite) Include Tilemap Layers")]
+    public bool IncludeTilemapLayers { get; set; } = true;
+
+    /// <summary>
     ///     Gets or Sets a value that indicates whether <see cref="AsepriteFrame"/> elements that are detected as
     ///     duplicates should be merged into a single element.
     /// </summary>
@@ -99,6 +106,7 @@ internal sealed class SpriteSheetContentProcessor : CommonProcessor<ContentImpor
         {
             OnlyVisibleLayers = OnlyVisibleLayers,
             IncludeBackgroundLayer = IncludeBackgroundLayer,
+            IncludeTilemapLayers = IncludeTilemapLayers,
             MergeDuplicateFrames = MergeDuplicateFrames,
             BorderPadding = BorderPadding,
             InnerPadding = InnerPadding,

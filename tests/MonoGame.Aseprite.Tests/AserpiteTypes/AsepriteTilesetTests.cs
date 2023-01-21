@@ -22,24 +22,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.AsepriteTypes;
+using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.AsepriteTypes;
 
-/// <summary>
-///     Defines a layer in which <see cref="AsepriteTilemapCel"/> elements are are placed on in Aseprite.
-/// </summary>
-public sealed class AsepriteTilemapLayer : AsepriteLayer
+namespace MonoGame.Aseprite.Tests;
+
+public class AsepriteTilesetTests
 {
-    // /// <summary>
-    // ///     Gets the index of the <see cref="AsepriteTileset"/> that is used by this <see cref="AsepriteTilemapLayer"/>.
-    // /// </summary>
-    // public int TilesetID { get; }
+    [Fact]
+    public void AsepriteTileset_IndexerPropertyTest()
+    {
+        int tileWidth = 2;
+        int tileHeight = 2;
+        int tileCount = 2;
 
-    /// <summary>
-    ///     Gets a reference to the <see cref="AsepriteTileset"/> that is used by this
-    ///     <see cref="AsepriteTilemapLayer"/>.
-    /// </summary>
-    public AsepriteTileset Tileset { get; }
+        Color[] tile0 = new Color[4]
+        {
+            Color.Red, Color.Red,
+            Color.Red, Color.Red
+        };
 
-    internal AsepriteTilemapLayer(AsepriteTileset tileset, /*int tilesetID,*/ AsepriteLayerFlags flags, AsepriteBlendMode blend, byte opacity, string name)
-        : base(flags, blend, opacity, name) => (Tileset/*, TilesetID*/) = (tileset/*, tilesetID*/);
+        Color[] tile1 = new Color[4]
+        {
+            Color.Green, Color.Green,
+            Color.Green, Color.Green
+        };
+
+        Color[] pixels = new Color[8];
+        Array.Copy(tile0, 0, pixels, 0, tile0.Length);
+        Array.Copy(tile1, 0, pixels, 4, tile1.Length);
+
+        AsepriteTileset tileset = new(0, tileCount, tileWidth, tileHeight, "tileset", pixels);
+
+        Color[] actualTile0 = tileset[0].ToArray();
+        Assert.Equal(tile0, actualTile0);
+
+        Color[] actualTile1 = tileset[1].ToArray();
+        Assert.Equal(tile1, actualTile1);
+
+
+
+    }
 }

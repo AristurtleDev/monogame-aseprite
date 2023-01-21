@@ -25,53 +25,47 @@ SOFTWARE.
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines a layer of an Aseprite image.
+///     Defines the flag values for an <see cref="AsepriteLayer"/>.
 /// </summary>
-public class AsepriteLayer
+public enum AsepriteLayerFlags : ushort
 {
     /// <summary>
-    ///     Gets the <see cref="AsepriteLayerFlags"/> value for this <see cref="AsepriteLayer"/>.
+    ///     Defines that no flags are set
     /// </summary>
-    public AsepriteLayerFlags Flags { get; }
+    None = 0,
 
     /// <summary>
-    ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/> is visible.
+    ///     Defines that the layer is visible.
     /// </summary>
-    public bool IsVisible => Flags.HasFlag(AsepriteLayerFlags.Visible);
+    Visible = 1,
 
     /// <summary>
-    ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/> was set as the background layer in
-    ///     Aseprite.
+    ///     Defines that the layer is editable in the Aseprite application.
     /// </summary>
-    public bool IsBackground => Flags.HasFlag(AsepriteLayerFlags.Background);
+    Editable = 2,
 
     /// <summary>
-    ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/> was set as a reference layer in
-    ///     Aseprite.
+    ///     Defines that the layer movement is locked in the Aseprite application.
     /// </summary>
-    public bool IsReference => Flags.HasFlag(AsepriteLayerFlags.ReferenceLayer);
+    LockMovement = 4,
 
     /// <summary>
-    ///     Gets the <see cref="BlendMode"/> used by this <see cref="AsepriteLayer"/>.
+    ///     Defines that the layer was set as the background layer.
     /// </summary>
-    public AsepriteBlendMode BlendMode { get; }
+    Background = 8,
 
     /// <summary>
-    ///     Gets the opacity level of this <see cref="AsepriteLayer"/>.
+    ///     Defines that the layer prefers linked cels.
     /// </summary>
-    public int Opacity { get; }
+    PreferLinkedCels = 16,
 
     /// <summary>
-    ///     Gets the name of this <see cref="AsepriteLayer"/>.
+    ///     Defines that the layer should be displayed collapsed in the Aseprite application.
     /// </summary>
-    public string Name { get; }
+    DisplayedCollapsed = 32,
 
     /// <summary>
-    ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteLayer"/> in
-    ///     Aseprite.
+    ///     Defines that the layer is a reference layer.
     /// </summary>
-    public AsepriteUserData UserData { get; } = new();
-
-    internal AsepriteLayer(AsepriteLayerFlags flags, AsepriteBlendMode blendMode, int opacity, string name) =>
-        (Flags, BlendMode, Opacity, Name) = (flags, blendMode, opacity, name);
+    ReferenceLayer = 64
 }
