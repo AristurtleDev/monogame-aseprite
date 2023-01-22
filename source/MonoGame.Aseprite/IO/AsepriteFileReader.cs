@@ -101,6 +101,7 @@ internal static class AsepriteFileReader
         builder.SetFrameWidth(frameWidth);
         builder.SetFrameHeight(frameHeight);
         builder.SetColorDepth(colorDepth);
+        builder.SetTransparentIndex(transparentIndex);
         builder.SetLayerOpacityValid(layerOpacityValid);
     }
 

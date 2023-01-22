@@ -27,4 +27,8 @@
         <ProjectReference Include="..\..\source\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="Files/**" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
 </Project>

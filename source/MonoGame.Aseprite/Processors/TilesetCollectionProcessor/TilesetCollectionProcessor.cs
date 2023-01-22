@@ -43,7 +43,7 @@ public static class TilesetCollectionProcessor
     /// </returns>
     public static TilesetCollection Process(GraphicsDevice device, AsepriteFile file)
     {
-        RawTileset[] results = Process(file);
+        RawTileset[] results = GetRawTilesets(file);
         TilesetCollection collection = new();
 
         for (int i = 0; i < results.Length; i++)
@@ -54,7 +54,7 @@ public static class TilesetCollectionProcessor
         return collection;
     }
 
-    internal static RawTileset[] Process(AsepriteFile file)
+    internal static RawTileset[] GetRawTilesets(AsepriteFile file)
     {
         ReadOnlySpan<AsepriteTileset> tilesets = file.Tilesets;
         RawTileset[] processedTilesets = new RawTileset[tilesets.Length];

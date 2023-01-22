@@ -53,6 +53,10 @@ public class SingleFrameProcessorConfiguration
     ///     Initializes a new instance of the <see cref="SingleFrameProcessorConfiguration"/> class with the default
     ///     values.
     /// </summary>
+    /// <remarks>
+    ///     The default configuration is to process frame zero, only visible layers, do not include background layers,
+    ///     and do include tilemap layers.
+    /// </remarks>
     public SingleFrameProcessorConfiguration() { }
 
     /// <summary>

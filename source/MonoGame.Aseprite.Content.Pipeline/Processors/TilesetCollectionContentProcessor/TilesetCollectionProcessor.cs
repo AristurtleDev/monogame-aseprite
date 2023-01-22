@@ -52,7 +52,7 @@ public sealed class TilesetCollectionContentProcessor : CommonProcessor<ContentI
     /// </returns>
     public override TilesetCollectionContentProcessorResult Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
     {
-        RawTileset[] tilesets = TilesetCollectionProcessor.Process(content.Data);
+        RawTileset[] tilesets = TilesetCollectionProcessor.GetRawTilesets(content.Data);
         TextureContent[] textures = ProcessTextures(tilesets, content.FilePath, context);
 
         return new(tilesets, textures);

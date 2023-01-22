@@ -27,7 +27,7 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// <summary>
 ///     Defines a single tile in a <see cref="AsepriteTilemapCel"/>.
 /// </summary>
-public sealed class AsepriteTile
+public sealed class AsepriteTile : IEquatable<AsepriteTile>
 {
     /// <summary>
     ///     Gets the ID of the tile in the <see cref="AsepriteTileset"/> that contains the image pixel data for this
@@ -73,4 +73,10 @@ public sealed class AsepriteTile
 
     internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int rotation) =>
         (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);
+
+    public bool Equals(AsepriteTile? other) => other is not null &&
+                                               XFlip == other.XFlip &&
+                                               YFlip == other.YFlip &&
+                                               Rotation == other.Rotation &&
+                                               TilesetTileID == other.TilesetTileID;
 }

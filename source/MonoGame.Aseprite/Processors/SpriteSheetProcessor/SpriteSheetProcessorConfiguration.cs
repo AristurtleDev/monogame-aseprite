@@ -73,8 +73,8 @@ public sealed class SpriteSheetProcessorConfiguration
     ///     values.
     /// </summary>
     /// <remarks>
-    ///     The default configuration is to only process visible layers, do not include background layer, merge
-    ///     duplicate frames, zero border padding, zero spacing, and zero inner padding.
+    ///     The default configuration is to only process visible layers, do not include background layer, do include
+    ///     tilemap layers, merge duplicate frames, zero border padding, zero spacing, and zero inner padding.
     /// </remarks>
     public SpriteSheetProcessorConfiguration() { }
 

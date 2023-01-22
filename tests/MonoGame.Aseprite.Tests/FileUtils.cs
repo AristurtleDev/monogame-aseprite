@@ -22,26 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Processors;
+namespace MonoGame.Aseprite.Tests;
 
-public sealed class RawAnimationCycle : IEquatable<RawAnimationCycle>
+internal static class FileUtils
 {
-    private int[] _frameIndexes;
-    private int[] _frameDurations;
-
-    internal ReadOnlySpan<int> FrameIndexes => _frameIndexes;
-    internal ReadOnlySpan<int> FrameDurations => _frameDurations;
-    internal bool IsLooping { get; }
-    internal bool IsReversed { get; }
-    internal bool IsPingPong { get; }
-
-    internal RawAnimationCycle(int[] frameIndexes, int[] frameDurations, bool isLooping, bool isReversed, bool isPingPong) =>
-        (_frameIndexes, _frameDurations, IsLooping, IsReversed, IsPingPong) = (frameIndexes, frameDurations, isLooping, isReversed, isPingPong);
-
-    public bool Equals(RawAnimationCycle? other) => other is not null &&
-                                                    FrameIndexes.SequenceEqual(other.FrameIndexes) &&
-                                                    FrameDurations.SequenceEqual(other.FrameDurations) &&
-                                                    IsLooping == other.IsLooping &&
-                                                    IsReversed == other.IsReversed &&
-                                                    IsPingPong == other.IsPingPong;
+    internal static string GetLocalPath(string fileName)
+    {
+        return Path.Combine(Environment.CurrentDirectory, "Files", fileName);
+    }
 }

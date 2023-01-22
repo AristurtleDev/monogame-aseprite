@@ -22,26 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Processors;
+using MonoGame.Aseprite.Processors;
 
-public sealed class RawAnimationCycle : IEquatable<RawAnimationCycle>
+namespace MonoGame.Aseprite.Tests;
+
+public sealed class TilemapProcessorTests
 {
-    private int[] _frameIndexes;
-    private int[] _frameDurations;
+    public void TilemapProcessorTest_CreateRawTilemap()
+    {
+        string path = FileUtils.GetLocalPath("tilemap-processor-test.aseprite");
+        AsepriteFile aseFile = AsepriteFile.Load(path);
 
-    internal ReadOnlySpan<int> FrameIndexes => _frameIndexes;
-    internal ReadOnlySpan<int> FrameDurations => _frameDurations;
-    internal bool IsLooping { get; }
-    internal bool IsReversed { get; }
-    internal bool IsPingPong { get; }
-
-    internal RawAnimationCycle(int[] frameIndexes, int[] frameDurations, bool isLooping, bool isReversed, bool isPingPong) =>
-        (_frameIndexes, _frameDurations, IsLooping, IsReversed, IsPingPong) = (frameIndexes, frameDurations, isLooping, isReversed, isPingPong);
-
-    public bool Equals(RawAnimationCycle? other) => other is not null &&
-                                                    FrameIndexes.SequenceEqual(other.FrameIndexes) &&
-                                                    FrameDurations.SequenceEqual(other.FrameDurations) &&
-                                                    IsLooping == other.IsLooping &&
-                                                    IsReversed == other.IsReversed &&
-                                                    IsPingPong == other.IsPingPong;
+    }
 }

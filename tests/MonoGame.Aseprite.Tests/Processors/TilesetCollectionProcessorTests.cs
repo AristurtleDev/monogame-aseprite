@@ -22,26 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Processors;
+using MonoGame.Aseprite.Processors;
 
-public sealed class RawAnimationCycle : IEquatable<RawAnimationCycle>
+namespace MonoGame.Aseprite.Tests;
+
+public sealed class TilesetCollectionProcessorTests
 {
-    private int[] _frameIndexes;
-    private int[] _frameDurations;
+    [Fact]
+    public void TilesetCollectionProcessor_GetRawTilesetsTest()
+    {
+        string path = FileUtils.GetLocalPath("tileset-collection-processor-test.aseprite");
+        AsepriteFile aseFile = AsepriteFile.Load(path);
 
-    internal ReadOnlySpan<int> FrameIndexes => _frameIndexes;
-    internal ReadOnlySpan<int> FrameDurations => _frameDurations;
-    internal bool IsLooping { get; }
-    internal bool IsReversed { get; }
-    internal bool IsPingPong { get; }
+        RawTileset[] tilesets = TilesetCollectionProcessor.GetRawTilesets(aseFile);
 
-    internal RawAnimationCycle(int[] frameIndexes, int[] frameDurations, bool isLooping, bool isReversed, bool isPingPong) =>
-        (_frameIndexes, _frameDurations, IsLooping, IsReversed, IsPingPong) = (frameIndexes, frameDurations, isLooping, isReversed, isPingPong);
+        Assert.Equal(2, tilesets.Length);
+        Assert.Equal("tileset-1", tilesets[0].Name);
+        Assert.Equal("tileset-2", tilesets[1].Name);
+    }
 
-    public bool Equals(RawAnimationCycle? other) => other is not null &&
-                                                    FrameIndexes.SequenceEqual(other.FrameIndexes) &&
-                                                    FrameDurations.SequenceEqual(other.FrameDurations) &&
-                                                    IsLooping == other.IsLooping &&
-                                                    IsReversed == other.IsReversed &&
-                                                    IsPingPong == other.IsPingPong;
+    [Fact]
+    public void TilesetCollectionProcessor_GetRawTilesets_DuplicateNamedTilesets_ThrowsException()
+    {
+        string path = FileUtils.GetLocalPath("tileset-collection-processor-duplicate-name-test.aseprite");
+        AsepriteFile aseFile = AsepriteFile.Load(path);
+
+        Exception ex = Record.Exception(() => TilesetCollectionProcessor.GetRawTilesets(aseFile));
+
+        Assert.IsType<InvalidOperationException>(ex);
+    }
 }

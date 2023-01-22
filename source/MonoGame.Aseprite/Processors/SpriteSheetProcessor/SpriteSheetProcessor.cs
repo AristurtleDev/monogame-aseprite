@@ -159,19 +159,33 @@ public static class SpriteSheetProcessor
     private static Dictionary<int, int> BuildDuplicateMap(Color[][] frames)
     {
         Dictionary<int, int> map = new();
-        Dictionary<Color[], int> checkedFrames = new();
 
         for (int i = 0; i < frames.GetLength(0); i++)
         {
-            if (!checkedFrames.ContainsKey(frames[i]))
+            for (int d = 0; d < i; d++)
             {
-                checkedFrames.Add(frames[i], i);
-            }
-            else
-            {
-                map.Add(i, checkedFrames[frames[i]]);
+                if (frames[i].SequenceEqual(frames[d]))
+                {
+                    map.Add(i, d);
+                    break;
+                }
             }
         }
+
+
+        // Dictionary<Color[], int> checkedFrames = new();
+
+        // for (int i = 0; i < frames.GetLength(0); i++)
+        // {
+        //     if (!checkedFrames.ContainsKey(frames[i]))
+        //     {
+        //         checkedFrames.Add(frames[i], i);
+        //     }
+        //     else
+        //     {
+        //         map.Add(i, checkedFrames[frames[i]]);
+        //     }
+        // }
 
         return map;
     }

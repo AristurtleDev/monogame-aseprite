@@ -48,6 +48,18 @@ internal class AsepriteFileBuilder
     internal void SetFrameWidth(ushort width) => _frameWidth = width;
     internal void SetFrameHeight(ushort height) => _frameHeight = height;
     internal void SetColorDepth(ushort depth) => _colorDepth = depth;
+    internal void SetTransparentIndex(byte index)
+    {
+        if(_colorDepth != 8)
+        {
+            //  Non-zero transparent index is only valid when color depth is 8 (Indexed mode)
+            _transparentIndex = 0;
+        }
+        else
+        {
+            _transparentIndex = index;
+        }
+    }
     internal void SetLayerOpacityValid(bool isValid) => _layerOpacityValid = isValid;
 
     internal void AddFrame(int duration)
@@ -265,7 +277,7 @@ internal class AsepriteFileBuilder
             byte red = source[b];
             byte green = source[b + 1];
             byte blue = source[b + 2];
-            byte alpha = source[b + 2];
+            byte alpha = source[b + 3];
             dest[i] = new Color(red, green, blue, alpha);
         }
     }
