@@ -47,75 +47,74 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     public int LayerCount => _layers.Count;
 
     /// <summary>
-    ///     Gets the tilemap layer located at the specified index in this
-    ///     tilemap.
+    ///     Gets the <see cref="TilemapLayer"/> element from this <see cref="Tilemap"/> at the specified index.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tilemap layer to locate in this tilemap.
+    /// <param name="layerIndex">
+    ///     The index of the <see cref="TilemapLayer"/> element in this <see cref="Tilemap"/> to locate.
     /// </param>
     /// <returns>
-    ///     The tilemap layer located at the specified index in this tilemap.
+    ///     The <see cref="TilemapLayer"/> element that was located at the specified index in this
+    ///     <see cref="Tilemap"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than
-    ///     or equal to the total number of tilemap layers in this tilemap.
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
+    ///     <see cref="TilemapLayer"/> elements in this <see cref="Tilemap"/>.  Use
+    ///     <see cref="Tilemap.LayerCount"/> to determine the total number of elements.
     /// </exception>
-    public TilemapLayer this[int index] => GetLayer(index);
+    public TilemapLayer this[int layerIndex] => GetLayer(layerIndex);
 
     /// <summary>
-    ///     Gets the tilemap layer with the specified name in this tilemap.
+    ///     Gets the <see cref="TilemapLayer"/> element from this <see cref="Tilemap"/> with the specified name.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tilemap layer to locate in this tilemap.
+    /// <param name="layerName">
+    ///     The name of the <see cref="TilemapLayer"/> element in this <see cref="Tilemap"/> to locate.
     /// </param>
     /// <returns>
-    ///     The tilemap layer with the specified name in this tilemap.
+    ///     The <see cref="TilemapLayer"/> element that was located with the specified name in this
+    ///     <see cref="Tilemap"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if this tilemap does not contain a tilemap layer with the
+    ///     Thrown if this <see cref="Tilemap"/> does not contain a <see cref="TilemapLayer"/> element with the
     ///     specified name.
     /// </exception>
-    public TilemapLayer this[string name] => GetLayer(name);
+    public TilemapLayer this[string layerName] => GetLayer(layerName);
 
     /// <summary>
-    ///     Creates a new tilemap.
+    ///     Initializes a new instance of the <see cref="Tilemap"/> class.
     /// </summary>
     /// <param name="name">
-    ///     The name to give the tilemap.
+    ///     The name to give the <see cref="Tilemap"/>.
     /// </param>
     public Tilemap(string name) => Name = name;
 
     /// <summary>
-    ///     Creates and adds a new tilemap layer to this tilemap.
+    ///     Creates a new <see cref="TilemapLayer"/> and adds it to this <see cref="Tilemap"/>.
     /// </summary>
     /// <param name="layerName">
-    ///     The name to give the tilemap layer that is created by this method.
+    ///     The name to give the <see cref="TilemapLayer"/> that is created by this method.  Must be unique for this
+    ///     <see cref="Tilemap"/>.
     /// </param>
     /// <param name="tileset">
-    ///     The tileset that the tiles of the tilemap layer created by this
-    ///     method will use.
+    ///     The <see cref="Tileset"/> that the <see cref="Tile"/> elements of the <see cref="TilemapLayer"/> created by
+    ///     this method will use.
     /// </param>
     /// <param name="columns">
-    ///     The total number of columns in the tilemap layer that is created by
-    ///     this method.
+    ///     The total number of columns in the <see cref="TilemapLayer"/> that is created by this method.
     /// </param>
     /// <param name="rows">
-    ///     The total number of rows in the tilemap layer that is created by
-    ///     this method.
+    ///     The total number of rows in the <see cref="TilemapLayer"/> that is created by this method.
     /// </param>
     /// <param name="offset">
-    ///     The x- and y-position offset to draw the tilemap layer that is
-    ///     created by this method, relative to the position that this tilemap
-    ///     drawn at.
+    ///     The x- and y-position offset to draw the <see cref="TilemapLayer"/> that is created by this method, relative
+    ///     to the position tha this <see cref="Tilemap"/> draws at.
     /// </param>
     /// <returns>
-    ///     The tilemap layer that is created by this method.
+    ///     The instance of the <see cref="TilemapLayer"/> class that is created by this method.
     /// </returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if this tilemap already contains a tilemap layer with the
-    ///     name specified.
+    ///     Thrown if this <see cref="Tilemap"/> already contains a <see cref="TilemapLayer"/> with the specified name.
     /// </exception>
-    public TilemapLayer AddLayer(string layerName, Tileset tileset, int columns, int rows, Vector2 offset)
+    public TilemapLayer CreateLayer(string layerName, Tileset tileset, int columns, int rows, Vector2 offset)
     {
         TilemapLayer layer = new(layerName, tileset, columns, rows, offset);
         AddLayer(layer);
@@ -123,14 +122,14 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     }
 
     /// <summary>
-    ///     Adds the given tilemap layer to this tilemap.
+    ///     Adds the given <see cref="TilemapLayer"/> to this <see cref="Tilemap"/>.
     /// </summary>
     /// <param name="layer">
-    ///     The tilemap layer to add.
+    ///     The <see cref="TilemapLayer"/> to add.
     /// </param>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if this tilemap already contains a tilemap layer with the
-    ///     same name as the tilemap layer given.
+    ///     Thrown if this <see cref="Tilemap"/> already contains a <see cref="TilemapLayer"/> with the same name as the
+    ///     <see cref="TilemapLayer"/> given.
     /// </exception>
     public void AddLayer(TilemapLayer layer)
     {
@@ -144,45 +143,47 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     }
 
     /// <summary>
-    ///     Gets the tilemap layer located at the specified index in this
-    ///     tilemap.
+    ///     Gets the <see cref="TilemapLayer"/> element from this <see cref="Tilemap"/> at the specified index.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tilemap layer to locate in this tilemap.
+    /// <param name="layerIndex">
+    ///     The index of the <see cref="TilemapLayer"/> element in this <see cref="Tilemap"/> to locate.
     /// </param>
     /// <returns>
-    ///     The tilemap layer located at the specified index in this tilemap.
+    ///     The <see cref="TilemapLayer"/> element that was located at the specified index in this
+    ///     <see cref="Tilemap"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than
-    ///     or equal to the total number of tilemap layers in this tilemap.
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
+    ///     <see cref="TilemapLayer"/> elements in this <see cref="Tilemap"/>.  Use
+    ///     <see cref="Tilemap.LayerCount"/> to determine the total number of elements.
     /// </exception>
-    public TilemapLayer GetLayer(int index)
+    public TilemapLayer GetLayer(int layerIndex)
     {
-        if (index < 0 || index >= LayerCount)
+        if (layerIndex < 0 || layerIndex >= LayerCount)
         {
             throw new ArgumentOutOfRangeException();
         }
 
-        return _layers[index];
+        return _layers[layerIndex];
     }
 
     /// <summary>
-    ///     Gets the tilemap layer with the specified name in this tilemap.
+    ///     Gets the <see cref="TilemapLayer"/> element from this <see cref="Tilemap"/> with the specified name.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tilemap layer to locate in this tilemap.
+    /// <param name="layerName">
+    ///     The name of the <see cref="TilemapLayer"/> element in this <see cref="Tilemap"/> to locate.
     /// </param>
     /// <returns>
-    ///     The tilemap layer with the specified name in this tilemap.
+    ///     The <see cref="TilemapLayer"/> element that was located with the specified name in this
+    ///     <see cref="Tilemap"/>.
     /// </returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if this tilemap does not contain a tilemap layer with the
+    ///     Thrown if this <see cref="Tilemap"/> does not contain a <see cref="TilemapLayer"/> element with the
     ///     specified name.
     /// </exception>
-    public TilemapLayer GetLayer(string name)
+    public TilemapLayer GetLayer(string layerName)
     {
-        if (_layerLookup.TryGetValue(name, out TilemapLayer? layer))
+        if (_layerLookup.TryGetValue(layerName, out TilemapLayer? layer))
         {
             return layer;
         }
@@ -191,105 +192,100 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     }
 
     /// <summary>
-    ///     Returns a new collection containing all of the tilemap layers in
-    ///     this tilemap.  The order of the tilemap layers in the collection
-    ///     returned is from bottom layer to top layer.
+    ///     Returns a new <see cref="List{T}"/> containing all of the <see cref="TilemapLayer"/> elements in this
+    ///     <see cref="Tilemap"/>.  The order of elements in teh collection returns is from bottom layer to top layer.
     /// </summary>
     /// <returns>
-    ///     A new collection containing all of the tilemap layers in this
-    ///     tilemap.
+    ///     A new <see cref="List{T}"/> containing all of the <see cref="TilemapLayer"/> elements in this
+    ///     <see cref="Tilemap"/>.
     /// </returns>
     public List<TilemapLayer> GetLayers() => new List<TilemapLayer>(_layers);
 
     /// <summary>
-    ///     Gets the tilemap layer located at the specified index in this
-    ///     tilemap.
+    ///     Gets the <see cref="TilemapLayer"/> element from this <see cref="Tilemap"/> at the specified index.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tilemap layer to locate in this tilemap.
+    /// <param name="layerIndex">
+    ///     The index of the <see cref="TilemapLayer"/> element in this <see cref="Tilemap"/> to locate.
     /// </param>
     /// <param name="layer">
-    ///     When this method returns, contains the tilemap layer that was
-    ///     located, if the index specified is valid; otherwise, null.
+    ///     When this method returns <see langword="true"/>, contains the <see cref="TilemapLayer"/> located;
+    ///     otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     true if the index specified is valid; otherwise, false.  This method
-    ///     returns false if the index is less than zero or is greater than or
-    ///     equal to the total number of tilemap layers in this tilemap.
+    ///     <see langword="true"/> if a <see cref="TilemapLayer"/> element was located at the specified index;
+    ///     otherwise, <see langword="false"/>.  This method returns <see langword="false"/> if the index specified is
+    ///     less than zero or is greater than or equal to the total number of <see cref="TilemapLayer"/> elements in
+    ///     this <see cref="Tilemap"/>.  Use <see cref="Tilemap.LayerCount"/> to determine the total number of elements.
     /// </returns>
-    public bool TryGetLayer(int index, [NotNullWhen(true)] out TilemapLayer? layer)
+    public bool TryGetLayer(int layerIndex, [NotNullWhen(true)] out TilemapLayer? layer)
     {
         layer = default;
 
-        if (index < 0 || index >= LayerCount)
+        if (layerIndex < 0 || layerIndex >= LayerCount)
         {
             return false;
         }
 
-        layer = _layers[index];
+        layer = _layers[layerIndex];
         return true;
     }
 
     /// <summary>
-    ///     Gets the tilemap layer with the specified name in this tilemap.
+    ///     Gets the <see cref="TilemapLayer"/> element from this <see cref="Tilemap"/> with the specified name.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tilemap layer to locate in this tilemap.
+    /// <param name="layerName">
+    ///     The name of the <see cref="TilemapLayer"/> element in this <see cref="Tilemap"/> to locate.
     /// </param>
     /// <param name="layer">
-    ///     When this method returns, contains the tilemap layer that was
-    ///     located, if this tilemap contains a tilemap layer with the
-    ///     specified name; otherwise, null.
+    ///     When this method returns <see langword="true"/>, contains the <see cref="TilemapLayer"/> located;
+    ///     otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     true if this tilemap contains a layer with the specified name;
-    ///     otherwise, false.  This method returns false if this tilemap does
-    ///     not contain a tilemap layer with the specified name.
+    ///     <see langword="true"/> if a <see cref="TilemapLayer"/> element was located with the specified name;
+    ///     otherwise, <see langword="false"/>.  This method returns <see langword="false"/> if this
+    ///     <see cref="Tilemap"/> does not contain a <see cref="TilemapLayer"/> element with the specified name.
     /// </returns>
     public bool TryGetLayer(string name, [NotNullWhen(true)] out TilemapLayer? layer) =>
         _layerLookup.TryGetValue(name, out layer);
 
 
     /// <summary>
-    ///     Removes the tilemap layer located at the specified index from this
-    ///     tilemap layer.
+    ///     Removes the <see cref="TilemapLayer"/> element at the specified index from this <see cref="Tilemap"/>.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tilemap layer to remove from this tilemap.
+    /// <param name="layerIndex">
+    ///     The index of the <see cref="TilemapLayer"/> element to remove from this <see cref="Tilemap"/>.
     /// </param>
     /// <returns>
-    ///     true if the tilemap layer located at the specified index was removed
-    ///     successfully from this tilemap; otherwise, false.  This method
-    ///     returns false if the index specified is less than zero or is greater
-    ///     than or equal to the total number of tilemap layers in this tilemap.
+    ///     <see langword="true"/> if the <see cref="TilemapLayer"/> was removed successfully; otherwise,
+    ///     <see langword="false"/>.  This method return <see langword="false"/> if the specified index is less than
+    ///     zero or is greater than or equal to the total number of <see cref="TilemapLayer"/> elements in this
+    ///     <see cref="Tilemap"/>.  Use <see cref="Tilemap.LayerCount"/> to determine the total number of elements.
     /// </returns>
-    public bool RemoveLayer(int index)
+    public bool RemoveLayer(int layerIndex)
     {
-        if (index < 0 || index >= LayerCount)
+        if (layerIndex < 0 || layerIndex >= LayerCount)
         {
             return false;
         }
 
-        TilemapLayer layer = _layers[index];
+        TilemapLayer layer = _layers[layerIndex];
         return RemoveLayer(layer);
     }
 
     /// <summary>
-    ///     Removes the tilemap layer with the specified name from this tilemap.
+    ///     Removes the <see cref="TilemapLayer"/> element with the specified name from this <see cref="Tilemap"/>.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the tilemap layer to locate and remove from this
-    ///     tilemap.
+    /// <param name="layerName">
+    ///     The name of the <see cref="TilemapLayer"/> element to remove.
     /// </param>
     /// <returns>
-    ///     true if the tilemap layer with the specified name was successfully
-    ///     removed from this tilemap; otherwise, false.  This method returns
-    ///     false if this tilemap does not contain a tileset with the specified
-    ///     name.
+    ///     <see langword="true"/> if the <see cref="TilemapLayer"/> was removed successfully; otherwise,
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="Tilemap"/> does not
+    ///     contain a <see cref="TilemapLayer"/> element with the specified name.
     /// </returns>
-    public bool RemoveLayer(string name)
+    public bool RemoveLayer(string layerName)
     {
-        if (_layerLookup.TryGetValue(name, out TilemapLayer? layer))
+        if (_layerLookup.TryGetValue(layerName, out TilemapLayer? layer))
         {
             return RemoveLayer(layer);
         }
@@ -298,21 +294,21 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     }
 
     /// <summary>
-    ///     Removes the given tilemap layer from this tilemap.
+    ///     Removes the given <see cref="TilemapLayer"/> element from this <see cref="Tilemap"/>.
     /// </summary>
     /// <param name="layer">
-    ///     The tilemap layer to remove from this tilemap.
+    ///     The <see cref="TilemapLayer"/> element to remove from this <see cref="Tilemap"/>.
     /// </param>
     /// <returns>
-    ///     true if the tilemap layer was successfully removed from this
-    ///     tilemap; otherwise, false.  This method returns false if this
-    ///     tilemap does not contain the given tilemap layer.
+    ///     <see langword="true"/> if the <see cref="TilemapLayer"/> was successfully removed; otherwise,
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="Tilemap"/> does not
+    ///     contain the given <see cref="TilemapLayer"/>.
     /// </returns>
     public bool RemoveLayer(TilemapLayer layer) =>
         _layers.Remove(layer) && _layerLookup.Remove(layer.Name);
 
     /// <summary>
-    ///     Removes all tilemap layers from this tilemap.
+    ///     Removes all <see cref="TilemapLayer"/> elements from this <see cref="Tilemap"/>.
     /// </summary>
     public void Clear()
     {
@@ -321,24 +317,24 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     }
 
     /// <summary>
-    ///     Returns an enumerator used to iterate through all the tilemap layers
-    ///     in this tilemap. Order of elements in the enumeration is from the
-    ///     bottom most layer to the top most layer.
+    ///     Returns an enumerator used to iterate through all of the <see cref="TilemapLayer"/> elements in this
+    ///     <see cref="Tilemap"/>.  Order of elements in the enumeration is from the bottom most layer to the top most
+    ///     layer.
     /// </summary>
     /// <returns>
-    ///     An enumerator used to iterate through all the tilemap layers in this
-    ///     tilemap.
+    ///     An enumerator used to iterate through all of the <see cref="TilemapLayer"/> elements in this
+    ///     <see cref="Tilemap"/>.
     /// </returns>
     public IEnumerator<TilemapLayer> GetEnumerator() => _layers.GetEnumerator();
 
     /// <summary>
-    ///     Returns an enumerator used to iterate through all the tilemap layers
-    ///     in this tilemap. Order of elements in the enumeration is from the
-    ///     bottom most layer to the top most layer.
+    ///     Returns an enumerator used to iterate through all of the <see cref="TilemapLayer"/> elements in this
+    ///     <see cref="Tilemap"/>.  Order of elements in the enumeration is from the bottom most layer to the top most
+    ///     layer.
     /// </summary>
     /// <returns>
-    ///     An enumerator used to iterate through all the tilemap layers in this
-    ///     tilemap.
+    ///     An enumerator used to iterate through all of the <see cref="TilemapLayer"/> elements in this
+    ///     <see cref="Tilemap"/>.
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

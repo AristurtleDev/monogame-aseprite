@@ -100,7 +100,7 @@ public static class TilemapProcessor
         for (int i = 0; i < rawTilemap.Layers.Length; i++)
         {
             RawTilemapLayer layer = rawTilemap.Layers[i];
-            tilemap.AddLayer(layer.Name, tilesetLookup[layer.TilesetID], layer.Columns, layer.Rows, layer.Offset.ToVector2());
+            tilemap.CreateLayer(layer.Name, tilesetLookup[layer.TilesetID], layer.Columns, layer.Rows, layer.Offset.ToVector2());
         }
 
         return tilemap;
