@@ -28,88 +28,67 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a named rectangular region that represents the location and extents of a region within a
-///     <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/>.
+///     Defines a named rectangular region that represents the location and extents of a region within a source texture.
 /// </summary>
-public class TextureRegion
+public class TextureRegion : IDisposable
 {
+    private Texture2D? _texture;
+
     /// <summary>
-    ///     Gets the name of this <see cref="TextureRegion"/>.
+    ///     Gets the name of this texture region.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> that this <see cref="TextureRegion"/>
-    ///     represents.
+    ///     Gets the source texture used by this texture region.
     /// </summary>
-    public Texture2D Texture { get; }
+    public Texture2D Texture
+    {
+        get
+        {
+            if (_texture is Texture2D texture)
+            {
+                return texture;
+            }
+
+            throw new ObjectDisposedException(nameof(TextureRegion), $"The {nameof(TextureRegion)} '{Name}' was previously disposed.");
+        }
+    }
+
+    public bool IsDisposed { get; private set; }
 
     /// <summary>
-    ///     Gets the rectangular bounds that define the location and the width and height extents, in pixels, of the
-    ///     region within the <see cref="TextureRegion.Texture"/> that is represented by this
-    ///     <see cref="TextureRegion"/>.
+    ///     Gets the rectangular bounds that define the location and width and height extents, in pixels of the region
+    ///     within the source texture that is represented by this texture region.
     /// </summary>
     public Rectangle Bounds { get; }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TextureRegion"/> class.
-    /// </summary>
-    /// <param name="name">
-    ///     The name to give this <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="texture">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> that this <see cref="TextureRegion"/> will
-    ///     represent.
-    /// </param>
-    /// <param name="x">
-    ///     The x-coordinate location of the upper-left corner of the bounds for this <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="y">
-    ///     The y-coordinate location of the upper-left corner of the bounds for this <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="width">
-    ///     The width, in pixels, of the bounds for this <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="height">
-    ///     The height, in pixels, of the bounds for this <see cref="TextureRegion"/>.
-    /// </param>
-    public TextureRegion(string name, Texture2D texture, int x, int y, int width, int height)
-        : this(name, texture, new Rectangle(x, y, width, height)) { }
+    internal TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
+        (Name, _texture, Bounds) = (name, texture, bounds);
+
+    ~TextureRegion() => Dispose(false);
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="TextureRegion"/> class.
+    ///     Releases resources held by this texture region.
     /// </summary>
-    /// <param name="name">
-    ///     The name to give this <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="texture">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> that this <see cref="TextureRegion"/> will
-    ///     represent.
-    /// </param>
-    /// <param name="location">
-    ///     The x- and y-coordinate location of the upper-left corner of the bounds for this
-    ///     <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="size">
-    ///     The width and height extents, in pixels, of the bounds for this <see cref="TextureRegion"/>.
-    /// </param>
-    public TextureRegion(string name, Texture2D texture, Point location, Point size)
-        : this(name, texture, new Rectangle(location, size)) { }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TextureRegion"/> class.
-    /// </summary>
-    /// <param name="name">
-    ///     The name to give this <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="texture">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> that this <see cref="TextureRegion"/> will
-    ///     represent.
-    /// </param>
-    /// <param name="bounds">
-    ///     The rectangular bounds that define the location and the width and height extents, in pixels, of the region
-    ///     region within the <paramref name="texture"/> that is represented by this <see cref="TextureRegion"/>.
-    /// </param>
-    public TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
-        (Name, Texture, Bounds) = (name, texture, bounds);
+    private void Dispose(bool isDisposing)
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+        if (isDisposing)
+        {
+            _texture = null;
+        }
+
+        IsDisposed = true;
+    }
 }
