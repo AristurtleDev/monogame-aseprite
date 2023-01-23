@@ -33,8 +33,6 @@ namespace MonoGame.Aseprite.Content.Pipeline;
 public sealed class ContentImporterResult<T>
 {
     internal string FilePath { get; }
-    internal string FileName => Path.GetFileName(FilePath);
-    internal string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FilePath);
     internal T Data { get; }
 
     internal ContentImporterResult(string filePath, T data) => (FilePath, Data) = (filePath, data);

@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -30,12 +29,12 @@ using MonoGame.Aseprite.Content.Pipeline.Processors;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
-///     Defines a content writer that writes the content of a <see cref="SingleFrameContentProcessorResult"/> to an xnb file.
+///     Defines a content writer that writes the content of a <see cref="SingleFrameContentProcessorResult"/> to an xnb
+///     file.
 /// </summary>
 [ContentTypeWriter]
 public sealed class SingleFrameContentWriter : ContentTypeWriter<SingleFrameContentProcessorResult>
 {
-
     protected override void Write(ContentWriter writer, SingleFrameContentProcessorResult content)
     {
         writer.Write(content.TextureContent);

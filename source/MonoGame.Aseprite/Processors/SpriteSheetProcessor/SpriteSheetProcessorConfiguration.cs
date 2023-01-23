@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using MonoGame.Aseprite.AsepriteTypes;
+
 namespace MonoGame.Aseprite.Processors;
 
 /// <summary>
@@ -30,41 +32,44 @@ namespace MonoGame.Aseprite.Processors;
 public sealed class SpriteSheetProcessorConfiguration
 {
     /// <summary>
-    ///     Gets or Sets a value that indicates whether only on cels on visible layers should be processed.
+    ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements that are on visible
+    ///     <see cref="AsepriteLayer"/> elements should be processed.
     /// </summary>
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether cels on the layer set as the background layer in Aseprite should
-    ///     be processed.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteCel"/> elements that are on the
+    ///     <see cref="AsepriteLayer"/> marked as the background should be processed.
     /// </summary>
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether cels on a tilemap layer should be processed.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteTilemapCel"/> elements that are on
+    ///     <see cref="AsepriteTilemapLayer"/> elements should be processed.
     /// </summary>
     public bool IncludeTilemapLayers { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether duplicate frames should be merged.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteFrame"/> elements that are detected as
+    ///     duplicates should be merged.
     /// </summary>
     public bool MergeDuplicateFrames { get; set; } = true;
 
     /// <summary>
     ///     Gets or Sets the amount of transparent pixels to add between between the edge of the generated image for the
-    ///     spritesheet and each of the regions within it.
+    ///     <see cref="SpriteSheet"/> and each of the <see cref="TextureRegion"/> elements within it.
     /// </summary>
     public int BorderPadding { get; set; } = 0;
 
     /// <summary>
-    ///     Gets or Sets the amount of transparent pixels to add between each of the regions in the generated image for
-    ///     the spritesheet.
+    ///     Gets or Sets the amount of transparent pixels to add between each of the <see cref="TextureRegion"/>
+    ///     elements the <see cref="SpriteSheet"/>.
     /// </summary>
     public int Spacing { get; set; } = 0;
 
     /// <summary>
-    ///     Gets or Sets the amount of transparent pixels to add around the edge of each region in the generated image
-    ///     for the spritesheet.
+    ///     Gets or Sets the amount of transparent pixels to add around the edge of each <see cref="TextureRegion"/>
+    ///     for the <see cref="SpriteSheet"/>.
     /// </summary>
     public int InnerPadding { get; set; } = 0;
 
@@ -73,8 +78,10 @@ public sealed class SpriteSheetProcessorConfiguration
     ///     values.
     /// </summary>
     /// <remarks>
-    ///     The default configuration is to only process visible layers, do not include background layer, do include
-    ///     tilemap layers, merge duplicate frames, zero border padding, zero spacing, and zero inner padding.
+    ///     The default configuration is to only process <see cref="AsepriteCel"/> elements on visible
+    ///     <see cref="AsepriteLayer"/> elements, do not include the <see cref="AsepriteLayer"/> that is set as the
+    ///     background, include all <see cref="AsepriteTilemapLayer"/> elements, merge duplicate
+    ///     <see cref="AsepriteFrame"/> elements, zero border padding, zero spacing, and zero inner padding.
     /// </remarks>
     public SpriteSheetProcessorConfiguration() { }
 
@@ -82,28 +89,31 @@ public sealed class SpriteSheetProcessorConfiguration
     ///     Initializes a new instance of the <see cref="SpriteSheetProcessorConfiguration"/> class.
     /// </summary>
     /// <param name="onlyVisibleLayers">
-    ///     Indicates whether only on cels on visible layers should be processed.
+    ///     Indicates whether only <see cref="AsepriteCel"/> elements that are on visible <see cref="AsepriteLayer"/>
+    ///     elements should be processed.
     /// </param>
     /// <param name="includeBackgroundLayer">
-    ///     Indicates whether cels on the layer set as the background layer in Aseprite should be processed.
+    ///     Indicates whether <see cref="AsepriteCel"/> elements that are on the <see cref="AsepriteLayer"/> marked as
+    ///     the background should be processed.
     /// </param>
     /// <param name="includeTilemapLayers">
-    ///     Indicates whether cels on a tilemap layer should be processed.
+    ///     Indicates whether <see cref="AsepriteTilemapCel"/> elements that are on  <see cref="AsepriteTilemapLayer"/>
+    ///     elements should be processed.
     /// </param>
     /// <param name="mergeDuplicates">
-    ///     Indicates whether duplicate frames should be merged.
+    ///     Indicates whether <see cref="AsepriteFrame"/> elements that are detected as duplicates should be merged.
     /// </param>
     /// <param name="borderPadding">
-    ///     The amount of transparent pixels to add between between the edge of the generated image for the spritesheet
-    ///     and each of the regions within it.
+    ///     The amount of transparent pixels to add between between the edge of the generated image for the
+    ///     <see cref="SpriteSheet"/> and each of the <see cref="TextureRegion"/> elements within it.
     /// </param>
     /// <param name="spacing">
-    ///     The amount of transparent pixels to add between each of the regions in the generated image for the
-    ///     spritesheet.
+    ///     The amount of transparent pixels to add between each of the <see cref="TextureRegion"/> elements the
+    ///     <see cref="SpriteSheet"/>.
     /// </param>
     /// <param name="innerPadding">
-    ///     The amount of transparent pixels to add around the edge of each region in the generated image for the
-    ///     spritesheet.
+    ///     The amount of transparent pixels to add around the edge of each <see cref="TextureRegion"/> for the
+    ///     <see cref="SpriteSheet"/>.
     /// </param>
     public SpriteSheetProcessorConfiguration(bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers, bool mergeDuplicates, int borderPadding, int spacing, int innerPadding)
     {

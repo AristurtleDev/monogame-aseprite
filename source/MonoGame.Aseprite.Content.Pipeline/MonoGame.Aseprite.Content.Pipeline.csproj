@@ -5,8 +5,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <!-- <Import Project="../Shared/MonoGame.Aseprite.Shared.targets" /> -->
-
     <ItemGroup>
         <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
             <PrivateAssets>All</PrivateAssets>
@@ -18,17 +16,5 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>MonoGame.Aseprite.Content.Pipeline.Tests</_Parameter1>
-        </AssemblyAttribute>
-    </ItemGroup>
-
-    <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>MGAConsole</_Parameter1>
-        </AssemblyAttribute>
     </ItemGroup>
 </Project>

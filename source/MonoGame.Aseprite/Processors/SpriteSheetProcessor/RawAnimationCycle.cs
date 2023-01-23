@@ -24,6 +24,9 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines the raw values for an <see cref="AnimationCycle"/> used by the <see cref="SpriteSheetProcessor"/>.
+/// </summary>
 public sealed class RawAnimationCycle : IEquatable<RawAnimationCycle>
 {
     private int[] _frameIndexes;

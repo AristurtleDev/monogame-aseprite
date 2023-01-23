@@ -50,7 +50,7 @@ internal class AsepriteFileBuilder
     internal void SetColorDepth(ushort depth) => _colorDepth = depth;
     internal void SetTransparentIndex(byte index)
     {
-        if(_colorDepth != 8)
+        if (_colorDepth != 8)
         {
             //  Non-zero transparent index is only valid when color depth is 8 (Indexed mode)
             _transparentIndex = 0;
@@ -203,7 +203,7 @@ internal class AsepriteFileBuilder
     }
 
     internal AsepriteFile Build() =>
-        new(_name, _frameWidth, _frameHeight, _transparentIndex, _palette, _frames.ToArray(), _layers.ToArray(), _tags.ToArray(), _slices.ToArray(), _tilesets.ToArray());
+        new(_name, _frameWidth, _frameHeight, _palette, _frames.ToArray(), _layers.ToArray(), _tags.ToArray(), _slices.ToArray(), _tilesets.ToArray());
 
     private static byte[] Decompress(byte[] buffer)
     {

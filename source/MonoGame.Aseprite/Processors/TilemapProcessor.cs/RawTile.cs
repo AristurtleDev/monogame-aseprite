@@ -24,13 +24,33 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.Processors;
 
-public sealed class RawTilemapLayerTile
+/// <summary>
+///     Defines the raw values of a <see cref="Tile"/> used by the <see cref="TilemapProcessor"/>.
+/// </summary>
+public sealed class RawTile : IEquatable<RawTile>
 {
     internal int TilesetTileID { get; }
     internal bool XFlip { get; }
     internal bool YFlip { get; }
     internal float Rotation { get; }
 
-    internal RawTilemapLayerTile(int tilesetTileID, bool xFlip, bool yFlip, float rotation) =>
+    internal RawTile(int tilesetTileID, bool xFlip, bool yFlip, float rotation) =>
         (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileID, xFlip, yFlip, rotation);
+
+    /// <summary>
+    ///     Returns a value that indicates if the specified instance of the <see cref="RawTile"/> class is
+    ///     equal to this instance of the <see cref="RawTile"/> class.
+    /// </summary>
+    /// <param name="other">
+    ///     The instance of the <see cref="RawTile"/> class to check for equality.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the specified instance of the <see cref="RawTile"/> class is equal to
+    ///     this instance of the <see cref="RawTile"/> class; otherwise, <see langword="false"/>.
+    /// </returns>
+    public bool Equals(RawTile? other) => other is not null &&
+                                                      TilesetTileID == other.TilesetTileID &&
+                                                      XFlip == other.XFlip &&
+                                                      YFlip == other.YFlip &&
+                                                      Rotation == other.Rotation;
 }

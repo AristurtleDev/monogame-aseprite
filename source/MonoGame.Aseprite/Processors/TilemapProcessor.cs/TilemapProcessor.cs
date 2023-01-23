@@ -27,13 +27,63 @@ using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines a processor that processes <see cref="AsepriteTilemapLayer"/>, <see cref="AsepriteTilemapCel"/>, and
+///     <see cref="AsepriteTileset"/> elements from a single <see cref="AsepriteFrame"/> in an
+///     <see cref="AsepriteFile"/> as a <see cref="Tilemap"/>.
+/// </summary>
 public static class TilemapProcessor
 {
 
+    /// <summary>
+    ///     Processes <see cref="AsepriteTilemapLayer"/>, <see cref="AsepriteTilemapCel"/>, and
+    ///     <see cref="AsepriteTileset"/> elements from a single <see cref="AsepriteFrame"/> in an
+    ///     <see cref="AsepriteFile"/> as a <see cref="Tilemap"/>
+    /// </summary>
+    /// <param name="device">
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
+    /// </param>
+    /// <param name="file">
+    ///     The instance of the <see cref="AsepriteFile"/> to process the elements from.
+    /// </param>
+    /// <param name="configuration">
+    ///     An instance of the <see cref="TilemapProcessorConfiguration"/> class that defines configurations for
+    ///     this process.
+    /// </param>
+    /// <returns>
+    ///     The instance of the <see cref="Tilemap"/> class that is created by this method.
+    /// </returns>
     public static Tilemap Process(GraphicsDevice device, AsepriteFile file, TilemapProcessorConfiguration configuration)
     {
         RawTilemap rawTilemap = CreateRawTilemap(file, configuration);
         return CreateTilemap(device, rawTilemap);
+    }
+
+    /// <summary>
+    ///     Processes <see cref="AsepriteTilemapLayer"/>, <see cref="AsepriteTilemapCel"/>, and
+    ///     <see cref="AsepriteTileset"/> elements from a single <see cref="AsepriteFrame"/> in an
+    ///     <see cref="AsepriteFile"/> as a <see cref="Tilemap"/>
+    /// </summary>
+    /// <param name="device">
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
+    /// </param>
+    /// <param name="file">
+    ///     The instance of the <see cref="AsepriteFile"/> to process the elements from.
+    /// </param>
+    /// <param name="configure">
+    ///     An action method used to build the instance of the <see cref="TilemapProcessorConfiguration"/> class that
+    ///     defines the configurations for this process.
+    /// </param>
+    /// <returns>
+    ///     The instance of the <see cref="Tilemap"/> class that is created by this method.
+    /// </returns>
+    public static Tilemap Process(GraphicsDevice device, AsepriteFile file, Action<TilemapProcessorConfiguration> configure)
+    {
+        TilemapProcessorConfiguration configuration = new();
+        configure(configuration);
+        return Process(device, file, configuration);
     }
 
     internal static Tilemap CreateTilemap(GraphicsDevice device, RawTilemap rawTilemap)
@@ -78,7 +128,7 @@ public static class TilemapProcessor
                 //        since the cel already has access to the Tileset???
                 int tilesetID = cel.Tileset.ID;
 
-                RawTilemapLayerTile[] tiles = new RawTilemapLayerTile[cel.TileCount];
+                RawTile[] tiles = new RawTile[cel.TileCount];
                 CopyAsepriteTileToRawTile(cel.Tiles, tiles);
                 RawTilemapLayer layer = new(cel.Layer.Name, tilesetID, cel.Columns, cel.Rows, tiles, cel.Position);
                 layers.Add(layer);
@@ -88,14 +138,14 @@ public static class TilemapProcessor
         return layers.ToArray();
     }
 
-    private static void CopyAsepriteTileToRawTile(ReadOnlySpan<AsepriteTile> from, Span<RawTilemapLayerTile> to)
+    private static void CopyAsepriteTileToRawTile(ReadOnlySpan<AsepriteTile> from, Span<RawTile> to)
     {
         for (int i = 0; i < from.Length; i++)
         {
             AsepriteTile tile = from[i];
             bool xFlip = tile.XFlip != 0;
             bool yFlip = tile.YFlip != 0;
-            to[i] = new RawTilemapLayerTile(tile.TilesetTileID, xFlip, yFlip, tile.Rotation);
+            to[i] = new RawTile(tile.TilesetTileID, xFlip, yFlip, tile.Rotation);
         }
     }
 

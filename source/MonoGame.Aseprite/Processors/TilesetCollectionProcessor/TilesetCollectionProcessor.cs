@@ -27,16 +27,22 @@ using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines a processor that processes all <see cref="AsepriteTileset"/> elements in an <see cref="AsepriteFile"/>
+///     as a <see cref="TilesetCollection"/>.
+/// </summary>
 public static class TilesetCollectionProcessor
 {
     /// <summary>
-    ///     Processes all tilesets in an <see cref="AsepriteFile"/> as a collection.
+    ///     Processes all <see cref="AsepriteTileset"/> elements in an <see cref="AsepriteFile"/> as a
+    ///     <see cref="TilesetCollection"/>.
     /// </summary>
     /// <param name="device">
-    ///     The <see cref="GraphicsDevice"/> used to create the resources.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
     /// </param>
     /// <param name="file">
-    ///     The <see cref="AsepriteFile"/> to process.
+    ///     The instance of the <see cref="AsepriteFile"/> to process the <see cref="AsepriteTileset"/> elements from.
     /// </param>
     /// <returns>
     ///     The instance of the <see cref="TilesetCollection"/> class created by this method.

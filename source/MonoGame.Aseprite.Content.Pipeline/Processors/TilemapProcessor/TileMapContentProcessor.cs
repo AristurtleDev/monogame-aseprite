@@ -76,40 +76,6 @@ public sealed class TilemapContentProcessor : CommonProcessor<ContentImporterRes
         TextureContent[] textures = ProcessTextures(rawTilemap.Tilesets, content.FilePath, context);
 
         return new(rawTilemap, textures);
-
-
-
-
-
-
-
-
-        // // *********************************************************************
-        // //  Generate the tileset content for each tileset
-        // // *********************************************************************
-        // ReadOnlySpan<AsepriteTileset> tilesets = content.Data.Tilesets;
-        // TilesetContent[] tilesetContent = new TilesetContent[tilesets.Length];
-        // for (int i = 0; i < tilesets.Length; i++)
-        // {
-        //     AsepriteTileset tileset = tilesets[i];
-        //     tilesetContent[i] = CreateTilesetContent(tileset, content.FileNameWithoutExtension, context);
-        // }
-
-        // // *********************************************************************
-        // //  Generate the layer data for each layer in the tilemap
-        // // *********************************************************************
-        // ReadOnlySpan<AsepriteCel> cels = content.Data.Frames[0].Cels;
-        // List<TilemapLayerContent> layerContent = new();
-        // for (int i = 0; i < cels.Length; i++)
-        // {
-        //     if (cels[i] is AsepriteTilemapCel cel && (cel.Layer.IsVisible || !OnlyVisibleLayers))
-        //     {
-        //         TilemapLayerContent layer = CreateTilemapLayerContent(cel);
-        //         layerContent.Add(layer);
-        //     }
-        // }
-
-        // return new(tilesetContent, layerContent.ToArray());
     }
 
     private TextureContent[] ProcessTextures(ReadOnlySpan<RawTileset> tilesets, string sourceFilePath, ContentProcessorContext context)

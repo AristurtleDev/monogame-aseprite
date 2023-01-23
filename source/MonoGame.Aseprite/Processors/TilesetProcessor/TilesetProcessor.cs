@@ -30,21 +30,24 @@ using MonoGame.Aseprite.AsepriteTypes;
 namespace MonoGame.Aseprite.Processors;
 
 /// <summary>
-///     Defines a processor that processes a tileset from an Aseprite file.
+///     Defines a processor that processes a <see cref="Tileset"/> from an <see cref="AsepriteTileset"/> in an
+///     <see cref="AsepriteFile"/>.
 /// </summary>
 public static class TilesetProcessor
 {
     /// <summary>
-    ///     Processes a single tileset in an <see cref="AsepriteFile"/>.
+    ///     Processes an <see cref="AsepriteTileset"/> element from an <see cref="AsepriteFile"/> as a
+    ///     <see cref="Tileset"/>.
     /// </summary>
     /// <param name="device">
-    ///     The <see cref="GraphicsDevice"/> used to create the resources.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
     /// </param>
     /// <param name="file">
-    ///     The <see cref="AsepriteFile"/> to process.
+    ///     The instance of the <see cref="AsepriteFile"/> to process the <see cref="AsepriteTileset"/> from.
     /// </param>
     /// <param name="tilesetName">
-    ///     The name of the tileset in the <see cref="AsepriteFile"/> to process.
+    ///     The name of the <see cref="AsepriteTileset"/> in the <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <returns>
     ///     The instance of the <see cref="Tileset"/> class created by this method.
@@ -56,13 +59,14 @@ public static class TilesetProcessor
     }
 
     /// <summary>
-    ///     Processes a <see cref="Tileset"/> from the given <see cref="AsepriteTileset"/>.
+    ///     Processes an <see cref="AsepriteTileset"/> as a <see cref="Tileset"/>.
     /// </summary>
     /// <param name="device">
-    ///     The <see cref="GraphicsDevice"/> used to create the resources.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
     /// </param>
     /// <param name="tileset">
-    ///     The <see cref="AsepriteTileset"/> to process.
+    ///     The instance of the <see cref="AsepriteTileset"/> to process the <see cref="Tileset"/> from.
     /// </param>
     /// <returns>
     ///     The instance of the <see cref="Tileset"/> class created by this method.

@@ -26,7 +26,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
@@ -44,11 +43,6 @@ internal static class ContentWriterExtensions
     {
         writer.Write(point.X);
         writer.Write(point.Y);
-    }
-
-    internal static void Write(this ContentWriter writer, TimeSpan time)
-    {
-        writer.Write(time.Ticks);
     }
 
     internal static void Write(this ContentWriter writer, TextureContent content)
@@ -77,46 +71,5 @@ internal static class ContentWriterExtensions
             writer.Write(pixelData.Length);
             writer.Write(pixelData);
         }
-    }
-
-    internal static void Write(this ContentWriter writer, TilesetContentProcessorResult tileset)
-    {
-        writer.Write(tileset.RawTileset.ID);
-        writer.Write(tileset.RawTileset.Name);
-        writer.Write(tileset.RawTileset.TileWidth);
-        writer.Write(tileset.RawTileset.TileHeight);
-        writer.Write(tileset.TextureContent);
-    }
-
-
-    internal static void Write(this ContentWriter writer, TilesetContent tileset)
-    {
-        writer.Write(tileset.Name);
-        writer.Write(tileset.TileCount);
-        writer.Write(tileset.TileWidth);
-        writer.Write(tileset.TileHeight);
-        writer.Write(tileset.TextureContent);
-    }
-
-    internal static void Write(this ContentWriter writer, TilemapLayerContent layer)
-    {
-        writer.Write(layer.TilesetID);
-        writer.Write(layer.Name);
-        writer.Write(layer.Columns);
-        writer.Write(layer.Rows);
-        writer.Write(layer.Offset);
-        writer.Write(layer.Tiles.Length);
-
-        for (int i = 0; i < layer.Tiles.Length; i++)
-        {
-            writer.Write(layer.Tiles[i]);
-        }
-    }
-
-    internal static void Write(this ContentWriter writer, TileContent tile)
-    {
-        writer.Write(tile.FlipFlag);
-        writer.Write(tile.Rotation);
-        writer.Write(tile.TilesetTileID);
     }
 }

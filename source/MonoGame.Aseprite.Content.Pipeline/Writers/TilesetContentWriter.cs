@@ -31,7 +31,8 @@ using MonoGame.Aseprite.Processors;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
-///     Defines a content writer that writes the content of a <see cref="TilesetContentProcessorResult"/> to an xnb file.
+///     Defines a content writer that writes the content of a <see cref="TilesetContentProcessorResult"/> to an xnb
+///     file.
 /// </summary>
 [ContentTypeWriter]
 public sealed class TilesetContentWriter : ContentTypeWriter<TilesetContentProcessorResult>

@@ -24,6 +24,9 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines the raw values of a tileset used by the <see cref="TilesetProcessor"/>.
+/// </summary>
 public sealed class RawTileset
 {
     internal int ID { get; }

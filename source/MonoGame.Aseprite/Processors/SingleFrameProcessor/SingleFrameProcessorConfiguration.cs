@@ -22,30 +22,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using MonoGame.Aseprite.AsepriteTypes;
+
 namespace MonoGame.Aseprite.Processors;
+
 /// <summary>
 ///     Defines the configuration for the <see cref="SingleFrameProcessor"/>.
 /// </summary>
 public class SingleFrameProcessorConfiguration
 {
     /// <summary>
-    ///     Gets or Sets the index of the frame in the Aseprite file to process.
+    ///     Gets or Sets the index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> to process.
     /// </summary>
     public int FrameIndex { get; set; } = 0;
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether only on cels on visible layers should be processed.
+    ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements that are on visible
+    ///     <see cref="AsepriteLayer"/> elements should be processed.
     /// </summary>
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether cels on the layer set as the background layer in Aseprite should
-    ///     be processed.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteCel"/> elements that are on the
+    ///     <see cref="AsepriteLayer"/> marked as the background should be processed.
     /// </summary>
     public bool IncludeBackgroundLayer { get; set; } = true;
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether cels on a tilemap layer should be processed.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteTilemapCel"/> elements that are on
+    ///     <see cref="AsepriteTilemapLayer"/> elements should be processed.
     /// </summary>
     public bool IncludeTilemapLayers { get; set; } = true;
 
@@ -63,16 +68,19 @@ public class SingleFrameProcessorConfiguration
     ///     Initializes a new instance of the <see cref="SingleFrameProcessorConfiguration"/> class.
     /// </summary>
     /// <param name="frameIndex">
-    ///     The index of the frame in the Aseprite file to process.
+    ///     The index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> to process.
     /// </param>
     /// <param name="onlyVisibleLayers">
-    ///     Indicates whether only on cels on visible layers should be processed.
+    ///     Indicates whether only <see cref="AsepriteCel"/> elements that are on visible <see cref="AsepriteLayer"/>
+    ///     elements should be processed.
     /// </param>
     /// <param name="includeBackgroundLayer">
-    ///     Indicates whether cels on the layer set as the background layer in Aseprite should be processed.
+    ///     Indicates whether <see cref="AsepriteCel"/> elements that are on the <see cref="AsepriteLayer"/> marked as
+    ///     the background should be processed.
     /// </param>
     /// <param name="includeTilemapLayers">
-    ///     Indicates whether cels on a tilemap layer should be processed.
+    ///     Indicates whether <see cref="AsepriteTilemapCel"/> elements that are on  <see cref="AsepriteTilemapLayer"/>
+    ///     elements should be processed.
     /// </param>
     public SingleFrameProcessorConfiguration(int frameIndex, bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers) =>
         (FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers) = (frameIndex, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);

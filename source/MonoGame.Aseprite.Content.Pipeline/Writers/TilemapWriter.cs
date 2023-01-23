@@ -31,7 +31,8 @@ using MonoGame.Aseprite.Processors;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
-///     Defines a content writer that writes the content of a <see cref="TileMapContentProcessorResult"/> to an xnb file.
+///     Defines a content writer that writes the content of a <see cref="TileMapContentProcessorResult"/> to an xnb
+///     file.
 /// </summary>
 [ContentTypeWriter]
 public sealed class TilemapWriter : ContentTypeWriter<TileMapContentProcessorResult>
@@ -90,7 +91,7 @@ public sealed class TilemapWriter : ContentTypeWriter<TileMapContentProcessorRes
 
     }
 
-    private void WriteTiles(ContentWriter writer, ReadOnlySpan<RawTilemapLayerTile> tiles)
+    private void WriteTiles(ContentWriter writer, ReadOnlySpan<RawTile> tiles)
     {
         int count = tiles.Length;
         writer.Write(count);
@@ -100,7 +101,7 @@ public sealed class TilemapWriter : ContentTypeWriter<TileMapContentProcessorRes
         }
     }
 
-    private void WriteTile(ContentWriter writer, RawTilemapLayerTile tile)
+    private void WriteTile(ContentWriter writer, RawTile tile)
     {
         writer.Write(tile.TilesetTileID);
         writer.Write(tile.XFlip);

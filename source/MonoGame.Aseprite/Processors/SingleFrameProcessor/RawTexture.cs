@@ -26,6 +26,10 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines the raw values for a <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> used by the the
+///     processors.
+/// </summary>
 public sealed class RawTexture
 {
     internal string Name { get; }

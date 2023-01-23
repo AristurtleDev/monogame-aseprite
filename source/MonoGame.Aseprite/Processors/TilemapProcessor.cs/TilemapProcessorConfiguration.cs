@@ -22,15 +22,48 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using MonoGame.Aseprite.AsepriteTypes;
+
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines the configuration for the <see cref="TilemapProcessor"/>.
+/// </summary>
 public class TilemapProcessorConfiguration
 {
+    /// <summary>
+    ///     Gets or Sets the index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> that contains
+    ///     the <see cref="Tilemap"/> to process.
+    /// </summary>
     public int FrameIndex { get; set; } = 0;
+
+    /// <summary>
+    ///     Gets or Sts a value that indicates whether only <see cref="AsepriteTilemapCel"/> elements that are on
+    ///     visible <see cref="AsepriteTilemapLayer"/> elements should be processed.
+    /// </summary>
     public bool OnlyVisibleLayers { get; set; } = true;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="TilemapProcessorConfiguration"/> class with the default values.
+    /// </summary>
+    /// <remarks>
+    ///     The default configuration is to process the <see cref="Tilemap"/> from <see cref="AsepriteFrame"/> zero and
+    ///     to only process visible <see cref="AsepriteTilemapLayer"/> elements.
+    /// </remarks>
     public TilemapProcessorConfiguration() { }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="TilemapProcessorConfiguration"/> class.
+    /// </summary>
+    /// <param name="frameIndex">
+    ///     The index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> that contains the
+    ///     <see cref="Tilemap"/> to process.
+    ///     The index of the frame in the Aseprite file that contains the tilemap to process.
+    /// </param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates whether only <see cref="AsepriteTilemapCel"/> elements that are on visible
+    ///     <see cref="AsepriteTilemapLayer"/> elements should be processed.
+    /// </param>
     public TilemapProcessorConfiguration(int frameIndex, bool onlyVisibleLayers) =>
         (FrameIndex, OnlyVisibleLayers) = (frameIndex, onlyVisibleLayers);
 

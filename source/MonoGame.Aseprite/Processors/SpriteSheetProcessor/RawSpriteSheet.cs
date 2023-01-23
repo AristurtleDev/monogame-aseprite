@@ -26,10 +26,13 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines the raw values for a <see cref="SpriteSheet"/> used by the <see cref="SpriteSheetProcessor"/>.
+/// </summary>
 public sealed class RawSpriteSheet
 {
     private Rectangle[] _regions;
-    public string Name { get; }
+    internal string Name { get; }
     internal RawTexture Texture { get; }
     internal ReadOnlySpan<Rectangle> Regions => _regions;
     internal Dictionary<string, RawAnimationCycle> Cycles { get; }

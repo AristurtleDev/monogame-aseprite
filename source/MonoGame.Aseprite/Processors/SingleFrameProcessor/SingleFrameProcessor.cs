@@ -24,29 +24,34 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Processors;
 
 /// <summary>
-///     Defines a processor that processes a single frame in an Aseprite file to generate an texture based on the frame.
+///     Defines a processor that processes a single <see cref="AsepriteFrame"/> from an <see cref="AsepriteFile"/>
+///     as a <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/>.
 /// </summary>
 public static class SingleFrameProcessor
 {
     /// <summary>
-    ///     Processes a single frame of an <see cref="AsepriteFile"/> as a <see cref="Texture2D"/>.
+    ///     Processes a single <see cref="AsepriteFrame"/> from an <see cref="AsepriteFile"/> as a
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/>.
     /// </summary>
     /// <param name="device">
-    ///     The <see cref="GraphicsDevice"/> used to create the resources.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
     /// </param>
     /// <param name="file">
-    ///     The <see cref="AsepriteFile"/> to process.
+    ///     The instance of the <see cref="AsepriteFile"/> to process the <see cref="AsepriteFrame"/> from.
     /// </param>
     /// <param name="configuration">
-    ///     An instance of the <see cref="SingleFrameProcessorConfiguration"/> class that defines the configurations for
+    ///     An instance of the <see cref="SingleFrameProcessorConfiguration"/> class that defines configurations for
     ///     this process.
     /// </param>
     /// <returns>
-    ///     The instance of the <see cref="Texture2D"/> class that is created by this method.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> class that is created by this
+    ///     method.
     /// </returns>
     public static Texture2D Process(GraphicsDevice device, AsepriteFile file, SingleFrameProcessorConfiguration configuration)
     {
@@ -55,20 +60,23 @@ public static class SingleFrameProcessor
     }
 
     /// <summary>
-    ///     Processes a single frame of an <see cref="AsepriteFile"/> as a <see cref="Texture2D"/>.
+    ///     Processes a single <see cref="AsepriteFrame"/> from an <see cref="AsepriteFile"/> as a
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/>.
     /// </summary>
     /// <param name="device">
-    ///     The <see cref="GraphicsDevice"/> used to create the resources.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
     /// </param>
     /// <param name="file">
-    ///     The <see cref="AsepriteFile"/> to process.
+    ///     The instance of the <see cref="AsepriteFile"/> to process the <see cref="AsepriteFrame"/> from.
     /// </param>
     /// <param name="configure">
-    ///     An instance of the <see cref="SingleFrameProcessorConfiguration"/> class that defines the configurations for
-    ///     this process.
+    ///     An action method used to build the instance of the <see cref="SingleFrameProcessorConfiguration"/> class
+    ///     that defines the configurations for this process.
     /// </param>
     /// <returns>
-    ///     The instance of the <see cref="Texture2D"/> class that is created by this method.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> class that is created by this
+    ///     method.
     /// </returns>
     public static Texture2D Process(GraphicsDevice device, AsepriteFile file, Action<SingleFrameProcessorConfiguration> configure)
     {

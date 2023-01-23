@@ -29,7 +29,7 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a tilemap with a collection of zero or more tilemap layers.
+///     Defines a tilemap with a collection of zero or more <see cref="TilemapLayer"/> elements.
 /// </summary>
 public sealed class Tilemap : IEnumerable<TilemapLayer>
 {
@@ -37,12 +37,12 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     private Dictionary<string, TilemapLayer> _layerLookup = new();
 
     /// <summary>
-    ///     Gets the name of this tilemap.
+    ///     Gets the name of this <see cref="Tilemap"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the total number of tilemap layers in this tilemap.
+    ///     Gets the total number of <see cref="TilemapLayer"/> elements in this <see cref="Tilemap"/>.
     /// </summary>
     public int LayerCount => _layers.Count;
 

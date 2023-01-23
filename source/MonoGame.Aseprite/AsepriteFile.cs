@@ -28,6 +28,9 @@ using MonoGame.Aseprite.IO;
 
 namespace MonoGame.Aseprite;
 
+/// <summary>
+///     Defines the contents of an Aseprite file that has been loaded from disk.
+/// </summary>
 public sealed class AsepriteFile
 {
     private Color[] _palette = Array.Empty<Color>();
@@ -75,12 +78,6 @@ public sealed class AsepriteFile
     public ReadOnlySpan<Color> Palette => _palette;
 
     /// <summary>
-    ///     Gets the index of the <see cref="Microsoft.Xna.Framework.Color"/> value in the <see cref="Palette"/> that
-    ///     represents the transparent color.
-    /// </summary>
-    public int TransparentIndex { get; }
-
-    /// <summary>
     ///     Gets the name of this <see cref="AsepriteFile"/>.
     /// </summary>
     public string Name { get; }
@@ -95,12 +92,11 @@ public sealed class AsepriteFile
     /// </summary>
     public int CanvasHeight { get; }
 
-    internal AsepriteFile(string name, int width, int height, int transparentIndex, Color[] palette, AsepriteFrame[] frames, AsepriteLayer[] layers, AsepriteTag[] tags, AsepriteSlice[] slices, AsepriteTileset[] tilesets)
+    internal AsepriteFile(string name, int width, int height, Color[] palette, AsepriteFrame[] frames, AsepriteLayer[] layers, AsepriteTag[] tags, AsepriteSlice[] slices, AsepriteTileset[] tilesets)
     {
         Name = name;
         CanvasWidth = width;
         CanvasHeight = height;
-        TransparentIndex = transparentIndex;
         _palette = palette;
         _frames = frames;
         _layers = layers;

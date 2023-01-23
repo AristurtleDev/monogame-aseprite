@@ -25,30 +25,29 @@ SOFTWARE.
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a tile with a texture region in a tilemap layer.
+///     Defines a tile with a <see cref="TextureRegion"/> in a <see cref="TilemapLayer"/>.
 /// </summary>
 public class Tile
 {
     /// <summary>
-    ///     Gets the texture region that represents this tile.
+    ///     Gets the <see cref="TextureRegion"/> that represents the image to render for this <see cref="Tile"/>.
     /// </summary>
     public TextureRegion TextureRegion { get; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether this tile should be
-    ///     flipped on its vertical axis when rendered.
+    ///     Gets or Sets a value that indicates whether this <see cref="Tile"/> should be flipped on its vertical axis
+    ///     when rendered.
     /// </summary>
     public bool FlipVertically { get; set; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether this tile should be
-    ///     flipped on its horizontal axis when rendered.
+    ///     Gets or Sets a value that indicates whether this <see cref="Tile"/> should be flipped on its horizontal axis
+    ///     when rendered.
     /// </summary>
     public bool FlipHorizontally { get; set; }
 
     /// <summary>
-    ///     Gets or Sets the amount of rotation, in radians, to apply to this
-    ///     tile when rendered.
+    ///     Gets or Sets the amount of rotation, in radians, to apply to this <see cref="Tile"/> when rendered.
     /// </summary>
     public float Rotation { get; set; }
 

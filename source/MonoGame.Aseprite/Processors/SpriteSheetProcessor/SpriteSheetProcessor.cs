@@ -29,20 +29,23 @@ using MonoGame.Aseprite.AsepriteTypes;
 namespace MonoGame.Aseprite.Processors;
 
 /// <summary>
-///     Defines a processor to generate a <see cref="SpriteSheet"/> from the contents of an <see cref="AsepriteFile"/>.
+///     Defines a processor that processes all <see cref="AsepriteFrame"/>, <see cref="AsepriteTag"/>, and
+///     <see cref="AsepriteSlice"/> elements from an <see cref="AsepriteFile"/> as a <see cref="SpriteSheet"/>.
 /// </summary>
 public static class SpriteSheetProcessor
 {
     private record SpriteSheetData(RawTexture RawTexture, int FrameWidth, int FrameHeight, int Columns, int Rows, Dictionary<int, int> DuplicateMap);
 
     /// <summary>
-    ///     Processes the contents of an <see cref="AsepriteFile"/> as a <see cref="SpriteSheet"/>.
+    ///     Processes all <see cref="AsepriteFrame"/>, <see cref="AsepriteTag"/>, and <see cref="AsepriteSlice"/>
+    ///     elements from an <see cref="AsepriteFile"/> as a <see cref="SpriteSheet"/>.
     /// </summary>
     /// <param name="device">
-    ///     The <see cref="GraphicsDevice"/> used to create the resources.
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
     /// </param>
     /// <param name="file">
-    ///     The <see cref="AsepriteFile"/> to process.
+    ///     The instance of the <see cref="AsepriteFile"/> to process the elements from.
     /// </param>
     /// <param name="configuration">
     ///     An instance of the <see cref="SpriteSheetProcessorConfiguration"/> class that defines configurations for
@@ -64,17 +67,19 @@ public static class SpriteSheetProcessor
     }
 
     /// <summary>
-    ///     Processes the contents of an <see cref="AsepriteFile"/> as a <see cref="SpriteSheet"/>.
+    ///     Processes all <see cref="AsepriteFrame"/>, <see cref="AsepriteTag"/>, and <see cref="AsepriteSlice"/>
+    ///     elements from an <see cref="AsepriteFile"/> as a <see cref="SpriteSheet"/>.
     /// </summary>
-    /// <param name="device">
-    ///     The <see cref="GraphicsDevice"/> used to create the resources.
+     /// <param name="device">
+    ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
+    ///     graphical resources.
     /// </param>
     /// <param name="file">
-    ///     The <see cref="AsepriteFile"/> to process.
+    ///     The instance of the <see cref="AsepriteFile"/> to process the elements from.
     /// </param>
     /// <param name="configure">
-    ///     An instance of the <see cref="SpriteSheetProcessorConfiguration"/> class that defines configurations for
-    ///     this process.
+    ///     An action method used to build the instance of the <see cref="SpriteSheetProcessorConfiguration"/> class
+    ///     that defines the configurations for this process.
     /// </param>
     /// <returns>
     ///     The instance of the <see cref="SpriteSheet"/> class that is created by this method.
@@ -171,21 +176,6 @@ public static class SpriteSheetProcessor
                 }
             }
         }
-
-
-        // Dictionary<Color[], int> checkedFrames = new();
-
-        // for (int i = 0; i < frames.GetLength(0); i++)
-        // {
-        //     if (!checkedFrames.ContainsKey(frames[i]))
-        //     {
-        //         checkedFrames.Add(frames[i], i);
-        //     }
-        //     else
-        //     {
-        //         map.Add(i, checkedFrames[frames[i]]);
-        //     }
-        // }
 
         return map;
     }

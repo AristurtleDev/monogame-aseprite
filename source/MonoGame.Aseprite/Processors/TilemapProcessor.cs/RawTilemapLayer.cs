@@ -26,18 +26,21 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.Processors;
 
+/// <summary>
+///     Defines the raw values of a <see cref="TilemapLayer"/> used by the <see cref="TilemapProcessor"/>.
+/// </summary>
 public sealed class RawTilemapLayer
 {
-    private RawTilemapLayerTile[] _tiles;
+    private RawTile[] _tiles;
 
     internal string Name { get; }
     internal int TilesetID { get; }
     internal int Columns { get; }
     internal int Rows { get; }
-    internal ReadOnlySpan<RawTilemapLayerTile> Tiles => _tiles;
+    internal ReadOnlySpan<RawTile> Tiles => _tiles;
     internal Point Offset { get; }
 
-    internal RawTilemapLayer(string name, int tilesetID, int columns, int rows, RawTilemapLayerTile[] tiles, Point offset) =>
+    internal RawTilemapLayer(string name, int tilesetID, int columns, int rows, RawTile[] tiles, Point offset) =>
         (Name, TilesetID, Columns, Rows, _tiles, Offset) = (name, tilesetID, columns, rows, tiles, offset);
 
 }
