@@ -31,6 +31,11 @@ namespace MonoGame.Aseprite;
 /// <summary>
 /// Defines a tileset with a source image and named texture regions that represent the tiles.
 /// </summary>
+/// <remarks>
+/// A tileset is similar in function to a texture atlas in that it uses a single source image and has named texture
+/// regions for sections within that image.  The difference is that a tileset autogenerates the texture regions into a
+/// grid like structure and the accessor for each texture region is by location id or column and row only.
+/// </remarks>
 public sealed class Tileset
 {
     private TextureRegion[] _regions;

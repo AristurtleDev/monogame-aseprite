@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework.Graphics;
+
 namespace MonoGame.Aseprite;
 
 /// <summary>
@@ -35,16 +37,29 @@ public class Tile
     public TextureRegion TextureRegion { get; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether this <see cref="Tile"/> should be flipped on its vertical axis
-    ///     when rendered.
+    /// Gets or Sets the sprite effects to apply for vertical and horizontal flipping when rendering this tile.
     /// </summary>
-    public bool FlipVertically { get; set; }
+    public SpriteEffects SpriteEffects { get; set; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether this <see cref="Tile"/> should be flipped on its horizontal axis
-    ///     when rendered.
+    /// Gets or Sets a value that indicates whether this tile should be flipped horizontally along its x-axis when
+    /// rendered.
     /// </summary>
-    public bool FlipHorizontally { get; set; }
+    public bool FlipHorizontally
+    {
+        get => SpriteEffects.HasFlag(SpriteEffects.FlipHorizontally);
+        set => SpriteEffects = value ? (SpriteEffects | SpriteEffects.FlipHorizontally) : (SpriteEffects & ~SpriteEffects.FlipHorizontally);
+    }
+
+    /// <summary>
+    /// Gets or Sets a value that indicates whether this tile should be flipped vertically along its y-axis when
+    /// rendered.
+    /// </summary>
+    public bool FlipVertically
+    {
+        get => SpriteEffects.HasFlag(SpriteEffects.FlipVertically);
+        set => SpriteEffects = value ? (SpriteEffects | SpriteEffects.FlipVertically) : (SpriteEffects & ~SpriteEffects.FlipVertically);
+    }
 
     /// <summary>
     ///     Gets or Sets the amount of rotation, in radians, to apply to this <see cref="Tile"/> when rendered.

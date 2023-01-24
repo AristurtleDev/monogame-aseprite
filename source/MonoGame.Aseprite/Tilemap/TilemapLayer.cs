@@ -86,15 +86,37 @@ public sealed class TilemapLayer
     }
 
     /// <summary>
-    /// Gets the total number of tile elements, including those that are empty, in this tilemap layer.
+    /// Gets or Sets the x-coordinate position offset to render this tilemap layer at relative to the position of the
+    /// tilemap it is in is rendered at.
     /// </summary>
-    public int TileCount => _tiles.Length;
+    public float OffsetX
+    {
+        get => _offset.X;
+        set => _offset.X = value;
+    }
+
+    /// <summary>
+    /// Gets or Sets the y-coordinate position offset to render this tilemap layer at relative to the position of the
+    /// tilemap it is in is rendered at.
+    /// </summary>
+    public float OffsetY
+    {
+        get => _offset.Y;
+        set => _offset.Y = value;
+    }
+
+    /// <summary>
+    /// Gets the total number of tile locations in this tilemap layer.
+    /// </summary>
+    public int TileLocationCount => _tiles.Length;
 
     /// <summary>
     /// Gets the tile from this tilemap layer at the specified index.
     /// </summary>
     /// <param name="tileIndex">The index of the tile in this tilemap layer to locate.</param>
-    /// <returns>The tile the specified index in this tilemap layer.</returns>
+    /// <returns>
+    /// The tile at the specified index in this tilemap layer, if a tile has been set at that location; otherwise, null.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tile indexes
     /// in this tilemap layer.
@@ -106,7 +128,10 @@ public sealed class TilemapLayer
     /// </summary>
     /// <param name="column">The column of the tile to locate in this tilemap layer.</param>
     /// <param name="row">The row of the tile to locate in this tilemap layer.</param>
-    /// <returns>The tile located at the specified column and row in this tilemap layer.</returns>
+    /// <returns>
+    /// The tile at the specified column and row in this tilemap layer, if a tile has been set at that location;
+    /// otherwise, null.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if either the column or rows specified is less than zero or if either is greater than or equal to the
     /// total number of columns or rows respectively.
@@ -117,7 +142,10 @@ public sealed class TilemapLayer
     /// Gets the tile located at the specified column and row location in this tilemap layer.
     /// </summary>
     /// <param name="location">The column and row location of the tile to locate in this tilemap layer.</param>
-    /// <returns>The tile located at the specified column and row location in this tilemap layer.</returns>
+    /// <returns>
+    /// The tile at the specified colum nad row location in this tilemap layer, if a tile has been set at that location;
+    /// otherwise, null.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if either the column or rows specified in the location is less than zero or if either is greater than or
     /// equal to the total number of columns or rows respectively.
@@ -149,25 +177,47 @@ public sealed class TilemapLayer
     }
 
     /// <summary>
-    /// Returns a value that indicates whether the specified index in this tilemap layer contains an empty tile.
+    /// Returns a value that indicates whether the specified index in this tilemap layer is empty, meaning no tile has
+    /// been set there.
     /// </summary>
-    /// <param name="index">The index of the tile in this tilemap layer to check.</param>
+    /// <param name="index">The index of the tile location in this tilemap layer to check.</param>
     /// <returns>
-    /// true if the tile location at the specified index in this tilemap layer is empty; otherwise, false.
+    /// true if the specified index in this tilemap layer is empty; otherwise, false.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tile
     /// locations in this tilemap layer.
     /// </exception>
-    public bool IsEmpty(int index)
-    {
-        if (index < 0 || index >= TileCount)
-        {
-            throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the total number of tiles in this tilemap.");
-        }
+    public bool IsEmpty(int index) => GetTile(index) is null;
 
-        return _tiles[index] is not null;
-    }
+    /// <summary>
+    /// Returns a value that indicates whether the specified column and row in this tilemap layer is empty, meaning no
+    /// tile has been set there.
+    /// </summary>
+    /// <param name="column">The column of the tile location in this tilemap layer to check.</param>
+    /// <param name="row">The row of the tile location in this tilemap layer to check.</param>
+    /// <returns>
+    /// true if the specified column and row in this tilemap layer is empty; otherwise, false.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if either the column or row specified is less than zero or if either is greater than or equal to the
+    /// total number of columns or rows respectively.
+    /// </exception>
+    public bool IsEmpty(int column, int row) => GetTile(column, row) is null;
+
+    /// <summary>
+    /// Returns a value tha indicates whether the specified column and row location in this tilemap layer is empty,
+    /// meaning no tile has been set there.
+    /// </summary>
+    /// <param name="location">The column and row location in this tilemap layer to check.</param>
+    /// <returns>
+    /// true fi the specified column and row location in this tilemap layer is empty; otherwise, false.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if either the column or row in the location specified is less than zero or if either is greater than or
+    /// equal to the total number of columns or rows respectively.
+    /// </exception>
+    public bool IsEmpty(Point location) => GetTile(location) is null;
 
     /// <summary>
     /// Creates and sets a new tile a the specified column and row in this tilemap layer.
@@ -184,6 +234,10 @@ public sealed class TilemapLayer
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if either the column or row specified is less than zero or if either is greater than or equal to the
     /// total number of columns or rows respectively.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
+    /// texture regions in the tileset used by this tilemap layer.
     /// </exception>
     public Tile SetTile(int column, int row, int tilesetIndex, bool flipVertically = false, bool flipHorizontally = false, float rotation = 0.0f)
     {
@@ -202,45 +256,27 @@ public sealed class TilemapLayer
     }
 
     /// <summary>
-    ///     Creates and adds a new <see cref="Tile"/> at the specified index in this <see cref="TilemapLayer"/>.
+    /// Creates and sets a new tile at the specified index in this tilemap layer.
     /// </summary>
-    /// <param name="index">
-    ///     The index in this <see cref="TilemapLayer"/> to set the <see cref="Tile"/> created by this method to.
-    /// </param>
+    /// <param name="index">The index in this tilemap layer to set the tile.</param>
     /// <param name="tilesetIndex">
-    ///     The index of the <see cref="TextureRegion"/> in the <see cref="Tileset"/> used by this
-    ///     <see cref="TilemapLayer"/>  that represents the image to draw for the <see cref="Tile"/> created by
-    ///     this method.
+    /// The index of the source tile in the tileset used by this tilemap layer that represents the tile being set.
     /// </param>
-    /// <param name="flipVertically">
-    ///     A value that indicates whether the <see cref="Tile"/> created by this method should be flipped vertically
-    ///     when rendered.
-    /// </param>
-    /// <param name="flipHorizontally">
-    ///     A value that indicates whether the <see cref="Tile"/> created by this method should be flipped horizontally
-    ///     when rendered.
-    /// </param>
-    /// <param name="rotation">
-    ///     The amount of rotation, in radian, to apply when rendering the <see cref="Tile"/> created by this method.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Tile"/> that is create by this method.
-    /// </returns>
-    /// <returns>
-    ///     The <see cref="Tile"/> that is create by this method.
-    /// </returns>
+    /// <param name="flipVertically">Indicates whether the tile being set should be flipped vertically.</param>
+    /// <param name="flipHorizontally">Indicates whether the tile being set should be flipped horizontally.</param>
+    /// <param name="rotation">The amount of rotation, in radians, to give the tile being set.</param>
+    /// <returns>The tile that is created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
-    ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
+    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tile
+    /// locations in this tilemap layer.
     /// </exception>
     /// <exception cref="ArgumentException">
-    ///     Thrown if the specified tileset index is less than zero or is greater than or equal to the total number of
-    ///     <see cref="TextureRegion"/> elements in the <see cref="Tileset"/> used by this <see cref="TilemapLayer"/>.
-    ///     Use <see cref="Tileset.TileCount"/> to determine the total number of elements.
+    /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
+    /// texture regions in the tileset used by this tilemap layer.
     /// </exception>
     public Tile SetTile(int index, int tilesetIndex, bool flipVertically = false, bool flipHorizontally = false, float rotation = 0.0f)
     {
-        if (index < 0 || index >= TileCount)
+        if (index < 0 || index >= TileLocationCount)
         {
             throw new ArgumentOutOfRangeException(nameof(index), $"The {nameof(index)} cannot be less than zero or greater than or equal the number of tiles in this layer.");
         }
@@ -256,104 +292,62 @@ public sealed class TilemapLayer
     }
 
     /// <summary>
-    ///     Creates and sets a new <see cref="Tile"/> at the specified column and row location in this
-    ///     <see cref="TilemapLayer"/>.
+    /// Creates and sets a new tile a the specified column and row location in this tilemap layer.
     /// </summary>
-    /// <param name="location">
-    ///     The column and row location in this <see cref="TilemapLayer"/> to set the <see cref="Tile"/> created by this
-    ///     method to.
-    /// </param>
+    /// <param name="location">The column and row location in this tilemap layer to set the tile.</param>
     /// <param name="tilesetIndex">
-    ///     The index of the <see cref="TextureRegion"/> in the <see cref="Tileset"/> used by this
-    ///     <see cref="TilemapLayer"/>  that represents the image to draw for the <see cref="Tile"/> created by
-    ///     this method.
+    /// The index of the source tile in the tileset used by this tilemap layer that represents the tile being set.
     /// </param>
-    /// <param name="flipVertically">
-    ///     A value that indicates whether the <see cref="Tile"/> created by this method should be flipped vertically
-    ///     when rendered.
-    /// </param>
-    /// <param name="flipHorizontally">
-    ///     A value that indicates whether the <see cref="Tile"/> created by this method should be flipped horizontally
-    ///     when rendered.
-    /// </param>
-    /// <param name="rotation">
-    ///     The amount of rotation, in radian, to apply when rendering the <see cref="Tile"/> created by this method.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Tile"/> that is create by this method.
-    /// </returns>
-    /// <returns>
-    ///     The <see cref="Tile"/> that is create by this method.
-    /// </returns>
+    /// <param name="flipVertically">Indicates whether the tile being set should be flipped vertically.</param>
+    /// <param name="flipHorizontally">Indicates whether the tile being set should be flipped horizontally.</param>
+    /// <param name="rotation">The amount of rotation, in radians, to give the tile being set.</param>
+    /// <returns>The tile that is created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if either the column or row in the specified location is less than zero or is either greater than or
-    ///     equal to the total number of columns or rows respectively.  Use <see cref="TilemapLayer.ColumnCount"/> and
-    ///     <see cref="TilemapLayer.RowCount"/> to determine the total number of columns and rows.
+    /// Thrown if either the column or row specified is less than zero or if either is greater than or equal to the
+    /// total number of columns or rows respectively.
     /// </exception>
     /// <exception cref="ArgumentException">
-    ///     Thrown if the specified tileset index is less than zero or is greater than or equal to the total number of
-    ///     <see cref="TextureRegion"/> elements in the <see cref="Tileset"/> used by this <see cref="TilemapLayer"/>.
-    ///     Use <see cref="Tileset.TileCount"/> to determine the total number of elements.
+    /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
+    /// texture regions in the tileset used by this tilemap layer.
     /// </exception>
     public Tile SetTile(Point location, int tilesetIndex, bool flipVertically = false, bool flipHorizontally = false, float rotation = 0.0f) =>
         SetTile(location.X, location.Y, tilesetIndex, flipVertically, flipHorizontally, rotation);
 
     /// <summary>
-    ///     Gets the <see cref="Tile"/> element from this <see cref="TilemapLayer"/> at the specified index.
+    /// Gets the tile from this tilemap layer at the specified index.
     /// </summary>
-    /// <param name="tileIndex">
-    ///     The index of the <see cref="Tile"/> element in this <see cref="TilemapLayer"/> to locate.
-    /// </param>
+    /// <param name="tileIndex">The index of the tile in this tilemap layer to locate.</param>
     /// <returns>
-    ///     The <see cref="Tile"/> element that was located at the specified index in this <see cref="TilemapLayer"/>.
+    /// The tile at the specified index in this tilemap layer, if a tile has been set at that location; otherwise, null.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
-    ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.  Use <see cref="TilemapLayer.TileCount"/> to
-    ///     determine the total number of elements.
+    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tile indexes
+    /// in this tilemap layer.
     /// </exception>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown if no <see cref="Tile"/> has been set at the specified index in this <see cref="TilemapLayer"/>.
-    /// </exception>
-    public Tile GetTile(int index)
+    public Tile? GetTile(int index)
     {
-        if (index < 0 || index >= TileCount)
+        if (index < 0 || index >= TileLocationCount)
         {
             throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the number of tiles in this {nameof(TilemapLayer)}.");
         }
 
-        Tile? tile = _tiles[index];
-
-        if (tile is null)
-        {
-            throw new InvalidOperationException($"No tile has been set for index '{index}' in this {nameof(TilemapLayer)}.");
-        }
-
-        return tile;
+        return _tiles[index];
     }
 
     /// <summary>
-    ///     Gets the <see cref="Tile"/> located at the specified column and row in this <see cref="TilemapLayer"/>.
+    /// Gets the tile located at the specified column and row in this tilemap layer.
     /// </summary>
-    /// <param name="column">
-    ///     The column of the <see cref="Tile"/> to locate in this <see cref="TilemapLayer"/>.
-    /// </param>
-    /// <param name="row">
-    ///     The row of the <see cref="Tile"/> to locate in this <see cref="TilemapLayer"/>.
-    /// </param>
+    /// <param name="column">The column of the tile to locate in this tilemap layer.</param>
+    /// <param name="row">The row of the tile to locate in this tilemap layer.</param>
     /// <returns>
-    ///     The <see cref="Tile"/> located at the specified column and row in this <see cref="TilemapLayer"/>.
+    /// The tile at the specified column and row in this tilemap layer, if a tile has been set at that location;
+    /// otherwise, null.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if either the column or row specified is less than zero or if either is greater than or equal to the
-    ///     total number of columns or rows respectively.  Use <see cref="TilemapLayer.ColumnCount"/> and
-    ///     <see cref="TilemapLayer.RowCount"/> to determine the total number of columns and rows.
+    /// Thrown if either the column or rows specified is less than zero or if either is greater than or equal to the
+    /// total number of columns or rows respectively.
     /// </exception>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown if no <see cref="Tile"/> has been set at the specified column and row in this
-    ///     <see cref="TilemapLayer"/>.
-    /// </exception>
-    public Tile GetTile(int column, int row)
+    public Tile? GetTile(int column, int row)
     {
         if (row < 0 || row >= RowCount)
         {
@@ -366,30 +360,20 @@ public sealed class TilemapLayer
         }
 
         int index = row * ColumnCount + column;
-
-        Tile? tile = _tiles[index];
-
-        if (tile is null)
-        {
-            throw new InvalidOperationException($"No tile has been set for the location [{column}, {row}] in this {nameof(TilemapLayer)}.");
-        }
-
-        return tile;
+        return _tiles[index];
     }
 
     /// <summary>
-    ///     Gets the <see cref="Tile"/> located at the specified location in this <see cref="TilemapLayer"/>.
+    /// Gets the tile located at the specified column and row location in this tilemap layer.
     /// </summary>
-    /// <param name="location">
-    ///     The column and row location of the <see cref="Tile"/> to locate in this <see cref="TilemapLayer"/>.
-    /// </param>
+    /// <param name="location">The column and row location of the tile to locate in this tilemap layer.</param>
     /// <returns>
-    ///     The <see cref="Tile"/> located at the specified column and row location in this <see cref="TilemapLayer"/>.
+    /// The tile at the specified colum nad row location in this tilemap layer, if a tile has been set at that location;
+    /// otherwise, null.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if either the column or row in the location specified is less than zero or if either is greater than
-    ///     or equal to the total number of columns or rows respectively.  Use <see cref="TilemapLayer.ColumnCount"/>
-    ///     and <see cref="TilemapLayer.RowCount"/> to determine the total number of columns and rows.
+    /// Thrown if either the column or rows specified in the location is less than zero or if either is greater than or
+    /// equal to the total number of columns or rows respectively.
     /// </exception>
     public Tile GetTile(Point location) => GetTile(location.X, location.Y);
 
@@ -424,7 +408,7 @@ public sealed class TilemapLayer
     {
         tile = default;
 
-        if (index < 0 || index >= TileCount)
+        if (index < 0 || index >= TileLocationCount)
         {
             return false;
         }
@@ -498,12 +482,12 @@ public sealed class TilemapLayer
     ///     <see langword="true"/> if the <see cref="Tile"/> was successfully removed; otherwise,
     ///     <see langword="false"/>.  This method return <see langword="false"/> if the index specified is less than
     ///     zero or is greater than or equal to the total number of <see cref="Tile"/> elements in this
-    ///     <see cref="TilemapLayer"/>.  Use <see cref="TilemapLayer.TileCount"/> to determine the total number of
+    ///     <see cref="TilemapLayer"/>.  Use <see cref="TilemapLayer.TileLocationCount"/> to determine the total number of
     ///     elements.
     /// </returns>
     public bool RemoveTile(int index)
     {
-        if (index < 0 || index >= TileCount)
+        if (index < 0 || index >= TileLocationCount)
         {
             return false;
         }
