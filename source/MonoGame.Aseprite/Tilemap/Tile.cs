@@ -25,7 +25,7 @@ SOFTWARE.
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a tile with a <see cref="TextureRegion"/> in a <see cref="TilemapLayer"/>.
+/// Defines a tile in a tilemap layer with a source texture region.
 /// </summary>
 public class Tile
 {

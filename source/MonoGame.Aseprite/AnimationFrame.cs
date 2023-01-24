@@ -22,40 +22,60 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines the cycles of an animation including the frames and how it loops.
+///     Defines the source texture region and the duration of a single frame of animation in an animation tag.
 /// </summary>
-public class AnimationCycle
+public sealed class AnimationFrame : IDisposable
 {
-    /// <summary>
-    ///     Gets the name of this <see cref="AnimationCycle"/>.
-    /// </summary>
-    public string Name { get; }
+    private TextureRegion? _textureRegion;
 
     /// <summary>
-    ///     Gets the <see cref="AnimationFrame"/> elements that make up this <see cref="AnimationCycle"/>.  The order of
-    ///     frames is from start to end.
+    ///     Gets the source texture region to render during this frame of animation.
     /// </summary>
-    public AnimationFrame[] Frames { get; }
+    public TextureRegion TextureRegion
+    {
+        get
+        {
+            if (IsDisposed)
+            {
+                throw new ObjectDisposedException(nameof(AnimationFrame), $"This {nameof(AnimationFrame)} was previously disposed");
+            }
+
+            return _textureRegion;
+        }
+    }
 
     /// <summary>
-    ///     Gets or Sets whether this <see cref="AnimationCycle"/> should loop.
+    ///     Gets the duration of this frame of animation.
     /// </summary>
-    public bool IsLooping { get; set; }
+    public TimeSpan Duration { get; }
 
     /// <summary>
-    ///     Gets or Sets whether this <see cref="AnimationCycle"/> should have the frames played in reverse order.
+    ///     Gets a value that indicates if this animation frame has been disposed of.
     /// </summary>
-    public bool IsReversed { get; set; }
+    [MemberNotNullWhen(false, nameof(_textureRegion))]
+    public bool IsDisposed { get; private set; }
+
+    internal AnimationFrame(TextureRegion region, TimeSpan duration) =>
+        (_textureRegion, Duration) = (region, duration);
+
+    ~AnimationFrame() => Dispose();
 
     /// <summary>
-    ///     Gets or Sets whether this <see cref="AnimationCycle"/> should have ping-pong once reaching the end of the
-    ///     cycle.
+    ///     Releases resources held by this instance.
     /// </summary>
-    public bool IsPingPong { get; set; }
+    public void Dispose()
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
 
-    internal AnimationCycle(string name, AnimationFrame[] frames, bool isLooping, bool isReversed, bool isPingPong) =>
-        (Name, Frames, IsLooping, IsReversed, IsPingPong) = (name, frames, isLooping, isReversed, isPingPong);
+        _textureRegion = null;
+        IsDisposed = true;
+    }
 }

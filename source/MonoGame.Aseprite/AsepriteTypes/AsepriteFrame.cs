@@ -41,6 +41,11 @@ public sealed class AsepriteFrame
     public ReadOnlySpan<AsepriteCel> Cels => _cels;
 
     /// <summary>
+    /// Gets the name of this frame.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
     ///     Gets the width, in pixels, of this <see cref="AsepriteFrame"/>.
     /// </summary>
     public int Width { get; }
@@ -55,8 +60,8 @@ public sealed class AsepriteFrame
     /// </summary>
     public int Duration { get; }
 
-    internal AsepriteFrame(int width, int height, int duration, AsepriteCel[] cels) =>
-        (Width, Height, Duration, _cels) = (width, height, duration, cels);
+    internal AsepriteFrame(string name, int width, int height, int duration, AsepriteCel[] cels) =>
+        (Name, Width, Height, Duration, _cels) = (name, width, height, duration, cels);
 
     /// <summary>
     ///     Flattens this <see cref="AsepriteFrame"/> by combining all <see cref="AsepriteCel"/> elements in this

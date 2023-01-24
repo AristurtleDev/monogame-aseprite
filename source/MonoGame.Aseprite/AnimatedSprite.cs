@@ -27,83 +27,78 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     An animation based on animation cycles from a spritesheet.
+/// Defines an animated sprite with methods to control the playing of the sprite animation.
 /// </summary>
-public sealed class Animation
+public sealed class AnimatedSprite : Sprite
 {
     private int _currentIndex;
     private int _direction;
 
     /// <summary>
-    ///     Gets the animation cycle that is used by this animation.
+    /// Gets the source animation tag that defines the animation of this animated sprite.
     /// </summary>
-    public AnimationCycle Cycles { get; }
+    public AnimationTag AnimationTag { get; }
 
     /// <summary>
-    ///     Gets a value that indicates if this animation is paused.
+    /// Gets a value that indicates if this animated sprite is currently paused.
     /// </summary>
     public bool IsPaused { get; set; }
 
     /// <summary>
-    ///     Gets a value that indicates if this animation has completed.
+    /// Gets a value that indicates if this animated sprite has completed it's animation.
     /// </summary>
     public bool IsAnimating { get; private set; }
 
     /// <summary>
-    ///     Get the current frame of animation.
+    /// Gets the source animation frame of the current frame of animation for this animated sprite.
     /// </summary>
-    public AnimationFrame CurrentFrame => Cycles.Frames[_currentIndex];
+    public AnimationFrame CurrentFrame => AnimationTag.Frames[_currentIndex];
 
     /// <summary>
-    ///     Gets or Sets an action to perform at the start of each frame.
+    /// Gets or Sets an action method to invoke at the start of each frame of animation.
     /// </summary>
-    public Action<Animation>? OnFrameBegin { get; set; } = default;
+    public Action<AnimatedSprite>? OnFrameBegin { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an action to perform at the end of each frame.
+    /// Gets or Sets an action method to invoke at the end fo each frame of animation.
     /// </summary>
-    public Action<Animation>? OnFrameEnd { get; set; } = default;
+    public Action<AnimatedSprite>? OnFrameEnd { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an action to perform at the start of the animation.
-    ///     This will trigger only once when the animation starts before the
-    ///     first frame's OnFrameBegin triggers.
+    /// Gets or Sets an action method to invoke at the start of the animation.  This will trigger only once when the
+    /// animation starts before the first first frame's OnFrameBegin triggers.
     /// </summary>
-    public Action<Animation>? OnAnimationBegin { get; set; } = default;
+    public Action<AnimatedSprite>? OnAnimationBegin { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an action to perform each time the animation loops.
-    ///     This will trigger each time the animation loops after the last
-    ///     frame's OnFrameEnd triggers.
+    /// Gets or Sets an action to invoke each time the animation loops.  This will trigger each time the animation loops
+    /// after the last frame's OnFrameEnd triggers.
     /// </summary>
-    public Action<Animation>? OnAnimationLoop { get; set; } = default;
+    public Action<AnimatedSprite>? OnAnimationLoop { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an action to perform when the animation ends. This
-    ///     will only trigger when the animation ends in a non-looping
-    ///     animation, or if a looping animation is manually stopped.
+    /// Gets or Sets an action method to invoke when the animation ends.  This will only trigger when the animation ends
+    /// in a non-looping animation, or if a looping animation is stopped by calling the Stop method manually.
     /// </summary>
-    public Action<Animation>? OnAnimationEnd { get; set; } = default;
+    public Action<AnimatedSprite>? OnAnimationEnd { get; set; } = default;
 
     /// <summary>
-    ///     Gets the amount of time remaining for the current frame of animation
-    ///     before moving to the next frame.
+    /// Gets the amount of time remaining for the current frame of animation before moving to the next frame.
     /// </summary>
     public TimeSpan CurrentFrameTimeRemaining { get; private set; }
 
-    internal Animation(AnimationCycle animation)
+    internal AnimatedSprite(AnimationTag tag)
+        : base(tag.Name, null)
     {
-        Cycles = animation;
+        AnimationTag = tag;
         Reset();
     }
 
     /// <summary>
-    ///     Updates this animation. This should be called once per game update
-    ///     cycle.
+    /// Updates this animated sprite.  This should only be called once per game update cycle.
     /// </summary>
     /// <param name="deltaTimeInMilliseconds">
-    ///     The amount of time, in milliseconds, that have elapsed since the
-    ///     last update cycle.
+    /// The amount of time, in milliseconds, that have elapsed since the last update cycle in the game.
     /// </param>
     public void Update(float deltaTimeInMilliseconds)
     {
@@ -113,11 +108,10 @@ public sealed class Animation
     }
 
     /// <summary>
-    ///     Updates this animation. This should be called once per game update
-    ///     cycle.
+    /// Updates this animated sprite.  This should only be called once per game update cycle.
     /// </summary>
     /// <param name="gameTime">
-    ///     A snapshot of the game timing values for the current update cycle.
+    /// A snapshot of the game timing values for the current update cycle.
     /// </param>
     public void Update(GameTime gameTime)
     {
@@ -145,7 +139,7 @@ public sealed class Animation
 
         _currentIndex += _direction;
 
-        switch (Cycles.IsReversed, Cycles.IsPingPong)
+        switch (AnimationTag.IsReversed, AnimationTag.IsPingPong)
         {
             case (true, true):
                 ReversePingPongLoopCheck();
@@ -161,21 +155,22 @@ public sealed class Animation
                 break;
         }
 
+        TextureRegion = CurrentFrame.TextureRegion;
         CurrentFrameTimeRemaining = CurrentFrame.Duration;
     }
 
     private void LoopCheck()
     {
-        if (_currentIndex >= Cycles.Frames.Length)
+        if (_currentIndex >= AnimationTag.Frames.Length)
         {
-            if (Cycles.IsLooping)
+            if (AnimationTag.IsLooping)
             {
                 _currentIndex = 0;
                 OnAnimationLoop?.Invoke(this);
             }
             else
             {
-                _currentIndex = Cycles.Frames.Length - 1;
+                _currentIndex = AnimationTag.Frames.Length - 1;
                 Stop();
             }
         }
@@ -185,9 +180,9 @@ public sealed class Animation
     {
         if (_currentIndex < 0)
         {
-            if (Cycles.IsLooping)
+            if (AnimationTag.IsLooping)
             {
-                _currentIndex = Cycles.Frames.Length - 1;
+                _currentIndex = AnimationTag.Frames.Length - 1;
                 OnAnimationLoop?.Invoke(this);
             }
             else
@@ -200,17 +195,17 @@ public sealed class Animation
 
     private void PingPongLoopCheck()
     {
-        if (_currentIndex < 0 || _currentIndex >= Cycles.Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= AnimationTag.Frames.Length)
         {
             _direction = -_direction;
 
             if (_direction == -1)
             {
-                _currentIndex = Cycles.Frames.Length - 2;
+                _currentIndex = AnimationTag.Frames.Length - 2;
             }
             else
             {
-                if (Cycles.IsLooping)
+                if (AnimationTag.IsLooping)
                 {
                     _currentIndex = 1;
                     OnAnimationLoop?.Invoke(this);
@@ -226,7 +221,7 @@ public sealed class Animation
 
     private void ReversePingPongLoopCheck()
     {
-        if (_currentIndex < 0 || _currentIndex >= Cycles.Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= AnimationTag.Frames.Length)
         {
             _direction = -_direction;
 
@@ -236,14 +231,14 @@ public sealed class Animation
             }
             else
             {
-                if (Cycles.IsLooping)
+                if (AnimationTag.IsLooping)
                 {
-                    _currentIndex = Cycles.Frames.Length - 2;
+                    _currentIndex = AnimationTag.Frames.Length - 2;
                     OnAnimationLoop?.Invoke(this);
                 }
                 else
                 {
-                    _currentIndex = Cycles.Frames.Length - 1;
+                    _currentIndex = AnimationTag.Frames.Length - 1;
                     Stop();
                 }
             }
@@ -251,24 +246,21 @@ public sealed class Animation
     }
 
     /// <summary>
-    ///     Pauses this animation and prevents it from being updated until
-    ///     it is unpaused.
+    /// Pauses the animation of this animated sprite and prevents it from being updated until it is unpaused.
     /// </summary>
     /// <param name="resetFrameDuration">
-    ///     A value that indicates if the duration of the current frame should
-    ///     be reset.  When this method returns false, the frame duration will
-    ///     not be reset even if this is specified as true.
+    /// A value that indicates whether the the duration of the current frame of the animation of this animated sprite
+    /// should be reset.  When this method returns false, the duration will not be reset even if this is specified as
+    /// true.
     /// </param>
     /// <returns>
-    ///     true if this animation is successfully paused; otherwise, false.
-    ///     This will return false if the animation is not currently animating
-    ///     or if the animation is already paused.
+    /// true if the animation of this animated sprite was successfully paused; otherwise, false.  This method returns
+    /// false if the animation of this animated sprite is not currently animating or if it is already paused.
     /// </returns>
     public bool Pause(bool resetFrameDuration = false)
     {
-        //  We can only pause something that is animating and is not already
-        //  paused.  This is to prevent improper usage that could accidentally
-        //  reset frame duration if it was set to true
+        //  We can only pause something that is animating and is not already paused.  This is to prevent improper usage
+        //  that could accidentally reset frame duration if it was set to true.
         if (!IsAnimating || IsPaused)
         {
             return false;
@@ -285,24 +277,21 @@ public sealed class Animation
     }
 
     /// <summary>
-    ///     Unpauses this animation .
+    /// Unpauses the animation of this animated sprite.
     /// </summary>
     /// <param name="advanceToNextFrame">
-    ///     A value that indicates if this animation should immediately be
-    ///     advanced to the next frame.  When this method returns false,
-    ///     the animation will not be advanced to the next frame even if this
-    ///     was specified as true.
+    /// A value that indicates whether the animation of this animated sprite should immediately be advanced to the next
+    /// frame after unpausing.  When this method returns false, the animation of this animated sprite will -not- be
+    /// advanced to the next frame, even if this was specified as true.
     /// </param>
     /// <returns>
-    ///     true if this animation is successfully unpaused; otherwise, false.
-    ///     This will return false if the animation is not currently animating
-    ///     or if the animation is not paused.
+    /// true if the animation of this animated sprite was successfully unpaused; otherwise, false.  This method return
+    /// false if the animation of this animated sprite is not currently animating or if it has not already been paused.
     /// </returns>
     public bool Unpause(bool advanceToNextFrame = false)
     {
-        //  We can't unpause something that's not animating and also isn't
-        //  paused.  This is to prevent improper usage that could accidentally
-        //  advance to the next frame if it was set to true
+        //  We can't unpause something that's not animating and also isn't paused.  This is to prevent improper usage
+        //  that could accidentally advance to the next frame if it was set to true.
         if (!IsAnimating || !IsPaused)
         {
             return false;
@@ -319,14 +308,13 @@ public sealed class Animation
     }
 
     /// <summary>
-    ///     Ends this animation on the current frame.  This will trigger the
-    ///     OnAnimationEnd action if one was set
+    /// Stops the animation of this animated sprite on the current frame.  This will trigger the OnAnimationEnd action
+    /// method if one was set.
     /// </summary>
     /// <returns>
-    ///     true if this animation was successfully stopped; otherwise, false.
-    ///     This will only return false if the animation is not currently
-    ///     animating.  When this returns false, this also indicates that the
-    ///     OnAnimationEnd action was not triggered.
+    /// true if the animation of this animated sprite was successfully stopped; otherwise, false.  This method returns
+    /// false if the animation of this animated sprite is not currently animating.  If this method returns false, this
+    /// indicates that the OnAnimationEnd action method was not invoked.
     /// </returns>
     public bool Stop()
     {
@@ -343,21 +331,20 @@ public sealed class Animation
     }
 
     /// <summary>
-    ///     Resets this animation back to it's first frame.
+    /// Resets the animation for this animated sprite back to its first frame of animation.
     /// </summary>
     /// <param name="paused">
-    ///     A value indicating if the animation should be paused after it si
-    ///     reset.
+    /// A value that indicates whether the animation for this animated sprite should be paused after it is reset.
     /// </param>
     public void Reset(bool paused = false)
     {
         IsAnimating = true;
         IsPaused = paused;
 
-        if (Cycles.IsReversed)
+        if (AnimationTag.IsReversed)
         {
             _direction = -1;
-            _currentIndex = Cycles.Frames.Length;
+            _currentIndex = AnimationTag.Frames.Length;
         }
         else
         {
@@ -365,6 +352,7 @@ public sealed class Animation
             _currentIndex = 0;
         }
 
+        TextureRegion = CurrentFrame.TextureRegion;
         OnAnimationBegin?.Invoke(this);
     }
 }

@@ -28,38 +28,38 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a named rectangular region that represents the location and extents of a region within a source texture.
+/// Defines a named rectangular region that represents the location and extents of a region within a source texture.
 /// </summary>
 public class TextureRegion : IDisposable
 {
     private Texture2D? _texture;
 
     /// <summary>
-    ///     Gets the name of this texture region.
+    /// Gets the name of this texture region.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the source texture used by this texture region.
+    /// Gets the source texture used by this texture region.
     /// </summary>
     public Texture2D Texture
     {
         get
         {
-            if (_texture is Texture2D texture)
+            if (_texture is null)
             {
-                return texture;
+                throw new InvalidOperationException($"The texture for texture region '{Name}' is null.  This occurs if the texture region was disposed of previously.");
             }
 
-            throw new ObjectDisposedException(nameof(TextureRegion), $"The {nameof(TextureRegion)} '{Name}' was previously disposed.");
+            return _texture;
         }
     }
 
     public bool IsDisposed { get; private set; }
 
     /// <summary>
-    ///     Gets the rectangular bounds that define the location and width and height extents, in pixels of the region
-    ///     within the source texture that is represented by this texture region.
+    /// Gets the rectangular bounds that define the location and width and height extents, in pixels of the region
+    /// within the source texture that is represented by this texture region.
     /// </summary>
     public Rectangle Bounds { get; }
 
@@ -69,7 +69,7 @@ public class TextureRegion : IDisposable
     ~TextureRegion() => Dispose(false);
 
     /// <summary>
-    ///     Releases resources held by this texture region.
+    /// Releases resources held by this texture region.
     /// </summary>
     public void Dispose()
     {

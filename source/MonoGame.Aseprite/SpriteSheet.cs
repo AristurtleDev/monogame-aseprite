@@ -23,162 +23,160 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Processors;
 
-namespace MonoGame.Aseprite.Sprites;
+namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a spritesheet that contains a source image and named texture regions, with method for creating sprites
-///     and animated sprites.
+/// Defines a spritesheet that contains a source image and named texture regions, with method for creating sprites and
+/// animated sprites.
 /// </summary>
-public sealed class SpriteSheet : TextureAtlas
+public sealed class SpriteSheet
 {
     private static readonly TimeSpan s_defaultDuration = TimeSpan.FromMilliseconds(100);
 
-    private Dictionary<string, AnimationCycle> _animationCycleLookup = new();
+    private Dictionary<string, AnimationTag> _animationTagLookup = new();
 
     /// <summary>
-    ///     Gets the total number of animation cycles in this spritesheet.
+    /// Gets the total number of animation tags that have been defined for this spritesheet.
     /// </summary>
-    public int AnimationCycleCount => _animationCycleLookup.Count;
+    public int AnimationTagCount => _animationTagLookup.Count;
 
     /// <summary>
-    ///     Creates a new spritesheet.
+    /// Gets the name of this spritesheet.
     /// </summary>
-    /// <param name="name">
-    ///     The name to give the spritesheet.
-    /// </param>
-    /// <param name="texture">
-    ///     The source texture for this spritesheet.
-    /// </param>
-    public SpriteSheet(string name, Texture2D texture) : base(name, texture) { }
+    public string Name { get; }
 
     /// <summary>
-    ///     Creates a new sprite based on a the texture region at the specified index in this spritesheet.
+    /// Gets the texture atlas that defines the texture regions used by this spritesheet.
     /// </summary>
-    /// <param name="name">
-    ///     The name to assign the sprite that is created.
-    /// </param>
+    public TextureAtlas TextureAtlas { get; }
+
+    /// <summary>
+    /// Creates a new spritesheet.
+    /// </summary>
+    /// <param name="name">The name to give the spritesheet.</param>
+    /// <param name="atlas">The texture atlas that defines the source texture regions used by this spritesheet.</param>
+    public SpriteSheet(string name, TextureAtlas atlas) => (Name, TextureAtlas) = (name, atlas);
+
+    /// <summary>
+    /// Creates a new sprite based on a the texture region at the specified index in this spritesheet.
+    /// </summary>
+    /// <param name="name">The name to assign the sprite that is created.</param>
     /// <param name="regionIndex">
-    ///     The index of the texture region in this spritesheet to assign to the sprite that is created.
+    /// The index of the texture region in the texture atlas of this spritesheet that will be assigned to the sprite
+    /// created by this method.
     /// </param>
-    /// <returns>
-    ///     The sprite that is created by this method.
-    /// </returns>
+    /// <returns>The sprite that is created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified texture region index is less than zero or is greater than or equal to the total
-    ///     number of texture region elements in this spritesheet.
+    /// Thrown if the specified texture region index is less than zero or is greater than or equal to the total number
+    /// of texture regions in the texture atlas used by this spritesheet
     /// </exception>
     public Sprite CreateSprite(string name, int regionIndex)
     {
-        TextureRegion region = GetRegion(regionIndex);
+        TextureRegion region = TextureAtlas.GetRegion(regionIndex);
         Sprite sprite = new(name, region);
         return sprite;
     }
 
     /// <summary>
-    ///     Creates a new sprite based on the texture region at the specified index in this spritesheet.
+    /// Creates a new sprite based on the texture region at the specified index in this spritesheet.
     /// </summary>
     /// <remarks>
-    ///     The name of the texture region will be assigned as the name of the sprite that is created.
+    /// The name of the texture region will be assigned as the name of the sprite that is created.
     /// </remarks>
     /// <param name="regionIndex">
-    ///     The index of the texture region in this spritesheet ot assign to the sprite that is created.
+    /// The index of the texture region in the texture atlas of this spritesheet that will be assigned to the sprite
+    /// created by this method.
     /// </param>
-    /// <returns>
-    ///     The sprite that is created by this method.
-    /// </returns>
+    /// <returns> The sprite that is created by this method.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the specified texture region index is less than zero or is greater than or equal to the total number
+    /// of texture regions in the texture atlas used by this spritesheet
+    /// </exception>
     public Sprite CreateSprite(int regionIndex)
     {
-        TextureRegion region = GetRegion(regionIndex);
+        TextureRegion region = TextureAtlas.GetRegion(regionIndex);
         Sprite sprite = new(region.Name, region);
         return sprite;
     }
 
     /// <summary>
-    ///     Creates a new sprite based on the texture region with the specified name in this spritesheet.
+    /// Creates a new sprite based on the texture region with the specified name in this spritesheet.
     /// </summary>
-    /// <param name="name">
-    ///     The name to assign the sprite that is created.
+    /// <param name="name">The name to assign the sprite that is created.
     /// </param>
     /// <param name="regionName">
-    ///     The name of the texture region in this spritesheet to assign to the sprite that is created.
+    /// The name of the texture region in the texture atlas of this spritesheet that will be assigned to the sprite
+    /// created by this method.
     /// </param>
-    /// <returns>
-    ///     The sprite that is created by this method.
-    /// </returns>
+    /// <returns>The sprite that is created by this method.</returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Thrown if the texture atlas of this spritesheet does not contain a texture region with the name specified.
+    /// </exception>
     public Sprite CreateSprite(string name, string regionName)
     {
-        TextureRegion region = GetRegion(regionName);
+        TextureRegion region = TextureAtlas.GetRegion(regionName);
         Sprite sprite = new(name, region);
         return sprite;
     }
 
     /// <summary>
-    ///     Creates a new sprite based on the texture region with the specified name in this spritesheet.
+    /// Creates a new sprite based on the texture region with the specified name in this spritesheet.
     /// </summary>
     /// <remarks>
-    ///     The name of the texture region will be assigned as the name of the sprite that is created.
+    /// The name of the texture region will be assigned as the name of the sprite that is created.
     /// </remarks>
     /// <param name="regionName">
-    ///     The name of the texture region in this spritesheet to assign to the sprite that is created.
+    /// The name of the texture region in the texture atlas of this spritesheet that will be assigned to the sprite
+    /// created by this method.
     /// </param>
-    /// <returns>
-    ///     The sprite that is created by this method.
-    /// </returns>
+    /// <returns>The sprite that is created by this method.</returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Thrown if the texture atlas of this spritesheet does not contain a texture region with the name specified.
+    /// </exception>
     public Sprite CreateSprite(string regionName)
     {
-        TextureRegion region = GetRegion(regionName);
+        TextureRegion region = TextureAtlas.GetRegion(regionName);
         Sprite sprite = new(region.Name, region);
         return sprite;
     }
 
     #region Animations
 
-    internal void AddAnimationCycle(AnimationCycle cycle)
+    internal void AddAnimationTag(AnimationTag tag)
     {
-        if (_animationCycleLookup.ContainsKey(cycle.Name))
+        if (_animationTagLookup.ContainsKey(tag.Name))
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"{nameof(SpriteSheet)} '{Name}' already contains an {nameof(AnimationTag)} with the name '{tag.Name}'");
         }
 
-        _animationCycleLookup.Add(cycle.Name, cycle);
+        _animationTagLookup.Add(tag.Name, tag);
     }
 
     /// <summary>
-    ///     Creates a new <see cref="AnimationCycle"/> and adds it this <see cref="SpriteSheet"/>.
+    /// Creates and adds a new animation tag using an animation tag build to this spritesheet.
     /// </summary>
-    /// <param name="cycleName">
-    ///     The name to give the <see cref="AnimationCycle"/> that is created by this method.  Must be unique for this
-    ///     <see cref="SpriteSheet"/>.
+    /// <param name="name">
+    /// The name to assign the animation tag that is created by this method.  This name must be unique across all other
+    /// animation tags defined in this spritesheet.
     /// </param>
-    /// <param name="buildAction">
-    ///     An action delegate used to build the <see cref="AnimationCycle"/> using an
-    ///     <see cref="AnimationCycleBuilder"/>.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="AnimationCycle"/> that is created by this method.
-    /// </returns>
+    /// <param name="build">An action method used to build the animation tag using an animation tag builder.</param>
+    /// <returns>The animation tag that is created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if this <see cref="SpriteSheet"/> already contains an <see cref="AnimationCycle"/> element with the
-    ///     specified name.
+    /// Thrown if this spritesheet already contains an animation tag with the name specified.
     /// </exception>
-    public AnimationCycle CreateAnimationCycle(string cycleName, Action<AnimationCycleBuilder> buildAction)
+    public AnimationTag CreateAnimationTag(string name, Action<AnimationTagBuilder> builder)
     {
-        if (_animationCycleLookup.ContainsKey(cycleName))
-        {
-            throw new InvalidOperationException();
-        }
+        AnimationTagBuilder localBuilder = new(name, this);
+        builder(localBuilder);
 
-        AnimationCycleBuilder builder = new(cycleName, this);
-        buildAction(builder);
+        AnimationTag tag = localBuilder.Build();
+        AddAnimationTag(tag);
 
-        AnimationCycle cycle = builder.Build();
-        AddAnimationCycle(cycle);
-
-        return cycle;
+        return tag;
     }
 
     internal void AddAnimationCycles(Dictionary<string, RawAnimationCycle> cycles)
@@ -188,7 +186,7 @@ public sealed class SpriteSheet : TextureAtlas
             string name = kvp.Key;
             RawAnimationCycle animation = kvp.Value;
 
-            CreateAnimationCycle(name, builder =>
+            CreateAnimationTag(name, builder =>
             {
                 for (int i = 0; i < animation.FrameIndexes.Length; i++)
                 {
@@ -205,97 +203,126 @@ public sealed class SpriteSheet : TextureAtlas
     }
 
     /// <summary>
-    ///     Gets the <see cref="AnimationCycle"/> element from this <see cref="SpriteSheet"/> with the specified name.
+    /// Gets the animation tag with the specified name that has been defined in this spritesheet.
     /// </summary>
-    /// <param name="cycleName">
-    ///     The name of the <see cref="AnimationCycle"/> element in this <see cref="SpriteSheet"/> to locate.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="AnimationCycle"/> element that was located with the specified name in this
-    ///     <see cref="SpriteSheet"/>.
-    /// </returns>
+    /// <param name="name">The name of the animation tag to locate in this spritesheet.</param>
+    /// <returns>The animation tag that was located.</returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if this <see cref="SpriteSheet"/> does not contain a <see cref="AnimationCycle"/> element with the
-    ///     specified name.
+    /// Thrown if an animation tag with the specified name has not been defined in this spritesheet.
     /// </exception>
-    public AnimationCycle GetAnimationCycle(string cycleName)
+    public AnimationTag GetAnimationTag(string name)
     {
-        if (TryGetAnimationCycle(cycleName, out AnimationCycle? animation))
+        if (TryGetAnimationTag(name, out AnimationTag? tag))
         {
-            return animation;
+            return tag;
         }
 
-        throw new KeyNotFoundException();
+        throw new KeyNotFoundException($"{nameof(SpriteSheet)} '{Name}' does not contain an {nameof(AnimationTag)} with the name '{name}'");
     }
 
     /// <summary>
-    ///     Gets the <see cref="AnimationCycle"/> element from this <see cref="SpriteSheet"/> with the specified name.
+    /// Gets the animation tag with the specified name that has been defined in this spritesheet.
     /// </summary>
-    /// <param name="cycleName">
-    ///     The name of the <see cref="AnimationCycle"/> element in this <see cref="SpriteSheet"/> to locate.
-    /// </param>
-    /// <param name="animation">
-    ///     When this method returns <see langword="true"/>, contains the <see cref="AnimationCycle"/> located;
-    ///     otherwise, <see langword="null"/>.
-    /// </param>
+    /// <param name="name">The name of the animation tag to locate in this spritesheet.</param>
+    /// <param name="tag">When this method returns true, contains the animation tag located; otherwise, null.</param>
     /// <returns>
-    ///     <see langword="true"/> if an <see cref="AnimationCycle"/> element was located with the specified name;
-    ///     otherwise, <see langword="false"/>.  This method returns <see langword="false"/> if this
-    ///     <see cref="SpriteSheet"/> does not contain an <see cref="AnimationCycle"/> element with the specified name.
+    /// true if the animation tag was located; otherwise, false.  This method returns false if this spritesheet does not
+    /// contain an animation tag with the specified name.
     /// </returns>
-    public bool TryGetAnimationCycle(string cycleName, [NotNullWhen(true)] out AnimationCycle? animation) =>
-        _animationCycleLookup.TryGetValue(cycleName, out animation);
-
-    public List<string> GetAnimationCycleNames() => _animationCycleLookup.Keys.ToList();
+    public bool TryGetAnimationTag(string name, [NotNullWhen(true)] out AnimationTag? tag) =>
+        _animationTagLookup.TryGetValue(name, out tag);
 
     /// <summary>
-    ///     Returns a value that indicates whether this <see cref="SpriteSheet"/> contains an
-    ///     <see cref="AnimationCycle"/> element with the specified name.
+    /// Gets a new collection containing the name of all animation tags that have been defined in this spritesheet.
     /// </summary>
-    /// <param name="cycleName">
-    ///     The name of the <see cref="AnimationCycle"/> element to locate in this <see cref="SpriteSheet"/>.
-    /// </param>
     /// <returns>
-    ///     <see langword="true"/> if this <see cref="SpriteSheet"/> contains an <see cref="AnimationCycle"/> with the
-    ///     specified name; otherwise, <see langword="false"/>.
+    /// A new collection containing the name of all animation tags that have been defined in this spritesheet.
     /// </returns>
-    public bool ContainsAnimationCycle(string cycleName) => _animationCycleLookup.ContainsKey(cycleName);
+    public List<string> GetAnimationTagNames() => _animationTagLookup.Keys.ToList();
 
     /// <summary>
-    ///     Removes the <see cref="AnimationCycle"/> element with the specified name from this
-    ///     <see cref="SpriteSheet"/>.
+    /// Returns a value that indicates whether this spritesheet contains an animation tag with the specified name.
     /// </summary>
-    /// <param name="cycleName">
-    ///     The name of the <see cref="AnimationCycle"/> to remove.
-    /// </param>
-    /// <returns>
-    ///     <see langword="true"/> if the <see cref="AnimationCycle"/> was removed successfully; otherwise,
-    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="SpriteSheet"/> does
-    ///     not contain an <see cref="AnimationCycle"/> element with the specified name.
-    /// </returns>
-    public bool RemoveAnimationCycle(string cycleName) => _animationCycleLookup.Remove(cycleName);
+    /// <param name="name">The name fo the animation tag to locate in this spritesheet.</param>
+    /// <returns>true if this spritesheet contains an animation tag with the specified name; otherwise, false.</returns>
+    public bool ContainsAnimationCycle(string name) => _animationTagLookup.ContainsKey(name);
 
     /// <summary>
-    ///     Creates a new <see cref="Animation"/> based on the <see cref="AnimationCycle"/> element in this
-    ///     <see cref="SpriteSheet"/> with the specified name.
+    /// Removes the animation tag with the specified name from this spritesheet.
     /// </summary>
-    /// <param name="cycleName">
-    ///     The name of the <see cref="AnimationCycle"/> in this <see cref="SpriteSheet"/> to locate and use to create
-    ///     the <see cref="Animation"/> with.
-    /// </param>
+    /// <param name="name">The name of the animation tag to remove from this spritesheet.</param>
     /// <returns>
-    ///     The instance of the <see cref="Animation"/> class that is created by this method.
+    /// true if the animation tag was successfully removed from this spritesheet; otherwise, false.  This method returns
+    /// false if this spritesheet does not contain an animation tag with the specified name.
     /// </returns>
+    public bool RemoveAnimationCycle(string name) => _animationTagLookup.Remove(name);
+
+    /// <summary>
+    /// Creates a new animated sprite using the animation tag with the specified name defined in this spritesheet.
+    /// </summary>
+    /// <param name="tagName">
+    /// The name of the animation tag defined in this spritesheet to create the animated sprite with.
+    /// </param>
+    /// <returns>The animated sprite that is created by this method.</returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if this <see cref="SpriteSheet"/> does not contain an <see cref="AnimationCycle"/> element with the
-    ///     name specified.
+    /// Thrown if this spritesheet does not contain an animation tag with the specified name.
     /// </exception>
-    public Animation CreateAnimation(string cycleName)
+    public AnimatedSprite CreateAnimatedSprite(string tagName)
     {
-        AnimationCycle cycle = GetAnimationCycle(cycleName);
-        Animation animation = new(cycle);
-        return animation;
+        AnimationTag tag = GetAnimationTag(tagName);
+        AnimatedSprite sprite = new(tag);
+        return sprite;
     }
 
     #endregion Animations
+
+    /// <summary>
+    /// Creates a new spritesheet from an Aseprite file.
+    /// </summary>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="file">The Aseprite file to create the spritesheet from.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be processed.</param>
+    /// <param name="includeBackgroundLayer">
+    /// Indicates whether cels on a layer marked as a background layer should be processed.
+    /// </param>
+    /// <param name="includeTilemapLayers">Indicates whether cels on tilemap layers should be processed.</param>
+    /// <param name="mergeDuplicates">Indicates whether duplicate frames should be merged into one.</param>
+    /// <param name="borderPadding">
+    /// The amount of transparent pixels to add between the edge of the generated image and each texture region.
+    /// </param>
+    /// <param name="spacing">
+    /// The amount of transparent pixels to add between each texture region in the generated image.
+    /// </param>
+    /// <param name="innerPadding">
+    /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
+    /// </param>
+    /// <returns>
+    /// The spritesheet created by this method.
+    /// </returns>
+    public static SpriteSheet FromAsepriteFile(GraphicsDevice device, AsepriteFile file, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    {
+        TextureAtlas atlas = TextureAtlas.FromAsepriteFile(device, file, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
+        SpriteSheet sheet = new(file.Name, atlas);
+
+        for (int i = 0; i < file.Tags.Length; i++)
+        {
+            AsepriteTag tag = file.Tags[i];
+
+            sheet.CreateAnimationTag(tag.Name, builder =>
+            {
+                builder.IsLooping(true);
+                builder.IsReversed(tag.Direction == AsepriteLoopDirection.Reverse);
+                builder.IsPingPong(tag.Direction == AsepriteLoopDirection.PingPong);
+
+                for (int j = 0; j < tag.To - tag.From + 1; j++)
+                {
+                    int index = tag.From + j;
+                    TimeSpan duration = TimeSpan.FromMilliseconds(file.Frames[index].Duration);
+                    builder.AddFrame(index, duration);
+                }
+            });
+        }
+
+        return sheet;
+    }
 }

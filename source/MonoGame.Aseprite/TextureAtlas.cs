@@ -26,8 +26,9 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite.Sprites;
+namespace MonoGame.Aseprite;
 
 /// <summary>
 ///     Defines a texture atlas with a source image and zero or more named texture regions.
@@ -429,4 +430,127 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     An enumerator that iterates each texture region in this texture atlas.
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    /// <summary>
+    /// Creates a new texture atlas from an Aseprite file.
+    /// </summary>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="file">The Aseprite file to create the texture atlas from.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be processed.</param>
+    /// <param name="includeBackgroundLayer">
+    /// Indicates whether cels on a layer marked as a background layer should be processed.
+    /// </param>
+    /// <param name="includeTilemapLayers">Indicates whether cels on tilemap layers should be processed.</param>
+    /// <param name="mergeDuplicates">Indicates whether duplicate frames should be merged into one.</param>
+    /// <param name="borderPadding">
+    /// The amount of transparent pixels to add between the edge of the generated image
+    /// </param>
+    /// <param name="spacing">
+    /// The amount of transparent pixels to add between each texture region in the generated image.
+    /// </param>
+    /// <param name="innerPadding">
+    /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
+    /// </param>
+    /// <returns>
+    /// The texture atlas created by this method.
+    /// </returns>
+    public static TextureAtlas FromAsepriteFile(GraphicsDevice device, AsepriteFile file, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    {
+        int frameWidth = file.CanvasWidth;
+        int frameHeight = file.CanvasHeight;
+        int frameCount = file.Frames.Length;
+
+        Color[][] flattenedFrames = new Color[frameCount][];
+
+        for (int i = 0; i < frameCount; i++)
+        {
+            flattenedFrames[i] = file.Frames[i].FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
+        }
+
+        Dictionary<int, int> duplicateMap = new();
+        Dictionary<int, Rectangle> originalToDuplicateLookup = new();
+
+        for (int i = 0; i < flattenedFrames.GetLength(0); i++)
+        {
+            for (int d = 0; d < i; d++)
+            {
+                if (flattenedFrames[i].SequenceEqual(flattenedFrames[d]))
+                {
+                    duplicateMap.Add(i, d);
+                    break;
+                }
+            }
+        }
+
+        if (mergeDuplicates)
+        {
+            frameCount -= duplicateMap.Count;
+        }
+
+        double sqrt = Math.Sqrt(frameCount);
+        int columns = (int)Math.Ceiling(sqrt);
+        int rows = (frameCount + columns - 1) / columns;
+
+        int imageWidth = (columns * frameWidth)
+                         + (borderPadding * 2)
+                         + (spacing * (columns - 1))
+                         + (innerPadding * 2 * columns);
+
+        int imageHeight = (rows * frameHeight)
+                          + (borderPadding * 2)
+                          + (spacing * (rows - 1))
+                          + (innerPadding * 2 * rows);
+
+        Color[] imagePixels = new Color[imageWidth * imageHeight];
+        Rectangle[] regions = new Rectangle[file.Frames.Length];
+
+        int offset = 0;
+
+        for (int i = 0; i < flattenedFrames.GetLength(0); i++)
+        {
+            if (mergeDuplicates && duplicateMap.ContainsKey(i))
+            {
+                Rectangle original = originalToDuplicateLookup[duplicateMap[i]];
+                Rectangle duplicate = original;
+                regions[i] = duplicate;
+                offset++;
+                continue;
+            }
+
+            int column = (i - offset) % columns;
+            int row = (i - offset) / columns;
+            Color[] frame = flattenedFrames[i];
+
+            for (int p = 0; p < frame.Length; p++)
+            {
+                int x = (p % frameWidth)
+                        + (column * frameWidth)
+                        + borderPadding
+                        + (spacing * column)
+                        + (innerPadding * (column + column + 1));
+
+                int y = (p / frameWidth)
+                        + (row * frameHeight)
+                        + borderPadding
+                        + (spacing * row)
+                        + (innerPadding * (row + row + 1));
+
+                int index = y * imageWidth + x;
+                imagePixels[index] = frame[i];
+                regions[i] = new(x, y, frameWidth, frameHeight);
+            }
+        }
+
+        Texture2D texture = new(device, imageWidth, imageHeight, mipmap: false, SurfaceFormat.Color);
+        texture.SetData<Color>(imagePixels);
+
+        TextureAtlas atlas = new(file.Name, texture);
+
+        for (int i = 0; i < regions.Length; i++)
+        {
+            atlas.CreateRegion($"{file.Name} {i}", regions[i]);
+        }
+
+        return atlas;
+    }
 }

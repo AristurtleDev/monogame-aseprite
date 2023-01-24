@@ -22,55 +22,53 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite;
 
-public class Sprite : IDisposable
+/// <summary>
+/// Defines a named sprite.
+/// </summary>
+public class Sprite
 {
     private TextureRegion? _textureRegion;
+
     private Vector2 _origin;
+    private Vector2 _scale;
     private float _transparency;
 
     /// <summary>
-    ///     Gets the name of this <see cref="Sprite"/>.
+    /// Gets the name of this sprite.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> that defines the texture and source rectangle bounds to use when
-    ///     rendering this <see cref="Sprite"/>.
+    /// Gets the source texture region that defines the texture and source rectangle bounds to use when rendering this
+    /// sprite.
     /// </summary>
-    /// <exception cref="ObjectDisposedException">
-    ///     Thrown if this sprite instance has been disposed when trying to access this texture region of the sprite.
-    /// </exception>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown if the texture region of this sprite is null.  This should only happen if this sprite has was
-    ///     disposed of prior to accessing this texture region value.
-    /// </exception>
     public TextureRegion TextureRegion
     {
         get
         {
-            if (IsDisposed)
+            if (_textureRegion is null)
             {
-                throw new ObjectDisposedException(nameof(Sprite), $"The {nameof(Sprite)} '{Name}' was previously disposed");
+                throw new InvalidOperationException($"The texture region of sprite '{Name}' is null.  This occurs if the sprite was disposed of previously.");
             }
 
             return _textureRegion;
         }
+        protected set => _textureRegion = value;
     }
 
     /// <summary>
-    ///     Gets or Sets the color mask to apply when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the color mask to apply when rendering this sprite.
     /// </summary>
     public Color Color { get; set; }
 
     /// <summary>
-    ///     Gets or Sets the level of transparency, between 0.0f and 1.0f, to apply when rendering this
-    ///     <see cref="Sprite"/>.
+    /// Gets or Sets the level of transparency, between 0.0f and 1.0f, to apply when rendering this sprite.
     /// </summary>
     public float Transparency
     {
@@ -79,12 +77,12 @@ public class Sprite : IDisposable
     }
 
     /// <summary>
-    ///     Gets or Sets the rotation, in radians, to apply when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the rotation, in radians, to apply when rendering this sprite.
     /// </summary>
     public float Rotation { get; set; }
 
     /// <summary>
-    ///     Gets or Sets the x- and y-coordinate point of origin for this <see cref="Sprite"/> when rendering.
+    /// Gets or Sets the x- and y-coordinate point of origin to apply when rendering this sprite.
     /// </summary>
     public Vector2 Origin
     {
@@ -93,7 +91,7 @@ public class Sprite : IDisposable
     }
 
     /// <summary>
-    ///     Gets or Sets the x-coordinate point of origin for this <see cref="Sprite"/> when rendering.
+    /// Gets or Sets the x-coordinate point of origin to apply when rendering this sprite.
     /// </summary>
     public float OriginX
     {
@@ -102,7 +100,7 @@ public class Sprite : IDisposable
     }
 
     /// <summary>
-    ///     Gets or Sets the y-coordinate point of origin for this <see cref="Sprite"/> when rendering.
+    /// Gets or Sets the y-coordinate point of origin to apply when rendering this sprite.
     /// </summary>
     public float OriginY
     {
@@ -111,34 +109,68 @@ public class Sprite : IDisposable
     }
 
     /// <summary>
-    ///     Gets or Sets the <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for vertical and
-    ///     horizontal flipping when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the x- and y-axis scale factor to use when rendering this sprite.
+    /// </summary>
+    public Vector2 Scale
+    {
+        get => _scale;
+        set => _scale = value;
+    }
+
+    /// <summary>
+    /// Gets or Sets the x-axis scale factor to use when rendering this sprite.
+    /// </summary>
+    public float ScaleX
+    {
+        get => _scale.X;
+        set => _scale.X = value;
+    }
+
+    /// <summary>
+    /// Gets or Sets the y-axis scale factor to use when rendering this sprite.
+    /// </summary>
+    public float ScaleY
+    {
+        get => _scale.Y;
+        set => _scale.Y = value;
+    }
+
+    /// <summary>
+    /// Gets or Sets the sprite effects to apply for vertical and horizontal flipping when rendering this sprite.
     /// </summary>
     public SpriteEffects SpriteEffects { get; set; }
 
     /// <summary>
-    ///     Gets or Sets the layer depth value to render this <see cref="Sprite"/> at.
+    /// Gets or Sets a value that indicates whether this sprite should be flipped horizontally along its x-axis when
+    /// rendered.
+    /// </summary>
+    public bool FlipHorizontally
+    {
+        get => SpriteEffects.HasFlag(SpriteEffects.FlipHorizontally);
+        set => SpriteEffects = value ? (SpriteEffects | SpriteEffects.FlipHorizontally) : (SpriteEffects & ~SpriteEffects.FlipHorizontally);
+    }
+
+    /// <summary>
+    /// Gets or Sets a value that indicates whether this sprite should be flipped vertically along its y-axis when
+    /// rendered.
+    /// </summary>
+    public bool FlipVertically
+    {
+        get => SpriteEffects.HasFlag(SpriteEffects.FlipVertically);
+        set => SpriteEffects = value ? (SpriteEffects | SpriteEffects.FlipVertically) : (SpriteEffects & ~SpriteEffects.FlipVertically);
+    }
+
+    /// <summary>
+    /// Gets or Sets the layer depth to render this sprite at.
     /// </summary>
     public float LayerDepth { get; set; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates if this <see cref="Sprite"/> is visible and can be rendered.
+    /// Gets or Sets a value that indicates if this sprite is visible and can be rendered.
     /// </summary>
     public bool IsVisible { get; set; }
 
-    /// <summary>
-    ///     Gets a value that indicates if this sprite has been disposed of.
-    /// </summary>
-    [MemberNotNullWhen(false, nameof(_textureRegion))]
-    public bool IsDisposed { get; private set; }
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="Sprite"/> class using a <see cref="TextureRegion"/>.
-    /// </summary>
-    /// <param name="textureRegion">
-    ///     The <see cref="TextureRegion"/> that is represented by this <see cref="Sprite"/>.
-    /// </param>
-    public Sprite(TextureRegion textureRegion)
+    internal Sprite(string name, TextureRegion? textureRegion)
     {
         _textureRegion = textureRegion;
         Color = Color.White;
@@ -148,42 +180,32 @@ public class Sprite : IDisposable
         SpriteEffects = SpriteEffects.None;
         LayerDepth = 0.0f;
         IsVisible = true;
-        Name = textureRegion.Name;
+        Name = name;
     }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Sprite"/> class using a <see cref="TextureRegion"/>.
+    /// Renders this sprite.
     /// </summary>
-    /// <param name="name">
-    ///     The name to give this <see cref="Sprite"/>.
-    /// </param>
-    /// <param name="textureRegion">
-    ///     The <see cref="TextureRegion"/> that is represented by this <see cref="Sprite"/>.
-    /// </param>
-    public Sprite(string name, TextureRegion textureRegion)
-        : this(textureRegion) => Name = name;
-
+    /// <param name="spriteBatch">The sprite batch to use for rendering this sprite.</param>
+    /// <param name="position">The x- and y-coordinate location to render this sprite at.</param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 position) => spriteBatch.Draw(this, position);
 
     /// <summary>
-    ///     Releases resources held by this sprite.
+    /// Creates a new sprite from an aseprite frame.
     /// </summary>
-    public void Dispose()
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="frame">The aseprite frame to create the sprite from.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be included.</param>
+    /// <param name="includeBackgroundLayer">
+    /// Indicates whether cels on a layer marked as the background layer should be included.
+    /// </param>
+    /// <param name="includeTilemapLayers">Indicates whether cels on tilemap layers should be included.</param>
+    /// <returns></returns>
+    public static Sprite FromAsepriteFrame(GraphicsDevice device, AsepriteFrame frame, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
-        Dispose(true);
-        GC.SuppressFinalize(this);
+        Color[] pixels = frame.FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
+        Texture2D texture = new(device, frame.Width, frame.Height, mipmap: false, SurfaceFormat.Color);
+        TextureRegion region = new(frame.Name, texture, texture.Bounds);
+        return new(frame.Name, region);
     }
-
-    protected virtual void Dispose(bool isDisposing)
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        _textureRegion = null;
-
-        IsDisposed = true;
-    }
-
-
 }
