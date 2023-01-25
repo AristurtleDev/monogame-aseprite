@@ -42,7 +42,7 @@ public sealed class AnimatedSprite : Sprite
     /// <summary>
     /// Gets a value that indicates if this animated sprite is currently paused.
     /// </summary>
-    public bool IsPaused { get; set; }
+    public bool IsPaused { get; private set; }
 
     /// <summary>
     /// Gets a value that indicates if this animated sprite has completed it's animation.

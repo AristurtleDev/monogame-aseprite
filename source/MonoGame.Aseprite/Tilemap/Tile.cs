@@ -29,10 +29,10 @@ namespace MonoGame.Aseprite;
 /// <summary>
 /// Defines a tile in a tilemap layer with a source texture region.
 /// </summary>
-public class Tile
+public sealed class Tile
 {
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> that represents the image to render for this <see cref="Tile"/>.
+    ///     Gets the source texture region for this tile.
     /// </summary>
     public TextureRegion TextureRegion { get; }
 
@@ -40,6 +40,11 @@ public class Tile
     /// Gets or Sets the sprite effects to apply for vertical and horizontal flipping when rendering this tile.
     /// </summary>
     public SpriteEffects SpriteEffects { get; set; }
+
+    /// <summary>
+    ///     Gets a value that indicates if this tile instance has been disposed.
+    /// </summary>
+    public bool IsDisposed { get; private set; }
 
     /// <summary>
     /// Gets or Sets a value that indicates whether this tile should be flipped horizontally along its x-axis when
