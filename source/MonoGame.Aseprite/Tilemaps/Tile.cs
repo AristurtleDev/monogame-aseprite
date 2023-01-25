@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Tilemaps;
 
 /// <summary>
 /// Defines a tile in a tilemap layer with a source texture region.
@@ -32,7 +32,7 @@ namespace MonoGame.Aseprite;
 public sealed class Tile
 {
     /// <summary>
-    ///     Gets the source texture region for this tile.
+    /// Gets the source texture region for this tile.
     /// </summary>
     public TextureRegion TextureRegion { get; }
 

@@ -28,11 +28,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-public sealed class TilemapReader : ContentTypeReader<Tilemap>
+public sealed class TilemapReader : ContentTypeReader<AnimatedTilemap>
 {
     Dictionary<int, Tileset> _tilesetsById = new();
 
-    protected override Tilemap Read(ContentReader reader, Tilemap existingInstance)
+    protected override AnimatedTilemap Read(ContentReader reader, AnimatedTilemap existingInstance)
     {
         if (existingInstance is not null)
         {
@@ -41,7 +41,7 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
 
         string name = reader.ReadString();
 
-        Tilemap tilemap = new(name);
+        AnimatedTilemap tilemap = new(name);
         ReadTilesets(reader);
         ReadLayers(reader, tilemap);
         return tilemap;
@@ -75,7 +75,7 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
         _tilesetsById.Add(id, tileset);
     }
 
-    private void ReadLayers(ContentReader reader, Tilemap tilemap)
+    private void ReadLayers(ContentReader reader, AnimatedTilemap tilemap)
     {
         int count = reader.ReadInt32();
 
@@ -85,7 +85,7 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
         }
     }
 
-    private void ReadLayer(ContentReader reader, Tilemap tilemap)
+    private void ReadLayer(ContentReader reader, AnimatedTilemap tilemap)
     {
         string name = reader.ReadString();
         int tilesetID = reader.ReadInt32();

@@ -7,7 +7,7 @@ namespace DemoGame;
 
 public class Game_Tilemap : Game
 {
-    private Tilemap _tilemap;
+    private AnimatedTilemap _tilemap;
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
@@ -42,7 +42,7 @@ public class Game_Tilemap : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
-        _tilemap = Content.Load<Tilemap>("townmap");
+        _tilemap = Content.Load<AnimatedTilemap>("townmap");
     }
 
     protected override void Update(GameTime gameTime)

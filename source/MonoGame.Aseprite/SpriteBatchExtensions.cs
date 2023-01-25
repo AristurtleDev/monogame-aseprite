@@ -24,6 +24,8 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Sprites;
+using MonoGame.Aseprite.Tilemaps;
 
 namespace MonoGame.Aseprite;
 
@@ -123,71 +125,71 @@ public static class SpriteBatchExtensions
     #region Tilemap
 
     /// <summary>
-    ///     Draws a <see cref="Tilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
+    ///     Draws a <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
     /// </summary>
     /// <param name="spriteBatch">
     ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> class to use for rendering.
     /// </param>
     /// <param name="layer">
-    ///     The instance of the <see cref="Tilemap"/> to draw.
+    ///     The instance of the <see cref="AnimatedTilemap"/> to draw.
     /// </param>
     /// <param name="position">
-    ///     The x- and y-coordinate location to draw the <see cref="Tilemap"/> at.
+    ///     The x- and y-coordinate location to draw the <see cref="AnimatedTilemap"/> at.
     /// </param>
     /// <param name="color">
-    ///     The color mask to apply when drawing the <see cref="Tilemap"/>.
+    ///     The color mask to apply when drawing the <see cref="AnimatedTilemap"/>.
     /// </param>
-    public static void Draw(this SpriteBatch spriteBatch, Tilemap tilemap, Vector2 position, Color color) =>
+    public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap tilemap, Vector2 position, Color color) =>
         Draw(spriteBatch, tilemap, position, color, Vector2.One, 0.0f);
 
     /// <summary>
-    ///     Draws a <see cref="Tilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
+    ///     Draws a <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
     /// </summary>
     /// <param name="spriteBatch">
     ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> class to use for rendering.
     /// </param>
     /// <param name="layer">
-    ///     The instance of the <see cref="Tilemap"/> to draw.
+    ///     The instance of the <see cref="AnimatedTilemap"/> to draw.
     /// </param>
     /// <param name="position">
-    ///     The x- and y-coordinate location to draw the <see cref="Tilemap"/> at.
+    ///     The x- and y-coordinate location to draw the <see cref="AnimatedTilemap"/> at.
     /// </param>
     /// <param name="color">
-    ///     The color mask to apply when drawing the <see cref="Tilemap"/>.
+    ///     The color mask to apply when drawing the <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="scale">
     ///     The amount of scaling to apply to both the x-axis (horizontal) and y-axis (vertical) when drawing the
-    ///     <see cref="Tilemap"/>.
+    ///     <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="layerDepth">
-    ///     The layer depth to apply when drawing the <see cref="Tilemap"/>.
+    ///     The layer depth to apply when drawing the <see cref="AnimatedTilemap"/>.
     /// </param>
-    public static void Draw(this SpriteBatch spriteBatch, Tilemap tilemap, Vector2 position, Color color, float scale, float layerDepth) =>
+    public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap tilemap, Vector2 position, Color color, float scale, float layerDepth) =>
         Draw(spriteBatch, tilemap, position, color, new Vector2(scale, scale), layerDepth);
 
     /// <summary>
-    ///     Draws a <see cref="Tilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
+    ///     Draws a <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
     /// </summary>
     /// <param name="spriteBatch">
     ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> class to use for rendering.
     /// </param>
     /// <param name="layer">
-    ///     The instance of the <see cref="Tilemap"/> to draw.
+    ///     The instance of the <see cref="AnimatedTilemap"/> to draw.
     /// </param>
     /// <param name="position">
-    ///     The x- and y-coordinate location to draw the <see cref="Tilemap"/> at.
+    ///     The x- and y-coordinate location to draw the <see cref="AnimatedTilemap"/> at.
     /// </param>
     /// <param name="color">
-    ///     The color mask to apply when drawing the <see cref="Tilemap"/>.
+    ///     The color mask to apply when drawing the <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="scale">
     ///     The amount of x-axis (horizontal) and y-axis (vertical) scaling to apply when drawing the
-    ///     <see cref="Tilemap"/>.
+    ///     <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="layerDepth">
-    ///     The layer depth to apply when drawing the <see cref="Tilemap"/>.
+    ///     The layer depth to apply when drawing the <see cref="AnimatedTilemap"/>.
     /// </param>
-    public static void Draw(this SpriteBatch spriteBatch, Tilemap tilemap, Vector2 position, Color color, Vector2 scale, float layerDepth)
+    public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap tilemap, Vector2 position, Color color, Vector2 scale, float layerDepth)
     {
         foreach (TilemapLayer layer in tilemap)
         {

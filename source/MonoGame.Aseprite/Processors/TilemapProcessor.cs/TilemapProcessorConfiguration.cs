@@ -33,7 +33,7 @@ public class TilemapProcessorConfiguration
 {
     /// <summary>
     ///     Gets or Sets the index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> that contains
-    ///     the <see cref="Tilemap"/> to process.
+    ///     the <see cref="AnimatedTilemap"/> to process.
     /// </summary>
     public int FrameIndex { get; set; } = 0;
 
@@ -47,7 +47,7 @@ public class TilemapProcessorConfiguration
     ///     Initializes a new instance of the <see cref="TilemapProcessorConfiguration"/> class with the default values.
     /// </summary>
     /// <remarks>
-    ///     The default configuration is to process the <see cref="Tilemap"/> from <see cref="AsepriteFrame"/> zero and
+    ///     The default configuration is to process the <see cref="AnimatedTilemap"/> from <see cref="AsepriteFrame"/> zero and
     ///     to only process visible <see cref="AsepriteTilemapLayer"/> elements.
     /// </remarks>
     public TilemapProcessorConfiguration() { }
@@ -57,7 +57,7 @@ public class TilemapProcessorConfiguration
     /// </summary>
     /// <param name="frameIndex">
     ///     The index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> that contains the
-    ///     <see cref="Tilemap"/> to process.
+    ///     <see cref="AnimatedTilemap"/> to process.
     ///     The index of the frame in the Aseprite file that contains the tilemap to process.
     /// </param>
     /// <param name="onlyVisibleLayers">

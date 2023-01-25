@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Tilemaps;
 
 /// <summary>
 /// Defines a layer in a tilemap that contains a collection of tiles.

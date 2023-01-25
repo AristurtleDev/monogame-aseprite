@@ -26,7 +26,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
 /// Defines a named sprite.

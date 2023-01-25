@@ -25,7 +25,7 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Processors;
 
 /// <summary>
-///     Defines the raw values of a <see cref="Tilemap"/> used by the <see cref="TilemapProcessor"/>.
+///     Defines the raw values of a <see cref="AnimatedTilemap"/> used by the <see cref="TilemapProcessor"/>.
 /// </summary>
 public sealed class RawTilemap
 {

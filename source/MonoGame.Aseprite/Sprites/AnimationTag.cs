@@ -22,48 +22,49 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics.CodeAnalysis;
+namespace MonoGame.Aseprite.Sprites;
 
-namespace MonoGame.Aseprite;
-
-/// <summary>
-///     Defines the source texture region and the duration of a single frame of animation in an animation tag.
-/// </summary>
-public sealed class AnimationFrame : IDisposable
+public sealed class AnimationTag : IDisposable
 {
-    private TextureRegion? _textureRegion;
+    private AnimationFrame[] _frames;
 
     /// <summary>
-    ///     Gets the source texture region to render during this frame of animation.
+    ///     Gets the name of this animation tag.
     /// </summary>
-    public TextureRegion TextureRegion
-    {
-        get
-        {
-            if (IsDisposed)
-            {
-                throw new ObjectDisposedException(nameof(AnimationFrame), $"This {nameof(AnimationFrame)} was previously disposed");
-            }
-
-            return _textureRegion;
-        }
-    }
+    public string Name { get; }
 
     /// <summary>
-    ///     Gets the duration of this frame of animation.
+    ///     Gets a read-only span of the frames of animation that make up the animation defined by this animation tag.
+    ///     The order of frames in the collection are from the first frame to the last frame.
     /// </summary>
-    public TimeSpan Duration { get; }
+    public ReadOnlySpan<AnimationFrame> Frames => _frames;
 
     /// <summary>
-    ///     Gets a value that indicates if this animation frame has been disposed of.
+    ///     Get or Sets a value that indicates whether the animation defined by this animation tag should loop.
     /// </summary>
-    [MemberNotNullWhen(false, nameof(_textureRegion))]
+    public bool IsLooping { get; set; }
+
+    /// <summary>
+    ///     Gets or Sets a value that indicates whether the animation defined by this animation tag should play the
+    ///     frames in reverse order.
+    /// </summary>
+    public bool IsReversed { get; set; }
+
+    /// <summary>
+    ///     Gets or Sets a value that indicates whether the animation defined by this animation tag should ping-pong
+    ///     once reaching the last frame of animation.
+    /// </summary>
+    public bool IsPingPong { get; set; }
+
+    /// <summary>
+    ///     Gets a value that indicates whether this instance has been disposed of.
+    /// </summary>
     public bool IsDisposed { get; private set; }
 
-    internal AnimationFrame(TextureRegion region, TimeSpan duration) =>
-        (_textureRegion, Duration) = (region, duration);
+    internal AnimationTag(string name, AnimationFrame[] frames, bool isLooping, bool isReversed, bool isPingPong) =>
+        (Name, _frames, IsLooping, IsReversed, IsPingPong) = (name, frames, isLooping, isReversed, isPingPong);
 
-    ~AnimationFrame() => Dispose();
+    ~AnimationTag() => Dispose();
 
     /// <summary>
     ///     Releases resources held by this instance.
@@ -75,7 +76,11 @@ public sealed class AnimationFrame : IDisposable
             return;
         }
 
-        _textureRegion = null;
+        for (int i = 0; i < _frames.Length; i++)
+        {
+            _frames[i].Dispose();
+        }
+
         IsDisposed = true;
     }
 }

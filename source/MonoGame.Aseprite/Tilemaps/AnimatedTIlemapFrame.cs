@@ -26,12 +26,12 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Tilemaps;
 
 /// <summary>
 /// Defines a frame in a tilemap with a collection of tilemap layers.
 /// </summary>
-public sealed class TilemapFrame : IEnumerable<TilemapLayer>
+public sealed class AnimatedTilemapFrame : IEnumerable<TilemapLayer>
 {
     private List<TilemapLayer> _layers = new();
     private Dictionary<string, TilemapLayer> _layerLookup = new();
@@ -51,14 +51,14 @@ public sealed class TilemapFrame : IEnumerable<TilemapLayer>
     /// </summary>
     /// <param name="name">The name of this tilemap frame.</param>
     /// <param name="duration">The total amount of time this tilemap frame is displayed.</param>
-    public TilemapFrame(TimeSpan duration) => Duration = duration;
+    public AnimatedTilemapFrame(TimeSpan duration) => Duration = duration;
 
     /// <summary>
     /// Creates a new tilemap layer and adds it to this tilemap frame.
     /// </summary>
     /// <param name="layerName">
     /// The name to give the tilemap layer created by this method. The name must be unique for this tilemap frame.
-    ///     <see cref="Tilemap"/>.
+    ///     <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="tileset">The source tileset used by the tiles of the tilemap layer created by this method.</param>
     /// <param name="columns">The total number of columns in the tilemap layer created by this method. </param>

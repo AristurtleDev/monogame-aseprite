@@ -30,7 +30,7 @@ namespace MonoGame.Aseprite.Processors;
 /// <summary>
 ///     Defines a processor that processes <see cref="AsepriteTilemapLayer"/>, <see cref="AsepriteTilemapCel"/>, and
 ///     <see cref="AsepriteTileset"/> elements from a single <see cref="AsepriteFrame"/> in an
-///     <see cref="AsepriteFile"/> as a <see cref="Tilemap"/>.
+///     <see cref="AsepriteFile"/> as a <see cref="AnimatedTilemap"/>.
 /// </summary>
 public static class TilemapProcessor
 {
@@ -38,7 +38,7 @@ public static class TilemapProcessor
     /// <summary>
     ///     Processes <see cref="AsepriteTilemapLayer"/>, <see cref="AsepriteTilemapCel"/>, and
     ///     <see cref="AsepriteTileset"/> elements from a single <see cref="AsepriteFrame"/> in an
-    ///     <see cref="AsepriteFile"/> as a <see cref="Tilemap"/>
+    ///     <see cref="AsepriteFile"/> as a <see cref="AnimatedTilemap"/>
     /// </summary>
     /// <param name="device">
     ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
@@ -52,9 +52,9 @@ public static class TilemapProcessor
     ///     this process.
     /// </param>
     /// <returns>
-    ///     The instance of the <see cref="Tilemap"/> class that is created by this method.
+    ///     The instance of the <see cref="AnimatedTilemap"/> class that is created by this method.
     /// </returns>
-    public static Tilemap Process(GraphicsDevice device, AsepriteFile file, TilemapProcessorConfiguration configuration)
+    public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile file, TilemapProcessorConfiguration configuration)
     {
         RawTilemap rawTilemap = CreateRawTilemap(file, configuration);
         return CreateTilemap(device, rawTilemap);
@@ -63,7 +63,7 @@ public static class TilemapProcessor
     /// <summary>
     ///     Processes <see cref="AsepriteTilemapLayer"/>, <see cref="AsepriteTilemapCel"/>, and
     ///     <see cref="AsepriteTileset"/> elements from a single <see cref="AsepriteFrame"/> in an
-    ///     <see cref="AsepriteFile"/> as a <see cref="Tilemap"/>
+    ///     <see cref="AsepriteFile"/> as a <see cref="AnimatedTilemap"/>
     /// </summary>
     /// <param name="device">
     ///     The instance of the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> class used to create the
@@ -77,18 +77,18 @@ public static class TilemapProcessor
     ///     defines the configurations for this process.
     /// </param>
     /// <returns>
-    ///     The instance of the <see cref="Tilemap"/> class that is created by this method.
+    ///     The instance of the <see cref="AnimatedTilemap"/> class that is created by this method.
     /// </returns>
-    public static Tilemap Process(GraphicsDevice device, AsepriteFile file, Action<TilemapProcessorConfiguration> configure)
+    public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile file, Action<TilemapProcessorConfiguration> configure)
     {
         TilemapProcessorConfiguration configuration = new();
         configure(configuration);
         return Process(device, file, configuration);
     }
 
-    internal static Tilemap CreateTilemap(GraphicsDevice device, RawTilemap rawTilemap)
+    internal static AnimatedTilemap CreateTilemap(GraphicsDevice device, RawTilemap rawTilemap)
     {
-        Tilemap tilemap = new(rawTilemap.Name);
+        AnimatedTilemap tilemap = new(rawTilemap.Name);
 
         Dictionary<int, Tileset> tilesetLookup = new();
         foreach (RawTileset rawTileset in rawTilemap.Tilesets)

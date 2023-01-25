@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
 /// Defines an animated sprite with methods to control the playing of the sprite animation.
@@ -66,7 +66,7 @@ public sealed class AnimatedSprite : Sprite
 
     /// <summary>
     /// Gets or Sets an action method to invoke at the start of the animation.  This will trigger only once when the
-    /// animation starts before the first first frame's OnFrameBegin triggers.
+    /// animation starts before the first frame's OnFrameBegin triggers.
     /// </summary>
     public Action<AnimatedSprite>? OnAnimationBegin { get; set; } = default;
 
@@ -110,9 +110,7 @@ public sealed class AnimatedSprite : Sprite
     /// <summary>
     /// Updates this animated sprite.  This should only be called once per game update cycle.
     /// </summary>
-    /// <param name="gameTime">
-    /// A snapshot of the game timing values for the current update cycle.
-    /// </param>
+    /// <param name="gameTime">A snapshot of the game timing values for the current update cycle.</param>
     public void Update(GameTime gameTime)
     {
         if (!IsAnimating || IsPaused)

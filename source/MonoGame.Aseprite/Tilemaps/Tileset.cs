@@ -26,7 +26,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Tilemaps;
 
 /// <summary>
 /// Defines a tileset with a source image and named texture regions that represent the tiles.

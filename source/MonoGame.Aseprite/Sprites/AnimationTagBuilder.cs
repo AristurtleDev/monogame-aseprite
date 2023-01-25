@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
 /// Defines a builder for building an animation tag for a spritesheet.

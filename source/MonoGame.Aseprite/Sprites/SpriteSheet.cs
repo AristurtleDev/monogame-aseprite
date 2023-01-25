@@ -27,7 +27,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Processors;
 
-namespace MonoGame.Aseprite;
+namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
 /// Defines a spritesheet that contains a source image and named texture regions, with method for creating sprites and
