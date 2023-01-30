@@ -22,60 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
-///     Defines the source texture region and the duration of a single frame of animation in an animation tag.
+/// Defines the source texture region and duration of a frame of animation in an animation tag.
 /// </summary>
-public sealed class AnimationFrame : IDisposable
+public sealed class AnimationFrame
 {
-    private TextureRegion? _textureRegion;
-
     /// <summary>
-    ///     Gets the source texture region to render during this frame of animation.
+    /// Gets the index of the source frame in the texture atlas of the spritesheet.
     /// </summary>
-    public TextureRegion TextureRegion
-    {
-        get
-        {
-            if (IsDisposed)
-            {
-                throw new ObjectDisposedException(nameof(AnimationFrame), $"This {nameof(AnimationFrame)} was previously disposed");
-            }
-
-            return _textureRegion;
-        }
-    }
+    public int FrameIndex { get; }
 
     /// <summary>
-    ///     Gets the duration of this frame of animation.
+    /// Gets the source texture region for this animation frame.
+    /// </summary>
+    public TextureRegion TextureRegion { get; }
+
+    /// <summary>
+    /// Gets the duration of this animation frame.
     /// </summary>
     public TimeSpan Duration { get; }
 
-    /// <summary>
-    ///     Gets a value that indicates if this animation frame has been disposed of.
-    /// </summary>
-    [MemberNotNullWhen(false, nameof(_textureRegion))]
-    public bool IsDisposed { get; private set; }
-
-    internal AnimationFrame(TextureRegion region, TimeSpan duration) =>
-        (_textureRegion, Duration) = (region, duration);
-
-    ~AnimationFrame() => Dispose();
-
-    /// <summary>
-    ///     Releases resources held by this instance.
-    /// </summary>
-    public void Dispose()
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        _textureRegion = null;
-        IsDisposed = true;
-    }
+    internal AnimationFrame(int frameIndex, TextureRegion textureRegion, TimeSpan duration) =>
+        (FrameIndex, TextureRegion, Duration) = (frameIndex, textureRegion, duration);
 }

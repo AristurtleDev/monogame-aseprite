@@ -88,7 +88,7 @@ public sealed class AnimatedSprite : Sprite
     public TimeSpan CurrentFrameTimeRemaining { get; private set; }
 
     internal AnimatedSprite(AnimationTag tag)
-        : base(tag.Name, null)
+        : base(tag.Name, tag.Frames[0].TextureRegion)
     {
         AnimationTag = tag;
         Reset();

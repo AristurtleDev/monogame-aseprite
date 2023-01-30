@@ -87,7 +87,7 @@ public sealed class TilemapWriter : ContentTypeWriter<TileMapContentProcessorRes
         writer.Write(layer.Columns);
         writer.Write(layer.Rows);
         writer.Write(layer.Offset);
-        WriteTiles(writer, layer.Tiles);
+        WriteTiles(writer, layer.RawTilemapTiles);
 
     }
 

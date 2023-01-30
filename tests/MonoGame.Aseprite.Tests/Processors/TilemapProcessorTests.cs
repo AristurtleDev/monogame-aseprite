@@ -40,7 +40,7 @@ public sealed class TilemapProcessorTests
         //  ********************************************************
         TilemapProcessorConfiguration config = new();
 
-        RawTilemap tilemap = TilemapProcessor.CreateRawTilemap(aseFile, config);
+        RawTilemap tilemap = AnimatedTilemapProcessor.CreateRawTilemap(aseFile, config);
 
         Assert.Equal("tilemap-processor-test", tilemap.Name);
 
@@ -81,7 +81,7 @@ public sealed class TilemapProcessorTests
             new(4, false, false, 0.0f)
         };
 
-        Assert.Equal(tiles, layer.Tiles.ToArray());
+        Assert.Equal(tiles, layer.RawTilemapTiles.ToArray());
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public sealed class TilemapProcessorTests
             OnlyVisibleLayers = false
         };
 
-        RawTilemap tilemap = TilemapProcessor.CreateRawTilemap(aseFile, config);
+        RawTilemap tilemap = AnimatedTilemapProcessor.CreateRawTilemap(aseFile, config);
 
         //  One layer is hidden, but since only visible layers is false, we should still have two layers
         Assert.Equal(2, tilemap.Layers.Length);

@@ -29,13 +29,13 @@ using MonoGame.Aseprite.Content.Pipeline.Processors;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 /// <summary>
-///     Defines a content writer that writes the content of a <see cref="SingleFrameContentProcessorResult"/> to an xnb
+///     Defines a content writer that writes the content of a <see cref="SpriteContentProcessorResult"/> to an xnb
 ///     file.
 /// </summary>
 [ContentTypeWriter]
-public sealed class SingleFrameContentWriter : ContentTypeWriter<SingleFrameContentProcessorResult>
+public sealed class SingleFrameContentWriter : ContentTypeWriter<SpriteContentProcessorResult>
 {
-    protected override void Write(ContentWriter writer, SingleFrameContentProcessorResult content)
+    protected override void Write(ContentWriter writer, SpriteContentProcessorResult content)
     {
         writer.Write(content.TextureContent);
         writer.Write(content.TextureContent.Name);

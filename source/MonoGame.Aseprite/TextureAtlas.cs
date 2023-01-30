@@ -26,6 +26,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite;
 
@@ -80,10 +81,6 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <param name="texture">The source texture image used by this atlas.</param>
     public TextureAtlas(string name, Texture2D texture) => (Name, Texture) = (name, texture);
 
-    internal TextureAtlas(string name, Texture2D texture, ReadOnlySpan<Rectangle> regions)
-        : this(name, texture) => AddRegions(regions);
-
-
     private void AddRegion(TextureRegion region)
     {
         if (_regionLookup.ContainsKey(region.Name))
@@ -95,17 +92,8 @@ public class TextureAtlas : IEnumerable<TextureRegion>
         _regionLookup.Add(region.Name, region);
     }
 
-    private bool RemoveRegion(TextureRegion region)
-    {
-        bool removeResult = _regions.Remove(region) && _regionLookup.Remove(region.Name);
-
-        if (removeResult)
-        {
-            region.Dispose();
-        }
-
-        return removeResult;
-    }
+    private bool RemoveRegion(TextureRegion region) =>
+         _regions.Remove(region) && _regionLookup.Remove(region.Name);
 
     /// <summary>
     /// Creates a new texture region and adds it to this texture atlas.
@@ -166,14 +154,6 @@ public class TextureAtlas : IEnumerable<TextureRegion>
         return region;
     }
 
-    internal void AddRegions(ReadOnlySpan<Rectangle> regions)
-    {
-        for (int i = 0; i < regions.Length; i++)
-        {
-            CreateRegion($"{Name} {i}", regions[i]);
-        }
-    }
-
     /// <summary>
     /// Returns a value that indicates whether this texture atlas contains a texture region with the specified name.
     /// </summary>
@@ -182,6 +162,29 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// true if this texture atlas contains a texture region with the specified name; otherwise, false.
     /// </returns>
     public bool ContainsRegion(string name) => _regionLookup.ContainsKey(name);
+
+    /// <summary>
+    /// Returns the index of the texture region with the specified name in this texture atlas.
+    /// </summary>
+    /// <param name="name">The name of the texture region to locate in this texture atlas.</param>
+    /// <returns>The index of the texture region located.</returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Thrown if this texture atlas does not contain a texture region with the name specified.
+    /// </exception>
+    public int GetIndexOfRegion(string name)
+    {
+        for (int i = 0; i < _regions.Count; i++)
+        {
+            if (_regions[i].Name == name)
+            {
+                return i;
+            }
+        }
+
+        KeyNotFoundException ex = new($"This texture atlas does not contain a texture region with the name '{name}'.");
+        ex.Data.Add("TextureRegions", _regions);
+        throw ex;
+    }
 
     /// <summary>
     /// Gets the texture region element at the specified index in this texture atlas.
@@ -217,7 +220,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
             return frame;
         }
 
-        throw new KeyNotFoundException($"This {nameof(TextureAtlas)} does not contain a {nameof(TextureRegion)} with the name '{name}'.");
+        KeyNotFoundException ex = new($"This texture atlas does not contain a texture region with the name '{name}'.");
+        ex.Data.Add("TextureRegions", _regions);
+        throw ex;
     }
 
     /// <summary>
@@ -376,123 +381,26 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>
-    /// Creates a new texture atlas from an Aseprite file.
+    /// Creates a new texture atlas from the given raw texture atlas record.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="file">The Aseprite file to create the texture atlas from.</param>
-    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be processed.</param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates whether cels on a layer marked as a background layer should be processed.
-    /// </param>
-    /// <param name="includeTilemapLayers">Indicates whether cels on tilemap layers should be processed.</param>
-    /// <param name="mergeDuplicates">Indicates whether duplicate frames should be merged into one.</param>
-    /// <param name="borderPadding">
-    /// The amount of transparent pixels to add between the edge of the generated image
-    /// </param>
-    /// <param name="spacing">
-    /// The amount of transparent pixels to add between each texture region in the generated image.
-    /// </param>
-    /// <param name="innerPadding">
-    /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
-    /// </param>
-    /// <returns>
-    /// The texture atlas created by this method.
-    /// </returns>
-    public static TextureAtlas FromAsepriteFile(GraphicsDevice device, AsepriteFile file, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    /// <param name="rawTextureAtlas">The raw texture atlas record to create the texture atlas from.</param>
+    /// <returns>The texture atlas created by this method.</returns>
+    public static TextureAtlas FromRaw(GraphicsDevice device, RawTextureAtlas rawTextureAtlas)
     {
-        int frameWidth = file.CanvasWidth;
-        int frameHeight = file.CanvasHeight;
-        int frameCount = file.Frames.Length;
+        RawTexture rawTexture = rawTextureAtlas.RawTexture;
 
-        Color[][] flattenedFrames = new Color[frameCount][];
+        Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
+        texture.SetData<Color>(rawTexture.Pixels.ToArray());
+        texture.Name = rawTexture.Name;
 
-        for (int i = 0; i < frameCount; i++)
+        TextureAtlas atlas = new(rawTextureAtlas.Name, texture);
+
+        ReadOnlySpan<RawTextureRegion> rawTextureRegions = rawTextureAtlas.RawTextureRegions;
+
+        for (int i = 0; i < rawTextureRegions.Length; i++)
         {
-            flattenedFrames[i] = file.Frames[i].FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
-        }
-
-        Dictionary<int, int> duplicateMap = new();
-        Dictionary<int, Rectangle> originalToDuplicateLookup = new();
-
-        for (int i = 0; i < flattenedFrames.GetLength(0); i++)
-        {
-            for (int d = 0; d < i; d++)
-            {
-                if (flattenedFrames[i].SequenceEqual(flattenedFrames[d]))
-                {
-                    duplicateMap.Add(i, d);
-                    break;
-                }
-            }
-        }
-
-        if (mergeDuplicates)
-        {
-            frameCount -= duplicateMap.Count;
-        }
-
-        double sqrt = Math.Sqrt(frameCount);
-        int columns = (int)Math.Ceiling(sqrt);
-        int rows = (frameCount + columns - 1) / columns;
-
-        int imageWidth = (columns * frameWidth)
-                         + (borderPadding * 2)
-                         + (spacing * (columns - 1))
-                         + (innerPadding * 2 * columns);
-
-        int imageHeight = (rows * frameHeight)
-                          + (borderPadding * 2)
-                          + (spacing * (rows - 1))
-                          + (innerPadding * 2 * rows);
-
-        Color[] imagePixels = new Color[imageWidth * imageHeight];
-        Rectangle[] regions = new Rectangle[file.Frames.Length];
-
-        int offset = 0;
-
-        for (int i = 0; i < flattenedFrames.GetLength(0); i++)
-        {
-            if (mergeDuplicates && duplicateMap.ContainsKey(i))
-            {
-                Rectangle original = originalToDuplicateLookup[duplicateMap[i]];
-                Rectangle duplicate = original;
-                regions[i] = duplicate;
-                offset++;
-                continue;
-            }
-
-            int column = (i - offset) % columns;
-            int row = (i - offset) / columns;
-            Color[] frame = flattenedFrames[i];
-
-            for (int p = 0; p < frame.Length; p++)
-            {
-                int x = (p % frameWidth)
-                        + (column * frameWidth)
-                        + borderPadding
-                        + (spacing * column)
-                        + (innerPadding * (column + column + 1));
-
-                int y = (p / frameWidth)
-                        + (row * frameHeight)
-                        + borderPadding
-                        + (spacing * row)
-                        + (innerPadding * (row + row + 1));
-
-                int index = y * imageWidth + x;
-                imagePixels[index] = frame[i];
-                regions[i] = new(x, y, frameWidth, frameHeight);
-            }
-        }
-
-        Texture2D texture = new(device, imageWidth, imageHeight, mipmap: false, SurfaceFormat.Color);
-        texture.SetData<Color>(imagePixels);
-
-        TextureAtlas atlas = new(file.Name, texture);
-
-        for (int i = 0; i < regions.Length; i++)
-        {
-            atlas.CreateRegion($"{file.Name} {i}", regions[i]);
+            atlas.CreateRegion(rawTextureRegions[i].Name, rawTextureRegions[i].Bounds);
         }
 
         return atlas;

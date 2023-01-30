@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Sprites;
 
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Sprites;
 /// </summary>
 public class Sprite
 {
-    private TextureRegion? _textureRegion;
+    private TextureRegion _textureRegion;
 
     private Vector2 _origin;
     private Vector2 _scale;
@@ -45,20 +45,11 @@ public class Sprite
     public string Name { get; }
 
     /// <summary>
-    /// Gets the source texture region that defines the texture and source rectangle bounds to use when rendering this
-    /// sprite.
+    /// Gets the source texture region represented by this sprite.
     /// </summary>
     public TextureRegion TextureRegion
     {
-        get
-        {
-            if (_textureRegion is null)
-            {
-                throw new InvalidOperationException($"The texture region of sprite '{Name}' is null.  This occurs if the sprite was disposed of previously.");
-            }
-
-            return _textureRegion;
-        }
+        get => _textureRegion;
         protected set => _textureRegion = value;
     }
 
@@ -170,7 +161,12 @@ public class Sprite
     /// </summary>
     public bool IsVisible { get; set; }
 
-    internal Sprite(string name, TextureRegion? textureRegion)
+    /// <summary>
+    /// Creates a new sprite.
+    /// </summary>
+    /// <param name="name">The name to give the sprite.</param>
+    /// <param name="textureRegion">The source texture region for the sprite.</param>
+    public Sprite(string name, TextureRegion textureRegion)
     {
         _textureRegion = textureRegion;
         Color = Color.White;
@@ -184,6 +180,14 @@ public class Sprite
     }
 
     /// <summary>
+    /// Creates a new sprite.
+    /// </summary>
+    /// <param name="name">The name to give the sprite.</param>
+    /// <param name="texture">The source image for the sprite.</param>
+    public Sprite(string name, Texture2D texture)
+        : this(name, new TextureRegion(name, texture, texture.Bounds)) { }
+
+    /// <summary>
     /// Renders this sprite.
     /// </summary>
     /// <param name="spriteBatch">The sprite batch to use for rendering this sprite.</param>
@@ -191,21 +195,19 @@ public class Sprite
     public void Draw(SpriteBatch spriteBatch, Vector2 position) => spriteBatch.Draw(this, position);
 
     /// <summary>
-    /// Creates a new sprite from an aseprite frame.
+    /// Creates a new sprite from the given raw sprite record.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="frame">The aseprite frame to create the sprite from.</param>
-    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be included.</param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates whether cels on a layer marked as the background layer should be included.
-    /// </param>
-    /// <param name="includeTilemapLayers">Indicates whether cels on tilemap layers should be included.</param>
-    /// <returns></returns>
-    public static Sprite FromAsepriteFrame(GraphicsDevice device, AsepriteFrame frame, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
+    /// <param name="rawTexture">The raw sprite record to create the sprite from.</param>
+    /// <returns>The sprite created by this method.</returns>
+    public static Sprite FromRaw(GraphicsDevice device, RawSprite rawSprite)
     {
-        Color[] pixels = frame.FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
-        Texture2D texture = new(device, frame.Width, frame.Height, mipmap: false, SurfaceFormat.Color);
-        TextureRegion region = new(frame.Name, texture, texture.Bounds);
-        return new(frame.Name, region);
+        RawTexture rawTexture = rawSprite.RawTexture;
+
+        Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
+        texture.Name = rawTexture.Name;
+        texture.SetData<Color>(rawTexture.Pixels.ToArray());
+
+        return new(rawSprite.Name, texture);
     }
 }

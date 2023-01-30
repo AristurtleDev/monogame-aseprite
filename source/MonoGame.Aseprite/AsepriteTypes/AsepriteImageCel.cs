@@ -27,25 +27,25 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines a single cel in a frame that contains image pixel data.
+/// Defines a cel in a frame that contains pixel data.
 /// </summary>
 public sealed class AsepriteImageCel : AsepriteCel
 {
     private Color[] _pixels { get; }
 
     /// <summary>
-    ///     Gets a <see cref="ReadOnlySpan{T}"/> of the image pixel data for this <see cref="AsepriteImageCel"/>. Pixel
-    ///     order is from top-to-bottom, read left-to-right.
+    /// Gets a read-only span of the pixel data for this image cel.  Pixel order is from top-to-bottom, read
+    /// left-to-right.
     /// </summary>
     public ReadOnlySpan<Color> Pixels => _pixels;
 
     /// <summary>
-    ///     Gets the width, in pixels, of this <see cref="AsepriteImageCel"/>.
+    /// Gets the width, in pixels, of this image cel.
     /// </summary>
     public int Width { get; }
 
     /// <summary>
-    ///     Gets the height, in pixels, of this <see cref="AsepriteImageCel"/>.
+    /// Gets the height, in pixels, of this image cel.
     /// </summary>
     public int Height { get; }
 

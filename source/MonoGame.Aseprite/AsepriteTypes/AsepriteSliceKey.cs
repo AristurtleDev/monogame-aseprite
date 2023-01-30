@@ -28,47 +28,42 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines the values of a slice during a key frame.
+/// Defines the values of a key for a slice in aseprite.
 /// </summary>
 public sealed class AsepriteSliceKey
 {
     /// <summary>
-    ///     Gets the index of the <see cref="AsepriteFrame"/> that this <see cref="AsepriteSliceKey"/> is valid starting
-    ///     on.
+    /// Gets the index of the frame this slice key is valid starting on.
     /// </summary>
     public int FrameIndex { get; }
 
     /// <summary>
-    ///     Gets the rectangular bounds of the <see cref="AsepriteSlice"/> during this <see cref="AsepriteSliceKey"/>.
+    /// Gets the rectangular bounds of the slice during this key.
     /// </summary>
     public Rectangle Bounds { get; }
 
     /// <summary>
-    ///     Gets the rectangular bounds of the center rectangle of the <see cref="AsepriteSlice"/>, relative to the
-    ///     <see cref="Bounds"/>, during this <see cref="AsepriteSliceKey"/>, if the <see cref="AsepriteSlice"/> is a
-    ///     nine-patch slice; otherwise, <see langword="null"/>.
+    /// Gets the rectangular bounds of the center rectangle of the slice, relative to the bounds, during this key, if
+    /// the slice is a nine-patch slice, otherwise, null.
     /// </summary>
     public Rectangle? CenterBounds { get; }
 
     /// <summary>
-    ///     Gets the x- and y-coordinate location of the pivot point of the <see cref="AsepriteSlice"/>, relative to the
-    ///     <see cref="Bounds"/>, during this <see cref="AsepriteSliceKey"/>, if the <see cref="AsepriteSlice"/> has
-    ///     pivot values; otherwise, <see langword="null"/>.
+    /// Gets the x- and y-coordinate location of the pivot point of the slice, relative to the bounds, during this key,
+    /// if the slice contains pivot values; otherwise, null.
     /// </summary>
     public Point? Pivot { get; }
 
     /// <summary>
-    ///     Gets a value that indicates if this <see cref="AsepriteSliceKey"/> is for a nine-patch
-    ///     <see cref="AsepriteSlice"/>.  When <see langword="true"/>, guarantees that
-    ///     <see cref="AsepriteSliceKey.CenterBounds"/> is not <see langword="null"/>.
+    /// Gets a value that indicates if this key is for a nine-patch slice.  When true, guarantees that the center bounds
+    /// property is not null.
     /// </summary>
     [MemberNotNullWhen(true, nameof(CenterBounds))]
     public bool IsNinePatch => CenterBounds is not null;
 
     /// <summary>
-    ///     Gets a value that indicates if this <see cref="AsepriteSliceKey"/> is for a <see cref="AsepriteSlice"/> with
-    ///     pivot values.  When <see langword="true"/>, guarantees that <see cref="AsepriteSliceKey.Pivot"/> is not
-    ///     <see langword="null"/>.
+    /// Gets a value that indicates if this key contains pivot values.  When true, guarantees that the pivot property is
+    /// not null.
     /// </summary>
     [MemberNotNullWhen(true, nameof(Pivot))]
     public bool HasPivot => Pivot is not null;

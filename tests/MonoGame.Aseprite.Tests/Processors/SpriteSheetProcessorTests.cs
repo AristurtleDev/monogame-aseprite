@@ -59,9 +59,9 @@ public sealed class SpriteSheetProcessorTests
             new Rectangle(2, 2, 2, 2)
         };
 
-        RawAnimationCycle cycle0 = new(new int[] { 0, 1 }, new int[] { 100, 100 }, true, true, false);
-        RawAnimationCycle cycle1 = new(new int[] { 2, 3 }, new int[] { 100, 100 }, true, false, true);
-        Dictionary<string, RawAnimationCycle> cycles = new();
+        RawAnimationTag cycle0 = new(new int[] { 0, 1 }, new int[] { 100, 100 }, true, true, false);
+        RawAnimationTag cycle1 = new(new int[] { 2, 3 }, new int[] { 100, 100 }, true, false, true);
+        Dictionary<string, RawAnimationTag> cycles = new();
         cycles.Add("tag_1_2_reverse_black", cycle0);
         cycles.Add("tag_3_4_pingpong_red", cycle1);
 

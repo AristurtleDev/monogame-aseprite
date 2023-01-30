@@ -22,65 +22,84 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using MonoGame.Aseprite.Content.RawTypes;
+
 namespace MonoGame.Aseprite.Sprites;
 
-public sealed class AnimationTag : IDisposable
+/// <summary>
+/// Defines an animation tag that represents an the definition of an animation.
+/// </summary>
+public sealed class AnimationTag
 {
     private AnimationFrame[] _frames;
 
     /// <summary>
-    ///     Gets the name of this animation tag.
+    /// Gets the name of this animation tag.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets a read-only span of the frames of animation that make up the animation defined by this animation tag.
-    ///     The order of frames in the collection are from the first frame to the last frame.
+    /// Gets a read-only span of the frames of animations that make up the animation defined by this animation tag.  The
+    /// order of frames in the collection are from first frame to last frame in non-reverse order, even if IsReversed is
+    /// set to true.
     /// </summary>
     public ReadOnlySpan<AnimationFrame> Frames => _frames;
 
     /// <summary>
-    ///     Get or Sets a value that indicates whether the animation defined by this animation tag should loop.
+    /// Gets the total number of frames of animation for the animation defined by this animation tag.
+    /// </summary>
+    public int FrameCount => _frames.Length;
+
+    /// <summary>
+    /// Gets the animation frame at the specified index from this animation tag.
+    /// </summary>
+    /// <param name="index">The index of the animation frame to locate.</param>
+    /// <returns>The animation frame located.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of animation
+    /// frames in this animation tag.
+    /// </exception>
+    public AnimationFrame this[int index] => GetFrame(index);
+
+    /// <summary>
+    /// Gets or Sets a value that indicates whether the animation defined by this animation tag should loop.
     /// </summary>
     public bool IsLooping { get; set; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether the animation defined by this animation tag should play the
-    ///     frames in reverse order.
+    /// Gets or Sets a value that indicates whether the animation defined by this animation tag should play the frames
+    /// in reverse order.
     /// </summary>
     public bool IsReversed { get; set; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether the animation defined by this animation tag should ping-pong
-    ///     once reaching the last frame of animation.
+    /// Gets or Sets a value that indicates whether the animation defined by this animation tag should ping-pong once
+    /// reaching the last frame of animation.
     /// </summary>
     public bool IsPingPong { get; set; }
-
-    /// <summary>
-    ///     Gets a value that indicates whether this instance has been disposed of.
-    /// </summary>
-    public bool IsDisposed { get; private set; }
 
     internal AnimationTag(string name, AnimationFrame[] frames, bool isLooping, bool isReversed, bool isPingPong) =>
         (Name, _frames, IsLooping, IsReversed, IsPingPong) = (name, frames, isLooping, isReversed, isPingPong);
 
-    ~AnimationTag() => Dispose();
-
     /// <summary>
-    ///     Releases resources held by this instance.
+    /// Gets the animation frame at the specified index from this animation tag.
     /// </summary>
-    public void Dispose()
+    /// <param name="index">The index of the animation frame to locate.</param>
+    /// <returns>The animation frame located.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of animation
+    /// frames in this animation tag.
+    /// </exception>
+    public AnimationFrame GetFrame(int index)
     {
-        if (IsDisposed)
+        if (index < 0 || index >= FrameCount)
         {
-            return;
+            ArgumentOutOfRangeException ex = new(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the total number of animation frames in this animation tag.");
+            ex.Data.Add(nameof(index), index);
+            ex.Data.Add(nameof(FrameCount), FrameCount);
+            throw ex;
         }
 
-        for (int i = 0; i < _frames.Length; i++)
-        {
-            _frames[i].Dispose();
-        }
-
-        IsDisposed = true;
+        return _frames[index];
     }
 }

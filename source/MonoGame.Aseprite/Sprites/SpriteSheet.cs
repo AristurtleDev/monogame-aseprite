@@ -24,8 +24,7 @@ SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.Processors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Sprites;
 
@@ -179,29 +178,6 @@ public sealed class SpriteSheet
         return tag;
     }
 
-    internal void AddAnimationCycles(Dictionary<string, RawAnimationCycle> cycles)
-    {
-        foreach (KeyValuePair<string, RawAnimationCycle> kvp in cycles)
-        {
-            string name = kvp.Key;
-            RawAnimationCycle animation = kvp.Value;
-
-            CreateAnimationTag(name, builder =>
-            {
-                for (int i = 0; i < animation.FrameIndexes.Length; i++)
-                {
-                    int index = animation.FrameIndexes[i];
-                    TimeSpan duration = TimeSpan.FromMilliseconds(animation.FrameDurations[i]);
-                    builder.AddFrame(index, duration);
-                }
-
-                builder.IsLooping(animation.IsLooping);
-                builder.IsReversed(animation.IsReversed);
-                builder.IsPingPong(animation.IsPingPong);
-            });
-        }
-    }
-
     /// <summary>
     /// Gets the animation tag with the specified name that has been defined in this spritesheet.
     /// </summary>
@@ -277,52 +253,35 @@ public sealed class SpriteSheet
     #endregion Animations
 
     /// <summary>
-    /// Creates a new spritesheet from an Aseprite file.
+    /// Creates a new spritesheet from the given raw spritesheet record.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="file">The Aseprite file to create the spritesheet from.</param>
-    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be processed.</param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates whether cels on a layer marked as a background layer should be processed.
-    /// </param>
-    /// <param name="includeTilemapLayers">Indicates whether cels on tilemap layers should be processed.</param>
-    /// <param name="mergeDuplicates">Indicates whether duplicate frames should be merged into one.</param>
-    /// <param name="borderPadding">
-    /// The amount of transparent pixels to add between the edge of the generated image and each texture region.
-    /// </param>
-    /// <param name="spacing">
-    /// The amount of transparent pixels to add between each texture region in the generated image.
-    /// </param>
-    /// <param name="innerPadding">
-    /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
-    /// </param>
-    /// <returns>
-    /// The spritesheet created by this method.
-    /// </returns>
-    public static SpriteSheet FromAsepriteFile(GraphicsDevice device, AsepriteFile file, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    /// <param name="rawSpriteSheet">The raw spritesheet record to create the spritesheet from.</param>
+    /// <returns>The spritesheet created by this method.</returns>
+    public static SpriteSheet FromRaw(GraphicsDevice device, RawSpriteSheet rawSpriteSheet)
     {
-        TextureAtlas atlas = TextureAtlas.FromAsepriteFile(device, file, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
-        SpriteSheet sheet = new(file.Name, atlas);
+        TextureAtlas atlas = TextureAtlas.FromRaw(device, rawSpriteSheet.RawTextureAtlas);
+        SpriteSheet spriteSheet = new(rawSpriteSheet.Name, atlas);
 
-        for (int i = 0; i < file.Tags.Length; i++)
+        for (int i = 0; i < rawSpriteSheet.RawAnimationTags.Length; i++)
         {
-            AsepriteTag tag = file.Tags[i];
+            RawAnimationTag tag = rawSpriteSheet.RawAnimationTags[i];
 
-            sheet.CreateAnimationTag(tag.Name, builder =>
+            spriteSheet.CreateAnimationTag(tag.Name, builder =>
             {
-                builder.IsLooping(true);
-                builder.IsReversed(tag.Direction == AsepriteLoopDirection.Reverse);
-                builder.IsPingPong(tag.Direction == AsepriteLoopDirection.PingPong);
+                builder.IsLooping(tag.IsLooping)
+                       .IsReversed(tag.IsReversed)
+                       .IsPingPong(tag.IsPingPong);
 
-                for (int j = 0; j < tag.To - tag.From + 1; j++)
+                for (int j = 0; j < tag.RawAnimationFrames.Length; j++)
                 {
-                    int index = tag.From + j;
-                    TimeSpan duration = TimeSpan.FromMilliseconds(file.Frames[index].Duration);
-                    builder.AddFrame(index, duration);
+                    RawAnimationFrame rawAnimationFrame = tag.RawAnimationFrames[j];
+                    TimeSpan duration = TimeSpan.FromMilliseconds(rawAnimationFrame.DurationInMilliseconds);
+                    builder.AddFrame(rawAnimationFrame.FrameIndex, duration);
                 }
             });
         }
 
-        return sheet;
+        return spriteSheet;
     }
 }

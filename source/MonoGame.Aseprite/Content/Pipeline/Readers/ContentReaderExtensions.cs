@@ -26,6 +26,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Processors.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
@@ -51,6 +52,23 @@ internal static class ContentReaderExtensions
         point.Y = reader.ReadInt32();
 
         return point;
+    }
+
+    internal static RawTexture ReadRawTexture(this ContentReader reader)
+    {
+        string name = reader.ReadString();
+        int width = reader.ReadInt32();
+        int height = reader.ReadInt32();
+        int len = reader.ReadInt32();
+
+        Color[] pixels = new Color[len];
+
+        for (int i = 0; i < len; i++)
+        {
+            pixels[i] = reader.ReadColor();
+        }
+
+        return new(name, pixels, width, height);
     }
 
     internal static TimeSpan ReadTimeSpan(this ContentReader reader)

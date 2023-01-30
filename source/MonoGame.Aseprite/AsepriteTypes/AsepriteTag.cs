@@ -27,45 +27,39 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines an animation tag from an Aseprite file, which is a series of frames that are grouped together to
-///     represent an animation.
+/// Defines an animation tag in aseprite.
 /// </summary>
 public sealed class AsepriteTag
 {
     private Color _tagColor;
 
     /// <summary>
-    ///     Gets the index of the <see cref="AsepriteFile"/> the animation defined by this <see cref="AsepriteTag"/>
-    ///     starts on.
+    /// Gets the index of the first frame of animation defined by this tag.
     /// </summary>
     public int From { get; }
 
     /// <summary>
-    ///     Gets the index of the <see cref="AsepriteFile"/> the animation defined by this <see cref="AsepriteTag"/>
-    ///     ends on.
+    /// Gets the index of the last frame of animation defined by this tag.
     /// </summary>
     public int To { get; }
 
     /// <summary>
-    ///     Gets a <see cref="AsepriteLoopDirection"/> value that defines the direction the animation defined by this
-    ///     <see cref="AsepriteTag"/> loops.
+    /// Gets the loop direction of the animation defined by this tag.
     /// </summary>
     public AsepriteLoopDirection Direction { get; }
 
     /// <summary>
-    ///     Gets the name of this <see cref="AsepriteTag"/>.
+    /// Gets the name of this tag.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteTag"/>> in
-    ///     Aseprite.
+    /// Gets the userdata set for this tag in aseprite.
     /// </summary>
     public AsepriteUserData UserData { get; } = new();
 
     /// <summary>
-    ///     Gets a <see cref="Microsoft.Xna.Framework.Color"/> value that represents the color of this
-    ///     <see cref="AsepriteTag"/>.
+    /// Gets the color of this tag.
     /// </summary>
     public Color Color => UserData.Color ?? _tagColor;
 

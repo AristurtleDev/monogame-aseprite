@@ -64,7 +64,7 @@ internal class AsepriteFileBuilder
 
     internal void AddFrame(int duration)
     {
-        AsepriteFrame frame = new(_frameWidth, _frameHeight, duration, _nextFrameCels.ToArray());
+        AsepriteFrame frame = new($"{_name} {_frames.Count}", _frameWidth, _frameHeight, duration, _nextFrameCels.ToArray());
         _nextFrameCels.Clear();
         _frames.Add(frame);
     }

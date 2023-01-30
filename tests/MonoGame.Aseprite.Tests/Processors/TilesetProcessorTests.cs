@@ -107,14 +107,14 @@ public sealed class TilesetProcessorTests
 
         };
 
-        RawTileset tileset = TilesetProcessor.GetRawTileset(aseFile, "tileset");
+        RawTileset tileset = TilesetProcessor.ProcessRaw(aseFile, "tileset");
 
         Assert.Equal(0, tileset.ID);
         Assert.Equal("tileset", tileset.Name);
-        Assert.Equal("tileset", tileset.Texture.Name);
-        Assert.Equal(pixels, tileset.Texture.Pixels);
-        Assert.Equal(4, tileset.Texture.Width);
-        Assert.Equal(44, tileset.Texture.Height);
+        Assert.Equal("tileset", tileset.RawTexture.Name);
+        Assert.Equal(pixels, tileset.RawTexture.Pixels);
+        Assert.Equal(4, tileset.RawTexture.Width);
+        Assert.Equal(44, tileset.RawTexture.Height);
         Assert.Equal(4, tileset.TileWidth);
         Assert.Equal(4, tileset.TileHeight);
     }
@@ -125,7 +125,7 @@ public sealed class TilesetProcessorTests
         string path = FileUtils.GetLocalPath("tileset-processor-test.aseprite");
         AsepriteFile aseFile = AsepriteFile.Load(path);
 
-        Exception ex = Record.Exception(() => TilesetProcessor.GetRawTileset(aseFile, "fake-name"));
+        Exception ex = Record.Exception(() => TilesetProcessor.ProcessRaw(aseFile, "fake-name"));
 
         Assert.IsType<InvalidOperationException>(ex);
     }

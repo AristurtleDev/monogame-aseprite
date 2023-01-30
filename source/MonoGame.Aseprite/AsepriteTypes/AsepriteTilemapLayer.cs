@@ -25,18 +25,12 @@ SOFTWARE.
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines a layer in which <see cref="AsepriteTilemapCel"/> elements are are placed on in Aseprite.
+/// Defines a layer that contains tilemap cels.
 /// </summary>
 public sealed class AsepriteTilemapLayer : AsepriteLayer
 {
-    // /// <summary>
-    // ///     Gets the index of the <see cref="AsepriteTileset"/> that is used by this <see cref="AsepriteTilemapLayer"/>.
-    // /// </summary>
-    // public int TilesetID { get; }
-
     /// <summary>
-    ///     Gets a reference to the <see cref="AsepriteTileset"/> that is used by this
-    ///     <see cref="AsepriteTilemapLayer"/>.
+    /// Gets a reference to the aseprite tileset used by the tilemap cels in this tilemap layer.
     /// </summary>
     public AsepriteTileset Tileset { get; }
 

@@ -30,10 +30,8 @@ namespace MonoGame.Aseprite;
 /// <summary>
 /// Defines a named rectangular region that represents the location and extents of a region within a source texture.
 /// </summary>
-public class TextureRegion : IDisposable
+public class TextureRegion
 {
-    private Texture2D? _texture;
-
     /// <summary>
     /// Gets the name of this texture region.
     /// </summary>
@@ -42,18 +40,7 @@ public class TextureRegion : IDisposable
     /// <summary>
     /// Gets the source texture used by this texture region.
     /// </summary>
-    public Texture2D Texture
-    {
-        get
-        {
-            if (_texture is null)
-            {
-                throw new InvalidOperationException($"The texture for texture region '{Name}' is null.  This occurs if the texture region was disposed of previously.");
-            }
-
-            return _texture;
-        }
-    }
+    public Texture2D Texture { get; }
 
     public bool IsDisposed { get; private set; }
 
@@ -63,32 +50,12 @@ public class TextureRegion : IDisposable
     /// </summary>
     public Rectangle Bounds { get; }
 
-    internal TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
-        (Name, _texture, Bounds) = (name, texture, bounds);
-
-    ~TextureRegion() => Dispose(false);
-
     /// <summary>
-    /// Releases resources held by this texture region.
+    /// Creates a new texture region.
     /// </summary>
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    private void Dispose(bool isDisposing)
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        if (isDisposing)
-        {
-            _texture = null;
-        }
-
-        IsDisposed = true;
-    }
+    /// <param name="name">The name to give the texture region.</param>
+    /// <param name="texture">The source texture image this region is from.</param>
+    /// <param name="bounds">The rectangular bounds of this region within the source texture.</param>
+    public TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
+        (Name, Texture, Bounds) = (name, texture, bounds);
 }

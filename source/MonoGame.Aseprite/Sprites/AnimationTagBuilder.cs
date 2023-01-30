@@ -55,7 +55,7 @@ public sealed class AnimationTagBuilder
     public AnimationTagBuilder AddFrame(int regionIndex, TimeSpan duration)
     {
         TextureRegion region = _spriteSheet.TextureAtlas.GetRegion(regionIndex);
-        AnimationFrame frame = new(region, duration);
+        AnimationFrame frame = new(regionIndex, region, duration);
         _frames.Add(frame);
         return this;
     }
@@ -76,7 +76,8 @@ public sealed class AnimationTagBuilder
     public AnimationTagBuilder AddFrame(string regionName, TimeSpan duration)
     {
         TextureRegion region = _spriteSheet.TextureAtlas.GetRegion(regionName);
-        AnimationFrame frame = new(region, duration);
+        int index = _spriteSheet.TextureAtlas.GetIndexOfRegion(regionName);
+        AnimationFrame frame = new(index, region, duration);
         _frames.Add(frame);
         return this;
     }

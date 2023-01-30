@@ -28,15 +28,14 @@ using MonoGame.Aseprite.Utilities;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines a single frame in an Aseprite image.
+/// Defines a frame in an aseprite image.
 /// </summary>
 public sealed class AsepriteFrame
 {
     private AsepriteCel[] _cels;
 
     /// <summary>
-    ///     Gets a <see cref="ReadOnlySpan{T}"/> of the <see cref="AsepriteCel"/> element in this
-    ///     <see cref="AsepriteFrame"/>.
+    /// Gets a read-only span of the cels in this frame.
     /// </summary>
     public ReadOnlySpan<AsepriteCel> Cels => _cels;
 
@@ -46,17 +45,17 @@ public sealed class AsepriteFrame
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the width, in pixels, of this <see cref="AsepriteFrame"/>.
+    /// Gets the width, in pixels, of this frame.
     /// </summary>
     public int Width { get; }
 
     /// <summary>
-    ///     Gets the height, in pixels, of this <see cref="AsepriteFrame"/>.
+    /// Gets the height, in pixels, of this frame.
     /// </summary>
     public int Height { get; }
 
     /// <summary>
-    ///     Gets the duration, in milliseconds, of this <see cref="AsepriteFrame"/>.
+    /// Gets the duration, in milliseconds, of this frame.
     /// </summary>
     public int Duration { get; }
 
@@ -64,18 +63,13 @@ public sealed class AsepriteFrame
         (Name, Width, Height, Duration, _cels) = (name, width, height, duration, cels);
 
     /// <summary>
-    ///     Flattens this <see cref="AsepriteFrame"/> by combining all <see cref="AsepriteCel"/> elements in this
-    ///     frame into a single image representation.
+    /// Flattens this frame by combining all cels into a single image representation.
     /// </summary>
-    /// <param name="onlyVisibleLayers">
-    ///     Indicates whether only <see cref="AsepriteCel"/> elements that are on a visible <see cref="AsepriteLayer"/>
-    ///     should be included.
-    /// </param>
+    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be included.</param>
     /// <param name="includeBackgroundLayer">
-    ///     Indicates whether the <see cref="AsepriteCel"/> elements that are on an <see cref="AsepriteLayer"/> that
-    ///     was marked as the background layer should be included.
+    /// Indicates whether cels are a layer marked as a background layer should be included.
     /// </param>
-    /// <returns></returns>
+    /// <returns>A new array of color values that represent the image of this frame.</returns>
     public Color[] FlattenFrame(bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapCel = true)
     {
         Color[] result = new Color[Width * Height];
@@ -151,12 +145,9 @@ public sealed class AsepriteFrame
             int y = (i / celWidth) + celY;
             int index = y * Width + x;
 
-            //  Sometimes a cel can have a negative x and/or y value.  This
-            //  is caused by selecting an area in within Aseprite and then
-            //  moving a portion of the selected pixels outside the canvas.
-            //  We don't care about these pixels, so if the index is outside
-            //  the range of the array to store them in, then we'll just
-            //  ignore them
+            //  Sometimes a cel can have a negative x and/or y value.  This is caused by selecting an area in within
+            //  Aseprite and then moving a portion of the selected pixels outside the canvas. We don't care about these
+            //  pixels, so if the index is outside the range of the array to store them in, then we'll just ignore them.
             if (index < 0 || index >= backdrop.Length) { continue; }
 
             Color b = backdrop[index];

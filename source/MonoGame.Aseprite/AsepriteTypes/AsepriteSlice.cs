@@ -25,36 +25,34 @@ SOFTWARE.
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines a named slice region with frame keys.
+/// Defines a named slice region with keys in aseprite.
 /// </summary>
 public sealed class AsepriteSlice
 {
     private AsepriteSliceKey[] _keys;
 
     /// <summary>
-    ///     Gets a <see cref="ReadOnlySpan{T}"/> of the <see cref="AsepriteSliceKey"/> elements in this
-    ///     <see cref="AsepriteSlice"/>.
+    /// Gets a read-only span of the slice keys for this slice.
     /// </summary>
     public ReadOnlySpan<AsepriteSliceKey> Keys => _keys;
 
     /// <summary>
-    ///     Gets a value that indicates if this <see cref="AsepriteSlice"/> and its keys represent a nine-patch region.
+    /// Gets a value that indicates if this slice, and its keys, represent a nine-patch region.
     /// </summary>
     public bool IsNinePatch { get; }
 
     /// <summary>
-    ///     Gets a value that indicates if this <see cref="AsepriteSlice"/> and its keys have pivot values.
+    /// Gets a value that indicates if this slice, and its keys, contain pivot values.
     /// </summary>
     public bool HasPivot { get; }
 
     /// <summary>
-    ///     Gets the name of this <see cref="AsepriteSlice"/>.
+    /// Gets the name of this slice.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteSlice"/>> in
-    ///     Aseprite.
+    /// Gets the userdata set for this slice in aseprite.
     /// </summary>
     public AsepriteUserData UserData { get; } = new();
 

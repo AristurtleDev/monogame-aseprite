@@ -25,50 +25,47 @@ SOFTWARE.
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-///     Defines a layer of an Aseprite image.
+/// Defines a layer of an aseprite image.
 /// </summary>
 public class AsepriteLayer
 {
     /// <summary>
-    ///     Gets the <see cref="AsepriteLayerFlags"/> value for this <see cref="AsepriteLayer"/>.
+    /// Gets the flags set for this layer.
     /// </summary>
     public AsepriteLayerFlags Flags { get; }
 
     /// <summary>
-    ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/> is visible.
+    /// Gets a value that indicates whether this layer is visible.
     /// </summary>
     public bool IsVisible => Flags.HasFlag(AsepriteLayerFlags.Visible);
 
     /// <summary>
-    ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/> was set as the background layer in
-    ///     Aseprite.
+    /// Gets a value that indicates whether this layer was set as the background layer in aseprite.
     /// </summary>
     public bool IsBackground => Flags.HasFlag(AsepriteLayerFlags.Background);
 
     /// <summary>
-    ///     Gets a value that indicates whether this <see cref="AsepriteLayer"/> was set as a reference layer in
-    ///     Aseprite.
+    /// Gets a value that indicates whether this layer is a reference layer.
     /// </summary>
     public bool IsReference => Flags.HasFlag(AsepriteLayerFlags.ReferenceLayer);
 
     /// <summary>
-    ///     Gets the <see cref="BlendMode"/> used by this <see cref="AsepriteLayer"/>.
+    /// Gets a the blend mode used by this layer.
     /// </summary>
     public AsepriteBlendMode BlendMode { get; }
 
     /// <summary>
-    ///     Gets the opacity level of this <see cref="AsepriteLayer"/>.
+    /// Gets the opacity level of this layer.
     /// </summary>
     public int Opacity { get; }
 
     /// <summary>
-    ///     Gets the name of this <see cref="AsepriteLayer"/>.
+    /// Gets the name of this layer.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteLayer"/> in
-    ///     Aseprite.
+    /// Gets the userdata that was set for this layer in aseprite.
     /// </summary>
     public AsepriteUserData UserData { get; } = new();
 

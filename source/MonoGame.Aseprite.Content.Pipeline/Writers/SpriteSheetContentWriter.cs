@@ -66,13 +66,13 @@ public sealed class SpriteSheetContentWriter : ContentTypeWriter<SpriteSheetCont
         }
     }
 
-    private void WriteCycles(ContentWriter writer, Dictionary<string, RawAnimationCycle> cycles)
+    private void WriteCycles(ContentWriter writer, Dictionary<string, RawAnimationTag> cycles)
     {
         writer.Write(cycles.Count);
-        foreach (KeyValuePair<string, RawAnimationCycle> kvp in cycles)
+        foreach (KeyValuePair<string, RawAnimationTag> kvp in cycles)
         {
             string name = kvp.Key;
-            RawAnimationCycle cycle = kvp.Value;
+            RawAnimationTag cycle = kvp.Value;
 
             writer.Write(name);
             writer.Write(cycle.IsLooping);

@@ -25,6 +25,7 @@ SOFTWARE.
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Tilemaps;
 
@@ -81,6 +82,11 @@ public sealed class Tileset
     public ReadOnlySpan<TextureRegion> Tiles => _regions;
 
     /// <summary>
+    /// Gets the index of the tile in this tileset that represents an empty tile.
+    /// </summary>
+    public int EmptyTileIndex { get; }
+
+    /// <summary>
     /// Gets the texture region of the tile at the specified index in this tileset.
     /// </summary>
     /// <param name="index">The index of the tile to locate.</param>
@@ -122,10 +128,10 @@ public sealed class Tileset
     /// specified.  Both of these values must be greater than zero and the width of the texture must divide evenly by
     /// the tile width and the height of the texture must divide evenly by the tile height.
     /// </remarks>
-    /// <param name="name">The name to give tis tileset.</param>
+    /// <param name="name">The name to give this tileset.</param>
     /// <param name="texture">The source texture used by this tileset.</param>
     /// <param name="tileWidth">The width, in pixels, of each tile in this tileset.</param>
-    /// <param name="tileHeight">The height, in pixels, of each tile in this tilest.</param>
+    /// <param name="tileHeight">The height, in pixels, of each tile in this tileset.</param>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the tile width or tile height values are less than one.
     /// </exception>
@@ -154,7 +160,6 @@ public sealed class Tileset
         {
             throw new ArgumentException($"The texture height ({texture.Height}) does not divide evenly by the tile height ({tileHeight}) given.");
         }
-
 
         Name = name;
         Texture = texture;
@@ -283,5 +288,19 @@ public sealed class Tileset
     {
         int index = row * ColumnCount + column;
         return TryGetTile(index, out tile);
+    }
+
+    /// <summary>
+    /// Creates a tileset from the given raw tileset record.
+    /// </summary>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="rawTileset">The raw tileset to create the tileset from.</param>
+    /// <returns>The tileset created by this method.</returns>
+    public static Tileset FromRaw(GraphicsDevice device, RawTileset rawTileset)
+    {
+        Texture2D texture = new(device, rawTileset.RawTexture.Width, rawTileset.RawTexture.Height, mipmap: false, SurfaceFormat.Color);
+        texture.SetData<Color>(rawTileset.RawTexture.Pixels.ToArray());
+        texture.Name = rawTileset.RawTexture.Name;
+        return new(rawTileset.Name, texture, rawTileset.TileWidth, rawTileset.TileHeight);
     }
 }

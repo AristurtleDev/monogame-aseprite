@@ -26,11 +26,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Processors.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 internal static class ContentWriterExtensions
 {
+    internal static void WriteMagic(this BinaryWriter writer)
+    {
+        writer.Write((byte)'M');    //  [M]onoGame
+        writer.Write((byte)'A');    //  [A]seprite
+        writer.Write((byte)'C');    //  [C]ontent
+        writer.Write((byte)'P');    //  [P]ipeline
+    }
     internal static void Write(this ContentWriter writer, Rectangle rect)
     {
         writer.Write(rect.X);
@@ -43,6 +51,19 @@ internal static class ContentWriterExtensions
     {
         writer.Write(point.X);
         writer.Write(point.Y);
+    }
+
+    internal static void Write(this ContentWriter writer, RawTexture rawTexture)
+    {
+        writer.Write(rawTexture.Name);
+        writer.Write(rawTexture.Width);
+        writer.Write(rawTexture.Height);
+        writer.Write(rawTexture.Pixels.Length);
+
+        for (int i = 0; i < rawTexture.Pixels.Length; i++)
+        {
+            writer.Write(rawTexture.Pixels[i]);
+        }
     }
 
     internal static void Write(this ContentWriter writer, TextureContent content)
