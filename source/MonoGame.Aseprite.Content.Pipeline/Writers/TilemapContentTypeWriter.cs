@@ -22,29 +22,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.RawTypes;
+using MonoGame.Aseprite.Content.Writers.RawTypeWriters;
 
-namespace MonoGame.Aseprite.Content.RawTypes;
+namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
-/// <summary>
-/// Defines a class that represents the raw values of a texture region.
-/// </summary>
-public sealed class RawTextureRegion : IEquatable<RawTextureRegion>
+[ContentTypeWriter]
+internal sealed class TilemapContentTypeWriter : ContentTypeWriter<RawTilemap>
 {
-    /// <summary>
-    /// Gets the name assigned to the texture region represented by this raw texture region record.
-    /// </summary>
-    public string Name { get; }
+    protected override void Write(ContentWriter writer, RawTilemap rawTilemap) =>
+        RawTilemapWriter.Write(writer, rawTilemap);
 
     /// <summary>
-    /// Gets the rectangular bounds of the texture region represented by this raw texture region record.
+    /// Gets the assembly qualified name of the runtime type.
     /// </summary>
-    public Rectangle Bounds { get; }
+    /// <param name="targetPlatform">The target platform.</param>
+    /// <returns>The assembly qualified name of the runtime type.</returns>
+    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Tilemaps.Tilemap, MonoGame.Aseprite";
 
-    internal RawTextureRegion(string name, Rectangle bounds) =>
-        (Name, Bounds) = (name, bounds);
-
-    public bool Equals(RawTextureRegion? other) => other is not null
-                                                   && Name == other.Name
-                                                   && Bounds == other.Bounds;
+    /// <summary>
+    /// Gets the assembly qualified name of the runtime loader.
+    /// </summary>
+    /// <param name="targetPlatform">The target platform type.</param>
+    /// <returns>The assembly qualified name of the runtime loader.</returns>
+    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Content.Pipeline.Reader.TilemapContentTypeReader, MonoGame.Aseprite";
 }

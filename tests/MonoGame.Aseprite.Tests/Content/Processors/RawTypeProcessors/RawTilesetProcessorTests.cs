@@ -23,15 +23,16 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using MonoGame.Aseprite.Processors;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class TilesetProcessorTests
+public sealed class RawTilesetProcessorTests
 {
 
     [Fact]
-    public void TilesetProcessorTest_GetRawTileset()
+    public void RawTilesetProcessorTest_Process()
     {
         string path = FileUtils.GetLocalPath("tileset-processor-test.aseprite");
         AsepriteFile aseFile = AsepriteFile.Load(path);
@@ -107,12 +108,12 @@ public sealed class TilesetProcessorTests
 
         };
 
-        RawTileset tileset = TilesetProcessor.ProcessRaw(aseFile, "tileset");
+        RawTileset tileset = RawTilesetProcessor.Process(aseFile, "tileset");
 
         Assert.Equal(0, tileset.ID);
         Assert.Equal("tileset", tileset.Name);
         Assert.Equal("tileset", tileset.RawTexture.Name);
-        Assert.Equal(pixels, tileset.RawTexture.Pixels);
+        Assert.Equal(pixels, tileset.RawTexture.Pixels.ToArray());
         Assert.Equal(4, tileset.RawTexture.Width);
         Assert.Equal(44, tileset.RawTexture.Height);
         Assert.Equal(4, tileset.TileWidth);
@@ -120,12 +121,12 @@ public sealed class TilesetProcessorTests
     }
 
     [Fact]
-    public void TilesetProcessorTest_GetRawTileset_InvalidName_ThrowsException()
+    public void RawTilesetProcessorTest_Process_InvalidName_ThrowsException()
     {
         string path = FileUtils.GetLocalPath("tileset-processor-test.aseprite");
         AsepriteFile aseFile = AsepriteFile.Load(path);
 
-        Exception ex = Record.Exception(() => TilesetProcessor.ProcessRaw(aseFile, "fake-name"));
+        Exception ex = Record.Exception(() => RawTilesetProcessor.Process(aseFile, "fake-name"));
 
         Assert.IsType<InvalidOperationException>(ex);
     }

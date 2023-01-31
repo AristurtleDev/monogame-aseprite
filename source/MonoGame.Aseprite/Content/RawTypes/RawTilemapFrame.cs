@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a tilemap frame.
+/// Defines a class that represents the raw values of a tilemap frame.
 /// </summary>
-public sealed record RawTilemapFrame
+public sealed class RawTilemapFrame : IEquatable<RawTilemapFrame>
 {
     private RawTilemapLayer[] _rawTilemapLayers;
 
@@ -44,4 +44,8 @@ public sealed record RawTilemapFrame
 
     internal RawTilemapFrame(int durationInMilliseconds, RawTilemapLayer[] rawLayers) =>
         (DurationInMilliseconds, _rawTilemapLayers) = (durationInMilliseconds, rawLayers);
+
+    public bool Equals(RawTilemapFrame? other) => other is not null
+                                                  && DurationInMilliseconds == other.DurationInMilliseconds
+                                                  && RawTilemapLayers.SequenceEqual(other.RawTilemapLayers);
 }

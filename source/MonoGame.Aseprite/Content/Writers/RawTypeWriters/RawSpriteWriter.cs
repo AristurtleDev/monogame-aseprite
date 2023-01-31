@@ -29,7 +29,7 @@ namespace MonoGame.Aseprite.Content.Writers.RawTypeWriters;
 /// <summary>
 /// Defines a writer that writes the contents of a raw sprite record to a file.
 /// </summary>
-public static class SpriteWriter
+public static class RawSpriteWriter
 {
     /// <summary>
     /// Writes the contents of the raw sprite record given to the file at the path specified.

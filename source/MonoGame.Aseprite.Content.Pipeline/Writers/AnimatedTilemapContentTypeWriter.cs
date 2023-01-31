@@ -24,30 +24,30 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Pipeline.Processors;
+using MonoGame.Aseprite.Content.RawTypes;
+using MonoGame.Aseprite.Content.Writers.RawTypeWriters;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
-/// <summary>
-///     Defines a content writer that writes the content of a <see cref="SpriteContentProcessorResult"/> to an xnb
-///     file.
-/// </summary>
 [ContentTypeWriter]
-public sealed class SingleFrameContentWriter : ContentTypeWriter<SpriteContentProcessorResult>
+internal sealed class AnimatedTilemapContentTypeWriter : ContentTypeWriter<RawAnimatedTilemap>
 {
-    protected override void Write(ContentWriter writer, SpriteContentProcessorResult content)
-    {
-        writer.Write(content.TextureContent);
-        writer.Write(content.TextureContent.Name);
-    }
+    protected override void Write(ContentWriter writer, RawAnimatedTilemap rawAnimatedTilemap) =>
+        RawAnimatedTilemapWriter.Write(writer, rawAnimatedTilemap);
 
-    public override string GetRuntimeType(TargetPlatform targetPlatform)
-    {
-        return "Microsoft.Xna.Framework.Graphics.Texture2D, MonoGame.Framework";
-    }
+    /// <summary>
+    /// Gets the assembly qualified name of the runtime type.
+    /// </summary>
+    /// <param name="targetPlatform">The target platform.</param>
+    /// <returns>The assembly qualified name of the runtime type.</returns>
+    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Tilemaps.AnimatedTilemap, MonoGame.Aseprite";
 
-    public override string GetRuntimeReader(TargetPlatform targetPlatform)
-    {
-        return "MonoGame.Aseprite.Content.Pipeline.Readers.SingleFrameReader, MonoGame.Aseprite";
-    }
+    /// <summary>
+    /// Gets the assembly qualified name of the runtime loader.
+    /// </summary>
+    /// <param name="targetPlatform">The target platform type.</param>
+    /// <returns>The assembly qualified name of the runtime loader.</returns>
+    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Content.Pipeline.Reader.AnimatedTilemapContentTypeReader, MonoGame.Aseprite";
 }

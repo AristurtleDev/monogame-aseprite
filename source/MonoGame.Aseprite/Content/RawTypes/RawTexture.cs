@@ -27,9 +27,9 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a texture.
+/// Defines a class that represents the raw values of a texture.
 /// </summary>
-public sealed record RawTexture
+public sealed class RawTexture : IEquatable<RawTexture>
 {
     private Color[] _pixels;
 
@@ -56,4 +56,10 @@ public sealed record RawTexture
 
     internal RawTexture(string name, Color[] pixels, int width, int height) =>
         (Name, _pixels, Width, Height) = (name, pixels, width, height);
+
+    public bool Equals(RawTexture? other) => other is not null
+                                             && Name == other.Name
+                                             && Pixels.SequenceEqual(other.Pixels)
+                                             && Width == other.Width
+                                             && Height == other.Height;
 }

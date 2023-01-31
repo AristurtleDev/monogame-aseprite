@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of an animation frame.
+/// Defines a class that represents the raw values of an animation frame.
 /// </summary>
-public sealed record RawAnimationFrame
+public sealed class RawAnimationFrame : IEquatable<RawAnimationFrame>
 {
     /// <summary>
     /// Gets the index of the source frame for the animation frame represented by this raw animation frame record.
@@ -41,4 +41,8 @@ public sealed record RawAnimationFrame
 
     internal RawAnimationFrame(int frameIndex, int durationInMilliseconds) =>
         (FrameIndex, DurationInMilliseconds) = (frameIndex, durationInMilliseconds);
+
+    public bool Equals(RawAnimationFrame? other) => other is not null
+                                                    && FrameIndex == other.FrameIndex
+                                                    && DurationInMilliseconds == other.DurationInMilliseconds;
 }

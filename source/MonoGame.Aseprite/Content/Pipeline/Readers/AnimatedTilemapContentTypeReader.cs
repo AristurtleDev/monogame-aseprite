@@ -24,25 +24,25 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Tilemaps;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
-///     Defines a content type reader that reads a <see cref="Texture2D"/>
-///     Provides method for reading a <see cref="Texture2D"/> from an xnb file
-///     that was generated using the MonoGame.Aseprite library.
+/// Defines a content type reader that reads an animated tilemap from the xnb file created by the MonoGame pipeline
+/// using the MonoGame Aseprite Content Pipeline assembly.
 /// </summary>
-internal sealed class SingleFrameReader : ContentTypeReader<Texture2D>
+internal sealed class AnimatedTilemapContentTypeReader : ContentTypeReader<AnimatedTilemap>
 {
-    protected override Texture2D Read(ContentReader reader, Texture2D? existingInstance)
+    protected override AnimatedTilemap Read(ContentReader reader, AnimatedTilemap? existingInstance)
     {
-        if(existingInstance is not null)
+        if (existingInstance is not null)
         {
             return existingInstance;
         }
 
-        Texture2D texture = reader.ReadTexture2D();
-        texture.Name = reader.ReadString();
-        return texture;
+        GraphicsDevice device = reader.GetGraphicsDevice();
+        return AnimatedTilemapReader.Read(device, reader);
     }
 }

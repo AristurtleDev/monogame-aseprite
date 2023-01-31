@@ -23,40 +23,36 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using MonoGame.Aseprite.Processors;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class TilemapProcessorTests
+public sealed class RawTilemapProcessorTests
 {
     [Fact]
-    public void TilemapProcessorTest_CreateRawTilemap()
+    public void RawTilemapProcessorTest_Process()
     {
         string path = FileUtils.GetLocalPath("tilemap-processor-test.aseprite");
         AsepriteFile aseFile = AsepriteFile.Load(path);
 
-        //  ********************************************************
-        //  Default configuration
-        //  ********************************************************
-        TilemapProcessorConfiguration config = new();
+        RawTilemap rawTilemap = RawTilemapProcessor.Process(aseFile, 0, true);
 
-        RawTilemap tilemap = AnimatedTilemapProcessor.CreateRawTilemap(aseFile, config);
-
-        Assert.Equal("tilemap-processor-test", tilemap.Name);
+        Assert.Equal("tilemap-processor-test", rawTilemap.Name);
 
         //  The test file should have two tilesets total, but one layer is hidden, so only the tileset for the visible
         //  layer should have been processed
-        Assert.Equal(1, tilemap.Tilesets.Length);
+        Assert.Equal(1, rawTilemap.RawTilesets.Length);
 
         //  Ensure it got the correct tileset
-        RawTileset tileset = tilemap.Tilesets[0];
+        RawTileset tileset = rawTilemap.RawTilesets[0];
         Assert.Equal("tileset-0", tileset.Name);
 
         //  There should only be the one layer that was visible
-        Assert.Equal(1, tilemap.Layers.Length);
+        Assert.Equal(1, rawTilemap.RawLayers.Length);
 
         //  Ensure it is the correct layer
-        RawTilemapLayer layer = tilemap.Layers[0];
+        RawTilemapLayer layer = rawTilemap.RawLayers[0];
         Assert.Equal("layer-0", layer.Name);
         Assert.Equal(tileset.ID, layer.TilesetID);
         Assert.Equal(4, layer.Columns);
@@ -65,7 +61,7 @@ public sealed class TilemapProcessorTests
         //  Ensure offset is read correctly
         Assert.Equal(new Point(0, 1), layer.Offset);
 
-        RawTile[] tiles = new RawTile[]
+        RawTilemapTile[] tiles = new RawTilemapTile[]
         {
             new(2, false, false, 0.0f),
             new(2, false, false, 0.0f),
@@ -85,24 +81,16 @@ public sealed class TilemapProcessorTests
     }
 
     [Fact]
-    public void TilemapProcessorTest_CreateRawTilemap_OnlyVisibleLayers_FalseTest()
+    public void RawTilemapProcessorTest_Process_OnlyVisibleLayers_FalseTest()
     {
         string path = FileUtils.GetLocalPath("tilemap-processor-test.aseprite");
         AsepriteFile aseFile = AsepriteFile.Load(path);
 
-        //  ********************************************************
-        //  Default configuration
-        //  ********************************************************
-        TilemapProcessorConfiguration config = new()
-        {
-            OnlyVisibleLayers = false
-        };
-
-        RawTilemap tilemap = AnimatedTilemapProcessor.CreateRawTilemap(aseFile, config);
+        RawTilemap tilemap = RawTilemapProcessor.Process(aseFile, 0, onlyVisibleLayers: false);
 
         //  One layer is hidden, but since only visible layers is false, we should still have two layers
-        Assert.Equal(2, tilemap.Layers.Length);
-        Assert.Equal("layer-0", tilemap.Layers[0].Name);
-        Assert.Equal("layer-1", tilemap.Layers[1].Name);
+        Assert.Equal(2, tilemap.RawLayers.Length);
+        Assert.Equal("layer-0", tilemap.RawLayers[0].Name);
+        Assert.Equal("layer-1", tilemap.RawLayers[1].Name);
     }
 }

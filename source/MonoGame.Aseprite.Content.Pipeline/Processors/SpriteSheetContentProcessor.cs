@@ -24,22 +24,21 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Processors;
-using MonoGame.Aseprite.Processors.RawTypes;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw texture atlas from an aseprite file.
+/// Defines a content processor that processes a raw spritsheet from an aseprite file.
 /// </summary>
-[ContentProcessor(DisplayName = "Aseprite Texture Atlas Processor - MonoGame.Aseprite")]
-internal sealed class RawTextureAtlasProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, RawTextureAtlas>
+[ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
+internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFile, RawSpriteSheet>
 {
     /// <summary>
     /// Gets or Sets a value that indicates whether only aseprite cels on visible aseprite layers should be included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
-    [DefaultValue(true)]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
@@ -47,14 +46,12 @@ internal sealed class RawTextureAtlasProcessor : ContentProcessor<ContentImporte
     /// should be included.
     /// </summary>
     [DisplayName("Include Background Layer")]
-    [DefaultValue(false)]
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
     /// Gets or Sets a value that indicates whether aseprite cels on an aseprite tilemap layer should be included.
     /// </summary>
     [DisplayName("Include Tilemap Layers")]
-    [DefaultValue(true)]
     public bool IncludeTilemapLayers { get; set; } = true;
 
     /// <summary>
@@ -68,37 +65,30 @@ internal sealed class RawTextureAtlasProcessor : ContentProcessor<ContentImporte
     /// regions within it.
     /// </summary>
     [DisplayName("Border Padding")]
-    [DefaultValue(0)]
     public int BorderPadding { get; set; } = 0;
 
     /// <summary>
     /// Gets or Sets the amount of transparent pixels to add between each region in the generated source image.
     /// </summary>
     [DisplayName("Spacing")]
-    [DefaultValue(0)]
     public int Spacing { get; set; } = 0;
 
     /// <summary>
-    /// Gets or Sets teh amount of transparent pixels to add around the edge of each region in the generated source
+    /// Gets or Sets the amount of transparent pixels to add around the edge of each region in the generated source
     /// image.
     /// </summary>
     [DisplayName("Inner Padding")]
-    [DefaultValue(0)]
     public int InnerPadding { get; set; } = 0;
 
     /// <summary>
-    /// Processes a raw texture atlas from an aseprite file.
+    /// Processes a raw spritesheet from an aseprite file.
     /// </summary>
-    /// <param name="content">The result of the content importer that contains the aseprite file content.</param>
+    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw texture atlas that is created by this method.</returns>
-    public override RawTextureAtlas Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
-    {
-        AsepriteFile aseFile = content.Data;
-        RawTextureAtlas rawTextureAtlas = TextureAtlasProcessor.ProcessRaw(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
-        return rawTextureAtlas;
-    }
+    /// <returns>The raw spritesheet created by this method.</returns>
+    public override RawSpriteSheet Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+        RawSpriteSheetProcessor.Process(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
 }

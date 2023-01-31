@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a sprite.
+/// Defines a class that represents the raw values of a sprite.
 /// </summary>
-public sealed record RawSprite
+public sealed class RawSprite : IEquatable<RawSprite>
 {
     /// <summary>
     /// Gets the name assigned to the sprite represented by this raw sprite record.
@@ -41,4 +41,8 @@ public sealed record RawSprite
     public RawTexture RawTexture { get; }
 
     internal RawSprite(string name, RawTexture rawTexture) => (Name, RawTexture) = (name, rawTexture);
+
+    public bool Equals(RawSprite? other) => other is not null
+                                            && Name == other.Name
+                                            && RawTexture.Equals(other.RawTexture);
 }

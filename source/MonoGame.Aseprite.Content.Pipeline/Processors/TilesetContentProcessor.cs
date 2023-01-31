@@ -24,8 +24,8 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Processors;
-using MonoGame.Aseprite.Processors.RawTypes;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw tileset from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
-public sealed class RawTilesetProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, RawTileset>
+internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, RawTileset>
 {
     /// <summary>
     /// Gets or Sets the name of the aseprite tileset to processes from the aseprite file.
@@ -44,7 +44,7 @@ public sealed class RawTilesetProcessor : ContentProcessor<ContentImporterResult
     /// <summary>
     /// Processes a raw tileset from an aseprite file.
     /// </summary>
-    /// <param name="content">The result of the content importer that contains the aseprite file content.</param>
+    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
@@ -54,10 +54,6 @@ public sealed class RawTilesetProcessor : ContentProcessor<ContentImporterResult
     /// Thrown if the aseprite file being processes does not contain an aseprite tileset with the name specified for
     /// the TilesetName property.
     /// </exception>
-    public override RawTileset Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
-    {
-        AsepriteFile aseFile = content.Data;
-        RawTileset rawTileset = TilesetProcessor.ProcessRaw(aseFile, TilesetName);
-        return rawTileset;
-    }
+    public override RawTileset Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+        RawTilesetProcessor.Process(aseFile, TilesetName);
 }

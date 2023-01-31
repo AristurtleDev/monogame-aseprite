@@ -123,25 +123,39 @@ public static class RawTextureAtlasProcessor
             int row = (i - offset) / columns;
             Color[] frame = flattenedFrames[i];
 
+            int x = (column * frameWidth)
+                    + borderPadding
+                    + (spacing * column)
+                    + (innerPadding * (column + column + 1));
+
+            int y =  (row * frameHeight)
+                     + borderPadding
+                     + (spacing * row)
+                     + (innerPadding * (row + row + 1));
+
             for (int p = 0; p < frame.Length; p++)
             {
-                int x = (p % frameWidth)
-                        + (column * frameWidth)
-                        + borderPadding
-                        + (spacing * column)
-                        + (innerPadding * (column + column + 1));
+                int px = (p % frameWidth) + x;
+                        // + (column * frameWidth)
+                        // + borderPadding
+                        // + (spacing * column)
+                        // + (innerPadding * (column + column + 1));
 
-                int y = (p / frameWidth)
-                        + (row * frameHeight)
-                        + borderPadding
-                        + (spacing * row)
-                        + (innerPadding * (row + row + 1));
+                int py = (p / frameWidth) + y;
+                        // + (row * frameHeight)
+                        // + borderPadding
+                        // + (spacing * row)
+                        // + (innerPadding * (row + row + 1));
 
-                int index = y * imageWidth + x;
-                imagePixels[index] = frame[i];
-                Rectangle bounds = new(x, y, frameWidth, frameHeight);
-                regions[i] = new($"{aseFile.Name} {i}", bounds);
+                int index = py * imageWidth + px;
+                imagePixels[index] = frame[p];
+
             }
+
+            Rectangle bounds = new(x, y, frameWidth, frameHeight);
+            RawTextureRegion rawTextureRegion = new($"{aseFile.Name} {i}", bounds);
+            regions[i] = rawTextureRegion;
+            originalToDuplicateLookup.Add(i, rawTextureRegion);
         }
 
         RawTexture rawTexture = new(aseFile.Name, imagePixels, imageWidth, imageHeight);

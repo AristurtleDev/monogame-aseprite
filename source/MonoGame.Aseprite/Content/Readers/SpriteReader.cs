@@ -49,7 +49,7 @@ public static class SpriteReader
         return Read(device, reader);
     }
 
-    private static Sprite Read(GraphicsDevice device, BinaryReader reader)
+    internal static Sprite Read(GraphicsDevice device, BinaryReader reader)
     {
         RawSprite rawSprite = RawSpriteReader.Read(reader);
         return Sprite.FromRaw(device, rawSprite);

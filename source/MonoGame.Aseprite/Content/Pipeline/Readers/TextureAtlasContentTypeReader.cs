@@ -22,35 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Processors.RawTypes;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Writers;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
-/// Defines a content writer that writes the content of a raw spritesheet to an xnb file.
+/// Defines a content type reader that reads a texture atlas from the xnb file created by the MonoGame pipeline using
+/// the MonoGame Aseprite Content Pipeline assembly.
 /// </summary>
-[ContentTypeWriter]
-public sealed class RawSpriteWriter : ContentTypeWriter<RawSprite>
+internal sealed class TextureAtlasContentTypeReader : ContentTypeReader<TextureAtlas>
 {
-    public void Write(string path, RawSprite rawSprite)
+    protected override TextureAtlas Read(ContentReader reader, TextureAtlas? existingInstance)
     {
+        if (existingInstance is not null)
+        {
+            return existingInstance;
+        }
 
-    }
-    protected override void Write(ContentWriter writer, RawSprite rawSprite)
-    {
-        writer.Write(rawSprite.Name);
-        writer.Write(rawSprite.RawTexture);
-    }
-
-    public override string GetRuntimeType(TargetPlatform targetPlatform)
-    {
-        return "MonoGame.Aseprite.Processors.RawTypes.RawSprite, MonoGame.Aseprite";
-    }
-
-    public override string GetRuntimeReader(TargetPlatform targetPlatform)
-    {
-        return "MonoGame.Aseprite.Content.Pipeline.Readers.RawSpriteReader, MonoGame.Aseprite";
+        GraphicsDevice device = reader.GetGraphicsDevice();
+        return TextureAtlasReader.Read(device, reader);
     }
 }

@@ -22,54 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Sprites;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
-///     Provides method for reading a <see cref="TilesetCollection"/> from an
-///     xnb file that was generated with the MonoGame.Aseprite library.
+/// Defines a content type reader that reads a spritesheet from the xnb file created by the MonoGame pipeline using the
+/// MonoGame Aseprite Content Pipeline assembly.
 /// </summary>
-public sealed class TilesetCollectionReader : ContentTypeReader<TilesetCollection>
+internal sealed class SpriteSheetContentTypeReader : ContentTypeReader<SpriteSheet>
 {
-    protected override TilesetCollection Read(ContentReader reader, TilesetCollection? existingInstance)
+    protected override SpriteSheet Read(ContentReader reader, SpriteSheet? existingInstance)
     {
         if (existingInstance is not null)
         {
             return existingInstance;
         }
 
-        TilesetCollection collection = new();
-
-        int count = reader.ReadInt32();
-
-        for (int i = 0; i < count; i++)
-        {
-            Texture2D texture = ReadTexture(reader);
-            Tileset tileset = ReadTileset(reader, texture);
-            collection.AddTileset(tileset);
-        }
-
-        return collection;
-    }
-
-
-    private Texture2D ReadTexture(ContentReader reader)
-    {
-        Texture2D texture = reader.ReadTexture2D();
-        texture.Name = reader.ReadString();
-        return texture;
-    }
-
-    private Tileset ReadTileset(ContentReader reader, Texture2D texture)
-    {
-        string name = reader.ReadString();
-        int tileWidth = reader.ReadInt32();
-        int tileHeight = reader.ReadInt32();
-
-        return new(name, texture, tileWidth, tileHeight);
+        GraphicsDevice device = reader.GetGraphicsDevice();
+        return SpriteSheetReader.Read(device, reader);
     }
 }

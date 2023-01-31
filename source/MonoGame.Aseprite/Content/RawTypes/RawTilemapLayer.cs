@@ -27,9 +27,9 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a tilemap layer.
+/// Defines a class that represents the raw values of a tilemap layer.
 /// </summary>
-public sealed record RawTilemapLayer
+public sealed class RawTilemapLayer : IEquatable<RawTilemapLayer>
 {
     private RawTilemapTile[] _rawTilemapTiles;
 
@@ -66,4 +66,12 @@ public sealed record RawTilemapLayer
 
     internal RawTilemapLayer(string name, int tilesetID, int columns, int rows, RawTilemapTile[] rawTilemapTiles, Point offset) =>
         (Name, TilesetID, Columns, Rows, _rawTilemapTiles, Offset) = (name, tilesetID, columns, rows, rawTilemapTiles, offset);
+
+    public bool Equals(RawTilemapLayer? other) => other is not null
+                                                  && Name == other.Name
+                                                  && TilesetID == other.TilesetID
+                                                  && Columns == other.Columns
+                                                  && Rows == other.Rows
+                                                  && RawTilemapTiles.SequenceEqual(other.RawTilemapTiles)
+                                                  && Offset == other.Offset;
 }

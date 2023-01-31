@@ -84,7 +84,7 @@ public sealed class AsepriteFrameTests
         AsepriteTilemapCel layer_2_cel = new(2, 4, layer_2_tilemap_tiles, layer_2_tilemap_visible, Point.Zero, 255);
         AsepriteImageCel layer_3_cel = new(2, 3, layer_3_visible_cel_pixels, layer_3_Visible, Point.Zero, 255);
 
-        AsepriteFrame frame = new(2, 4, 0, new AsepriteCel[] { layer_0_cel, layer_1_cel, layer_2_cel, layer_3_cel });
+        AsepriteFrame frame = new("frame", 2, 4, 0, new AsepriteCel[] { layer_0_cel, layer_1_cel, layer_2_cel, layer_3_cel });
 
         Color[] expected = new Color[8];
 

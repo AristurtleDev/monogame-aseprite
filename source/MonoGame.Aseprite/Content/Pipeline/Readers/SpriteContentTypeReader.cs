@@ -22,18 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Sprites;
+
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
-///     Defines a generic result of a content importer.
+/// Defines a content type reader that reads a sprite from the xnb file created by the MonoGame pipeline using the
+/// MonoGame Aseprite Content Pipeline assembly.
 /// </summary>
-/// <typeparam name="T">
-///     The type of data that was imported.
-/// </typeparam>
-public sealed class ContentImporterResult<T>
+internal sealed class SpriteContentTypeReader : ContentTypeReader<Sprite>
 {
-    internal string FilePath { get; }
-    internal T Data { get; }
+    protected override Sprite Read(ContentReader reader, Sprite? existingInstance)
+    {
+        if(existingInstance is not null)
+        {
+            return existingInstance;
+        }
 
-    internal ContentImporterResult(string filePath, T data) => (FilePath, Data) = (filePath, data);
+        GraphicsDevice device = reader.GetGraphicsDevice();
+        return SpriteReader.Read(device, reader);
+    }
 }

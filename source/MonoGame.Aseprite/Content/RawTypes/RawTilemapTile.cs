@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a tilemap tile.
+/// Defines a class that represents the raw values of a tilemap tile.
 /// </summary>
-public sealed record RawTilemapTile
+public sealed class RawTilemapTile : IEquatable<RawTilemapTile>
 {
     /// <summary>
     /// Gets the ID of the source tile in the tileset that represents the texture region used by the tilemap tile that
@@ -54,4 +54,9 @@ public sealed record RawTilemapTile
 
     internal RawTilemapTile(int tilesetTileID, bool flipHorizontally, bool flipVertically, float rotation) =>
         (TilesetTileID, FlipHorizontally, FlipVertically, Rotation) = (tilesetTileID, flipHorizontally, flipVertically, rotation);
+
+    public bool Equals(RawTilemapTile? other) => other is not null
+                                                 && TilesetTileID == other.TilesetTileID
+                                                 && FlipHorizontally == other.FlipHorizontally
+                                                 && FlipVertically == other.FlipVertically;
 }

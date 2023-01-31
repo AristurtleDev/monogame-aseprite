@@ -23,28 +23,26 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using MonoGame.Aseprite.Processors;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class SingleFrameProcessorTests
+public sealed class RawSpriteProcessorTests
 {
 
     [Fact]
-    public void SingleFrameProcessor_CreateRawTextureTest()
+    public void RawSpriteProcessor_ProcessTest()
     {
-        SingleFrameProcessorConfiguration config = new()
-        {
-            FrameIndex = 1,
-            OnlyVisibleLayers = true,
-            IncludeBackgroundLayer = false,
-            IncludeTilemapLayers = false
-        };
-
-        string path = FileUtils.GetLocalPath("single-frame-processor-test.aseprite");
+        string name = "single-frame-processor-test";
+        string path = FileUtils.GetLocalPath($"{name}.aseprite");
         AsepriteFile aseFile = AsepriteFile.Load(path);
 
-        RawTexture texture = SingleFrameProcessor.CreateRawTexture(aseFile, config);
+        int frameIndex = 1;
+        bool onlyVisibleLayers = true;
+        bool includeBackgroundLayer = false;
+        bool includeTilemapLayers = false;
+        RawSprite rawSprite = RawSpriteProcessor.Process(aseFile, frameIndex, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
 
         Color transparent = new Color(0, 0, 0, 0);
         Color[] pixels = new Color[]
@@ -54,31 +52,21 @@ public sealed class SingleFrameProcessorTests
             aseFile.Palette[2], aseFile.Palette[2],
             aseFile.Palette[2], aseFile.Palette[2]
         };
-
-        Assert.Equal("single-frame-processor-test", texture.Name);
-        Assert.Equal(pixels, texture.Pixels);
-        Assert.Equal(2, texture.Width);
-        Assert.Equal(4, texture.Height);
+        Assert.Equal($"{name} {frameIndex}", rawSprite.Name);
+        Assert.Equal($"{name} {frameIndex}", rawSprite.RawTexture.Name);
+        Assert.Equal(pixels, rawSprite.RawTexture.Pixels.ToArray());
+        Assert.Equal(2, rawSprite.RawTexture.Width);
+        Assert.Equal(4, rawSprite.RawTexture.Height);
     }
 
     [Theory]
     [InlineData(-1)]
     [InlineData(2)]
-    public void SingleFrameProcessor_CreateRawTexture_InvalidFrame_ThrowsExceptionTest(int index)
+    public void RawSpriteProcessor_Process_InvalidFrame_ThrowsExceptionTest(int index)
     {
-        SingleFrameProcessorConfiguration config = new()
-        {
-            FrameIndex = index,
-            OnlyVisibleLayers = true,
-            IncludeBackgroundLayer = false,
-            IncludeTilemapLayers = false
-        };
-
         string path = FileUtils.GetLocalPath("single-frame-processor-test.aseprite");
         AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        Exception ex = Record.Exception(() => SingleFrameProcessor.CreateRawTexture(aseFile, config));
-
+        Exception ex = Record.Exception(() => RawSpriteProcessor.Process(aseFile, index));
         Assert.IsType<ArgumentOutOfRangeException>(ex);
     }
 }

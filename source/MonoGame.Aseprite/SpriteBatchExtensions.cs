@@ -268,18 +268,20 @@ public static class SpriteBatchExtensions
         {
             for (int row = 0; row < layer.Rows; row++)
             {
+                Tile tile = layer.GetTile(column, row);
+                if (tile.IsEmpty) { continue; }
+
                 tPosition.X = position.X + (column * layer.Tileset.TileWidth * scale.X);
                 tPosition.Y = position.Y + (row * layer.Tileset.TileHeight * scale.Y);
                 Color renderColor = color * layer.Transparency;
-                Tile? tile = layer.GetTile(column, row);
-
-                if (tile is null) { continue; }
 
                 SpriteEffects flipEffects = SpriteEffects.None |
                                             (tile.FlipVertically ? SpriteEffects.FlipVertically : 0) |
                                             (tile.FlipHorizontally ? SpriteEffects.FlipHorizontally : 0);
 
-                Draw(spriteBatch, tile.TextureRegion, tPosition, renderColor, tile.Rotation, Vector2.Zero, scale, flipEffects, layerDepth);
+                TextureRegion textureRegion = layer.Tileset[tile.TilesetTileID];
+
+                Draw(spriteBatch, textureRegion, tPosition, renderColor, tile.Rotation, Vector2.Zero, scale, flipEffects, layerDepth);
             }
         }
     }

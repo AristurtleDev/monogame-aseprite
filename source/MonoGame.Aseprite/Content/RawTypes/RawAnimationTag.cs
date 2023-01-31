@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of an animation tag.
+/// Defines a class that represents the raw values of an animation tag.
 /// </summary>
-public sealed record RawAnimationTag
+public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
 {
     private RawAnimationFrame[] _rawAnimationFrames;
 
@@ -62,4 +62,11 @@ public sealed record RawAnimationTag
 
     internal RawAnimationTag(string name, RawAnimationFrame[] rawAnimationFrames, bool isLooping, bool isReversed, bool isPingPong) =>
         (Name, _rawAnimationFrames, IsLooping, IsReversed, IsPingPong) = (name, rawAnimationFrames, isLooping, isReversed, isPingPong);
+
+    public bool Equals(RawAnimationTag? other) => other is not null
+                                                  && Name == other.Name
+                                                  && RawAnimationFrames.SequenceEqual(other.RawAnimationFrames)
+                                                  && IsLooping == other.IsLooping
+                                                  && IsReversed == other.IsReversed
+                                                  && IsPingPong == other.IsPingPong;
 }

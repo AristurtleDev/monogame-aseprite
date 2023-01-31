@@ -24,48 +24,59 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Processors;
-using MonoGame.Aseprite.Processors.RawTypes;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw tilemap from an aseprite frame in an aseprite file.
+/// Defines a content processor that processes a raw sprite from an aseprite frame in an aseprite file.
 /// </summary>
-[ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
-public sealed class RawTilemapProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, RawTilemap>
+[ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
+internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, RawSprite>
 {
     /// <summary>
-    /// Gets or Sets the index of the aseprite frame in the aseprite file that contains the tilemap to process.
+    /// Gets or Sets a the index of the aseprite frame in the aseprite file to process.
     /// </summary>
     [DisplayName("Frame Index")]
     [DefaultValue(0)]
     public int FrameIndex { get; set; } = 0;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether only visible layers should be included.
+    /// Gets or Sets a value that indicates whether only aseprite cels on visible aseprite layers should be included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
     [DefaultValue(true)]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    /// Processes a raw tilemap from an aseprite file.
+    /// Gets or Sets a value that indicates whether aseprite cels on an aseprite layer marked as the background layer
+    /// should be included.
     /// </summary>
-    /// <param name="content">The result of the content importer that contains the aseprite file content.</param>
+    [DisplayName("Include Background Layer")]
+    [DefaultValue(false)]
+    public bool IncludeBackgroundLayer { get; set; } = false;
+
+    /// <summary>
+    /// Gets or Sets a value that indicates whether aseprite cels on an aseprite tilemap layer should be included.
+    /// </summary>
+    [DisplayName("Include Tilemap Layers")]
+    [DefaultValue(true)]
+    public bool IncludeTilemapLayers { get; set; } = true;
+
+    /// <summary>
+    /// Processes a sprite from the given aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw tilemap created by this method.</returns>
-    /// <exception cref="IndexOutOfRangeException">
-    /// Thrown if the FrameIndex property specified is less than zero or is greater than or equal to the total number of
-    /// aseprite frames in the aseprite file.
+    /// <returns>The raw sprite created by this method.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the FrameIndex property is less than zero or is greater than or equal to the total number of aseprite
+    /// frames in the aseprite file being processed.
     /// </exception>
-    public override RawTilemap Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
-    {
-        AsepriteFile aseFile = content.Data;
-        RawTilemap rawTilemap = TilemapProcessor.ProcessRaw(aseFile, FrameIndex, OnlyVisibleLayers);
-        return rawTilemap;
-    }
+    public override RawSprite Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+        RawSpriteProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
 }

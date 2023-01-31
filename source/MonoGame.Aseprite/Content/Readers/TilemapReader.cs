@@ -50,7 +50,7 @@ public static class TilemapReader
         return Read(device, reader);
     }
 
-    private static Tilemap Read(GraphicsDevice device, BinaryReader reader)
+    internal static Tilemap Read(GraphicsDevice device, BinaryReader reader)
     {
         RawTilemap rawTilemap = RawTilemapReader.Read(reader);
         return Tilemap.FromRaw(device, rawTilemap);

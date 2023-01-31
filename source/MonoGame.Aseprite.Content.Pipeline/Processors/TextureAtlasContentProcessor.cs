@@ -24,24 +24,17 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Processors;
-using MonoGame.Aseprite.Processors.RawTypes;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw sprite from an aseprite frame in an aseprite file.
+/// Defines a content processor that processes a raw texture atlas from an aseprite file.
 /// </summary>
-[ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-public sealed class RawSpriteProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, RawSprite>
+[ContentProcessor(DisplayName = "Aseprite Texture Atlas Processor - MonoGame.Aseprite")]
+internal sealed class TextureAtlasContentProcessor : ContentProcessor<AsepriteFile, RawTextureAtlas>
 {
-    /// <summary>
-    /// Gets or Sets a the index of the aseprite frame in the aseprite file to process.
-    /// </summary>
-    [DisplayName("Frame Index")]
-    [DefaultValue(0)]
-    public int FrameIndex { get; set; } = 0;
-
     /// <summary>
     /// Gets or Sets a value that indicates whether only aseprite cels on visible aseprite layers should be included.
     /// </summary>
@@ -65,22 +58,43 @@ public sealed class RawSpriteProcessor : ContentProcessor<ContentImporterResult<
     public bool IncludeTilemapLayers { get; set; } = true;
 
     /// <summary>
-    /// Processes a sprite from the given aseprite file.
+    /// Gets or Sets a value that indicates if duplicate aseprite frames should be merged into one.
     /// </summary>
-    /// <param name="content">The result of the content importer that contains the aseprite file content.</param>
+    [DisplayName("Merge Duplicate Frames")]
+    public bool MergeDuplicateFrames { get; set; } = true;
+
+    /// <summary>
+    /// Gets or Sets the amount of transparent pixels to add between the edge of the generate source image and the
+    /// regions within it.
+    /// </summary>
+    [DisplayName("Border Padding")]
+    [DefaultValue(0)]
+    public int BorderPadding { get; set; } = 0;
+
+    /// <summary>
+    /// Gets or Sets the amount of transparent pixels to add between each region in the generated source image.
+    /// </summary>
+    [DisplayName("Spacing")]
+    [DefaultValue(0)]
+    public int Spacing { get; set; } = 0;
+
+    /// <summary>
+    /// Gets or Sets teh amount of transparent pixels to add around the edge of each region in the generated source
+    /// image.
+    /// </summary>
+    [DisplayName("Inner Padding")]
+    [DefaultValue(0)]
+    public int InnerPadding { get; set; } = 0;
+
+    /// <summary>
+    /// Processes a raw texture atlas from an aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw sprite created by this method.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the FrameIndex property is less than zero or is greater than or equal to the total number of aseprite
-    /// frames in the aseprite file being processed.
-    /// </exception>
-    public override RawSprite Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
-    {
-        AsepriteFile aseFile = content.Data;
-        RawSprite rawSprite = SpriteProcessor.ProcessRaw(aseFile, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
-        return rawSprite;
-    }
+    /// <returns>The raw texture atlas that is created by this method.</returns>
+    public override RawTextureAtlas Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+        RawTextureAtlasProcessor.Process(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
 }

@@ -22,33 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using MonoGame.Aseprite.Processors;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Tilemaps;
 
-namespace MonoGame.Aseprite.Tests;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-public sealed class TilesetCollectionProcessorTests
+/// <summary>
+/// Defines a content type reader that reads a tileset from the xnb file created by the MonoGame pipeline using the
+/// MonoGame Aseprite Content Pipeline assembly.
+/// </summary>
+internal sealed class TilesetContentTypeReader : ContentTypeReader<Tileset>
 {
-    [Fact]
-    public void TilesetCollectionProcessor_GetRawTilesetsTest()
+    protected override Tileset Read(ContentReader reader, Tileset? existingInstance)
     {
-        string path = FileUtils.GetLocalPath("tileset-collection-processor-test.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
+        if (existingInstance is not null)
+        {
+            return existingInstance;
+        }
 
-        RawTileset[] tilesets = TilesetCollectionProcessor.GetRawTilesets(aseFile);
-
-        Assert.Equal(2, tilesets.Length);
-        Assert.Equal("tileset-1", tilesets[0].Name);
-        Assert.Equal("tileset-2", tilesets[1].Name);
-    }
-
-    [Fact]
-    public void TilesetCollectionProcessor_GetRawTilesets_DuplicateNamedTilesets_ThrowsException()
-    {
-        string path = FileUtils.GetLocalPath("tileset-collection-processor-duplicate-name-test.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        Exception ex = Record.Exception(() => TilesetCollectionProcessor.GetRawTilesets(aseFile));
-
-        Assert.IsType<InvalidOperationException>(ex);
+        GraphicsDevice device = reader.GetGraphicsDevice();
+        return TilesetReader.Read(device, reader);
     }
 }

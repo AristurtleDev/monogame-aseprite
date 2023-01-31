@@ -23,46 +23,31 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Pipeline.Processors;
-using MonoGame.Aseprite.Processors;
+using MonoGame.Aseprite.Content.RawTypes;
+using MonoGame.Aseprite.Content.Writers.RawTypeWriters;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
-/// <summary>
-///     Defines a content writer that writes the content of a <see cref="TilesetContentProcessorResult"/> to an xnb
-///     file.
-/// </summary>
 [ContentTypeWriter]
-public sealed class TilesetContentWriter : ContentTypeWriter<TilesetContentProcessorResult>
+internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<RawSpriteSheet>
 {
-    protected override void Write(ContentWriter writer, TilesetContentProcessorResult content)
-    {
-        WriteTexture(writer, content.TextureContent);
-        WriteTileset(writer, content.RawTileset);
-    }
+    protected override void Write(ContentWriter writer, RawSpriteSheet rawSpriteSheet) =>
+        RawSpriteSheetWriter.Write(writer, rawSpriteSheet);
 
-    private void WriteTexture(ContentWriter writer, TextureContent textureContent)
-    {
-        writer.Write(textureContent);
-        writer.Write(textureContent.Name);
-    }
+    /// <summary>
+    /// Gets the assembly qualified name of the runtime type.
+    /// </summary>
+    /// <param name="targetPlatform">The target platform.</param>
+    /// <returns>The assembly qualified name of the runtime type.</returns>
+    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Sprites.SpriteSheet, MonoGame.Aseprite";
 
-    private void WriteTileset(ContentWriter writer, RawTileset tileset)
-    {
-        writer.Write(tileset.Name);
-        writer.Write(tileset.TileWidth);
-        writer.Write(tileset.TileHeight);
-    }
-
-    public override string GetRuntimeType(TargetPlatform targetPlatform)
-    {
-        return "MonoGame.Aseprite.Tileset, MonoGame.Aseprite";
-    }
-
-    public override string GetRuntimeReader(TargetPlatform targetPlatform)
-    {
-        return "MonoGame.Aseprite.Content.Pipeline.Readers.TilesetReader, MonoGame.Aseprite";
-    }
+    /// <summary>
+    /// Gets the assembly qualified name of the runtime loader.
+    /// </summary>
+    /// <param name="targetPlatform">The target platform type.</param>
+    /// <returns>The assembly qualified name of the runtime loader.</returns>
+    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Content.Pipeline.Reader.SpriteSheetContentTypeReader, MonoGame.Aseprite";
 }

@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a spritesheet.
+/// Defines a class that represents the raw values of a spritesheet.
 /// </summary>
-public sealed record RawSpriteSheet
+public sealed class RawSpriteSheet : IEquatable<RawSpriteSheet>
 {
     private RawAnimationTag[] _rawAnimationTags;
 
@@ -50,4 +50,9 @@ public sealed record RawSpriteSheet
 
     internal RawSpriteSheet(string name, RawTextureAtlas rawAtlas, RawAnimationTag[] rawAnimationTags) =>
         (Name, RawTextureAtlas, _rawAnimationTags) = (name, rawAtlas, rawAnimationTags);
+
+    public bool Equals(RawSpriteSheet? other) => other is not null
+                                                 && Name == other.Name
+                                                 && RawTextureAtlas.Equals(other.RawTextureAtlas)
+                                                 && RawAnimationTags.SequenceEqual(other.RawAnimationTags);
 }

@@ -23,32 +23,24 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 
 /// <summary>
-///     Defines the content pipeline importer for importing the contents of an Aseprite file.
+/// Defines a content pipeline importer for importing the contents of an aseprite file.
 /// </summary>
-[ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = "AsepriteSpritesheetProcessor")]
-public class AsepriteFileImporter : ContentImporter<ContentImporterResult<AsepriteFile>>
+[ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = nameof(SpriteSheetContentProcessor))]
+public class AsepriteFileImporter : ContentImporter<AsepriteFile>
 {
     /// <summary>
-    ///     Imports the Aseprite file at the specified file path.
+    /// Imports the aseprite file at the specified path.
     /// </summary>
-    /// <param name="filePath">
-    ///     The absolute path, including extension, to the Aseprite file to
-    ///     import.
-    /// </param>
+    /// <param name="path">The path and file name of the aseprite file to import.</param>
     /// <param name="context">
-    ///     The <see cref="ContentImporterContext"/> that provides contexture information about the file being imported.
+    /// The content importer context that provides contextual information about the importer.
     /// </param>
-    /// <returns>
-    ///     A new instance of the <see cref="ContentImporterResult{T}"/> class containing the <see cref="AsepriteFile"/>
-    ///     data that was imported.
-    /// </returns>
-    public override ContentImporterResult<AsepriteFile> Import(string filePath, ContentImporterContext context)
-    {
-        AsepriteFile file = AsepriteFile.Load(filePath);
-        return new(filePath, file);
-    }
+    /// <returns>The aseprite file that was imported. </returns>
+    public override AsepriteFile Import(string path, ContentImporterContext context) =>
+        AsepriteFile.Load(path);
 }

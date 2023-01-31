@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a tileset.
+/// Defines a class that represents the raw values of a tileset.
 /// </summary>
-public sealed record RawTileset
+public sealed class RawTileset : IEquatable<RawTileset>
 {
     /// <summary>
     /// Gets the unique ID assigned to the tileset represented by this raw tileset record.
@@ -57,4 +57,10 @@ public sealed record RawTileset
 
     internal RawTileset(int id, string name, RawTexture rawTexture, int tileWidth, int tileHeight) =>
         (ID, Name, RawTexture, TileWidth, TileHeight) = (id, name, rawTexture, tileWidth, tileHeight);
+
+    public bool Equals(RawTileset? other) => other is not null
+                                             && Name == other.Name
+                                             && RawTexture.Equals(other.RawTexture)
+                                             && TileWidth == other.TileWidth
+                                             && TileHeight == other.TileHeight;
 }

@@ -25,9 +25,9 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a texture atlas.
+/// Defines a class that represents the raw values of a texture atlas.
 /// </summary>
-public sealed record RawTextureAtlas
+public sealed class RawTextureAtlas : IEquatable<RawTextureAtlas>
 {
     private RawTextureRegion[] _rawTextureRegions;
 
@@ -50,4 +50,9 @@ public sealed record RawTextureAtlas
 
     internal RawTextureAtlas(string name, RawTexture rawTexture, RawTextureRegion[] rawRegions) =>
         (Name, RawTexture, _rawTextureRegions) = (name, rawTexture, rawRegions);
+
+    public bool Equals(RawTextureAtlas? other) => other is not null
+                                                  && Name == other.Name
+                                                  && RawTexture.Equals(other.RawTexture)
+                                                  && RawTextureRegions.SequenceEqual(other.RawTextureRegions);
 }

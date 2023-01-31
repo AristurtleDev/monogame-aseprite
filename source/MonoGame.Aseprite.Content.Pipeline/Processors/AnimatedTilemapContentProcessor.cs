@@ -24,16 +24,16 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Processors;
-using MonoGame.Aseprite.Processors.RawTypes;
+using MonoGame.Aseprite.Content.Processors.RawProcessors;
+using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
 /// Defines a content processor that processes a raw animated tilemap from an aseprite file.
 /// </summary>
-[ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
-public sealed class RawAnimatedTilemapProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, RawAnimatedTilemap>
+[ContentProcessor(DisplayName = "Aseprite Animated Tilemap Processor - MonoGame.Aseprite")]
+public sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, RawAnimatedTilemap>
 {
     /// <summary>
     /// Gets or Sets a value that indicates whether only visible aseprite layers should be included.
@@ -45,16 +45,12 @@ public sealed class RawAnimatedTilemapProcessor : ContentProcessor<ContentImport
     /// <summary>
     /// Processes a raw animated tilemap from an aseprite file.
     /// </summary>
-    /// <param name="content">The result of the content importer that contains the aseprite file content.</param>
+    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
     /// <returns>The raw animated tilemap created by this method.</returns>
-    public override RawAnimatedTilemap Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
-    {
-        AsepriteFile aseFile = content.Data;
-        RawAnimatedTilemap rawAnimatedTilemap = AnimatedTilemapProcessor.ProcessRaw(aseFile, OnlyVisibleLayers);
-        return rawAnimatedTilemap;
-    }
+    public override RawAnimatedTilemap Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+        RawAnimatedTilemapProcessor.Process(aseFile, OnlyVisibleLayers);
 }

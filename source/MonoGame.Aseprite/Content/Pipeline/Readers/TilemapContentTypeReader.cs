@@ -24,40 +24,25 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Tilemaps;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
 /// <summary>
-///     Provides method for reading a <see cref="Tileset"/> from an xnb file
-///     that was generated using the MonoGame.Aseprite library.
+/// Defines a content type reader that reads a tilemap from the xnb file created by the MonoGame pipeline using the
+/// MonoGame Aseprite Content Pipeline assembly.
 /// </summary>
-public sealed class TilesetReader : ContentTypeReader<Tileset>
+internal sealed class TilemapContentTypeReader : ContentTypeReader<Tilemap>
 {
-    protected override Tileset Read(ContentReader reader, Tileset? existingInstance)
+    protected override Tilemap Read(ContentReader reader, Tilemap? existingInstance)
     {
         if (existingInstance is not null)
         {
             return existingInstance;
         }
 
-        Texture2D texture = ReadTexture(reader);
-        Tileset tileset = ReadTileset(reader, texture);
-        return tileset;
-    }
-
-    private Texture2D ReadTexture(ContentReader reader)
-    {
-        Texture2D texture = reader.ReadTexture2D();
-        texture.Name = reader.ReadString();
-        return texture;
-    }
-
-    private Tileset ReadTileset(ContentReader reader, Texture2D texture)
-    {
-        string name = reader.ReadString();
-        int tileWidth = reader.ReadInt32();
-        int tileHeight = reader.ReadInt32();
-
-        return new(name, texture, tileWidth, tileHeight);
+        GraphicsDevice device = reader.GetGraphicsDevice();
+        return TilemapReader.Read(device, reader);
     }
 }

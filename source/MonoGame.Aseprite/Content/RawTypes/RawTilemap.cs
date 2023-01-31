@@ -27,9 +27,9 @@ using System.Collections.ObjectModel;
 namespace MonoGame.Aseprite.Content.RawTypes;
 
 /// <summary>
-/// Defines a record that represents the raw values of a tilemap.
+/// Defines a class that represents the raw values of a tilemap.
 /// </summary>
-public sealed record RawTilemap
+public sealed class RawTilemap : IEquatable<RawTilemap>
 {
     private RawTileset[] _rawTilesets;
     private RawTilemapLayer[] _rawLayers;
@@ -53,4 +53,9 @@ public sealed record RawTilemap
 
     internal RawTilemap(string name, RawTilemapLayer[] rawLayers, RawTileset[] rawTilesets) =>
         (Name, _rawTilesets, _rawLayers) = (name, rawTilesets, rawLayers);
+
+    public bool Equals(RawTilemap? other) => other is not null
+                                             && Name == other.Name
+                                             && RawTilesets.SequenceEqual(other.RawTilesets)
+                                             && RawLayers.SequenceEqual(other.RawLayers);
 }
