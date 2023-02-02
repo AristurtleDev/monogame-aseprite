@@ -23,50 +23,95 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Processors.RawProcessors;
 using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class RawSpriteProcessorTests
+public sealed class RawSpriteProcessorTestsFixture
 {
+    public string Name { get; } = "raw-sprite-processor-test";
+    public AsepriteFile AsepriteFile { get; }
 
-    [Fact]
-    public void RawSpriteProcessor_ProcessTest()
+    public RawSpriteProcessorTestsFixture()
     {
-        string name = "single-frame-processor-test";
-        string path = FileUtils.GetLocalPath($"{name}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
+        Color[] palette = new Color[] { Color.Black, Color.White };
 
-        int frameIndex = 1;
-        bool onlyVisibleLayers = true;
-        bool includeBackgroundLayer = false;
-        bool includeTilemapLayers = false;
-        RawSprite rawSprite = RawSpriteProcessor.Process(aseFile, frameIndex, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
+        AsepriteTileset[] tilesets = Array.Empty<AsepriteTileset>();
 
-        Color transparent = new Color(0, 0, 0, 0);
-        Color[] pixels = new Color[]
+        AsepriteLayer[] layers = new AsepriteLayer[]
         {
-            transparent, transparent,
-            transparent, transparent,
-            aseFile.Palette[2], aseFile.Palette[2],
-            aseFile.Palette[2], aseFile.Palette[2]
+            new(AsepriteLayerFlags.Visible, AsepriteBlendMode.Normal, 255, "layer")
         };
-        Assert.Equal($"{name} {frameIndex}", rawSprite.Name);
-        Assert.Equal($"{name} {frameIndex}", rawSprite.RawTexture.Name);
-        Assert.Equal(pixels, rawSprite.RawTexture.Pixels.ToArray());
-        Assert.Equal(2, rawSprite.RawTexture.Width);
-        Assert.Equal(4, rawSprite.RawTexture.Height);
+
+        AsepriteCel[] frame0Cels = new AsepriteCel[]
+        {
+            new AsepriteImageCel(2, 2, new Color[] {Color.Black, Color.Black, Color.Black, Color.Black}, layers[0], Point.Zero, 255)
+        };
+
+        AsepriteCel[] frame1Cels = new AsepriteCel[]
+        {
+            new AsepriteImageCel(2, 2, new Color[] {Color.White, Color.White, Color.White, Color.White}, layers[0], Point.Zero, 255)
+        };
+
+        AsepriteFrame[] frames = new AsepriteFrame[]
+        {
+            new($"{Name} 0", 2, 2, 100, frame0Cels),
+            new($"{Name} 1", 2, 2, 100, frame1Cels)
+        };
+
+        AsepriteTag[] tags = Array.Empty<AsepriteTag>();
+        AsepriteSlice[] slices = Array.Empty<AsepriteSlice>();
+
+
+        AsepriteUserData userData = new();
+        AsepriteFile = new(Name, 2, 2, palette, frames, layers, tags, slices, tilesets, userData);
+    }
+}
+
+public sealed class RawSpriteProcessorTests : IClassFixture<RawSpriteProcessorTestsFixture>
+{
+    private readonly RawSpriteProcessorTestsFixture _fixture;
+
+
+    public RawSpriteProcessorTests(RawSpriteProcessorTestsFixture fixture) => _fixture = fixture;
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    public void Sprite_And_Texture_Name_Include_Correct_Index(int frame)
+    {
+        RawSprite sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, frame);
+
+        string name = $"{_fixture.Name} {frame}";
+
+        Assert.Equal(name, sprite.Name);
+        Assert.Equal(name, sprite.RawTexture.Name);
     }
 
     [Theory]
     [InlineData(-1)]
     [InlineData(2)]
-    public void RawSpriteProcessor_Process_InvalidFrame_ThrowsExceptionTest(int index)
+    public void Throws_Exception_When_Frame_Index_Out_Of_Range(int frame)
     {
-        string path = FileUtils.GetLocalPath("single-frame-processor-test.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-        Exception ex = Record.Exception(() => RawSpriteProcessor.Process(aseFile, index));
+        Exception ex = Record.Exception(() => RawSpriteProcessor.Process(_fixture.AsepriteFile, frame));
         Assert.IsType<ArgumentOutOfRangeException>(ex);
+    }
+
+    [Fact]
+    public void Processes_Given_Frame()
+    {
+        RawSprite frame0Sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, 0);
+        RawSprite frame1Sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, 1);
+
+        Color[] frame0Expected=  new Color[] { Color.Black, Color.Black, Color.Black, Color.Black };
+        Color[] frame1Expected = new Color[] { Color.White, Color.White, Color.White, Color.White };
+
+        Color[] frame0Actual = frame0Sprite.RawTexture.Pixels.ToArray();
+        Color[] frame1Actual = frame1Sprite.RawTexture.Pixels.ToArray();
+
+        Assert.Equal(frame0Expected, frame0Actual);
+        Assert.Equal(frame1Expected, frame1Actual);
     }
 }

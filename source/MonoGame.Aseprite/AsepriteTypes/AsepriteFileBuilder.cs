@@ -42,6 +42,7 @@ internal class AsepriteFileBuilder
     private List<AsepriteTileset> _tilesets = new();
     private List<AsepriteCel> _nextFrameCels = new();
     private string _name;
+    private AsepriteUserData _spriteUserData = new();
 
     internal AsepriteFileBuilder(string name) => _name = name;
 
@@ -202,8 +203,14 @@ internal class AsepriteFileBuilder
         tag.UserData.Color = color;
     }
 
+    internal void SetSpriteUserData(string? text, Color? color)
+    {
+        _spriteUserData.Text = text;
+        _spriteUserData.Color = color;
+    }
+
     internal AsepriteFile Build() =>
-        new(_name, _frameWidth, _frameHeight, _palette, _frames.ToArray(), _layers.ToArray(), _tags.ToArray(), _slices.ToArray(), _tilesets.ToArray());
+        new(_name, _frameWidth, _frameHeight, _palette, _frames.ToArray(), _layers.ToArray(), _tags.ToArray(), _slices.ToArray(), _tilesets.ToArray(), _spriteUserData);
 
     private static byte[] Decompress(byte[] buffer)
     {

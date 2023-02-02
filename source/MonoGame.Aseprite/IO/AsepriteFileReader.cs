@@ -478,8 +478,13 @@ internal static class AsepriteFileReader
             case CHUNK_TYPE_TAGS:
                 builder.SetTagUserData(tagIterator, text, color);
                 break;
+            case CHUNK_TYPE_OLD_PALETTE_1:
+                //  Starting in Aseprite 1.3-beta21, after the first palette chunk in the first frame, if user data is
+                //  detected, then that is user data for the "sprite" itself
+                builder.SetSpriteUserData(text, color);
+                break;
             default:
-                throw new InvalidOperationException($"Invalid chunk type (0x{lastChunkType:X4} for user data");
+                throw new InvalidOperationException($"Invalid chunk type (0x{lastChunkType:X4}) for user data");
         }
     }
 

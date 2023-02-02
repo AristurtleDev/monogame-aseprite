@@ -23,329 +23,247 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Processors.RawProcessors;
 using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class RawTextureAtlasProcessorTests
+public sealed class RawTextureAtlasProcessorTestFixture
 {
-    private Color _ = new Color(0, 0, 0, 0);            //  Padding added from export
-    private Color t = new Color(0, 0, 0, 0);            //  Transparent pixel
-    private Color r = new Color(255, 0, 0, 255);        //  Red pixel
-    private Color g = new Color(0, 255, 0, 255);        //  Green pixel
-    private Color b = new Color(0, 0, 255, 255);        //  Blue pixel
-    private Color w = new Color(255, 255, 255, 255);    //  White pixel
-    private Color k = new Color(0, 0, 0, 255);          //  Black pixel
+    public string Name { get; } = "raw-sprite-processor-test";
+    public AsepriteFile AsepriteFile { get; }
 
+    public RawTextureAtlasProcessorTestFixture()
+    {
+        int width = 2;
+        int height = 2;
+
+        Color[] palette = new Color[] { Color.Red, Color.Green, Color.Blue, Color.Yellow };
+        AsepriteTileset[] tilesets = Array.Empty<AsepriteTileset>();
+
+        AsepriteLayer[] layers = new AsepriteLayer[]
+        {
+            new(AsepriteLayerFlags.Visible, AsepriteBlendMode.Normal, 255, "layer")
+        };
+
+        AsepriteCel[] frame0Cels = new AsepriteCel[]
+        {
+            new AsepriteImageCel(width, height, new Color[]{Color.Red, Color.Red, Color.Red, Color.Red}, layers[0], Point.Zero, 255)
+        };
+
+        AsepriteCel[] frame1Cels = new AsepriteCel[]
+        {
+            new AsepriteImageCel(width, height, new Color[] {Color.Green, Color.Green, Color.Green, Color.Green}, layers[0], Point.Zero, 255)
+        };
+
+        AsepriteCel[] frame2Cels = new AsepriteCel[]
+        {
+            new AsepriteImageCel(width, height, new Color[] {Color.Blue, Color.Blue, Color.Blue, Color.Blue}, layers[0], Point.Zero, 255)
+        };
+
+        AsepriteCel[] frame3Cels = new AsepriteCel[]
+        {
+            new AsepriteImageCel(width, height, new Color[] {Color.Red, Color.Red, Color.Red, Color.Red}, layers[0], Point.Zero, 255)
+        };
+
+        AsepriteFrame[] frames = new AsepriteFrame[]
+        {
+            new($"{Name} 0", width, height, 100, frame0Cels),
+            new($"{Name} 1", width, height, 100, frame1Cels),
+            new($"{Name} 2", width, height, 100, frame2Cels),
+            new($"{Name} 3", width, height, 100, frame3Cels),
+        };
+
+        AsepriteTag[] tags = Array.Empty<AsepriteTag>();
+        AsepriteSlice[] slices = Array.Empty<AsepriteSlice>();
+        AsepriteUserData userData = new();
+        AsepriteFile = new(Name, width, height, palette, frames, layers, tags, slices, tilesets, userData);
+    }
+}
+
+public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtlasProcessorTestFixture>
+{
+    private readonly RawTextureAtlasProcessorTestFixture _fixture;
+    private readonly Color _ = Color.Transparent;
+    private readonly Color r = Color.Red;
+    private readonly Color g = Color.Green;
+    private readonly Color b = Color.Blue;
+    private readonly Color t = Color.Transparent;
+
+    public RawTextureAtlasProcessorTests(RawTextureAtlasProcessorTestFixture fixture) => _fixture = fixture;
 
     [Fact]
-    public void RawTextureAtlasProcessor_ProcessTest()
+    public void Atlas_And_Texture_Name_Same_As_File_Name()
     {
-        string fileName = "spritesheet-processor-test";
-
-        Color[] expectedPixels = new Color[]
-        {
-            t, r,    r, t,
-            r, r,    r, r,
-
-            r, r,    r, r,
-            r, t,    t, r
-        };
-
-        RawTexture expectedTexture = new(fileName, expectedPixels, 4, 4);
-
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new(0, 0, 2, 2)),
-            new($"{fileName} 1", new (2, 0, 2, 2)),
-            new($"{fileName} 2", new (0, 2, 2, 2)),
-            new($"{fileName} 3", new (2, 2, 2, 2)),
-            new($"{fileName} 4", new (2, 2, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
+        Assert.Equal(_fixture.Name, atlas.Name);
+        Assert.Equal(_fixture.Name, atlas.RawTexture.Name);
     }
 
     [Fact]
-    public void RawTextureAtlasProcessor_Process_MergeDuplicate_FalseTest()
+    public void One_Region_Per_Frame()
     {
-        string fileName = "spritesheet-processor-test";
-
-        Color[] expectedPixels = new Color[]
-        {
-            t, r,    r, t,    r, r,
-            r, r,    r, r,    r, t,
-
-            r, r,    r, r,    t, t,
-            t, r,    t, r,    t, t
-        };
-
-        RawTexture expectedTexture = new(fileName, expectedPixels, 6, 4);
-
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new (0, 0, 2, 2)),
-            new($"{fileName} 1", new (2, 0, 2, 2)),
-            new($"{fileName} 2", new (4, 0, 2, 2)),
-            new($"{fileName} 3", new (0, 2, 2, 2)),
-            new($"{fileName} 4", new (2, 2, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile, mergeDuplicates: false);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
+        Assert.Equal(_fixture.AsepriteFile.Frames.Length, atlas.RawTextureRegions.Length);
     }
 
     [Fact]
-    public void RawTextureAtlasProcess_OnlyVisibleLayers_FalseTest()
+    public void Region_Names_Are_Frame_Names()
     {
-        string fileName = "spritesheet-processor-test";
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
 
-        Color[] expectedPixels = new Color[]
-        {
-            w, k,    k, w,
-            k, k,    k, k,
-
-            k, k,    k, k,
-            k, w,    w, k
-        };
-
-        RawTexture expectedTexture = new(fileName, expectedPixels, 4, 4);
-
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new(0, 0, 2, 2)),
-            new($"{fileName} 1", new(2, 0, 2, 2)),
-            new($"{fileName} 2", new(0, 2, 2, 2)),
-            new($"{fileName} 3", new(2, 2, 2, 2)),
-            new($"{fileName} 4", new(2, 2, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile, onlyVisibleLayers: false);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        Assert.Equal(_fixture.AsepriteFile.Frames[0].Name, atlas.RawTextureRegions[0].Name);
+        Assert.Equal(_fixture.AsepriteFile.Frames[1].Name, atlas.RawTextureRegions[1].Name);
+        Assert.Equal(_fixture.AsepriteFile.Frames[2].Name, atlas.RawTextureRegions[2].Name);
+        Assert.Equal(_fixture.AsepriteFile.Frames[3].Name, atlas.RawTextureRegions[3].Name);
     }
 
     [Fact]
-    public void RawTextureAtlas_Process_IncludeBackgroundLayer_TrueTest()
+    public void Duplicate_Frame_Is_Merged()
     {
-        string fileName = "spritesheet-processor-test";
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, mergeDuplicates: true);
 
-        Color[] expectedPixels = new Color[]
+        Color[] expected = new Color[]
         {
-            b, r,    r, b,
-            r, r,    r, r,
-
-            r, r,    r, r,
-            r, b,    b, r
+            r, r, g, g,
+            r, r, g, g,
+            b, b, t, t,
+            b, b, t, t
         };
 
-        RawTexture expectedTexture = new(fileName, expectedPixels, 4, 4);
+        Color[] actual = atlas.RawTexture.Pixels.ToArray();
 
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new(0, 0, 2, 2)),
-            new($"{fileName} 1", new(2, 0, 2, 2)),
-            new($"{fileName} 2", new(0, 2, 2, 2)),
-            new($"{fileName} 3", new(2, 2, 2, 2)),
-            new($"{fileName} 4", new(2, 2, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile, includeBackgroundLayer: true);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        Assert.Equal(expected, actual);
+        Assert.Equal(new Rectangle(0, 0, 2, 2), atlas.RawTextureRegions[0].Bounds);
+        Assert.Equal(new Rectangle(2, 0, 2, 2), atlas.RawTextureRegions[1].Bounds);
+        Assert.Equal(new Rectangle(0, 2, 2, 2), atlas.RawTextureRegions[2].Bounds);
+        Assert.Equal(new Rectangle(0, 0, 2, 2), atlas.RawTextureRegions[3].Bounds);
     }
 
     [Fact]
-    public void RawTextureAtlasProcessor_Process_BorderPaddingTest()
+    public void Duplicate_Frame_Not_Merged()
     {
-        string fileName = "spritesheet-processor-test";
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, mergeDuplicates: false);
 
-        Color[] expectedPixels = new Color[]
+        Color[] expected = new Color[]
         {
-            _, _,    _, _,    _, _,    _, _,
-            _, _,    _, _,    _, _,    _, _,
-
-            _, _,    t, r,    r, t,    _, _,
-            _, _,    r, r,    r, r,    _, _,
-
-            _, _,    r, r,    r, r,    _, _,
-            _, _,    r, t,    t, r,    _, _,
-
-            _, _,    _, _,    _, _,    _, _,
-            _, _,    _, _,    _, _,    _, _,
+            r, r, g, g,
+            r, r, g, g,
+            b, b, r, r,
+            b, b, r, r,
         };
 
-        RawTexture expectedTexture = new(fileName, expectedPixels, 8, 8);
+        Color[] actual = atlas.RawTexture.Pixels.ToArray();
 
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new(2, 2, 2, 2)),
-            new($"{fileName} 1", new(4, 2, 2, 2)),
-            new($"{fileName} 2", new(2, 4, 2, 2)),
-            new($"{fileName} 3", new(4, 4, 2, 2)),
-            new($"{fileName} 4", new(4, 4, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile, borderPadding: 2);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        Assert.Equal(expected, actual);
+        Assert.Equal(new Rectangle(0, 0, 2, 2), atlas.RawTextureRegions[0].Bounds);
+        Assert.Equal(new Rectangle(2, 0, 2, 2), atlas.RawTextureRegions[1].Bounds);
+        Assert.Equal(new Rectangle(0, 2, 2, 2), atlas.RawTextureRegions[2].Bounds);
+        Assert.Equal(new Rectangle(2, 2, 2, 2), atlas.RawTextureRegions[3].Bounds);
     }
 
     [Fact]
-    public void RawTextureAtlasProcessor_Process_SpacingTest()
+    public void Border_Padding_Added_Correctly()
     {
-        string fileName = "spritesheet-processor-test";
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, borderPadding: 1);
 
-        Color[] expectedPixels = new Color[]
+        Color[] expected = new Color[]
         {
-            t, r,  _, _,  r, t,
-            r, r,  _, _,  r, r,
-            _, _,  _, _,  _, _,
-            _, _,  _, _,  _, _,
-            r, r,  _, _,  r, r,
-            r, t,  _, _,  t, r
+            _, _, _, _, _, _,
+            _, r, r, g, g, _,
+            _, r, r, g, g, _,
+            _, b, b, t, t, _,
+            _, b, b, t, t, _,
+            _, _, _, _, _, _
         };
 
-        RawTexture expectedTexture = new(fileName, expectedPixels, 6, 6);
+        Color[] actual = atlas.RawTexture.Pixels.ToArray();
 
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new(0, 0, 2, 2)),
-            new($"{fileName} 1", new(4, 0, 2, 2)),
-            new($"{fileName} 2", new(0, 4, 2, 2)),
-            new($"{fileName} 3", new(4, 4, 2, 2)),
-            new($"{fileName} 4", new(4, 4, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile, spacing: 2);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        Assert.Equal(expected, actual);
+        Assert.Equal(new Rectangle(1, 1, 2, 2), atlas.RawTextureRegions[0].Bounds);
+        Assert.Equal(new Rectangle(3, 1, 2, 2), atlas.RawTextureRegions[1].Bounds);
+        Assert.Equal(new Rectangle(1, 3, 2, 2), atlas.RawTextureRegions[2].Bounds);
+        Assert.Equal(new Rectangle(1, 1, 2, 2), atlas.RawTextureRegions[3].Bounds);
     }
 
     [Fact]
-    public void RawTextureAtlasProcessor_Process_InnerPaddingTest()
+    public void Spacing_Added_Correctly()
     {
-        string fileName = "spritesheet-processor-test";
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, spacing: 1);
 
-        Color[] expectedPixels = new Color[]
+        Color[] expected = new Color[]
         {
-            _, _, _, _, _, _,    _, _, _, _, _, _,
-            _, _, _, _, _, _,    _, _, _, _, _, _,
-            _, _, t, r, _, _,    _, _, r, t, _, _,
-            _, _, r, r, _, _,    _, _, r, r, _, _,
-            _, _, _, _, _, _,    _, _, _, _, _, _,
-            _, _, _, _, _, _,    _, _, _, _, _, _,
-
-            _, _, _, _, _, _,    _, _, _, _, _, _,
-            _, _, _, _, _, _,    _, _, _, _, _, _,
-            _, _, r, r, _, _,    _, _, r, r, _, _,
-            _, _, r, t, _, _,    _, _, t, r, _, _,
-            _, _, _, _, _, _,    _, _, _, _, _, _,
-            _, _, _, _, _, _,    _, _, _, _, _, _
+            r, r, _, g, g,
+            r, r, _, g, g,
+            _, _, _, _, _,
+            b, b, _, t, t,
+            b, b, _, t, t
         };
 
-        RawTexture expectedTexture = new(fileName, expectedPixels, 12, 12);
+        Color[] actual = atlas.RawTexture.Pixels.ToArray();
 
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new(2, 2, 2, 2)),
-            new($"{fileName} 1", new(8, 2, 2, 2)),
-            new($"{fileName} 2", new(2, 8, 2, 2)),
-            new($"{fileName} 3", new(8, 8, 2, 2)),
-            new($"{fileName} 4", new(8, 8, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile, innerPadding: 2);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        Assert.Equal(expected, actual);
+        Assert.Equal(new Rectangle(0, 0, 2, 2), atlas.RawTextureRegions[0].Bounds);
+        Assert.Equal(new Rectangle(3, 0, 2, 2), atlas.RawTextureRegions[1].Bounds);
+        Assert.Equal(new Rectangle(0, 3, 2, 2), atlas.RawTextureRegions[2].Bounds);
+        Assert.Equal(new Rectangle(0, 0, 2, 2), atlas.RawTextureRegions[3].Bounds);
     }
 
     [Fact]
-    public void RawTextureAtlasProcessor_Process_BorderPadding_Spacing_InnerPaddingTest()
+    public void InnerPadding_Added_Correctly()
     {
-        string fileName = "spritesheet-processor-test";
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, innerPadding: 1);
 
-        Color[] expectedPixels = new Color[]
+        Color[] expected = new Color[]
         {
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, t, r, _, _,    _, _,    _, _, r, t, _, _, _, _,
-            _, _, _, _, r, r, _, _,    _, _,    _, _, r, r, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, r, r, _, _,    _, _,    _, _, r, r, _, _, _, _,
-            _, _, _, _, r, t, _, _,    _, _,    _, _, t, r, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
-            _, _, _, _, _, _, _, _,    _, _,    _, _, _, _, _, _, _, _,
+            _, _, _, _, _, _, _, _,
+            _, r, r, _, _, g, g, _,
+            _, r, r, _, _, g, g, _,
+            _, _, _, _, _, _, _, _,
+            _, _, _, _, _, _, _, _,
+            _, b, b, _, _, t, t, _,
+            _, b, b, _, _, t, t, _,
+            _, _, _, _, _, _, _, _,
         };
 
-        RawTexture expectedTexture = new(fileName, expectedPixels, 18, 18);
+        Color[] actual = atlas.RawTexture.Pixels.ToArray();
 
-        RawTextureRegion[] expectedRegions = new RawTextureRegion[]
-        {
-            new($"{fileName} 0", new(4, 4, 2, 2)),
-            new($"{fileName} 1", new(12, 4, 2, 2)),
-            new($"{fileName} 2", new(4, 12, 2, 2)),
-            new($"{fileName} 3", new(12, 12, 2, 2)),
-            new($"{fileName} 4", new(12, 12, 2, 2))
-        };
-
-        RawTextureAtlas expectedAtlas = new(fileName, expectedTexture, expectedRegions);
-
-        string path = FileUtils.GetLocalPath($"{fileName}.aseprite");
-        AsepriteFile aseFile = AsepriteFile.Load(path);
-
-        RawTextureAtlas actualAtlas = RawTextureAtlasProcessor.Process(aseFile, borderPadding: 2, spacing: 2, innerPadding: 2);
-
-        Assert.Equal(expectedAtlas, actualAtlas);
+        Assert.Equal(expected, actual);
+        Assert.Equal(new Rectangle(1, 1, 2, 2), atlas.RawTextureRegions[0].Bounds);
+        Assert.Equal(new Rectangle(5, 1, 2, 2), atlas.RawTextureRegions[1].Bounds);
+        Assert.Equal(new Rectangle(1, 5, 2, 2), atlas.RawTextureRegions[2].Bounds);
+        Assert.Equal(new Rectangle(1, 1, 2, 2), atlas.RawTextureRegions[3].Bounds);
     }
+
+    [Fact]
+    public void Combined_Border_Padding_Spacing_Inner_Padding_Added_Correctly()
+    {
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, borderPadding: 1, spacing: 1, innerPadding: 1);
+
+        Color[] expected = new Color[]
+        {
+            _, _, _, _, _, _, _, _, _, _, _,
+            _, _, _, _, _, _, _, _, _, _, _,
+            _, _, r, r, _, _, _, g, g, _, _,
+            _, _, r, r, _, _, _, g, g, _, _,
+            _, _, _, _, _, _, _, _, _, _, _,
+            _, _, _, _, _, _, _, _, _, _, _,
+            _, _, _, _, _, _, _, _, _, _, _,
+            _, _, b, b, _, _, _, t, t, _, _,
+            _, _, b, b, _, _, _, t, t, _, _,
+            _, _, _, _, _, _, _, _, _, _, _,
+            _, _, _, _, _, _, _, _, _, _, _
+        };
+
+        Color[] actual = atlas.RawTexture.Pixels.ToArray();
+
+        Assert.Equal(expected, actual);
+        Assert.Equal(new Rectangle(2, 2, 2, 2), atlas.RawTextureRegions[0].Bounds);
+        Assert.Equal(new Rectangle(7, 2, 2, 2), atlas.RawTextureRegions[1].Bounds);
+        Assert.Equal(new Rectangle(2, 7, 2, 2), atlas.RawTextureRegions[2].Bounds);
+        Assert.Equal(new Rectangle(2, 2, 2, 2), atlas.RawTextureRegions[3].Bounds);
+    }
+
+
 }

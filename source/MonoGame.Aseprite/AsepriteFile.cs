@@ -86,7 +86,12 @@ public sealed class AsepriteFile
     /// </summary>
     public int CanvasHeight { get; }
 
-    internal AsepriteFile(string name, int width, int height, Color[] palette, AsepriteFrame[] frames, AsepriteLayer[] layers, AsepriteTag[] tags, AsepriteSlice[] slices, AsepriteTileset[] tilesets)
+    /// <summary>
+    /// Gets the custom user data that was set for the sprite in aseprite.
+    /// </summary>
+    public AsepriteUserData UserData { get; }
+
+    internal AsepriteFile(string name, int width, int height, Color[] palette, AsepriteFrame[] frames, AsepriteLayer[] layers, AsepriteTag[] tags, AsepriteSlice[] slices, AsepriteTileset[] tilesets, AsepriteUserData userData)
     {
         Name = name;
         CanvasWidth = width;
@@ -97,6 +102,7 @@ public sealed class AsepriteFile
         _tags = tags;
         _slices = slices;
         _tilesets = tilesets;
+        UserData = userData;
     }
     /// <summary>
     /// Gets the aseprite frame at the specified index in this aseprite file.

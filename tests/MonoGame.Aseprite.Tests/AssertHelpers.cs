@@ -1,3 +1,4 @@
+
 /* ----------------------------------------------------------------------------
 MIT License
 
@@ -21,22 +22,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
-
-using Microsoft.Xna.Framework;
-using MonoGame.Aseprite.AsepriteTypes;
-
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class AsepriteCelTests
+public static class AssertHelpers
 {
-    [Fact]
-    public void AsepriteCel_LayerAs_ReturnsLayer()
-    {
-        AsepriteTileset tileset = new(0, 0, 0, 0, string.Empty, Array.Empty<Color>());
-        AsepriteTilemapLayer layer = new(tileset, 0, AsepriteBlendMode.Normal, 255, string.Empty);
-        AsepriteCel cel = new AsepriteImageCel(0, 0, Array.Empty<Color>(), layer, Point.Zero, 0);
 
-        AsepriteTilemapLayer actual = cel.LayerAs<AsepriteTilemapLayer>();
-        Assert.Equal(layer, actual);
-    }
 }
