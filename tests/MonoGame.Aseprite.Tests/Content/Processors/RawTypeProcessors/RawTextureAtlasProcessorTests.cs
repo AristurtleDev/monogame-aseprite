@@ -85,11 +85,14 @@ public sealed class RawTextureAtlasProcessorTestFixture
 public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtlasProcessorTestFixture>
 {
     private readonly RawTextureAtlasProcessorTestFixture _fixture;
-    private readonly Color _ = Color.Transparent;
-    private readonly Color r = Color.Red;
-    private readonly Color g = Color.Green;
-    private readonly Color b = Color.Blue;
-    private readonly Color t = Color.Transparent;
+
+    //  These are the colors that will be expected in the raw texture created during each process.  They are created
+    //  here an named this way so that it's easier to visualize what the pixel array should be in the test below.
+    private readonly Color _ = Color.Transparent;   //  Represnets a transparent pixel from padding/spacing, not source
+    private readonly Color r = Color.Red;           //  Represents a red pixel
+    private readonly Color g = Color.Green;         //  Represents a green pixel
+    private readonly Color b = Color.Blue;          //  Represents a blue pixel
+    private readonly Color t = Color.Transparent;   //  Represnets a transparent pixel from source, not padding/spacing.
 
     public RawTextureAtlasProcessorTests(RawTextureAtlasProcessorTestFixture fixture) => _fixture = fixture;
 
@@ -264,6 +267,4 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
         Assert.Equal(new Rectangle(2, 7, 2, 2), atlas.RawTextureRegions[2].Bounds);
         Assert.Equal(new Rectangle(2, 2, 2, 2), atlas.RawTextureRegions[3].Bounds);
     }
-
-
 }
