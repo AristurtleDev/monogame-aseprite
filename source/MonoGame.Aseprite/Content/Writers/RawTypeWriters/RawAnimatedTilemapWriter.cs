@@ -65,7 +65,7 @@ public static class RawAnimatedTilemapWriter
             writer.Write(rawTilemapFrame.DurationInMilliseconds);
             writer.Write(rawTilemapFrame.RawTilemapLayers.Length);
 
-            for (int j = 0; j < rawTilemapFrame.RawTilemapLayers.Length; i++)
+            for (int j = 0; j < rawTilemapFrame.RawTilemapLayers.Length; j++)
             {
                 writer.Write(rawTilemapFrame.RawTilemapLayers[j]);
             }
