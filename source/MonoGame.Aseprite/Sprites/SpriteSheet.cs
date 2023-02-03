@@ -253,10 +253,10 @@ public sealed class SpriteSheet
     #endregion Animations
 
     /// <summary>
-    /// Creates a new spritesheet from the given raw spritesheet record.
+    /// Creates a new spritesheet from the given raw spritesheet.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="rawSpriteSheet">The raw spritesheet record to create the spritesheet from.</param>
+    /// <param name="rawSpriteSheet">The raw spritesheet to create the spritesheet from.</param>
     /// <returns>The spritesheet created by this method.</returns>
     public static SpriteSheet FromRaw(GraphicsDevice device, RawSpriteSheet rawSpriteSheet)
     {

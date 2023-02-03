@@ -266,7 +266,7 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>
-    /// Creates a new tilemap from a raw tilemap record.
+    /// Creates a new tilemap from a raw tilemap.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTilemap">The raw tilemap to create the tilemap from.</param>

@@ -54,7 +54,7 @@ public sealed class AsepriteTag
     public string Name { get; }
 
     /// <summary>
-    /// Gets the userdata set for this tag in aseprite.
+    /// Gets the custom userdata set for this tag in aseprite.
     /// </summary>
     public AsepriteUserData UserData { get; } = new();
 

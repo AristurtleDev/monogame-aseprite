@@ -32,19 +32,19 @@ public sealed class RawSpriteSheet : IEquatable<RawSpriteSheet>
     private RawAnimationTag[] _rawAnimationTags;
 
     /// <summary>
-    /// Gets the name assigned to the spritesheet represented by this raw spritesheet record.
+    /// Gets the name assigned to the spritesheet represented by this raw spritesheet.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
     /// Gets raw texture atlas that represents the source texture atlas for the spritesheet represented by this raw
-    /// spritesheet record.
+    /// spritesheet.
     /// </summary>
     public RawTextureAtlas RawTextureAtlas { get; }
 
     /// <summary>
     /// Gets a read-only span of the raw animation tags that represent the animations tags for the spritesheet
-    /// represented by this raw spritesheet record.
+    /// represented by this raw spritesheet.
     /// </summary>
     public ReadOnlySpan<RawAnimationTag> RawAnimationTags => _rawAnimationTags;
 

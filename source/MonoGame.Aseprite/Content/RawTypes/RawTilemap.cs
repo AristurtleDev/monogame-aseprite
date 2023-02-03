@@ -35,19 +35,19 @@ public sealed class RawTilemap : IEquatable<RawTilemap>
     private RawTilemapLayer[] _rawLayers;
 
     /// <summary>
-    /// Gets the name assigned to the tilemap represented by this raw tilemap record.
+    /// Gets the name assigned to the tilemap represented by this raw tilemap.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw tileset records that represent the tilesets used by the tilemap layers in the
-    /// tilemap represented by this raw tilemap record.
+    /// Gets a read-only span of the raw tilesets that represent the tilesets used by the tilemap layers in the
+    /// tilemap represented by this raw tilemap.
     /// </summary>
     public ReadOnlySpan<RawTileset> RawTilesets => _rawTilesets;
 
     /// <summary>
-    /// Gets a read-only span of the raw tilemap layer records that represent the tilemap layers for the tilemap
-    /// represented by this raw tilemap record.
+    /// Gets a read-only span of the raw tilemap layers that represent the tilemap layers for the tilemap
+    /// represented by this raw tilemap.
     /// </summary>
     public ReadOnlySpan<RawTilemapLayer> RawLayers => _rawLayers;
 

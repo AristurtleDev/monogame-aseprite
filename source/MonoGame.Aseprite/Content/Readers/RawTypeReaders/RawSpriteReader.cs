@@ -27,15 +27,15 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Readers.RawTypeReaders;
 
 /// <summary>
-/// Defines a reader that reads a raw sprite record from a file.
+/// Defines a reader that reads a raw sprite from a file.
 /// </summary>
 public static class RawSpriteReader
 {
     /// <summary>
-    /// Reads the raw sprite record from the file at the specified path.
+    /// Reads the raw sprite from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the raw sprite record to read.</param>
-    /// <returns>The raw sprite record that was read.</returns>
+    /// <param name="path">The path to the file that contains the raw sprite to read.</param>
+    /// <returns>The raw sprite that was read.</returns>
     public static RawSprite Read(string path)
     {
         Stream stream = File.OpenRead(path);

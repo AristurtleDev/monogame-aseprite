@@ -32,7 +32,7 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 public abstract class AsepriteCel
 {
     /// <summary>
-    /// Gets a reference to the aseprite layer this cel is on.
+    /// Gets a reference to the layer this cel is on.
     /// </summary>
     public AsepriteLayer Layer { get; }
 
@@ -47,7 +47,7 @@ public abstract class AsepriteCel
     internal int Opacity { get; }
 
     /// <summary>
-    /// Gets the user data that was set for this cel in aseprite.
+    /// Gets the custom user data that was set for this cel in aseprite.
     /// </summary>
     internal AsepriteUserData UserData { get; } = new();
 
@@ -57,12 +57,8 @@ public abstract class AsepriteCel
     /// <summary>
     /// Returns the layer this cel is on as the specified type.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type to return as.
-    /// </typeparam>
-    /// <returns>
-    /// The layer this cel is on as the specified type.
-    /// </returns>
+    /// <typeparam name="T"> The type to return as.</typeparam>
+    /// <returns>The layer this cel is on as the specified type.</returns>
     /// <exception cref="InvalidOperationException">
     /// Thrown if the layer this cel is on is not of the type specified.
     /// </exception>

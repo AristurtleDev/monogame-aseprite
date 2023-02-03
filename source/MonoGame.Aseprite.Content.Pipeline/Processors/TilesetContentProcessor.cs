@@ -36,7 +36,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, RawTileset>
 {
     /// <summary>
-    /// Gets or Sets the name of the aseprite tileset to processes from the aseprite file.
+    /// Gets or Sets the name of the tileset to processes from the aseprite file.
     /// </summary>
     [DisplayName("Tileset Name")]
     public string TilesetName { get; set; } = string.Empty;
@@ -51,7 +51,7 @@ internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, R
     /// </param>
     /// <returns>The raw tileset created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the aseprite file being processes does not contain an aseprite tileset with the name specified for
+    /// Thrown if the aseprite file being processes does not contain an tileset with the name specified for the
     /// the TilesetName property.
     /// </exception>
     public override RawTileset Process(AsepriteFile aseFile, ContentProcessorContext context) =>

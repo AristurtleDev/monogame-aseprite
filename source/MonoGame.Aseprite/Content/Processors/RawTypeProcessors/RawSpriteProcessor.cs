@@ -29,12 +29,12 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors.RawProcessors;
 
 /// <summary>
-/// Defines a processor that processes a raw sprite record from an aseprite frame.
+/// Defines a processor that processes a raw sprite from a frame in an aseprite file.
 /// </summary>
 public static class RawSpriteProcessor
 {
     /// <summary>
-    /// Processes a raw sprite record from the aseprite frame at the specified index in the given aseprite file.
+    /// Processes a raw sprite from the frame at the specified index in the given aseprite file.
     /// </summary>
     /// <param name="aseFile">The aseprite file that contains the frame to processes.</param>
     /// <param name="aseFrameIndex">The index of the frame in the aseprite file to process.</param>
@@ -45,8 +45,8 @@ public static class RawSpriteProcessor
     /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
     /// <returns>The raw sprite created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the specified aseprite frame index is less than zero or is greater than or equal to the total number
-    /// of aseprite frames in the given aseprite file.
+    /// Thrown if the specified frame index is less than zero or is greater than or equal to the total number of frames
+    /// in the given aseprite file.
     /// </exception>
     public static RawSprite Process(AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
@@ -55,9 +55,9 @@ public static class RawSpriteProcessor
     }
 
     /// <summary>
-    /// Processes a raw sprite record from the given aseprite frame.
+    /// Processes a raw sprite from the given frame.
     /// </summary>
-    /// <param name="aseFrame">The aseprite frame to process.</param>
+    /// <param name="aseFrame">The frame to process.</param>
     /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included.</param>
     /// <param name="includeBackgroundLayer">
     /// Indicates if cels on the layer marked as the background layer should be included.

@@ -30,13 +30,13 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw tilemap from an aseprite frame in an aseprite file.
+/// Defines a content processor that processes a raw tilemap from a frame in an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
 public sealed class TilemapContentProcessor : ContentProcessor<AsepriteFile, RawTilemap>
 {
     /// <summary>
-    /// Gets or Sets the index of the aseprite frame in the aseprite file that contains the tilemap to process.
+    /// Gets or Sets the index of the frame in the aseprite file that contains the tilemap to process.
     /// </summary>
     [DisplayName("Frame Index")]
     [DefaultValue(0)]
@@ -60,7 +60,7 @@ public sealed class TilemapContentProcessor : ContentProcessor<AsepriteFile, Raw
     /// <returns>The raw tilemap created by this method.</returns>
     /// <exception cref="IndexOutOfRangeException">
     /// Thrown if the FrameIndex property specified is less than zero or is greater than or equal to the total number of
-    /// aseprite frames in the aseprite file.
+    /// frames in the aseprite file.
     /// </exception>
     public override RawTilemap Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawTilemapProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers);

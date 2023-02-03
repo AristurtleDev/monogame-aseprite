@@ -36,20 +36,20 @@ namespace MonoGame.Aseprite.Content.Processors;
 public static class TilemapProcessor
 {
     /// <summary>
-    /// Processes a tilemap from the aseprite frame at the specified index in the given aseprite file.
+    /// Processes a tilemap from the frame at the specified index in the given aseprite file.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="aseFile">The aseprite file that contains the animated tilemap to process.</param>
-    /// <param name="frameIndex">The index of the aseprite frame in the aseprite file to process.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only aseprite layers that are visible should be processed.</param>
+    /// <param name="frameIndex">The index of the frame in the aseprite file to process.</param>
+    /// <param name="onlyVisibleLayers">Indicates if only layers that are visible should be processed.</param>
     /// <returns>The tilemap created by this method. </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the frame index specified is less than zero or is greater than or equal to the total number of
-    /// aseprite frames in the given aseprite file.
+    /// Thrown if the frame index specified is less than zero or is greater than or equal to the total number of frames
+    /// in the given aseprite file.
     /// </exception>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if aseprite layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers
-    /// with unique names even though Aseprite does not enforce unique names for layers.
+    /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
+    /// names even though aseprite does not enforce unique names for layers.
     /// </exception>
     public static Tilemap Process(GraphicsDevice device, AsepriteFile aseFile, int frameIndex, bool onlyVisibleLayers = true)
     {

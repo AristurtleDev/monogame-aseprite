@@ -25,7 +25,6 @@ SOFTWARE.
 using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.RawTypes;
 
 namespace MonoGame.Aseprite.Tilemaps;
@@ -528,7 +527,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>
-    /// Creates a new animated tilemap from a raw animated tilemap record.
+    /// Creates a new animated tilemap from a raw animated tilemap.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTilemap">The raw animated tilemap to create the animated tilemap from.</param>

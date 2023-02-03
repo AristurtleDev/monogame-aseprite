@@ -27,18 +27,18 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Writers.RawTypeWriters;
 
 /// <summary>
-/// Defines a writer that writes the contents of a raw texture atlas record to a file.
+/// Defines a writer that writes the contents of a raw texture atlas to a file.
 /// </summary>
 public static class RawTextureAtlasWriter
 {
     /// <summary>
-    /// Writes the contents of the raw texture atlas record given to the file at the path specified.
+    /// Writes the contents of the raw texture atlas given to the file at the path specified.
     /// </summary>
     /// <param name="path">
-    /// The path and name of the file to write the contents of the raw texture atlas record to.  If no file exists at
+    /// The path and name of the file to write the contents of the raw texture atlas to.  If no file exists at
     /// this path,  one will be created.  If a file already exists, it will be overwritten.
     /// </param>
-    /// <param name="rawTextureAtlas">The raw texture atlas record to write.</param>
+    /// <param name="rawTextureAtlas">The raw texture atlas to write.</param>
     public static void Write(string path, RawTextureAtlas rawTextureAtlas)
     {
         Stream stream = File.Create(path);

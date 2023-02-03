@@ -39,11 +39,11 @@ public static class AnimatedTilemapProcessor
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="aseFile">The aseprite file to processed the animated tilemap from.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only aseprite layers that are visible should be processed.</param>
+    /// <param name="onlyVisibleLayers">Indicates if only layers that are visible should be processed.</param>
     /// <returns>The animated tilemap created by this method. </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if aseprite layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers
-    /// with unique names even though Aseprite does not enforce unique names for layers.
+    /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
+    /// names even though Aseprite does not enforce unique names for layers.
     /// </exception>
     public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true)
     {

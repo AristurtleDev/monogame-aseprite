@@ -30,12 +30,12 @@ namespace MonoGame.Aseprite.Content.RawTypes;
 public sealed class RawAnimationFrame : IEquatable<RawAnimationFrame>
 {
     /// <summary>
-    /// Gets the index of the source frame for the animation frame represented by this raw animation frame record.
+    /// Gets the index of the source frame for the animation frame represented by this raw animation frame.
     /// </summary>
     public int FrameIndex { get; }
 
     /// <summary>
-    /// Gets the duration, in milliseconds, of the animation frame represented by this raw animation frame record.
+    /// Gets the duration, in milliseconds, of the animation frame represented by this raw animation frame.
     /// </summary>
     public int DurationInMilliseconds { get; }
 

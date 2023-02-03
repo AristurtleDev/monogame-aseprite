@@ -34,23 +34,23 @@ public sealed class RawTexture : IEquatable<RawTexture>
     private Color[] _pixels;
 
     /// <summary>
-    /// Get the name assigned to the texture represented by this raw texture record.
+    /// Get the name assigned to the texture represented by this raw texture.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
     /// Gets a read-only span of the color values that represent the pixel data for the texture represented by this raw
-    /// texture record.
+    /// texture.
     /// </summary>
     public ReadOnlySpan<Color> Pixels => _pixels;
 
     /// <summary>
-    /// Gets the width, in pixels of the texture represented by this raw texture record.
+    /// Gets the width, in pixels of the texture represented by this raw texture.
     /// </summary>
     public int Width { get; }
 
     /// <summary>
-    /// Gets the height, in pixels of the texture represented by this raw texture record.
+    /// Gets the height, in pixels of the texture represented by this raw texture.
     /// </summary>
     internal int Height { get; }
 

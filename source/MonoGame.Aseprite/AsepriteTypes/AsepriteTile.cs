@@ -65,10 +65,10 @@ public sealed class AsepriteTile : IEquatable<AsepriteTile>
         (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);
 
     /// <summary>
-    /// Returns a value that indicates whether the specified aseprite tile is equal to this aseprite tile.
+    /// Returns a value that indicates whether the specified tile is equal to this tile.
     /// </summary>
-    /// <param name="other">The other aseprite file to check for equality with this aseprite tile.</param>
-    /// <returns>true if the specified aseprite tile is equal to this aseprite tile; otherwise, false.</returns>
+    /// <param name="other">The other aseprite file to check for equality with this tile.</param>
+    /// <returns>true if the specified tile is equal to this tile; otherwise, false.</returns>
     public bool Equals(AsepriteTile? other) => other is not null &&
                                                XFlip == other.XFlip &&
                                                YFlip == other.YFlip &&

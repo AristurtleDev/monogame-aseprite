@@ -30,7 +30,7 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 public sealed class AsepriteTilemapLayer : AsepriteLayer
 {
     /// <summary>
-    /// Gets a reference to the aseprite tileset used by the tilemap cels in this tilemap layer.
+    /// Gets a reference to the tileset used by the tilemap cels in this tilemap layer.
     /// </summary>
     public AsepriteTileset Tileset { get; }
 

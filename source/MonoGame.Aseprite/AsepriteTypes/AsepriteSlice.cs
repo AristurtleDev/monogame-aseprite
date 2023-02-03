@@ -57,7 +57,7 @@ public sealed class AsepriteSlice
     public int KeyCount => _keys.Length;
 
     /// <summary>
-    /// Gets the userdata set for this slice in aseprite.
+    /// Gets the custom userdata set for this slice in aseprite.
     /// </summary>
     public AsepriteUserData UserData { get; } = new();
 

@@ -30,27 +30,27 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw sprite from an aseprite frame in an aseprite file.
+/// Defines a content processor that processes a raw sprite from an frame in an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
 internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, RawSprite>
 {
     /// <summary>
-    /// Gets or Sets a the index of the aseprite frame in the aseprite file to process.
+    /// Gets or Sets a the index of the frame in the aseprite file to process.
     /// </summary>
     [DisplayName("Frame Index")]
     [DefaultValue(0)]
     public int FrameIndex { get; set; } = 0;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether only aseprite cels on visible aseprite layers should be included.
+    /// Gets or Sets a value that indicates whether only cels on visible layers should be included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
     [DefaultValue(true)]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether aseprite cels on an aseprite layer marked as the background layer
+    /// Gets or Sets a value that indicates whether cels on an layer marked as the background layer
     /// should be included.
     /// </summary>
     [DisplayName("Include Background Layer")]
@@ -58,7 +58,7 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, Ra
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether aseprite cels on an aseprite tilemap layer should be included.
+    /// Gets or Sets a value that indicates whether cels on an tilemap layer should be included.
     /// </summary>
     [DisplayName("Include Tilemap Layers")]
     [DefaultValue(true)]
@@ -74,8 +74,8 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, Ra
     /// </param>
     /// <returns>The raw sprite created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the FrameIndex property is less than zero or is greater than or equal to the total number of aseprite
-    /// frames in the aseprite file being processed.
+    /// Thrown if the FrameIndex property is less than zero or is greater than or equal to the total number of frames in
+    /// the aseprite file being processed.
     /// </exception>
     public override RawSprite Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawSpriteProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);

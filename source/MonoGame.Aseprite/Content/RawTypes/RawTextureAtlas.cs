@@ -32,19 +32,19 @@ public sealed class RawTextureAtlas : IEquatable<RawTextureAtlas>
     private RawTextureRegion[] _rawTextureRegions;
 
     /// <summary>
-    /// Gets the name assigned to the texture atlas represented by this raw texture atlas record.
+    /// Gets the name assigned to the texture atlas represented by this raw texture atlas.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
     /// Gets the raw texture that represents the source texture of the texture atlas represented by this raw texture
-    /// atlas record.
+    /// atlas.
     /// </summary>
     public RawTexture RawTexture { get; }
 
     /// <summary>
     /// Gets a read-only span of the raw texture regions that represent the texture regions for the texture atlas
-    /// represented by this raw texture atlas record.
+    /// represented by this raw texture atlas.
     /// </summary>
     public ReadOnlySpan<RawTextureRegion> RawTextureRegions => _rawTextureRegions;
 

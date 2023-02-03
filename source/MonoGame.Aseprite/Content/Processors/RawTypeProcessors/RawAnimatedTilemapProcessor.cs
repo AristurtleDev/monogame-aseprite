@@ -29,19 +29,19 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors.RawProcessors;
 
 /// <summary>
-/// Defines a processor that processes a raw animated tilemap record from an aseprite file.
+/// Defines a processor that processes a raw animated tilemap from an aseprite file.
 /// </summary>
 public static class RawAnimatedTilemapProcessor
 {
     /// <summary>
-    /// Processes a raw animated tilemap record from the given aseprite file.
+    /// Processes a raw animated tilemap from the given aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file to processes the raw animated tilemap record from.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only aseprite layers that are visible should be processed.</param>
-    /// <returns>The raw animated tilemap record created by this method.</returns>
+    /// <param name="aseFile">The aseprite file to processes the raw animated tilemap from.</param>
+    /// <param name="onlyVisibleLayers">Indicates if only layers that are visible should be processed.</param>
+    /// <returns>The raw animated tilemap created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if aseprite layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers
-    /// with unique names even though Aseprite does not enforce unique names for layers.
+    /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
+    /// names even though Aseprite does not enforce unique names for layers.
     /// </exception>
     public static RawAnimatedTilemap Process(AsepriteFile aseFile, bool onlyVisibleLayers = true)
     {

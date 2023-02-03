@@ -36,7 +36,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 public sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, RawAnimatedTilemap>
 {
     /// <summary>
-    /// Gets or Sets a value that indicates whether only visible aseprite layers should be included.
+    /// Gets or Sets a value that indicates whether only visible layers should be included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
     [DefaultValue(true)]

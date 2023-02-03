@@ -30,28 +30,27 @@ namespace MonoGame.Aseprite.Content.RawTypes;
 public sealed class RawTileset : IEquatable<RawTileset>
 {
     /// <summary>
-    /// Gets the unique ID assigned to the tileset represented by this raw tileset record.
+    /// Gets the unique ID assigned to the tileset represented by this raw tileset.
     /// </summary>
     public int ID { get; }
 
     /// <summary>
-    /// Gets the name assigned to the tileset represented by this raw tileset record.
+    /// Gets the name assigned to the tileset represented by this raw tileset.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the raw texture record that represents the source texture of the tileset represented by this raw tileset
-    /// record.
+    /// Gets the raw texture that represents the source texture of the tileset represented by this raw tileset.
     /// </summary>
     public RawTexture RawTexture { get; }
 
     /// <summary>
-    /// Gets the width, in pixels, of each tile in the tileset represented by this raw tileset record.
+    /// Gets the width, in pixels, of each tile in the tileset represented by this raw tileset.
     /// </summary>
     public int TileWidth { get; }
 
     /// <summary>
-    /// Gets the height, in pixels, of each tile in the tileset represented by this raw tileset record.
+    /// Gets the height, in pixels, of each tile in the tileset represented by this raw tileset.
     /// </summary>
     public int TileHeight { get; }
 

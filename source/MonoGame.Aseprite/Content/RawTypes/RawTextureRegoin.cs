@@ -32,12 +32,12 @@ namespace MonoGame.Aseprite.Content.RawTypes;
 public sealed class RawTextureRegion : IEquatable<RawTextureRegion>
 {
     /// <summary>
-    /// Gets the name assigned to the texture region represented by this raw texture region record.
+    /// Gets the name assigned to the texture region represented by this raw texture region.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the rectangular bounds of the texture region represented by this raw texture region record.
+    /// Gets the rectangular bounds of the texture region represented by this raw texture region.
     /// </summary>
     public Rectangle Bounds { get; }
 

@@ -195,10 +195,10 @@ public class Sprite
     public void Draw(SpriteBatch spriteBatch, Vector2 position) => spriteBatch.Draw(this, position);
 
     /// <summary>
-    /// Creates a new sprite from the given raw sprite record.
+    /// Creates a new sprite from the given raw sprite.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="rawTexture">The raw sprite record to create the sprite from.</param>
+    /// <param name="rawTexture">The raw sprite to create the sprite from.</param>
     /// <returns>The sprite created by this method.</returns>
     public static Sprite FromRaw(GraphicsDevice device, RawSprite rawSprite)
     {

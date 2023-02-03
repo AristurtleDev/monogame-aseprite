@@ -31,24 +31,24 @@ public sealed class RawTilemapTile : IEquatable<RawTilemapTile>
 {
     /// <summary>
     /// Gets the ID of the source tile in the tileset that represents the texture region used by the tilemap tile that
-    /// is represented by this raw tilemap tile record.
+    /// is represented by this raw tilemap tile.
     /// </summary>
     public int TilesetTileID { get; }
 
     /// <summary>
-    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile record should be flipped
+    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile should be flipped
     /// horizontally along its x-axis.
     /// </summary>
     public bool FlipHorizontally { get; }
 
     /// <summary>
-    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile record should be flipped
+    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile should be flipped
     /// vertically along its y-axis.
     /// </summary>
     public bool FlipVertically { get; }
 
     /// <summary>
-    /// Gets the rotation, in radians, of the tilemap tile represented by this raw tilemap tile record.
+    /// Gets the rotation, in radians, of the tilemap tile represented by this raw tilemap tile.
     /// </summary>
     public float Rotation { get; }
 

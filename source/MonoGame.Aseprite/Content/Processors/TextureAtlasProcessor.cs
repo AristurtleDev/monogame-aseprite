@@ -23,8 +23,10 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Graphics;
+
 using MonoGame.Aseprite.Content.Processors.RawProcessors;
 using MonoGame.Aseprite.Content.RawTypes;
+using MonoGame.Aseprite.Sprites;
 
 namespace MonoGame.Aseprite.Content.Processors;
 
@@ -38,16 +40,12 @@ public static class TextureAtlasProcessor
     /// </summary>
     /// <param name="device">The graphics device used to create graphics resources.</param>
     /// <param name="aseFile">The aseprite file to process the texture atlas from.</param>
-    /// <param name="onlyVisibleLayers">
-    /// Indicates if only aseprite cels on visible aseprite layers should be included.
-    /// </param>
+    /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included.</param>
     /// <param name="includeBackgroundLayer">
-    /// Indicates if aseprite cels on the aseprite layer marked as the background layer should be included.
+    /// Indicates if cels on the layer marked as the background layer should be included.
     /// </param>
-    /// <param name="includeTilemapLayers">
-    /// Indicates if aseprite cels on a aseprite tilemap layer should be included.
-    /// </param>
-    /// <param name="mergeDuplicates">Indicates if duplicate aseprite frames should be merged into one.</param>
+    /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
+    /// <param name="mergeDuplicates">Indicates if duplicate frames should be merged into one.</param>
     /// <param name="borderPadding">
     /// The amount of transparent pixels to add between the edge of the generated image
     /// </param>

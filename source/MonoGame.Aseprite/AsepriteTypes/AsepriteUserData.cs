@@ -21,13 +21,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
+
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Represents the custom userdata that can be set for a cel, layer, slice, or tag in aseprite.
+/// Represents the custom userdata that can be set for the sprite, or a cel, layer, slice, or tag element in aseprite.
 /// </summary>
 public sealed class AsepriteUserData
 {

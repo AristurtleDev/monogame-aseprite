@@ -27,15 +27,15 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Readers.RawTypeReaders;
 
 /// <summary>
-/// Defines a reader that reads a raw tileset record from a file.
+/// Defines a reader that reads a raw tileset from a file.
 /// </summary>
 public static class RawTilesetReader
 {
     /// <summary>
-    /// Reads the raw tileset record from the file at the specified path.
+    /// Reads the raw tileset from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the raw tileset record to read.</param>
-    /// <returns>The raw tileset record that was read.</returns>
+    /// <param name="path">The path to the file that contains the raw tileset to read.</param>
+    /// <returns>The raw tileset that was read.</returns>
     public static RawTileset Read(string path)
     {
         Stream stream = File.OpenRead(path);

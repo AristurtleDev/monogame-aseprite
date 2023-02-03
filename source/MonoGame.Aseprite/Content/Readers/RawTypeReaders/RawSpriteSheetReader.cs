@@ -28,15 +28,15 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Readers.RawTypeReaders;
 
 /// <summary>
-/// Defines a reader that reads a raw spritesheet record from a file.
+/// Defines a reader that reads a raw spritesheet from a file.
 /// </summary>
 public static class RawSpriteSheetReader
 {
     /// <summary>
-    /// Reads the raw spritesheet record from the file at the specified path.
+    /// Reads the raw spritesheet from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the raw spritesheet record to read.</param>
-    /// <returns>The raw spritesheet record that was read.</returns>
+    /// <param name="path">The path to the file that contains the raw spritesheet to read.</param>
+    /// <returns>The raw spritesheet that was read.</returns>
     public static RawSpriteSheet Read(string path)
     {
         Stream stream = File.OpenRead(path);

@@ -30,7 +30,7 @@ using MonoGame.Aseprite.Tilemaps;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines extension methods for the sprite batch for rendering graphic resource types in this library.
+/// Defines extension methods for the sprite batch to render graphical resource types in this library.
 /// </summary>
 public static class SpriteBatchExtensions
 {

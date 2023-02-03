@@ -32,13 +32,13 @@ public sealed class RawTilemapFrame : IEquatable<RawTilemapFrame>
     private RawTilemapLayer[] _rawTilemapLayers;
 
     /// <summary>
-    /// Gets the duration, in milliseconds, of the tilemap frame represented by this raw tilemap frame record.
+    /// Gets the duration, in milliseconds, of the tilemap frame represented by this raw tilemap frame.
     /// </summary>
     public int DurationInMilliseconds { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw tilemap layer records that represent the tilemap layers for the tilemap frame
-    /// represented by this raw tilemap frame record.
+    /// Gets a read-only span of the raw tilemap layers that represent the tilemap layers for the tilemap frame
+    /// represented by this raw tilemap frame.
     /// </summary>
     public ReadOnlySpan<RawTilemapLayer> RawTilemapLayers => _rawTilemapLayers;
 

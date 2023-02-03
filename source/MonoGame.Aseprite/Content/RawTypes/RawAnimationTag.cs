@@ -32,31 +32,31 @@ public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
     private RawAnimationFrame[] _rawAnimationFrames;
 
     /// <summary>
-    /// Gets the name assigned to the animation tag represented by this raw animation tag record.
+    /// Gets the name assigned to the animation tag represented by this raw animation tag.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
     /// Gets a read-only span of the raw animation frames that represent the frames of animation for the animation tag
-    /// represented by this raw animation tag record.
+    /// represented by this raw animation tag.
     /// </summary>
     public ReadOnlySpan<RawAnimationFrame> RawAnimationFrames => _rawAnimationFrames;
 
     /// <summary>
     /// Gets a value that indicates whether the animation defined by the animation tag represented by this raw animation
-    /// tag record should loop.
+    /// tag should loop.
     /// </summary>
     public bool IsLooping { get; }
 
     /// <summary>
     /// Gets a value that indicates whether the animation defined by the animation tag represented by this raw animation
-    /// tag record should play in reverse.
+    /// tag should play in reverse.
     /// </summary>
     public bool IsReversed { get; }
 
     /// <summary>
     /// Gets a value that indicates whether the animation defined by the animation tag represented by this raw animation
-    /// tag record should ping-pong once reaching the last frame of animation.
+    /// tag should ping-pong once reaching the last frame of animation.
     /// </summary>
     public bool IsPingPong { get; }
 

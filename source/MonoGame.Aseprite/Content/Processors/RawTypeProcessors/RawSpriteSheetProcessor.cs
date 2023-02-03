@@ -28,24 +28,20 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors.RawProcessors;
 
 /// <summary>
-/// Defines a processor that processes a raw spritesheet record from an aseprite file.
+/// Defines a processor that processes a raw spritesheet from an aseprite file.
 /// </summary>
 public static class RawSpriteSheetProcessor
 {
     /// <summary>
-    /// Processes a raw spritesheet record from the given aseprite file.
+    /// Processes a raw spritesheet from the given aseprite file.
     /// </summary>
     /// <param name="aseFile">The aseprite file to process the raw spritesheet from.</param>
-    /// <param name="onlyVisibleLayers">
-    /// Indicates if only aseprite cels on visible aseprite layers should be included.
-    /// </param>
+    /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included.</param>
     /// <param name="includeBackgroundLayer">
-    /// Indicates if aseprite cels on the aseprite layer marked as the background layer should be included.
+    /// Indicates if cels on the layer marked as the background layer should be included.
     /// </param>
-    /// <param name="includeTilemapLayers">
-    /// Indicates if aseprite cels on a aseprite tilemap layer should be included.
-    /// </param>
-    /// <param name="mergeDuplicates">Indicates if duplicate aseprite frames should be merged into one.</param>
+    /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
+    /// <param name="mergeDuplicates">Indicates if duplicate frames should be merged into one.</param>
     /// <param name="borderPadding">
     /// The amount of transparent pixels to add between the edge of the generated image
     /// </param>
@@ -55,10 +51,10 @@ public static class RawSpriteSheetProcessor
     /// <param name="innerPadding">
     /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
     /// </param>
-    /// <returns>The raw sprite sheet record created by this method.</returns>
+    /// <returns>The raw sprite sheet created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if aseprite tags are found in the aseprite file with duplicate names.  Spritesheets must contain tags
-    /// with unique names even though Aseprite does not enforce unique names for tags.
+    /// Thrown if tags are found in the aseprite file with duplicate names.  Spritesheets must contain tags with unique
+    /// names even though aseprite does not enforce unique names for tags.
     /// </exception>
     public static RawSpriteSheet Process(AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {

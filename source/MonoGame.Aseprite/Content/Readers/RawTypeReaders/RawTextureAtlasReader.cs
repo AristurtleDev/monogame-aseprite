@@ -28,15 +28,15 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Readers.RawTypeReaders;
 
 /// <summary>
-/// Defines a reader that reads a raw texture atlas record from a file.
+/// Defines a reader that reads a raw texture atlas from a file.
 /// </summary>
 public static class RawTextureAtlasReader
 {
     /// <summary>
-    /// Reads the raw texture atlas record from the file at the specified path.
+    /// Reads the raw texture atlas from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the raw texture atlas record to read.</param>
-    /// <returns>The raw texture atlas record that was read.</returns>
+    /// <param name="path">The path to the file that contains the raw texture atlas to read.</param>
+    /// <returns>The raw texture atlas that was read.</returns>
     public static RawTextureAtlas Read(string path)
     {
         Stream stream = File.OpenRead(path);

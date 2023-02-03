@@ -35,19 +35,19 @@ public sealed class RawAnimatedTilemap : IEquatable<RawAnimatedTilemap>
     private RawTilemapFrame[] _rawTilemapFrames;
 
     /// <summary>
-    /// Gets the assigned name to the animated tilemap represented by this raw animated tilemap record.
+    /// Gets the assigned name to the animated tilemap represented by this raw animated tilemap.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw tileset records that represent the source data for the tilesets used by the
-    /// tilemap layers in the animated tilemap represented by this raw animated tilemap record.
+    /// Gets a read-only span of the raw tilesets that represent the source data for the tilesets used by the
+    /// tilemap layers in the animated tilemap represented by this raw animated tilemap.
     /// </summary>
     public ReadOnlySpan<RawTileset> RawTilesets => _rawTilesets;
 
     /// <summary>
-    /// Gets a read-only span of the raw tilemap frame records that represent the source data for the tilemap frames in
-    /// the animated tilemap represented by this raw animated tilemap record.
+    /// Gets a read-only span of the raw tilemap frames that represent the source data for the tilemap frames in
+    /// the animated tilemap represented by this raw animated tilemap.
     /// </summary>
     public ReadOnlySpan<RawTilemapFrame> RawTilemapFrames => _rawTilemapFrames;
 

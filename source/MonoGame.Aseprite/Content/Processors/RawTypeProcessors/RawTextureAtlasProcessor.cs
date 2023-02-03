@@ -28,24 +28,20 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors.RawProcessors;
 
 /// <summary>
-/// Defines a processor that processes a raw texture atlas record from an aseprite file.
+/// Defines a processor that processes a raw texture atlas from an aseprite file.
 /// </summary>
 public static class RawTextureAtlasProcessor
 {
     /// <summary>
-    /// Processes a raw texture atlas record from the given aseprite file.
+    /// Processes a raw texture atlas from the given aseprite file.
     /// </summary>
     /// <param name="aseFile">The aseprite file to process the raw texture atlas from.</param>
-    /// <param name="onlyVisibleLayers">
-    /// Indicates if only aseprite cels on visible aseprite layers should be included.
-    /// </param>
+    /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included. </param>
     /// <param name="includeBackgroundLayer">
-    /// Indicates if aseprite cels on the aseprite layer marked as the background layer should be included.
+    /// Indicates if cels on the layer marked as the background layer should be included.
     /// </param>
-    /// <param name="includeTilemapLayers">
-    /// Indicates if aseprite cels on a aseprite tilemap layer should be included.
-    /// </param>
-    /// <param name="mergeDuplicates">Indicates if duplicate aseprite frames should be merged into one.</param>
+    /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
+    /// <param name="mergeDuplicates">Indicates if duplicate frames should be merged into one.</param>
     /// <param name="borderPadding">
     /// The amount of transparent pixels to add between the edge of the generated image
     /// </param>
@@ -55,7 +51,7 @@ public static class RawTextureAtlasProcessor
     /// <param name="innerPadding">
     /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
     /// </param>
-    /// <returns>The raw texture atlas record created by this method.</returns>
+    /// <returns>The raw texture atlas created by this method.</returns>
     public static RawTextureAtlas Process(AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
         int frameWidth = aseFile.CanvasWidth;

@@ -31,19 +31,19 @@ using MonoGame.Aseprite.Tilemaps;
 namespace MonoGame.Aseprite.Content.Processors.RawProcessors;
 
 /// <summary>
-/// Defines a processor that processes a raw tileset record from an aseprite file.
+/// Defines a processor that processes a raw tileset from an aseprite file.
 /// </summary>
 public static class RawTilesetProcessor
 {
     /// <summary>
-    /// Processes a raw tileset record from the aseprite tileset at the specified index in the given aseprite file.
+    /// Processes a raw tileset from the tileset at the specified index in the given aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that contains the aseprite tileset to process.</param>
-    /// <param name="tilesetIndex">The index of the aseprite tileset in the aseprite file to process.</param>
-    /// <returns>The raw tileset record created by this method.</returns>
+    /// <param name="aseFile">The aseprite file that contains the tileset to process.</param>
+    /// <param name="tilesetIndex">The index of the tileset in the aseprite file to process.</param>
+    /// <returns>The raw tileset created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
-    /// aseprite tilesets in the given aseprite file.
+    /// tilesets in the given aseprite file.
     /// </exception>
     public static RawTileset Process(AsepriteFile aseFile, int tilesetIndex)
     {
@@ -52,13 +52,13 @@ public static class RawTilesetProcessor
     }
 
     /// <summary>
-    /// Processes a raw tileset record from the aseprite tileset with the specified name in the given aseprite file.
+    /// Processes a raw tileset from the tileset with the specified name in the given aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that contains the aseprite tileset to process.</param>
-    /// <param name="tilesetName">The name of the aseprite tileset in the aseprite file to process.</param>
+    /// <param name="aseFile">The aseprite file that contains the tileset to process.</param>
+    /// <param name="tilesetName">The name of the tileset in the aseprite file to process.</param>
     /// <returns>The raw tileset created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the given aseprite file does not contain an aseprite tileset with the specified name.
+    /// Thrown if the given aseprite file does not contain an tileset with the specified name.
     /// </exception>
     public static RawTileset Process(AsepriteFile aseFile, string tilesetName)
     {
@@ -67,9 +67,9 @@ public static class RawTilesetProcessor
     }
 
     /// <summary>
-    /// Processes a raw tileset record from the given aseprite tileset.
+    /// Processes a raw tileset from the given tileset.
     /// </summary>
-    /// <param name="aseTileset">The aseprite tileset to process.</param>
+    /// <param name="aseTileset">The  tileset to process.</param>
     /// <returns>The raw tileset created by this method.</returns>
     public static RawTileset Process(AsepriteTileset aseTileset)
     {

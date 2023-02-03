@@ -37,15 +37,15 @@ namespace MonoGame.Aseprite.Content.Processors;
 public static class TilesetProcessor
 {
     /// <summary>
-    /// Processes a tileset from the aseprite tileset at the specified index in the given aseprite file.
+    /// Processes a tileset from the tileset at the specified index in the given aseprite file.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseFile">The aseprite file that contains the aseprite tileset to processes.</param>
-    /// <param name="tilesetIndex">The index of the aseprite tileset in the aseprite file to processes.</param>
+    /// <param name="aseFile">The aseprite file that contains the tileset to processes.</param>
+    /// <param name="tilesetIndex">The index of the tileset in the aseprite file to processes.</param>
     /// <returns>The tileset created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
-    /// aseprite tilesets in the given aseprite file.
+    /// tilesets in the given aseprite file.
     /// </exception>
     public static Tileset Process(GraphicsDevice device, AsepriteFile aseFile, int tilesetIndex)
     {
@@ -54,14 +54,14 @@ public static class TilesetProcessor
     }
 
     /// <summary>
-    /// Processes a tileset from the aseprite tileset with the specified name int he given aseprite file.
+    /// Processes a tileset from the tileset with the specified name int he given aseprite file.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseFile">The aseprite file that contains the aseprite tileset to process.</param>
-    /// <param name="tilesetName">The name of the aseprite tileset in the Aseprite file to process.</param>
+    /// <param name="aseFile">The aseprite file that contains the tileset to process.</param>
+    /// <param name="tilesetName">The name of the tileset in the Aseprite file to process.</param>
     /// <returns>The tileset created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the given aseprite file does not contain an aseprite tileset with the specified name.
+    /// Thrown if the given aseprite file does not contain an tileset with the specified name.
     /// </exception>
     public static Tileset Process(GraphicsDevice device, AsepriteFile aseFile, string tilesetName)
     {
@@ -70,10 +70,10 @@ public static class TilesetProcessor
     }
 
     /// <summary>
-    /// Processes a tileset from an aseprite tileset.
+    /// Processes a tileset from an tileset.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseTileset">The aseprite tileset to process.</param>
+    /// <param name="aseTileset">The tileset to process.</param>
     /// <returns>The tileset created by this method.</returns>
     public static Tileset Process(GraphicsDevice device, AsepriteTileset aseTileset)
     {

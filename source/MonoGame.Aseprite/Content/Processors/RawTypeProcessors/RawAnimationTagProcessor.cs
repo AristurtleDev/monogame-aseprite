@@ -28,16 +28,16 @@ using MonoGame.Aseprite.Content.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors.RawProcessors;
 
 /// <summary>
-/// Defines a processor that processes a raw animation tag record from an aseprite tag in an aseprite file.
+/// Defines a processor that processes a raw animation tag from a tag in an aseprite file.
 /// </summary>
 public static class RawAnimationTagProcessor
 {
     /// <summary>
-    /// Processes the aseprite tag at the specified index in the given aseprite file as a raw animation tag record.
+    /// Processes the tag at the specified index in the given aseprite file as a raw animation tag.
     /// </summary>
-    /// <param name="file">The aseprite file that contains the aseprite tag to process.</param>
-    /// <param name="tagIndex">The index of the aseprite tag to locate in the aseprite file.</param>
-    /// <returns>The raw animation tag record created by this method.</returns>
+    /// <param name="file">The aseprite file that contains the tag to process.</param>
+    /// <param name="tagIndex">The index of the tag to locate in the aseprite file.</param>
+    /// <returns>The raw animation tag created by this method.</returns>
     public static RawAnimationTag Process(AsepriteFile file, int tagIndex)
     {
         AsepriteTag aseTag = file.GetTag(tagIndex);
@@ -45,11 +45,11 @@ public static class RawAnimationTagProcessor
     }
 
     /// <summary>
-    /// Processes the aseprite tag with the specified name in the given aseprite file as a raw animation tag record.
+    /// Processes the tag with the specified name in the given aseprite file as a raw animation tag.
     /// </summary>
-    /// <param name="file">The aseprite file that contains the aseprite tag to process.</param>
-    /// <param name="tagName">The name of the aseprite tag to locate in the aseprite file.</param>
-    /// <returns>The raw animation tag record created by this method.</returns>
+    /// <param name="file">The aseprite file that contains the tag to process.</param>
+    /// <param name="tagName">The name of the tag to locate in the aseprite file.</param>
+    /// <returns>The raw animation tag created by this method.</returns>
     public static RawAnimationTag Process(AsepriteFile file, string tagName)
     {
         AsepriteTag aseTag = file.GetTag(tagName);
@@ -69,7 +69,7 @@ public static class RawAnimationTagProcessor
             rawAnimationFrames[i] = new(index, aseFrames[index].Duration);
         }
 
-        //  All Aseprite tags are looping
+        // In aseprite, all tags are looping
         bool isLooping = true;
         bool isReversed = aseTag.Direction == AsepriteLoopDirection.Reverse;
         bool isPingPong = aseTag.Direction == AsepriteLoopDirection.PingPong;

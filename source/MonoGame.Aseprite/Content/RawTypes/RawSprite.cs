@@ -30,13 +30,12 @@ namespace MonoGame.Aseprite.Content.RawTypes;
 public sealed class RawSprite : IEquatable<RawSprite>
 {
     /// <summary>
-    /// Gets the name assigned to the sprite represented by this raw sprite record.
+    /// Gets the name assigned to the sprite represented by this raw sprite.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the raw texture record that represents the source texture for the sprite represented by this raw sprite
-    /// record.
+    /// Gets the raw texture that represents the source texture for the sprite represented by this raw sprite.
     /// </summary>
     public RawTexture RawTexture { get; }
 

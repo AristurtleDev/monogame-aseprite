@@ -291,7 +291,7 @@ public sealed class Tileset
     }
 
     /// <summary>
-    /// Creates a tileset from the given raw tileset record.
+    /// Creates a tileset from the given raw tileset.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTileset">The raw tileset to create the tileset from.</param>

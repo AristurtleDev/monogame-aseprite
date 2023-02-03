@@ -86,7 +86,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
     [Fact]
     public void RawAnimationTag_IsLooping()
     {
-        //  Aseprite tags are always looping so they shoudl be processed always as looping
+        //  In aseprite, tags are always looping, so they should be processed always as looping
         AsepriteTag tag = new(0, 0, AsepriteLoopDirection.Forward, Color.Red, nameof(tag));
         RawAnimationTag rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
         Assert.True(rawTag.IsLooping);

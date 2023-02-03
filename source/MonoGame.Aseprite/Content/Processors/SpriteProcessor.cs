@@ -31,12 +31,12 @@ using MonoGame.Aseprite.Sprites;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a sprite from an aseprite frame.
+/// Defines a processor that processes a sprite from an frame in an aseprite file.
 /// </summary>
 public static class SpriteProcessor
 {
     /// <summary>
-    /// Processes a sprite from the aseprite frame at the specified index in the given aseprite file.
+    /// Processes a sprite from the frame at the specified index in the given aseprite file.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="aseFile">The aseprite file that contains the frame to processes.</param>
@@ -48,8 +48,8 @@ public static class SpriteProcessor
     /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
     /// <returns>The sprite created by this method.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the specified aseprite frame index is less than zero or is greater than or equal to the total number
-    /// of aseprite frames in the given aseprite file.
+    /// Thrown if the specified frame index is less than zero or is greater than or equal to the total number frames in
+    /// the given aseprite file.
     /// </exception>
     public static Sprite Process(GraphicsDevice device, AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
@@ -58,10 +58,10 @@ public static class SpriteProcessor
     }
 
     /// <summary>
-    /// Processes a sprite from the given aseprite frame.
+    /// Processes a sprite from the given frame.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseFrame">The aseprite frame to create the sprite from.</param>
+    /// <param name="aseFrame">The frame to create the sprite from.</param>
     /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included.</param>
     /// <param name="includeBackgroundLayer">
     /// Indicates if cels on the layer marked as the background layer should be included.

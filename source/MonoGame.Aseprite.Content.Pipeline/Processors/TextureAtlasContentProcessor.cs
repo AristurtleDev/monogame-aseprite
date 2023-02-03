@@ -36,14 +36,14 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 internal sealed class TextureAtlasContentProcessor : ContentProcessor<AsepriteFile, RawTextureAtlas>
 {
     /// <summary>
-    /// Gets or Sets a value that indicates whether only aseprite cels on visible aseprite layers should be included.
+    /// Gets or Sets a value that indicates whether only cels on visible layers should be included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
     [DefaultValue(true)]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether aseprite cels on an aseprite layer marked as the background layer
+    /// Gets or Sets a value that indicates whether cels on an layer marked as the background layer
     /// should be included.
     /// </summary>
     [DisplayName("Include Background Layer")]
@@ -51,14 +51,14 @@ internal sealed class TextureAtlasContentProcessor : ContentProcessor<AsepriteFi
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether aseprite cels on an aseprite tilemap layer should be included.
+    /// Gets or Sets a value that indicates whether cels on an tilemap layer should be included.
     /// </summary>
     [DisplayName("Include Tilemap Layers")]
     [DefaultValue(true)]
     public bool IncludeTilemapLayers { get; set; } = true;
 
     /// <summary>
-    /// Gets or Sets a value that indicates if duplicate aseprite frames should be merged into one.
+    /// Gets or Sets a value that indicates if duplicate frames should be merged into one.
     /// </summary>
     [DisplayName("Merge Duplicate Frames")]
     public bool MergeDuplicateFrames { get; set; } = true;
