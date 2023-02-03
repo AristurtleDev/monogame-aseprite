@@ -234,7 +234,7 @@ public sealed class AsepriteFile
     /// true if the aseprite tag was located; otherwise, false.  This method returns false if this aseprite file does
     /// not contain an aseprite tag with the specified name.
     /// </returns>
-    public bool TryGetAsepriteTag(string tagName, [NotNullWhen(true)] out AsepriteTag? located)
+    public bool TryGetTag(string tagName, [NotNullWhen(true)] out AsepriteTag? located)
     {
         located = default;
 
