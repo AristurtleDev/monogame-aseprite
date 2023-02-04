@@ -15,6 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
+        <ProjectReference Include="..\MonoGame.Aseprite.Common\MonoGame.Aseprite.Common.csproj" />
     </ItemGroup>
 </Project>

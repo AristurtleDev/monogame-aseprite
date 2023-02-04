@@ -12,9 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>MonoGame.Aseprite.Content.Pipeline</_Parameter1>
-        </AssemblyAttribute>
+        <ProjectReference Include="..\MonoGame.Aseprite.Common\MonoGame.Aseprite.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

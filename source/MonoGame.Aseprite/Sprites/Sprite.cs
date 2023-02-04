@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.Content.RawTypes;
+using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Sprites;
 

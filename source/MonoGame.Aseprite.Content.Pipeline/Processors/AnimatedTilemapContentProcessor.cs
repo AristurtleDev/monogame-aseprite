@@ -24,8 +24,8 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.Content.Processors.RawProcessors;
-using MonoGame.Aseprite.Content.RawTypes;
+using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
