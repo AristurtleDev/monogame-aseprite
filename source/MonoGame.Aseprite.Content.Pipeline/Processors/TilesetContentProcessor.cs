@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw tileset from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
-internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, TilesetContent>
+internal sealed class TilesetContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawTileset>>
 {
     /// <summary>
     /// Gets or Sets the name of the tileset to processes from the aseprite file.
@@ -44,16 +44,20 @@ internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, T
     /// <summary>
     /// Processes a raw tileset from an aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
+    /// <param name="content">The result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw tileset created by this method.</returns>
+    /// <returns>The content processor result created by this method..</returns>
     /// <exception cref="InvalidOperationException">
     /// Thrown if the aseprite file being processes does not contain an tileset with the name specified for the
     /// the TilesetName property.
     /// </exception>
-    public override TilesetContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
-        RawTilesetProcessor.Process(aseFile, TilesetName);
+    public override ContentProcessorResult<RawTileset> Process(ContentImporterResult content, ContentProcessorContext context)
+    {
+        AsepriteFile aseFile = AsepriteFile.Load(content.Path);
+        RawTileset tileset = RawTilesetProcessor.Process(aseFile, TilesetName);
+        return new(tileset);
+    }
 }

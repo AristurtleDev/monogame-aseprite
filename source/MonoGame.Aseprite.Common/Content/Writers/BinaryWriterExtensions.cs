@@ -56,7 +56,7 @@ internal static class BinaryWriterExtensions
         writer.Write(value.A);
     }
 
-    internal static void Write(this BinaryWriter writer, TextureContent value)
+    internal static void Write(this BinaryWriter writer, RawTexture value)
     {
         writer.Write(value.Name);
         writer.Write(value.Width);
@@ -69,7 +69,7 @@ internal static class BinaryWriterExtensions
         }
     }
 
-    internal static void Write(this BinaryWriter writer, TextureAtlasContent value)
+    internal static void Write(this BinaryWriter writer, RawTextureAtlas value)
     {
         writer.Write(value.Name);
         writer.Write(value.RawTexture);
@@ -77,13 +77,13 @@ internal static class BinaryWriterExtensions
 
         for (int i = 0; i < value.RawTextureRegions.Length; i++)
         {
-            TextureRegionContent rawTextureRegion = value.RawTextureRegions[i];
+            RawTextureRegion rawTextureRegion = value.RawTextureRegions[i];
             writer.Write(rawTextureRegion.Name);
             writer.Write(rawTextureRegion.Bounds);
         }
     }
 
-    internal static void Write(this BinaryWriter writer, TilesetContent value)
+    internal static void Write(this BinaryWriter writer, RawTileset value)
     {
         writer.Write(value.ID);
         writer.Write(value.Name);
@@ -92,7 +92,7 @@ internal static class BinaryWriterExtensions
         writer.Write(value.TileHeight);
     }
 
-    internal static void Write(this BinaryWriter writer, TilemapLayerContent value)
+    internal static void Write(this BinaryWriter writer, RawTilemapLayer value)
     {
         writer.Write(value.Name);
         writer.Write(value.TilesetID);
@@ -107,7 +107,7 @@ internal static class BinaryWriterExtensions
         }
     }
 
-    internal static void Write(this BinaryWriter writer, TilemapTileContent value)
+    internal static void Write(this BinaryWriter writer, RawTilemapTile value)
     {
         writer.Write(value.TilesetTileID);
         writer.Write(value.FlipHorizontally);

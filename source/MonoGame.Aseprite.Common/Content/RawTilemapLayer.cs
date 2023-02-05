@@ -29,9 +29,9 @@ namespace MonoGame.Aseprite.RawTypes;
 /// <summary>
 /// Defines a class that represents the raw values of a tilemap layer.
 /// </summary>
-public sealed class TilemapLayerContent : IEquatable<TilemapLayerContent>
+public sealed class RawTilemapLayer : IEquatable<RawTilemapLayer>
 {
-    private TilemapTileContent[] _rawTilemapTiles;
+    private RawTilemapTile[] _rawTilemapTiles;
 
     /// <summary>
     /// Gets the name assigned to the tilemap layer represented by this raw tilemap layer.
@@ -57,17 +57,17 @@ public sealed class TilemapLayerContent : IEquatable<TilemapLayerContent>
     /// Gets a read-only span of the raw tilemap tiles that represent the tiles for the tilemap layer represented
     /// by this raw tilemap layer.
     /// </summary>
-    public ReadOnlySpan<TilemapTileContent> RawTilemapTiles => _rawTilemapTiles;
+    public ReadOnlySpan<RawTilemapTile> RawTilemapTiles => _rawTilemapTiles;
 
     /// <summary>
     /// Gets the offset of the tilemap layer represented by this raw tilemap layer.
     /// </summary>
     public Point Offset { get; }
 
-    internal TilemapLayerContent(string name, int tilesetID, int columns, int rows, TilemapTileContent[] rawTilemapTiles, Point offset) =>
+    internal RawTilemapLayer(string name, int tilesetID, int columns, int rows, RawTilemapTile[] rawTilemapTiles, Point offset) =>
         (Name, TilesetID, Columns, Rows, _rawTilemapTiles, Offset) = (name, tilesetID, columns, rows, rawTilemapTiles, offset);
 
-    public bool Equals(TilemapLayerContent? other) => other is not null
+    public bool Equals(RawTilemapLayer? other) => other is not null
                                                   && Name == other.Name
                                                   && TilesetID == other.TilesetID
                                                   && Columns == other.Columns

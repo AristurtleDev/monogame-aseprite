@@ -36,20 +36,20 @@ public static class RawAnimatedTilemapReader
     /// </summary>
     /// <param name="path">The path to the file that contains the raw animated tilemap to read.</param>
     /// <returns>The raw animated tilemap that was read.</returns>
-    public static AnimatedTilemapContent Read(string path)
+    public static RawAnimatedTilemap Read(string path)
     {
         Stream stream = File.OpenRead(path);
         BinaryReader reader = new(stream);
         return Read(reader);
     }
 
-    internal static AnimatedTilemapContent Read(BinaryReader reader)
+    internal static RawAnimatedTilemap Read(BinaryReader reader)
     {
         reader.ReadMagic();
         string name = reader.ReadString();
         int tilesetCount = reader.ReadInt32();
 
-        TilesetContent[] tilesets = new TilesetContent[tilesetCount];
+        RawTileset[] tilesets = new RawTileset[tilesetCount];
 
         for (int i = 0; i < tilesetCount; i++)
         {
@@ -58,14 +58,14 @@ public static class RawAnimatedTilemapReader
 
         int frameCount = reader.ReadInt32();
 
-        TilemapFrameContent[] frames = new TilemapFrameContent[frameCount];
+        RawTilemapFrame[] frames = new RawTilemapFrame[frameCount];
 
         for (int i = 0; i < frameCount; i++)
         {
             int duration = reader.ReadInt32();
             int layerCount = reader.ReadInt32();
 
-            TilemapLayerContent[] layers = new TilemapLayerContent[layerCount];
+            RawTilemapLayer[] layers = new RawTilemapLayer[layerCount];
 
             for (int j = 0; j < layerCount; j++)
             {

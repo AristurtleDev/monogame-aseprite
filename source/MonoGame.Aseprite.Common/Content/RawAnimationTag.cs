@@ -27,9 +27,9 @@ namespace MonoGame.Aseprite.RawTypes;
 /// <summary>
 /// Defines a class that represents the raw values of an animation tag.
 /// </summary>
-public sealed class AnimationTagContent : IEquatable<AnimationTagContent>
+public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
 {
-    private AnimationFrameContent[] _rawAnimationFrames;
+    private RawAnimationFrame[] _rawAnimationFrames;
 
     /// <summary>
     /// Gets the name assigned to the animation tag represented by this raw animation tag.
@@ -40,7 +40,7 @@ public sealed class AnimationTagContent : IEquatable<AnimationTagContent>
     /// Gets a read-only span of the raw animation frames that represent the frames of animation for the animation tag
     /// represented by this raw animation tag.
     /// </summary>
-    public ReadOnlySpan<AnimationFrameContent> RawAnimationFrames => _rawAnimationFrames;
+    public ReadOnlySpan<RawAnimationFrame> RawAnimationFrames => _rawAnimationFrames;
 
     /// <summary>
     /// Gets a value that indicates whether the animation defined by the animation tag represented by this raw animation
@@ -60,10 +60,10 @@ public sealed class AnimationTagContent : IEquatable<AnimationTagContent>
     /// </summary>
     public bool IsPingPong { get; }
 
-    internal AnimationTagContent(string name, AnimationFrameContent[] rawAnimationFrames, bool isLooping, bool isReversed, bool isPingPong) =>
+    internal RawAnimationTag(string name, RawAnimationFrame[] rawAnimationFrames, bool isLooping, bool isReversed, bool isPingPong) =>
         (Name, _rawAnimationFrames, IsLooping, IsReversed, IsPingPong) = (name, rawAnimationFrames, isLooping, isReversed, isPingPong);
 
-    public bool Equals(AnimationTagContent? other) => other is not null
+    public bool Equals(RawAnimationTag? other) => other is not null
                                                   && Name == other.Name
                                                   && RawAnimationFrames.SequenceEqual(other.RawAnimationFrames)
                                                   && IsLooping == other.IsLooping

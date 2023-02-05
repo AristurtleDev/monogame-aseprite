@@ -48,7 +48,7 @@ public static class SpriteSheetReader
 
     internal static SpriteSheet Read(GraphicsDevice device, BinaryReader reader)
     {
-        SpriteSheetContent rawSpriteSheet = RawSpriteSheetReader.Read(reader);
+        RawSpriteSheet rawSpriteSheet = RawSpriteSheetReader.Read(reader);
         return SpriteSheet.FromRaw(device, rawSpriteSheet);
     }
 }

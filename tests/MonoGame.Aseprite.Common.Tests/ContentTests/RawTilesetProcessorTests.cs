@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
@@ -65,7 +65,7 @@ public sealed class RawTilesetProcessorTests : IClassFixture<RawTilesetProcessor
         int index = 0;
         AsepriteTileset aseTileset = _fixture.AsepriteFile.Tilesets[index];
 
-        TilesetContent rawTileset = RawTilesetProcessor.Process(_fixture.AsepriteFile, index);
+        RawTileset rawTileset = RawTilesetProcessor.Process(_fixture.AsepriteFile, index);
 
         Assert.Equal(aseTileset.ID, rawTileset.ID);
         Assert.Equal(aseTileset.Name, rawTileset.Name);
@@ -82,7 +82,7 @@ public sealed class RawTilesetProcessorTests : IClassFixture<RawTilesetProcessor
     {
         AsepriteTileset aseTileset = _fixture.AsepriteFile.Tilesets[0];
 
-        TilesetContent rawTileset = RawTilesetProcessor.Process(_fixture.AsepriteFile, aseTileset.Name);
+        RawTileset rawTileset = RawTilesetProcessor.Process(_fixture.AsepriteFile, aseTileset.Name);
 
         Assert.Equal(aseTileset.ID, rawTileset.ID);
         Assert.Equal(aseTileset.Name, rawTileset.Name);

@@ -46,7 +46,7 @@ public static class AnimatedTilemapProcessor
     /// </exception>
     public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true)
     {
-        AnimatedTilemapContent rawTilemap = RawAnimatedTilemapProcessor.Process(aseFile, onlyVisibleLayers);
+        RawAnimatedTilemap rawTilemap = RawAnimatedTilemapProcessor.Process(aseFile, onlyVisibleLayers);
         return AnimatedTilemap.FromRaw(device, rawTilemap);
     }
 }

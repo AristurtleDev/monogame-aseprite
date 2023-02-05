@@ -39,14 +39,14 @@ public static class RawTilemapWriter
     /// path, one will be created.  If a file already exists, it will be overwritten.
     /// </param>
     /// <param name="rawTilemap">The raw tilemap to write.</param>
-    public static void Write(string path, TilemapContent rawTilemap)
+    public static void Write(string path, RawTilemap rawTilemap)
     {
         Stream stream = File.Create(path);
         BinaryWriter writer = new(stream);
         Write(writer, rawTilemap);
     }
 
-    internal static void Write(BinaryWriter writer, TilemapContent rawTilemap)
+    internal static void Write(BinaryWriter writer, RawTilemap rawTilemap)
     {
         writer.WriteMagic();
         writer.Write(rawTilemap.Name);

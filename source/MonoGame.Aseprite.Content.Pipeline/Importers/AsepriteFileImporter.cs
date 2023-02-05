@@ -31,7 +31,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 /// Defines a content pipeline importer for importing the contents of an aseprite file.
 /// </summary>
 [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = nameof(SpriteSheetContentProcessor))]
-public class AsepriteFileImporter : ContentImporter<AsepriteFile>
+public class AsepriteFileImporter : ContentImporter<ContentImporterResult>
 {
     /// <summary>
     /// Imports the aseprite file at the specified path.
@@ -41,6 +41,6 @@ public class AsepriteFileImporter : ContentImporter<AsepriteFile>
     /// The content importer context that provides contextual information about the importer.
     /// </param>
     /// <returns>The aseprite file that was imported. </returns>
-    public override AsepriteFile Import(string path, ContentImporterContext context) =>
-        AsepriteFile.Load(path);
+    public override ContentImporterResult Import(string path, ContentImporterContext context) =>
+        new(path);
 }

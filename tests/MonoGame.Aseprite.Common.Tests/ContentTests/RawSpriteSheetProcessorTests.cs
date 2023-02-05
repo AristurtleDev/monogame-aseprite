@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
@@ -109,8 +109,8 @@ public sealed class RawSpriteSheetProcessorTests : IClassFixture<RawSpriteSheetP
     [InlineData(false, false, false, false, 0, 0, 0)]
     public void Passes_Parameters_To_TextureAtlasProcess_Correctly(bool onlyVisible, bool includeBackground, bool includeTilemap, bool mergeDuplicates, int borderPadding, int spacing, int innerPadding)
     {
-        SpriteSheetContent sheet = RawSpriteSheetProcessor.Process(_fixture.AsepriteFile, onlyVisible, includeBackground, includeTilemap, mergeDuplicates, borderPadding, spacing, innerPadding);
-        TextureAtlasContent expected = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, onlyVisible, includeBackground, includeTilemap, mergeDuplicates, borderPadding, spacing, innerPadding);
+        RawSpriteSheet sheet = RawSpriteSheetProcessor.Process(_fixture.AsepriteFile, onlyVisible, includeBackground, includeTilemap, mergeDuplicates, borderPadding, spacing, innerPadding);
+        RawTextureAtlas expected = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, onlyVisible, includeBackground, includeTilemap, mergeDuplicates, borderPadding, spacing, innerPadding);
 
         Assert.Equal(expected, sheet.RawTextureAtlas);
     }
@@ -118,7 +118,7 @@ public sealed class RawSpriteSheetProcessorTests : IClassFixture<RawSpriteSheetP
     [Fact]
     public void SpriteSheet_Atlas_and_Texture_Names_Same_As_File_Name()
     {
-        SpriteSheetContent sheet = RawSpriteSheetProcessor.Process(_fixture.AsepriteFile);
+        RawSpriteSheet sheet = RawSpriteSheetProcessor.Process(_fixture.AsepriteFile);
         Assert.Equal(_fixture.Name, sheet.Name);
         Assert.Equal(_fixture.Name, sheet.RawTextureAtlas.Name);
         Assert.Equal(_fixture.Name, sheet.RawTextureAtlas.RawTexture.Name);
@@ -127,7 +127,7 @@ public sealed class RawSpriteSheetProcessorTests : IClassFixture<RawSpriteSheetP
     [Fact]
     public void Processes_All_Tags()
     {
-        SpriteSheetContent sheet = RawSpriteSheetProcessor.Process(_fixture.AsepriteFile);
+        RawSpriteSheet sheet = RawSpriteSheetProcessor.Process(_fixture.AsepriteFile);
         Assert.Equal(_fixture.AsepriteFile.Tags.Length, sheet.RawAnimationTags.Length);
     }
 

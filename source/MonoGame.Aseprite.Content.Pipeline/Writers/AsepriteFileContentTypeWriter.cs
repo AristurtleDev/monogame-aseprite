@@ -28,12 +28,13 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class AsepriteFileContentTypeWRiter : ContentTypeWriter<AsepriteFile>
+internal sealed class AsepriteFileContentTypeWRiter : ContentTypeWriter<ContentProcessorResult<byte[]>>
 {
     public object AsepriteFileWriter { get; private set; }
 
-    protected override void Write(ContentWriter writer, AsepriteFile asepriteFile) =>
-        AsepriteFileWriter.Write(writer, asepriteFile);
+    protected override void Write(ContentWriter writer, ContentProcessorResult<byte[]> content) =>
+        writer.Write(content.Data);
+
 
     /// <summary>
     /// Gets the assembly qualified name of the runtime type.

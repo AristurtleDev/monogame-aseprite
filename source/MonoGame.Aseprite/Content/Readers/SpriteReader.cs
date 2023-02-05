@@ -48,7 +48,7 @@ public static class SpriteReader
 
     internal static Sprite Read(GraphicsDevice device, BinaryReader reader)
     {
-        SpriteContent rawSprite = RawSpriteReader.Read(reader);
+        RawSprite rawSprite = RawSpriteReader.Read(reader);
         return Sprite.FromRaw(device, rawSprite);
     }
 }

@@ -60,7 +60,7 @@ public static class SpriteSheetProcessor
     /// </exception>
     public static SpriteSheet Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
-        SpriteSheetContent rawSpritSheet = RawSpriteSheetProcessor.Process(aseFile, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
+        RawSpriteSheet rawSpritSheet = RawSpriteSheetProcessor.Process(aseFile, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
         return SpriteSheet.FromRaw(device, rawSpritSheet);
     }
 }

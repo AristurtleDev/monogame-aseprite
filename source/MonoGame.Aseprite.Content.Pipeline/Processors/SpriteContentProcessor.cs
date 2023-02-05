@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw sprite from an frame in an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, SpriteContent>
+internal sealed class SpriteContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawSprite>>
 {
     /// <summary>
     /// Gets or Sets a the index of the frame in the aseprite file to process.
@@ -67,16 +67,20 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, Sp
     /// <summary>
     /// Processes a sprite from the given aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
+    /// <param name="content">The result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw sprite created by this method.</returns>
+    /// <returns>The content processor result created by this method..</returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the FrameIndex property is less than zero or is greater than or equal to the total number of frames in
     /// the aseprite file being processed.
     /// </exception>
-    public override SpriteContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
-        RawSpriteProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
+    public override ContentProcessorResult<RawSprite> Process(ContentImporterResult content, ContentProcessorContext context)
+    {
+        AsepriteFile aseFile = AsepriteFile.Load(content.Path);
+        RawSprite sprite = RawSpriteProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
+        return new(sprite);
+    }
 }

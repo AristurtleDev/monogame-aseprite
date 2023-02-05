@@ -48,12 +48,12 @@ public static class RawTilemapProcessor
     /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
     /// names even though aseprite does not enforce unique names for layers.
     /// </exception>
-    public static TilemapContent Process(AsepriteFile aseFile, int frameIndex, bool onlyVisibleLayers = true)
+    public static RawTilemap Process(AsepriteFile aseFile, int frameIndex, bool onlyVisibleLayers = true)
     {
         AsepriteFrame aseFrame = aseFile.GetFrame(frameIndex);
 
-        List<TilesetContent> rawTilesets = new();
-        List<TilemapLayerContent> rawLayers = new();
+        List<RawTileset> rawTilesets = new();
+        List<RawTilemapLayer> rawLayers = new();
         HashSet<string> layerNameCheck = new();
         HashSet<int> tilesetIDCheck = new();
 
@@ -85,11 +85,11 @@ public static class RawTilemapProcessor
 
             if (tilesetIDCheck.Add(tilesetID))
             {
-                TilesetContent rawTileset = RawTilesetProcessor.Process(aseTilemapLayer.Tileset);
+                RawTileset rawTileset = RawTilesetProcessor.Process(aseTilemapLayer.Tileset);
                 rawTilesets.Add(rawTileset);
             }
 
-            TilemapTileContent[] tiles = new TilemapTileContent[tilemapCel.Tiles.Length];
+            RawTilemapTile[] tiles = new RawTilemapTile[tilemapCel.Tiles.Length];
 
             for (int t = 0; t < tilemapCel.Tiles.Length; t++)
             {
@@ -104,7 +104,7 @@ public static class RawTilemapProcessor
             int rows = tilemapCel.Rows;
             Point offset = tilemapCel.Position;
 
-            TilemapLayerContent rawLayer = new(layerName, tilesetID, columns, rows, tiles, offset);
+            RawTilemapLayer rawLayer = new(layerName, tilesetID, columns, rows, tiles, offset);
             rawLayers.Add(rawLayer);
         }
 

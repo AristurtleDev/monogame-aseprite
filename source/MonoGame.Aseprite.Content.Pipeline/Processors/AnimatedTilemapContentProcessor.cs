@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw animated tilemap from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Animated Tilemap Processor - MonoGame.Aseprite")]
-public sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, AnimatedTilemapContent>
+public sealed class AnimatedTilemapContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawAnimatedTilemap>>
 {
     /// <summary>
     /// Gets or Sets a value that indicates whether only visible layers should be included.
@@ -45,12 +45,16 @@ public sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteF
     /// <summary>
     /// Processes a raw animated tilemap from an aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
+    /// <param name="content">The result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw animated tilemap created by this method.</returns>
-    public override AnimatedTilemapContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
-        RawAnimatedTilemapProcessor.Process(aseFile, OnlyVisibleLayers);
+    /// <returns>The content processor result created by this method..</returns>
+    public override ContentProcessorResult<RawAnimatedTilemap> Process(ContentImporterResult content, ContentProcessorContext context)
+    {
+        AsepriteFile aseFile = AsepriteFile.Load(content.Path);
+        RawAnimatedTilemap result = RawAnimatedTilemapProcessor.Process(aseFile, OnlyVisibleLayers);
+        return new(result);
+    }
 }

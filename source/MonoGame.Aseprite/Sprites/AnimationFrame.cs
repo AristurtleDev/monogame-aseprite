@@ -25,22 +25,24 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
-/// Defines the source texture region and duration of a frame of animation in an animation tag.
+///     Defines the source <see cref="TextureRegion"/> and duration of a single frame of animation in an
+///     <see cref="AnimationTag"/>.
 /// </summary>
 public sealed class AnimationFrame
 {
     /// <summary>
-    /// Gets the index of the source frame in the texture atlas of the spritesheet.
+    ///     Gets the index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    ///     <see cref="SpriteSheet"/>.
     /// </summary>
     public int FrameIndex { get; }
 
     /// <summary>
-    /// Gets the source texture region for this animation frame.
+    ///     Gets the source <see cref="TextureRegion"/> for this <see cref="AnimationFrame"/>.
     /// </summary>
     public TextureRegion TextureRegion { get; }
 
     /// <summary>
-    /// Gets the duration of this animation frame.
+    ///     Gets the duration of this <see cref="AnimationFrame"/>.
     /// </summary>
     public TimeSpan Duration { get; }
 

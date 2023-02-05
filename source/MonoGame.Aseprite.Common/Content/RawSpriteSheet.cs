@@ -25,23 +25,34 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a sprite.
+/// Defines a class that represents the raw values of a spritesheet.
 /// </summary>
-public sealed class SpriteContent : IEquatable<SpriteContent>
+public sealed class RawSpriteSheet : IEquatable<RawSpriteSheet>
 {
+    private RawAnimationTag[] _rawAnimationTags;
+
     /// <summary>
-    /// Gets the name assigned to the sprite represented by this raw sprite.
+    /// Gets the name assigned to the spritesheet represented by this raw spritesheet.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the raw texture that represents the source texture for the sprite represented by this raw sprite.
+    /// Gets raw texture atlas that represents the source texture atlas for the spritesheet represented by this raw
+    /// spritesheet.
     /// </summary>
-    public TextureContent RawTexture { get; }
+    public RawTextureAtlas RawTextureAtlas { get; }
 
-    internal SpriteContent(string name, TextureContent rawTexture) => (Name, RawTexture) = (name, rawTexture);
+    /// <summary>
+    /// Gets a read-only span of the raw animation tags that represent the animations tags for the spritesheet
+    /// represented by this raw spritesheet.
+    /// </summary>
+    public ReadOnlySpan<RawAnimationTag> RawAnimationTags => _rawAnimationTags;
 
-    public bool Equals(SpriteContent? other) => other is not null
-                                            && Name == other.Name
-                                            && RawTexture.Equals(other.RawTexture);
+    internal RawSpriteSheet(string name, RawTextureAtlas rawAtlas, RawAnimationTag[] rawAnimationTags) =>
+        (Name, RawTextureAtlas, _rawAnimationTags) = (name, rawAtlas, rawAnimationTags);
+
+    public bool Equals(RawSpriteSheet? other) => other is not null
+                                                 && Name == other.Name
+                                                 && RawTextureAtlas.Equals(other.RawTextureAtlas)
+                                                 && RawAnimationTags.SequenceEqual(other.RawAnimationTags);
 }

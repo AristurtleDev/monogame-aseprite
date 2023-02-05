@@ -48,7 +48,7 @@ public static class TextureAtlasReader
 
     internal static Sprites.TextureAtlas Read(GraphicsDevice device, BinaryReader reader)
     {
-        RawTypes.TextureAtlasContent rawTextureAtlas = RawTextureAtlasReader.Read(reader);
+        RawTypes.RawTextureAtlas rawTextureAtlas = RawTextureAtlasReader.Read(reader);
         return Sprites.TextureAtlas.FromRaw(device, rawTextureAtlas);
     }
 }

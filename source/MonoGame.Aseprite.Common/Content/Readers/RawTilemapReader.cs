@@ -36,20 +36,20 @@ public static class RawTilemapReader
     /// </summary>
     /// <param name="path">The path to the file that contains the raw tilemap to read.</param>
     /// <returns>The raw tilemap that was read.</returns>
-    public static TilemapContent Read(string path)
+    public static RawTilemap Read(string path)
     {
         Stream stream = File.OpenRead(path);
         BinaryReader reader = new(stream);
         return Read(reader);
     }
 
-    internal static TilemapContent Read(BinaryReader reader)
+    internal static RawTilemap Read(BinaryReader reader)
     {
         reader.ReadMagic();
         string name = reader.ReadString();
         int tilesetCount = reader.ReadInt32();
 
-        TilesetContent[] tilesets = new TilesetContent[tilesetCount];
+        RawTileset[] tilesets = new RawTileset[tilesetCount];
 
         for (int i = 0; i < tilesetCount; i++)
         {
@@ -58,7 +58,7 @@ public static class RawTilemapReader
 
         int layerCount = reader.ReadInt32();
 
-        TilemapLayerContent[] layers = new TilemapLayerContent[layerCount];
+        RawTilemapLayer[] layers = new RawTilemapLayer[layerCount];
 
         for (int i = 0; i < layerCount; i++)
         {

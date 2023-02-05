@@ -48,7 +48,7 @@ public static class TilesetReader
 
     internal static Tileset Read(GraphicsDevice device, BinaryReader reader)
     {
-        TilesetContent rawTileset = RawTilesetReader.Read(reader);
+        RawTileset rawTileset = RawTilesetReader.Read(reader);
         return Tileset.FromRaw(device, rawTileset);
     }
 }

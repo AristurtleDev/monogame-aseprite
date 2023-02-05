@@ -22,32 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Writers;
-using MonoGame.Aseprite.RawTypes;
+namespace MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Writers;
-
-[ContentTypeWriter]
-internal sealed class AnimatedTilemapContentTypeWriter : ContentTypeWriter<ContentProcessorResult<RawAnimatedTilemap>>
+/// <summary>
+/// Defines a class that represents the raw values of an animation frame.
+/// </summary>
+public sealed class RawAnimationFrame : IEquatable<RawAnimationFrame>
 {
-    protected override void Write(ContentWriter writer, ContentProcessorResult<RawAnimatedTilemap> content) =>
-        RawAnimatedTilemapWriter.Write(writer, content.Data);
+    /// <summary>
+    /// Gets the index of the source frame for the animation frame represented by this raw animation frame.
+    /// </summary>
+    public int FrameIndex { get; }
 
     /// <summary>
-    /// Gets the assembly qualified name of the runtime type.
+    /// Gets the duration, in milliseconds, of the animation frame represented by this raw animation frame.
     /// </summary>
-    /// <param name="targetPlatform">The target platform.</param>
-    /// <returns>The assembly qualified name of the runtime type.</returns>
-    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Tilemaps.AnimatedTilemap, MonoGame.Aseprite";
+    public int DurationInMilliseconds { get; }
 
-    /// <summary>
-    /// Gets the assembly qualified name of the runtime loader.
-    /// </summary>
-    /// <param name="targetPlatform">The target platform type.</param>
-    /// <returns>The assembly qualified name of the runtime loader.</returns>
-    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Reader.AnimatedTilemapContentTypeReader, MonoGame.Aseprite";
+    internal RawAnimationFrame(int frameIndex, int durationInMilliseconds) =>
+        (FrameIndex, DurationInMilliseconds) = (frameIndex, durationInMilliseconds);
+
+    public bool Equals(RawAnimationFrame? other) => other is not null
+                                                    && FrameIndex == other.FrameIndex
+                                                    && DurationInMilliseconds == other.DurationInMilliseconds;
 }

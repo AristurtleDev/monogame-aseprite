@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
@@ -93,12 +93,12 @@ public sealed class RawTilemapProcessorTests : IClassFixture<RawTilemapProcessor
     [Fact]
     public void OnlyVisibleLayers_True_Processes_Only_Visible_Layers()
     {
-        TilemapContent tilemap = RawTilemapProcessor.Process(_fixture.AsepriteFile, 0, onlyVisibleLayers: true);
+        RawTilemap tilemap = RawTilemapProcessor.Process(_fixture.AsepriteFile, 0, onlyVisibleLayers: true);
 
         Assert.Equal(_fixture.AsepriteFile.Name, tilemap.Name);
 
         Assert.Equal(1, tilemap.RawTilesets.Length);
-        TilesetContent rawTileset = RawTilesetProcessor.Process(_fixture.AsepriteFile, 0);
+        RawTileset rawTileset = RawTilesetProcessor.Process(_fixture.AsepriteFile, 0);
         Assert.Equal(rawTileset, tilemap.RawTilesets[0]);
 
         Assert.Equal(1, tilemap.RawLayers.Length);
@@ -110,13 +110,13 @@ public sealed class RawTilemapProcessorTests : IClassFixture<RawTilemapProcessor
     [Fact]
     public void OnlyVisibleLayers_False_Processes_All_Layers()
     {
-        TilemapContent tilemap = RawTilemapProcessor.Process(_fixture.AsepriteFile, 0, onlyVisibleLayers: false);
+        RawTilemap tilemap = RawTilemapProcessor.Process(_fixture.AsepriteFile, 0, onlyVisibleLayers: false);
 
         Assert.Equal(_fixture.AsepriteFile.Name, tilemap.Name);
 
         Assert.Equal(2, tilemap.RawTilesets.Length);
-        TilesetContent rawTileset0 = RawTilesetProcessor.Process(_fixture.AsepriteFile, 0);
-        TilesetContent rawTileset1 = RawTilesetProcessor.Process(_fixture.AsepriteFile, 1);
+        RawTileset rawTileset0 = RawTilesetProcessor.Process(_fixture.AsepriteFile, 0);
+        RawTileset rawTileset1 = RawTilesetProcessor.Process(_fixture.AsepriteFile, 1);
         Assert.Equal(rawTileset0, tilemap.RawTilesets[0]);
         Assert.Equal(rawTileset1, tilemap.RawTilesets[1]);
 
@@ -185,7 +185,7 @@ public sealed class RawTilemapProcessorTests : IClassFixture<RawTilemapProcessor
         Assert.Throws<InvalidOperationException>(() => RawTilemapProcessor.Process(aseFile, 0));
     }
 
-    private void AssertRawLayer(TilemapLayerContent layer, string name, int tilesetID, int columns, int rows, Point offset, ReadOnlySpan<AsepriteTile> tiles)
+    private void AssertRawLayer(RawTilemapLayer layer, string name, int tilesetID, int columns, int rows, Point offset, ReadOnlySpan<AsepriteTile> tiles)
     {
         Assert.Equal(name, layer.Name);
         Assert.Equal(tilesetID, layer.TilesetID);

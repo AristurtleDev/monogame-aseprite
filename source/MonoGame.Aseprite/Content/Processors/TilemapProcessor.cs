@@ -51,7 +51,7 @@ public static class TilemapProcessor
     /// </exception>
     public static Tilemap Process(GraphicsDevice device, AsepriteFile aseFile, int frameIndex, bool onlyVisibleLayers = true)
     {
-        TilemapContent rawTilemap = RawTilemapProcessor.Process(aseFile, frameIndex, onlyVisibleLayers);
+        RawTilemap rawTilemap = RawTilemapProcessor.Process(aseFile, frameIndex, onlyVisibleLayers);
         return Tilemap.FromRaw(device, rawTilemap);
     }
 }

@@ -25,54 +25,52 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
-/// Defines an animation tag that represents an the definition of an animation.
+/// Defines the definition of an animation.
 /// </summary>
 public sealed class AnimationTag
 {
     private AnimationFrame[] _frames;
 
     /// <summary>
-    /// Gets the name of this animation tag.
+    ///     Gets the name of the animation
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets a read-only span of the frames of animations that make up the animation defined by this animation tag.  The
-    /// order of frames in the collection are from first frame to last frame in non-reverse order, even if IsReversed is
-    /// set to true.
+    ///     Gets a read-only span of the <see cref="AnimationFrame"/> elements that make up the animation.  The order of
+    ///     elements is from first frame to last frame in non-reverse order.
     /// </summary>
     public ReadOnlySpan<AnimationFrame> Frames => _frames;
 
     /// <summary>
-    /// Gets the total number of frames of animation for the animation defined by this animation tag.
+    ///     Gets the total number of ,<see cref="AnimationFrame"/> elements.
     /// </summary>
     public int FrameCount => _frames.Length;
 
     /// <summary>
-    /// Gets the animation frame at the specified index from this animation tag.
+    ///     Gets the <see cref="AnimationFrame"/> element at the specified index from this <see cref="AnimationTag"/>.
     /// </summary>
-    /// <param name="index">The index of the animation frame to locate.</param>
-    /// <returns>The animation frame located.</returns>
+    /// <param name="index">The index of the <see cref="AnimationFrame"/> to locate.</param>
+    /// <returns>The <see cref="AnimationFrame"/> located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of animation
-    /// frames in this animation tag.
+    ///     Thrown if the specified <paramref name="index"/> is less than zero or is greater than or equal to the total
+    ///     number of <see cref="AnimationFrame"/> elements in this <see cref="AnimationTag"/>.
     /// </exception>
     public AnimationFrame this[int index] => GetFrame(index);
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether the animation defined by this animation tag should loop.
+    ///     Gets or Sets a value that indicates whether the animation should loop.
     /// </summary>
     public bool IsLooping { get; set; }
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether the animation defined by this animation tag should play the frames
-    /// in reverse order.
+    ///     Gets or Sets a value that indicates whether the animation should play in reverse.
     /// </summary>
     public bool IsReversed { get; set; }
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether the animation defined by this animation tag should ping-pong once
-    /// reaching the last frame of animation.
+    ///     Gets or Sets a value that indicates whether the animation should ping-pong once reaching the last frame of
+    ///     animation.
     /// </summary>
     public bool IsPingPong { get; set; }
 
@@ -80,13 +78,13 @@ public sealed class AnimationTag
         (Name, _frames, IsLooping, IsReversed, IsPingPong) = (name, frames, isLooping, isReversed, isPingPong);
 
     /// <summary>
-    /// Gets the animation frame at the specified index from this animation tag.
+    ///     Gets the <see cref="AnimationFrame"/> element at the specified index from this <see cref="AnimationTag"/>.
     /// </summary>
-    /// <param name="index">The index of the animation frame to locate.</param>
-    /// <returns>The animation frame located.</returns>
+    /// <param name="index">The index of the <see cref="AnimationFrame"/> to locate.</param>
+    /// <returns>The <see cref="AnimationFrame"/> located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of animation
-    /// frames in this animation tag.
+    ///     Thrown if the specified <paramref name="index"/> is less than zero or is greater than or equal to the total
+    ///     number of <see cref="AnimationFrame"/> elements in this <see cref="AnimationTag"/>.
     /// </exception>
     public AnimationFrame GetFrame(int index)
     {

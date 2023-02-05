@@ -69,7 +69,7 @@ public static class SpriteProcessor
     /// <returns>The sprite created by this method.</returns>
     public static Sprite Process(GraphicsDevice device, AsepriteFrame aseFrame, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
-        SpriteContent rawSprite = RawSpriteProcessor.Process(aseFrame, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
+        RawSprite rawSprite = RawSpriteProcessor.Process(aseFrame, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
         return Sprite.FromRaw(device, rawSprite);
     }
 

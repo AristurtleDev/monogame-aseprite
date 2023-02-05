@@ -56,11 +56,11 @@ public static class RawSpriteSheetProcessor
     /// Thrown if tags are found in the aseprite file with duplicate names.  Spritesheets must contain tags with unique
     /// names even though aseprite does not enforce unique names for tags.
     /// </exception>
-    public static SpriteSheetContent Process(AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    public static RawSpriteSheet Process(AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
-        TextureAtlasContent rawAtlas = RawTextureAtlasProcessor.Process(aseFile, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
+        RawTextureAtlas rawAtlas = RawTextureAtlasProcessor.Process(aseFile, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
 
-        AnimationTagContent[] rawTags = new AnimationTagContent[aseFile.Tags.Length];
+        RawAnimationTag[] rawTags = new RawAnimationTag[aseFile.Tags.Length];
         HashSet<string> tagNameCheck = new();
 
         for (int i = 0; i < aseFile.Tags.Length; i++)

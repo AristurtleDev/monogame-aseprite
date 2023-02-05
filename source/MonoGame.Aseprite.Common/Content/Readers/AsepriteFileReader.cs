@@ -28,7 +28,10 @@ using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Readers;
 
-internal static class AsepriteFileReader
+/// <summary>
+/// Defines a reader that reads an aseprite file.
+/// </summary>
+public static class AsepriteFileReader
 {
     const ushort CHUNK_TYPE_OLD_PALETTE_1 = 0x0004;
     const ushort CHUNK_TYPE_OLD_PALETTE_2 = 0x0011;
@@ -45,18 +48,32 @@ internal static class AsepriteFileReader
     const ushort CHUNK_TYPE_SLICE = 0x2022;
     const ushort CHUNK_TYPE_TILESET = 0x2023;
 
-    internal static AsepriteFile ReadFile(string path)
+    /// <summary>
+    /// Reads the aseprite file at the given path.
+    /// </summary>
+    /// <param name="path">The path and filename of the aseprite file to read.</param>
+    /// <returns>The aseprite file created by this method.</returns>
+    /// <exception cref="FileNotFoundException">Thrown if no file is located at the specified path.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if an error occurs during the reading of the aseprite file.  The exception message will contain the
+    /// cause of the exception.
+    /// </exception>
+    public static AsepriteFile ReadFile(string path)
     {
         if (!File.Exists(path))
         {
             throw new FileNotFoundException($"Unable to locate a file at the path '{path}'");
         }
 
-        Stream stream = File.OpenRead(path);
-        BinaryReader reader = new(stream);
+        using Stream stream = File.OpenRead(path);
+        using BinaryReader reader = new(stream);
 
         string name = Path.GetFileNameWithoutExtension(path);
+        return Read(name, reader);
+    }
 
+    internal static AsepriteFile Read(string name, BinaryReader reader)
+    {
         AsepriteFileBuilder fileBuilder = new(name);
 
         ReadFileHeader(reader, fileBuilder, out ushort nFrames);

@@ -39,14 +39,14 @@ public static class RawSpriteSheetWriter
     /// path, one will be created.  If a file already exists, it will be overwritten.
     /// </param>
     /// <param name="rawSpriteSheet">The raw spritesheet to write.</param>
-    public static void Write(string path, SpriteSheetContent rawSpriteSheet)
+    public static void Write(string path, RawSpriteSheet rawSpriteSheet)
     {
         Stream stream = File.Create(path);
         BinaryWriter writer = new(stream);
         Write(writer, rawSpriteSheet);
     }
 
-    internal static void Write(BinaryWriter writer, SpriteSheetContent rawSpriteSheet)
+    internal static void Write(BinaryWriter writer, RawSpriteSheet rawSpriteSheet)
     {
         writer.WriteMagic();
         writer.Write(rawSpriteSheet.Name);
@@ -55,7 +55,7 @@ public static class RawSpriteSheetWriter
 
         for (int i = 0; i < rawSpriteSheet.RawAnimationTags.Length; i++)
         {
-            AnimationTagContent rawAnimationTag = rawSpriteSheet.RawAnimationTags[i];
+            RawAnimationTag rawAnimationTag = rawSpriteSheet.RawAnimationTags[i];
 
             writer.Write(rawAnimationTag.Name);
             writer.Write(rawAnimationTag.IsLooping);

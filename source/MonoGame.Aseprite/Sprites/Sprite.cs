@@ -29,7 +29,7 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
-/// Defines a named sprite.
+///     Defines a named sprite 
 /// </summary>
 public class Sprite
 {
@@ -40,12 +40,12 @@ public class Sprite
     private float _transparency;
 
     /// <summary>
-    /// Gets the name of this sprite.
+    ///     Gets the name assigned to this <see cref="Sprite"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the source texture region represented by this sprite.
+    ///     Gets the source <see cref="TextureRegion"/> of this <see cref="Sprite"/>.
     /// </summary>
     public TextureRegion TextureRegion
     {
@@ -54,12 +54,13 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the color mask to apply when rendering this sprite.
+    ///     Gets or Sets the color mask to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public Color Color { get; set; }
 
     /// <summary>
-    /// Gets or Sets the level of transparency, between 0.0f and 1.0f, to apply when rendering this sprite.
+    ///     Gets or Sets the level of transparency, between 0.0f, and 1.0f, to apply when rendering this 
+    ///     <see cref="Sprite"/>.
     /// </summary>
     public float Transparency
     {
@@ -68,12 +69,12 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the rotation, in radians, to apply when rendering this sprite.
+    ///     Gets or Sets the rotation, in radians, to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float Rotation { get; set; }
 
     /// <summary>
-    /// Gets or Sets the x- and y-coordinate point of origin to apply when rendering this sprite.
+    ///     Gets or Sets the x- and y-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public Vector2 Origin
     {
@@ -82,7 +83,7 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the x-coordinate point of origin to apply when rendering this sprite.
+    ///     Gets or Sets the x-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float OriginX
     {
@@ -91,7 +92,7 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the y-coordinate point of origin to apply when rendering this sprite.
+    ///     Gets or Sets the y-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float OriginY
     {
@@ -100,7 +101,7 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the x- and y-axis scale factor to use when rendering this sprite.
+    ///     Gets or Sets the x- and y-axis scale factor to use when rendering this <see cref="Sprite"/>.
     /// </summary>
     public Vector2 Scale
     {
@@ -109,7 +110,7 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the x-axis scale factor to use when rendering this sprite.
+    ///     Gets or Sets the x-axis scale factor to use when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float ScaleX
     {
@@ -118,7 +119,7 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the y-axis scale factor to use when rendering this sprite.
+    ///     Gets or Sets the y-axis scale factor to use when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float ScaleY
     {
@@ -127,13 +128,13 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the sprite effects to apply for vertical and horizontal flipping when rendering this sprite.
+    ///     Gets or Sets the <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for vertical and 
+    ///     horizontal flipping when rendering this <see cref="Sprite"/>.
     /// </summary>
     public SpriteEffects SpriteEffects { get; set; }
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether this sprite should be flipped horizontally along its x-axis when
-    /// rendered.
+    ///     Gets or Sets a value that indicates whether to flip this <see cref="Sprite"/> horizontally when rendering.
     /// </summary>
     public bool FlipHorizontally
     {
@@ -142,8 +143,7 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether this sprite should be flipped vertically along its y-axis when
-    /// rendered.
+    ///     Gets or Sets a value that indicates whether to flip this <see cref="Sprite"/> vertically when rendering.
     /// </summary>
     public bool FlipVertically
     {
@@ -152,20 +152,20 @@ public class Sprite
     }
 
     /// <summary>
-    /// Gets or Sets the layer depth to render this sprite at.
+    ///     Gets or Sets the layer depth to render this <see cref="Sprite"/> at.
     /// </summary>
     public float LayerDepth { get; set; }
 
     /// <summary>
-    /// Gets or Sets a value that indicates if this sprite is visible and can be rendered.
+    ///     Gets or Sets a value that indicates if this <see cref="Sprite"/> is visible and can be rendered.
     /// </summary>
     public bool IsVisible { get; set; }
 
     /// <summary>
-    /// Creates a new sprite.
+    ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
-    /// <param name="name">The name to give the sprite.</param>
-    /// <param name="textureRegion">The source texture region for the sprite.</param>
+    /// <param name="name">The name to assign the <see cref="Sprite"/>.</param>
+    /// <param name="textureRegion">The source <see cref="TextureRegion"/> to assign the <see cref="Sprite"/>.</param>
     public Sprite(string name, TextureRegion textureRegion)
     {
         _textureRegion = textureRegion;
@@ -180,29 +180,33 @@ public class Sprite
     }
 
     /// <summary>
-    /// Creates a new sprite.
+    ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
-    /// <param name="name">The name to give the sprite.</param>
-    /// <param name="texture">The source image for the sprite.</param>
+    /// <param name="name">The name to assign the <see cref="Sprite"/>.</param>
+    /// <param name="texture">The source image for the <see cref="Sprite"/>.</param>
     public Sprite(string name, Texture2D texture)
         : this(name, new TextureRegion(name, texture, texture.Bounds)) { }
 
     /// <summary>
-    /// Renders this sprite.
+    ///     Renders this <see cref="Sprite"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering this sprite.</param>
-    /// <param name="position">The x- and y-coordinate location to render this sprite at.</param>
+    /// <param name="spriteBatch">
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this <see cref="Sprite"/>.
+    /// </param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="Sprite"/> at.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position) => spriteBatch.Draw(this, position);
 
     /// <summary>
-    /// Creates a new sprite from the given raw sprite.
+    ///     Creates a new instance of the <see cref="Sprite"/> class from the given <see cref="RawSprite"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="rawTexture">The raw sprite to create the sprite from.</param>
-    /// <returns>The sprite created by this method.</returns>
-    public static Sprite FromRaw(GraphicsDevice device, SpriteContent rawSprite)
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    /// </param>
+    /// <param name="rawTexture">The <see cref="RawSprite"/> to create the <see cref="Sprite"/> from.</param>
+    /// <returns>The <see cref="Sprite"/> created by this method.</returns>
+    public static Sprite FromRaw(GraphicsDevice device, RawSprite rawSprite)
     {
-        TextureContent rawTexture = rawSprite.RawTexture;
+        RawTexture rawTexture = rawSprite.RawTexture;
 
         Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
         texture.Name = rawTexture.Name;

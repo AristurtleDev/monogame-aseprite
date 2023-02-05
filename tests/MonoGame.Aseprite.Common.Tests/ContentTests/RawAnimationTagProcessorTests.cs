@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
@@ -61,7 +61,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
     public void Produces_Correct_RawAnimationFrames(ushort from, ushort to)
     {
         AsepriteTag tag = new(from, to, AsepriteLoopDirection.Forward, Color.Red, nameof(tag));
-        AnimationTagContent rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
+        RawAnimationTag rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
 
         int frameCount = to - from + 1;
         for (int i = 0; i < frameCount; i++)
@@ -79,7 +79,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
     {
         string name = "hello tag";
         AsepriteTag tag = new(0, 0, AsepriteLoopDirection.Forward, Color.Red, name);
-        AnimationTagContent rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
+        RawAnimationTag rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
         Assert.Equal(tag.Name, rawTag.Name);
     }
 
@@ -88,7 +88,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
     {
         //  In aseprite, tags are always looping, so they should be processed always as looping
         AsepriteTag tag = new(0, 0, AsepriteLoopDirection.Forward, Color.Red, nameof(tag));
-        AnimationTagContent rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
+        RawAnimationTag rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
         Assert.True(rawTag.IsLooping);
     }
 
@@ -96,7 +96,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
     public void RawAnimationTag_Is_Not_Reversed_When_AsepriteTag_Is_Forward()
     {
         AsepriteTag tag = new(0, 0, AsepriteLoopDirection.Forward, Color.Red, nameof(tag));
-        AnimationTagContent rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
+        RawAnimationTag rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
         Assert.False(rawTag.IsReversed);
     }
 
@@ -104,7 +104,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
     public void RawAnimationTag_Is_Reversed_When_AsepriteTag_Is_Reversed()
     {
         AsepriteTag tag = new(0, 0, AsepriteLoopDirection.Reverse, Color.Red, nameof(tag));
-        AnimationTagContent rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
+        RawAnimationTag rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
         Assert.True(rawTag.IsReversed);
     }
 
@@ -112,7 +112,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
     public void RawAnimationTag_Is_PingPong_When_AsepriteTag_IsPingPong()
     {
         AsepriteTag tag = new(0, 0, AsepriteLoopDirection.PingPong, Color.Red, nameof(tag));
-        AnimationTagContent rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
+        RawAnimationTag rawTag = RawAnimationTagProcessor.Process(tag, _fixture.Frames);
         Assert.True(rawTag.IsPingPong);
     }
 

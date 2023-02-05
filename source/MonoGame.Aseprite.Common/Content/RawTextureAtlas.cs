@@ -25,41 +25,34 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a tileset.
+/// Defines a class that represents the raw values of a texture atlas.
 /// </summary>
-public sealed class TilesetContent : IEquatable<TilesetContent>
+public sealed class RawTextureAtlas : IEquatable<RawTextureAtlas>
 {
-    /// <summary>
-    /// Gets the unique ID assigned to the tileset represented by this raw tileset.
-    /// </summary>
-    public int ID { get; }
+    private RawTextureRegion[] _rawTextureRegions;
 
     /// <summary>
-    /// Gets the name assigned to the tileset represented by this raw tileset.
+    /// Gets the name assigned to the texture atlas represented by this raw texture atlas.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the raw texture that represents the source texture of the tileset represented by this raw tileset.
+    /// Gets the raw texture that represents the source texture of the texture atlas represented by this raw texture
+    /// atlas.
     /// </summary>
-    public TextureContent RawTexture { get; }
+    public RawTexture RawTexture { get; }
 
     /// <summary>
-    /// Gets the width, in pixels, of each tile in the tileset represented by this raw tileset.
+    /// Gets a read-only span of the raw texture regions that represent the texture regions for the texture atlas
+    /// represented by this raw texture atlas.
     /// </summary>
-    public int TileWidth { get; }
+    public ReadOnlySpan<RawTextureRegion> RawTextureRegions => _rawTextureRegions;
 
-    /// <summary>
-    /// Gets the height, in pixels, of each tile in the tileset represented by this raw tileset.
-    /// </summary>
-    public int TileHeight { get; }
+    internal RawTextureAtlas(string name, RawTexture rawTexture, RawTextureRegion[] rawRegions) =>
+        (Name, RawTexture, _rawTextureRegions) = (name, rawTexture, rawRegions);
 
-    internal TilesetContent(int id, string name, TextureContent rawTexture, int tileWidth, int tileHeight) =>
-        (ID, Name, RawTexture, TileWidth, TileHeight) = (id, name, rawTexture, tileWidth, tileHeight);
-
-    public bool Equals(TilesetContent? other) => other is not null
-                                             && Name == other.Name
-                                             && RawTexture.Equals(other.RawTexture)
-                                             && TileWidth == other.TileWidth
-                                             && TileHeight == other.TileHeight;
+    public bool Equals(RawTextureAtlas? other) => other is not null
+                                                  && Name == other.Name
+                                                  && RawTexture.Equals(other.RawTexture)
+                                                  && RawTextureRegions.SequenceEqual(other.RawTextureRegions);
 }

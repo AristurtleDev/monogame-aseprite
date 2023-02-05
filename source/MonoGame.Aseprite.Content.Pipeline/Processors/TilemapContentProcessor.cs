@@ -25,6 +25,7 @@ SOFTWARE.
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Content.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
@@ -32,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw tilemap from a frame in an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
-public sealed class TilemapContentProcessor : ContentProcessor<AsepriteFile, TilemapContent>
+public sealed class TilemapContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawTilemap>>
 {
     /// <summary>
     /// Gets or Sets the index of the frame in the aseprite file that contains the tilemap to process.
@@ -51,16 +52,20 @@ public sealed class TilemapContentProcessor : ContentProcessor<AsepriteFile, Til
     /// <summary>
     /// Processes a raw tilemap from an aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
+    /// <param name="content">The result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw tilemap created by this method.</returns>
+    /// <returns>The content processor result created by this method..</returns>
     /// <exception cref="IndexOutOfRangeException">
     /// Thrown if the FrameIndex property specified is less than zero or is greater than or equal to the total number of
     /// frames in the aseprite file.
     /// </exception>
-    public override TilemapContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
-        RawTilemapProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers);
+    public override ContentProcessorResult<RawTilemap> Process(ContentImporterResult content, ContentProcessorContext context)
+    {
+        AsepriteFile aseFile = AsepriteFile.Load(content.Path);
+        RawTilemap tilemap = RawTilemapProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers);
+        return new(tilemap);
+    }
 }

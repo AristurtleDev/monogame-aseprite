@@ -39,14 +39,14 @@ public static class RawAnimatedTilemapWriter
     /// path, one will be created.  If a file already exists, it will be overwritten.
     /// </param>
     /// <param name="rawAnimatedTilemap">The raw animated tilemap to write.</param>
-    public static void Write(string path, AnimatedTilemapContent rawAnimatedTilemap)
+    public static void Write(string path, RawAnimatedTilemap rawAnimatedTilemap)
     {
         Stream stream = File.Create(path);
         BinaryWriter writer = new(stream);
         Write(writer, rawAnimatedTilemap);
     }
 
-    internal static void Write(BinaryWriter writer, AnimatedTilemapContent rawAnimatedTilemap)
+    internal static void Write(BinaryWriter writer, RawAnimatedTilemap rawAnimatedTilemap)
     {
         writer.WriteMagic();
         writer.Write(rawAnimatedTilemap.Name);
@@ -61,7 +61,7 @@ public static class RawAnimatedTilemapWriter
 
         for (int i = 0; i < rawAnimatedTilemap.RawTilemapFrames.Length; i++)
         {
-            TilemapFrameContent rawTilemapFrame = rawAnimatedTilemap.RawTilemapFrames[i];
+            RawTilemapFrame rawTilemapFrame = rawAnimatedTilemap.RawTilemapFrames[i];
             writer.Write(rawTilemapFrame.DurationInMilliseconds);
             writer.Write(rawTilemapFrame.RawTilemapLayers.Length);
 

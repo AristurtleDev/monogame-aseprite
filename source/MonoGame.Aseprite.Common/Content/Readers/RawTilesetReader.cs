@@ -36,14 +36,14 @@ public static class RawTilesetReader
     /// </summary>
     /// <param name="path">The path to the file that contains the raw tileset to read.</param>
     /// <returns>The raw tileset that was read.</returns>
-    public static TilesetContent Read(string path)
+    public static RawTileset Read(string path)
     {
         Stream stream = File.OpenRead(path);
         BinaryReader reader = new(stream);
         return Read(reader);
     }
 
-    internal static TilesetContent Read(BinaryReader reader)
+    internal static RawTileset Read(BinaryReader reader)
     {
         reader.ReadMagic();
         return reader.ReadRawTileset();

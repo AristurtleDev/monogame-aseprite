@@ -37,21 +37,21 @@ public static class RawSpriteSheetReader
     /// </summary>
     /// <param name="path">The path to the file that contains the raw spritesheet to read.</param>
     /// <returns>The raw spritesheet that was read.</returns>
-    public static SpriteSheetContent Read(string path)
+    public static RawSpriteSheet Read(string path)
     {
         Stream stream = File.OpenRead(path);
         BinaryReader reader = new(stream);
         return Read(reader);
     }
 
-    internal static SpriteSheetContent Read(BinaryReader reader)
+    internal static RawSpriteSheet Read(BinaryReader reader)
     {
         reader.ReadMagic();
         string name = reader.ReadString();
-        TextureAtlasContent atlas = reader.ReadRawTextureAtlas();
+        RawTextureAtlas atlas = reader.ReadRawTextureAtlas();
         int tagCount = reader.ReadInt32();
 
-        AnimationTagContent[] tags = new AnimationTagContent[tagCount];
+        RawAnimationTag[] tags = new RawAnimationTag[tagCount];
 
         for (int i = 0; i < tagCount; i++)
         {
@@ -61,7 +61,7 @@ public static class RawSpriteSheetReader
             bool isPingPong = reader.ReadBoolean();
             int frameCount = reader.ReadInt32();
 
-            AnimationFrameContent[] frames = new AnimationFrameContent[frameCount];
+            RawAnimationFrame[] frames = new RawAnimationFrame[frameCount];
 
             for (int j = 0; j < frameCount; j++)
             {

@@ -296,7 +296,7 @@ public sealed class Tileset
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTileset">The raw tileset to create the tileset from.</param>
     /// <returns>The tileset created by this method.</returns>
-    public static Tileset FromRaw(GraphicsDevice device, TilesetContent rawTileset)
+    public static Tileset FromRaw(GraphicsDevice device, RawTileset rawTileset)
     {
         Texture2D texture = new(device, rawTileset.RawTexture.Width, rawTileset.RawTexture.Height, mipmap: false, SurfaceFormat.Color);
         texture.SetData<Color>(rawTileset.RawTexture.Pixels.ToArray());

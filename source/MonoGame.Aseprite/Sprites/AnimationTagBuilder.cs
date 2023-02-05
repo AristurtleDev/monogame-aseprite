@@ -25,7 +25,7 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
-/// Defines a builder for building an animation tag for a spritesheet.
+///     Defines a builder building an <see cref="AnimationTag"/> for a <see cref="SpriteSheet"/>.
 /// </summary>
 public sealed class AnimationTagBuilder
 {
@@ -40,17 +40,19 @@ public sealed class AnimationTagBuilder
         (_name, _spriteSheet) = (name, spriteSheet);
 
     /// <summary>
-    /// Adds a new frame of animation to the animation tag using the texture region located at the specified index in
-    /// the spritesheet with the specified duration.
+    ///     Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/>
+    ///     located at the specified index in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with 
+    ///     the specified duration.
     /// </summary>
     /// <param name="regionIndex">
-    /// The index of the texture region in the spritesheet to use for the source image of the animation frame.
+    ///     The index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    ///     <see cref="SpriteSheet"/>.
     /// </param>
-    /// <param name="duration">The duration of the animation frame.</param>
-    /// <returns>This instance of the animation tag builder.</returns>
+    /// <param name="duration">The duration of the frame of animation.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the specified texture region index is less than zero or is greater than or equal to the total number
-    /// of texture regions in the texture atlas used by the spritesheet this animation tag is being built for.
+    ///     Throw if the specified index is less than zero or is greater than or equal to the total number of regions in
+    ///     the <see cref="TextureAtlas"/>.
     /// </exception>
     public AnimationTagBuilder AddFrame(int regionIndex, TimeSpan duration)
     {
@@ -61,17 +63,19 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    /// Adds a new frame of animation to the animation tag using the texture region with the specified name from the
-    /// spritesheet with the specified duration.
+    ///     Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/> with
+    ///     the specified name in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with the specified
+    ///     duration.
     /// </summary>
     /// <param name="regionName">
-    /// The name of the texture region in the spritesheet ot use for the source image fo the animation frame.
+    ///     The name of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    ///     <see cref="SpriteSheet"/>.
     /// </param>
-    /// <param name="duration">The duration of the animation frame.</param>
-    /// <returns>This instance of the animation tag builder.</returns>
+    /// <param name="duration">The duration of the frame of animation.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     /// <exception cref="KeyNotFoundException">
-    /// Thrown if the texture atlas used by the spritesheet this animation tag is being built for does not contain a
-    /// texture region with the specified name.
+    ///     Thrown if the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> does not contain a 
+    ///     <see cref="TextureRegion"/> with the specified name.
     /// </exception>
     public AnimationTagBuilder AddFrame(string regionName, TimeSpan duration)
     {
@@ -83,10 +87,10 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    /// Sets whether the animation defined by the animation tag being built should loop.
+    ///     Sets whether the animation should loop.
     /// </summary>
-    /// <param name="isLooping">Indicates whether the animation should loop.</param>
-    /// <returns>This instance of the animation tag builder.</returns>
+    /// <param name="isLooping">A value that indicates whether the animation should loop.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     public AnimationTagBuilder IsLooping(bool isLooping)
     {
         _isLooping = isLooping;
@@ -94,13 +98,10 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    /// Sets whether the animation defined by the animation tag being built should have the frames played in reverse
-    /// order.
+    ///     Sets whether the animation should play in reverse.
     /// </summary>
-    /// <param name="isReversed">
-    /// Indicates whether the frames of the animation should be played in reverse order.
-    /// </param>
-    /// <returns>This instance of the animation tag builder.</returns>
+    /// <param name="isReversed">A value that indicates whether the animation should play in reverse.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     public AnimationTagBuilder IsReversed(bool isReversed)
     {
         _isReversed = isReversed;
@@ -108,13 +109,10 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    /// Sets whether the animation defined by the animation tag being built should ping-pong once reaching the last
-    /// frame of animation.
+    ///     Sets whether the animation should ping-pong once reaching the last frame of animation.
     /// </summary>
-    /// <param name="isPingPong">
-    /// Indicates whether the animation should ping-pong once reaching the last frame of animation.
-    /// </param>
-    /// <returns>This instance of the animation tag builder.</returns>
+    /// <param name="isPingPong">A value that indicates whether the animation should ping-pong.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     public AnimationTagBuilder IsPingPong(bool isPingPong)
     {
         _isPingPong = isPingPong;

@@ -38,7 +38,7 @@ public static class RawAnimationTagProcessor
     /// <param name="file">The aseprite file that contains the tag to process.</param>
     /// <param name="tagIndex">The index of the tag to locate in the aseprite file.</param>
     /// <returns>The raw animation tag created by this method.</returns>
-    public static AnimationTagContent Process(AsepriteFile file, int tagIndex)
+    public static RawAnimationTag Process(AsepriteFile file, int tagIndex)
     {
         AsepriteTag aseTag = file.GetTag(tagIndex);
         return Process(aseTag, file.Frames);
@@ -50,16 +50,16 @@ public static class RawAnimationTagProcessor
     /// <param name="file">The aseprite file that contains the tag to process.</param>
     /// <param name="tagName">The name of the tag to locate in the aseprite file.</param>
     /// <returns>The raw animation tag created by this method.</returns>
-    public static AnimationTagContent Process(AsepriteFile file, string tagName)
+    public static RawAnimationTag Process(AsepriteFile file, string tagName)
     {
         AsepriteTag aseTag = file.GetTag(tagName);
         return Process(aseTag, file.Frames);
     }
 
-    internal static AnimationTagContent Process(AsepriteTag aseTag, ReadOnlySpan<AsepriteFrame> aseFrames)
+    internal static RawAnimationTag Process(AsepriteTag aseTag, ReadOnlySpan<AsepriteFrame> aseFrames)
     {
         int frameCount = aseTag.To - aseTag.From + 1;
-        AnimationFrameContent[] rawAnimationFrames = new AnimationFrameContent[frameCount];
+        RawAnimationFrame[] rawAnimationFrames = new RawAnimationFrame[frameCount];
         int[] frames = new int[frameCount];
         int[] durations = new int[frameCount];
 

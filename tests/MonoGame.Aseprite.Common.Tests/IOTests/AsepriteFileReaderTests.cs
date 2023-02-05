@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.IO;
+using MonoGame.Aseprite.Content.Readers;
 
 namespace MonoGame.Aseprite.Tests;
 

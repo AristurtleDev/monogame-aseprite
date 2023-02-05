@@ -39,14 +39,14 @@ public static class RawTextureAtlasWriter
     /// this path,  one will be created.  If a file already exists, it will be overwritten.
     /// </param>
     /// <param name="rawTextureAtlas">The raw texture atlas to write.</param>
-    public static void Write(string path, TextureAtlasContent rawTextureAtlas)
+    public static void Write(string path, RawTextureAtlas rawTextureAtlas)
     {
         Stream stream = File.Create(path);
         BinaryWriter writer = new(stream);
         Write(writer, rawTextureAtlas);
     }
 
-    internal static void Write(BinaryWriter writer, TextureAtlasContent rawTextureAtlas)
+    internal static void Write(BinaryWriter writer, RawTextureAtlas rawTextureAtlas)
     {
         writer.WriteMagic();
         writer.Write(rawTextureAtlas.Name);
@@ -55,7 +55,7 @@ public static class RawTextureAtlasWriter
 
         for (int i = 0; i < rawTextureAtlas.RawTextureRegions.Length; i++)
         {
-            TextureRegionContent rawTextureRegion = rawTextureAtlas.RawTextureRegions[i];
+            RawTextureRegion rawTextureRegion = rawTextureAtlas.RawTextureRegions[i];
             writer.Write(rawTextureRegion.Name);
             writer.Write(rawTextureRegion.Bounds);
         }

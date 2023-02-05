@@ -52,7 +52,7 @@ public static class RawTextureAtlasProcessor
     /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
     /// </param>
     /// <returns>The raw texture atlas created by this method.</returns>
-    public static TextureAtlasContent Process(AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    public static RawTextureAtlas Process(AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
         int frameWidth = aseFile.CanvasWidth;
         int frameHeight = aseFile.CanvasHeight;
@@ -66,7 +66,7 @@ public static class RawTextureAtlasProcessor
         }
 
         Dictionary<int, int> duplicateMap = new();
-        Dictionary<int, TextureRegionContent> originalToDuplicateLookup = new();
+        Dictionary<int, RawTextureRegion> originalToDuplicateLookup = new();
 
         for (int i = 0; i < flattenedFrames.GetLength(0); i++)
         {
@@ -100,7 +100,7 @@ public static class RawTextureAtlasProcessor
                           + (innerPadding * 2 * rows);
 
         Color[] imagePixels = new Color[imageWidth * imageHeight];
-        TextureRegionContent[] regions = new TextureRegionContent[aseFile.Frames.Length];
+        RawTextureRegion[] regions = new RawTextureRegion[aseFile.Frames.Length];
 
         int offset = 0;
 
@@ -108,8 +108,8 @@ public static class RawTextureAtlasProcessor
         {
             if (mergeDuplicates && duplicateMap.ContainsKey(i))
             {
-                TextureRegionContent original = originalToDuplicateLookup[duplicateMap[i]];
-                TextureRegionContent duplicate = new($"{aseFile.Name} {i}", original.Bounds);
+                RawTextureRegion original = originalToDuplicateLookup[duplicateMap[i]];
+                RawTextureRegion duplicate = new($"{aseFile.Name} {i}", original.Bounds);
                 regions[i] = duplicate;
                 offset++;
                 continue;
@@ -149,12 +149,12 @@ public static class RawTextureAtlasProcessor
             }
 
             Rectangle bounds = new(x, y, frameWidth, frameHeight);
-            TextureRegionContent rawTextureRegion = new($"{aseFile.Name} {i}", bounds);
+            RawTextureRegion rawTextureRegion = new($"{aseFile.Name} {i}", bounds);
             regions[i] = rawTextureRegion;
             originalToDuplicateLookup.Add(i, rawTextureRegion);
         }
 
-        TextureContent rawTexture = new(aseFile.Name, imagePixels, imageWidth, imageHeight);
+        RawTexture rawTexture = new(aseFile.Name, imagePixels, imageWidth, imageHeight);
         return new(aseFile.Name, rawTexture, regions);
     }
 }

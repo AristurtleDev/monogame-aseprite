@@ -30,10 +30,10 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<TextureAtlasContent>
+internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<ContentProcessorResult<RawTextureAtlas>>
 {
-    protected override void Write(ContentWriter writer, TextureAtlasContent rawTextureAtlas) =>
-        RawTextureAtlasWriter.Write(writer, rawTextureAtlas);
+    protected override void Write(ContentWriter writer, ContentProcessorResult<RawTextureAtlas> content) =>
+        RawTextureAtlasWriter.Write(writer, content.Data);
 
     /// <summary>
     /// Gets the assembly qualified name of the runtime type.

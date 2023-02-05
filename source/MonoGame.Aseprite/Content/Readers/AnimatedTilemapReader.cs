@@ -48,7 +48,7 @@ public static class AnimatedTilemapReader
 
     internal static AnimatedTilemap Read(GraphicsDevice device, BinaryReader reader)
     {
-        AnimatedTilemapContent rawAnimatedTilemap = RawAnimatedTilemapReader.Read(reader);
+        RawAnimatedTilemap rawAnimatedTilemap = RawAnimatedTilemapReader.Read(reader);
         return AnimatedTilemap.FromRaw(device, rawAnimatedTilemap);
     }
 }

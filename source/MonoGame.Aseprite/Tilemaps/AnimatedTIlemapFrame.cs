@@ -31,6 +31,7 @@ namespace MonoGame.Aseprite.Tilemaps;
 /// <summary>
 /// Defines a frame in a animated tilemap with a collection of tilemap layers.
 /// </summary>
+/// <seealso cref="IEnumerable"/>
 public sealed class AnimatedTilemapFrame : IEnumerable<TilemapLayer>
 {
     private List<TilemapLayer> _layers = new();

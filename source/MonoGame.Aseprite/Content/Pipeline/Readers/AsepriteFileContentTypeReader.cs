@@ -22,33 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using MonoGame.Aseprite.RawTypes;
+using Microsoft.Xna.Framework.Content;
+using MonoGame.Aseprite.Content.Readers;
 
-namespace MonoGame.Aseprite.Content.Readers;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-/// <summary>
-/// Defines a reader that reads a raw sprite from a file.
-/// </summary>
-public static class RawSpriteReader
+internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
 {
-    /// <summary>
-    /// Reads the raw sprite from the file at the specified path.
-    /// </summary>
-    /// <param name="path">The path to the file that contains the raw sprite to read.</param>
-    /// <returns>The raw sprite that was read.</returns>
-    public static RawSprite Read(string path)
+    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
     {
-        Stream stream = File.OpenRead(path);
-        BinaryReader reader = new(stream);
-        return Read(reader);
-    }
+        if(existingInstance is not null)
+        {
+            return existingInstance;
+        }
 
-    internal static RawSprite Read(BinaryReader reader)
-    {
-        reader.ReadMagic();
-
-        string name = reader.ReadString();
-        RawTexture rawTexture = reader.ReadRawTexture();
-        return new(name, rawTexture);
+        return AsepriteFileReader.Read(reader.AssetName, reader);
     }
 }

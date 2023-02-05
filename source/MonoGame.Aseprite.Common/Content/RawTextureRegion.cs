@@ -22,27 +22,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
+
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of an animation frame.
+/// Defines a class that represents the raw values of a texture region.
 /// </summary>
-public sealed class AnimationFrameContent : IEquatable<AnimationFrameContent>
+public sealed class RawTextureRegion : IEquatable<RawTextureRegion>
 {
     /// <summary>
-    /// Gets the index of the source frame for the animation frame represented by this raw animation frame.
+    /// Gets the name assigned to the texture region represented by this raw texture region.
     /// </summary>
-    public int FrameIndex { get; }
+    public string Name { get; }
 
     /// <summary>
-    /// Gets the duration, in milliseconds, of the animation frame represented by this raw animation frame.
+    /// Gets the rectangular bounds of the texture region represented by this raw texture region.
     /// </summary>
-    public int DurationInMilliseconds { get; }
+    public Rectangle Bounds { get; }
 
-    internal AnimationFrameContent(int frameIndex, int durationInMilliseconds) =>
-        (FrameIndex, DurationInMilliseconds) = (frameIndex, durationInMilliseconds);
+    internal RawTextureRegion(string name, Rectangle bounds) =>
+        (Name, Bounds) = (name, bounds);
 
-    public bool Equals(AnimationFrameContent? other) => other is not null
-                                                    && FrameIndex == other.FrameIndex
-                                                    && DurationInMilliseconds == other.DurationInMilliseconds;
+    public bool Equals(RawTextureRegion? other) => other is not null
+                                                   && Name == other.Name
+                                                   && Bounds == other.Bounds;
 }

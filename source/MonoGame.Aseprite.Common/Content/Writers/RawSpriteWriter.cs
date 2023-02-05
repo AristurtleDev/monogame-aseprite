@@ -39,14 +39,14 @@ public static class RawSpriteWriter
     /// path, one will be created.  If a file already exists, it will be overwritten.
     /// </param>
     /// <param name="rawSprite">The raw sprite to write.</param>
-    public static void Write(string path, SpriteContent rawSprite)
+    public static void Write(string path, RawSprite rawSprite)
     {
         Stream stream = File.Create(path);
         BinaryWriter writer = new(stream);
         Write(writer, rawSprite);
     }
 
-    internal static void Write(BinaryWriter writer, SpriteContent rawSprite)
+    internal static void Write(BinaryWriter writer, RawSprite rawSprite)
     {
         writer.WriteMagic();
         writer.Write(rawSprite.Name);

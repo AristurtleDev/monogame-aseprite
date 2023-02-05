@@ -30,10 +30,10 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<SpriteSheetContent>
+internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<ContentProcessorResult<RawSpriteSheet>>
 {
-    protected override void Write(ContentWriter writer, SpriteSheetContent rawSpriteSheet) =>
-        RawSpriteSheetWriter.Write(writer, rawSpriteSheet);
+    protected override void Write(ContentWriter writer, ContentProcessorResult<RawSpriteSheet> content) =>
+        RawSpriteSheetWriter.Write(writer, content.Data);
 
     /// <summary>
     /// Gets the assembly qualified name of the runtime type.

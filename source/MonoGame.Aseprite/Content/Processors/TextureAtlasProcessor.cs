@@ -56,7 +56,7 @@ public static class TextureAtlasProcessor
     /// <returns>The texture atlas created by this method.</returns>
     public static Sprites.TextureAtlas Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
-        RawTypes.TextureAtlasContent rawAtlas = RawTextureAtlasProcessor.Process(aseFile, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
+        RawTypes.RawTextureAtlas rawAtlas = RawTextureAtlasProcessor.Process(aseFile, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);
         return Sprites.TextureAtlas.FromRaw(device, rawAtlas);
     }
 }

@@ -22,29 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-
-namespace MonoGame.Aseprite.RawTypes;
+namespace MonoGame.Aseprite.Content.Pipeline;
 
 /// <summary>
-/// Defines a class that represents the raw values of a texture region.
+/// Defines the result of a content processor.
 /// </summary>
-public sealed class TextureRegionContent : IEquatable<TextureRegionContent>
+/// <typeparam name="T">The type of data processed.</typeparam>
+public sealed class ContentProcessorResult<T>
 {
-    /// <summary>
-    /// Gets the name assigned to the texture region represented by this raw texture region.
-    /// </summary>
-    public string Name { get; }
-
-    /// <summary>
-    /// Gets the rectangular bounds of the texture region represented by this raw texture region.
-    /// </summary>
-    public Rectangle Bounds { get; }
-
-    internal TextureRegionContent(string name, Rectangle bounds) =>
-        (Name, Bounds) = (name, bounds);
-
-    public bool Equals(TextureRegionContent? other) => other is not null
-                                                   && Name == other.Name
-                                                   && Bounds == other.Bounds;
+    internal T Data { get; }
+    internal ContentProcessorResult(T data) => Data = data;
 }

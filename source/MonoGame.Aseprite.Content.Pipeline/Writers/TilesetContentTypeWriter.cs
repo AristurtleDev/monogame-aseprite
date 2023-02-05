@@ -30,10 +30,10 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class TilesetContentTypeWriter : ContentTypeWriter<TilesetContent>
+internal sealed class TilesetContentTypeWriter : ContentTypeWriter<ContentProcessorResult<RawTileset>>
 {
-    protected override void Write(ContentWriter writer, TilesetContent rawTileset) =>
-        RawTilesetWriter.Write(writer, rawTileset);
+    protected override void Write(ContentWriter writer, ContentProcessorResult<RawTileset> content) =>
+        RawTilesetWriter.Write(writer, content.Data);
 
     /// <summary>
     /// Gets the assembly qualified name of the runtime type.

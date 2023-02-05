@@ -30,7 +30,7 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Tilemaps;
 
 /// <summary>
-/// Defines a animated tilemap consisting of frame with tilemap layer.
+/// Defines a <see cref="AnimatedTilemap"/> consisting of <see cref="AnimatedTilemapFrame"/> elements
 /// </summary>
 public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
 {
@@ -40,57 +40,63 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     private List<AnimatedTilemapFrame> _frames = new();
 
     /// <summary>
-    /// Gets the name of this tilemap.
+    ///     Gets the name assigned to this <see cref="AnimatedTilemap"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the total number of tilemap frames in this tilemap.
+    ///     Gets the total number of <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
     /// </summary>
     public int frameCount => _frames.Count;
 
     /// <summary>
-    /// Gets the tilemap frame at the specified index in this tilemap.
+    ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the tilemap frame to locate.</param>
-    /// <returns>The tilemap frame that was located at the specified index in this tilemap.</returns>
+    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
+    /// <returns>
+    ///     The <see cref="AnimatedTilemapFrame"/> element that was located at the specified index in this 
+    ///     <see cref="AnimatedTilemap"/>.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the specified index is less than zero or is greater than or equal to the total number of tilemap
-    /// frames in this tilemap.
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
     /// </exception>
     public AnimatedTilemapFrame this[int index] => GetFrame(index);
 
     /// <summary>
-    /// Gets a value that indicates if this tilemap is currently paused.
+    ///     Gets a value that indicates if this <see cref="AnimatedTilemap"/> is currently paused.
     /// </summary>
     public bool IsPaused { get; private set; }
 
     /// <summary>
-    /// Gets a value that indicates if this tilemap is currently animating.
+    ///     Gets a value that indicates if this <see cref="AnimatedTilemap"/> is currently animating.
     /// </summary>
     public bool IsAnimating { get; private set; }
 
     /// <summary>
-    /// Gets a value that indicates whether the animation for this animated tilemap should loop.
+    ///     Gets a value that indicates whether the animation this <see cref="AnimatedTilemap"/> should loop.
     /// </summary>
     public bool IsLooping { get; }
 
     /// <summary>
-    /// Gets a value that indicates whether the animation for this animated tilemap should play frames in reverse order.
+    ///     Gets a value that indicates whether the animation this <see cref="AnimatedTilemap"/> should play frames 
+    ///     in reverse order.
     /// </summary>
     public bool IsReversed { get; }
 
     /// <summary>
-    /// Gets a value that indicates whether the animation for this animated tilemap should ping-pong once reaching the
-    /// last frame of animation.
+    ///     Gets a value that indicates whether the animation for this <see cref="AnimatedTilemap"/> should ping-pong 
+    ///     once reaching the last frame of animation.
     /// </summary>
     public bool IsPingPong { get; }
 
     /// <summary>
-    /// Gets the source tilemap frame for the current animation frame.
+    ///     Gets the source <see cref="AnimatedTilemapFrame"/> element for the current animation frame.
     /// </summary>
     /// <exception cref="InvalidOperationException">
-    /// Thrown when accessing this property before any frames have been added to this animated tilemap.
+    ///     Thrown if no <see cref="AnimatedTilemapFrame"/> elements have been added to this 
+    ///     <see cref="AnimatedTilemap"/> prior to accessing this property.
     /// </exception>
     public AnimatedTilemapFrame CurrentFrame
     {
@@ -106,50 +112,53 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Gets or Sets an action method to invoke at the start of each animation frame.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke at the start of each animation frame.
     /// </summary>
     public Action<AnimatedTilemap>? OnFrameBegin { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action method to invoke at the end of each animation frame.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke at the end of each animation frame.
     /// </summary>
     public Action<AnimatedTilemap>? OnFrameEnd { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action method to invoke at the start of the animation.  This will trigger only once when the
-    /// animation starts before the first frame's OnFrameBegin triggers.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke at the start of the animation.  This will trigger only
+    ///     once when the animation starts before the first frame's <see cref="OnFrameBegin"/> triggers.
     /// </summary>
     public Action<AnimatedTilemap>? OnAnimationBegin { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action method to invoke each time the animation loops.  This will trigger ech time the animation
-    /// loops after the last frame's OnFrameEnd triggers.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke each time the animation loops.  This will trigger each
+    ///     time the animation loops after the last frame's <see cref="OnFrameEnd"/> triggers.
     /// </summary>
     public Action<AnimatedTilemap>? OnAnimationLoop { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action method to invoke when the animation ends.  This will only trigger when the animation ends
-    /// in a non-looping animation, or if a looping animation is stopped by calling the Stop method manually.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke when the animation ends.  This will only trigger when 
+    ///     the animation ends in a non-looping animation, or if a looping animation is stopped by calling the 
+    ///     <see cref="Stop"/> method manually.
     /// </summary>
     public Action<AnimatedTilemap>? OnAnimationEnd { get; set; } = default;
 
     /// <summary>
-    /// Gets the amount of time remaining for the current frame of animation before moving to the next frame.
+    ///     Gets the amount of time remaining for the <see cref="CurrentFrame"/> before moving to the next frame.
     /// </summary>
     public TimeSpan CurrentFrameTimeRemaining { get; private set; }
 
 
     /// <summary>
-    /// Creates a new animated tilemap.
+    ///     Initializes a new instance of the <see cref="AnimatedTilemap"/> class.
     /// </summary>
-    /// <param name="name">The name to give this animated tilemap.</param>
-    /// <param name="isLooping">Indicates whether the animation for this animated tilemap should loop</param>
+    /// <param name="name">The name to assign the <see cref="AnimatedTilemap"/>.</param>
+    /// <param name="isLooping">
+    ///     Indicates whether the animation for the <see cref="AnimatedTilemap"/> should loop
+    /// </param>
     /// <param name="isReversed">
-    /// Indicates whether the frames for this animated tilemap should play in reverse order.
+    ///     Indicates whether the frames for the <see cref="AnimatedTilemap"/> should play in reverse order.
     /// </param>
     /// <param name="isPingPong">
-    /// Indicates whether the animation for this animated tilemap should ping-pong once reaching the last frame of
-    /// animation
+    ///     Indicates whether the animation for this <see cref="AnimatedTilemap"/> should ping-pong once reaching the 
+    ///     last frame of animation
     /// </param>
     public AnimatedTilemap(string name, bool isLooping = true, bool isReversed = false, bool isPingPong = false)
     {
@@ -161,10 +170,13 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Updates this animated tilemap.  This should only be called once per game update cycle.
+    ///     Updates this <see cref="AnimatedTilemap"/>.
     /// </summary>
+    /// <remarks>
+    ///     This should only be called once per game update cycle.
+    /// </remarks>
     /// <param name="deltaTimeInMilliseconds">
-    /// The amount of time, in milliseconds, that have elapsed since the last update cycle in the game.
+    ///     The amount of time, in milliseconds, that have elapsed since the last update cycle in the game.
     /// </param>
     public void Update(float deltaTimeInMilliseconds)
     {
@@ -174,8 +186,11 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Updates this animated tilemap.  This should only be called once per game update cycle.
+    ///     Updates this <see cref="AnimatedTilemap"/>.
     /// </summary>
+    /// <remarks>
+    ///     This should only be called once per game update cycle.
+    /// </remarks>
     /// <param name="gameTime">A snapshot of the game timing values for the current update cycle.</param>
     public void Update(GameTime gameTime)
     {
@@ -315,16 +330,17 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Pauses the animation of this animated tilemap and prevents it from being updated until it is unpaused.
+    ///     Pauses this <see cref="AnimatedTilemap"/> and prevents it from being updated until it is unpaused.
     /// </summary>
     /// <param name="resetFrameDuration">
-    /// A value that indicates whether the the duration of the current frame of the animation of this animated tilemap
-    /// should be reset.  When this method returns false, the duration will not be reset even if this is specified as
-    /// true.
+    ///     A value that indicates whether the the duration of the <see cref="CurrentFrame"/> should be reset.  When 
+    ///     this method returns <see langword="false"/>, the duration will not be reset even if this is specified as
+    ///     <see langword="true"/>.
     /// </param>
     /// <returns>
-    /// true if the animation of this animated tilemap was successfully paused; otherwise, false.  This method returns
-    /// false if the animation of this animated tilemap is not currently animating or if it is already paused.
+    ///     <see langword="true"/> this <see cref="AnimatedTilemap"/> was successfully paused; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> this <see cref="AnimatedTilemap"/> 
+    ///     is not currently animating or if it is already paused.
     /// </returns>
     public bool Pause(bool resetFrameDuration = false)
     {
@@ -346,16 +362,17 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Unpauses the animation of this animated tilemap.
+    ///     Unpauses this <see cref="AnimatedTilemap"/>.
     /// </summary>
     /// <param name="advanceToNextFrame">
-    /// A value that indicates whether the animation of this animated tilemap should immediately be advanced to the next
-    /// frame after unpausing.  When this method returns false, the animation of this animated tilemap will -not- be
-    /// advanced to the next frame, even if this was specified as true.
+    ///     A value that indicates whether this <see cref="AnimatedTilemap"/> should immediately be advanced to the next
+    ///     frame after unpausing.  When this method returns <see langword="false"/>, this <see cref="AnimatedTilemap"/>
+    ///     will -not- be advanced to the next frame, even if this was specified as <see langword="true"/>.
     /// </param>
     /// <returns>
-    /// true if the animation of this animated tilemap was successfully unpaused; otherwise, false.  This method return
-    /// false if the animation of this animated tilemap is not currently animating or if it has not already been paused.
+    ///     <see langword="true"/> if this <see cref="AnimatedTilemap"/> was successfully unpaused; otherwise, 
+    ///     <see langword="false"/>.  This method return <see langword="false"/> this <see cref="AnimatedTilemap"/> is 
+    ///     not currently animating or if it has not already been paused.
     /// </returns>
     public bool Unpause(bool advanceToNextFrame = false)
     {
@@ -377,13 +394,14 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Stops the animation of this animated tilemap on the current frame.  This will trigger the OnAnimationEnd action
-    /// method if one was set.
+    ///     Stops this <see cref="AnimatedTilemap"/> on the <see cref="CurrentFrame"/>.  This will trigger the 
+    ///     <see cref="OnAnimationEnd"/> if one was set.
     /// </summary>
     /// <returns>
-    /// true if the animation of this animated tilemap was successfully stopped; otherwise, false.  This method returns
-    /// false if the animation of this animated tilemap is not currently animating.  If this method returns false, this
-    /// indicates that the OnAnimationEnd action method was not invoked.
+    ///     <see langword="true"/> this <see cref="AnimatedTilemap"/> was successfully stopped; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> this <see cref="AnimatedTilemap"/> is 
+    ///     not currently animating.  If this method returns <see langword="false"/>, this indicates that the 
+    ///     <see cref="OnAnimationEnd"/> action method was not invoked.
     /// </returns>
     public bool Stop()
     {
@@ -400,10 +418,10 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Resets the animation for this animated tilemap back to its first frame of animation.
+    ///     Resets this <see cref="AnimatedTilemap"/> back to its first frame of animation.
     /// </summary>
     /// <param name="paused">
-    /// A value that indicates whether the animation for this animated tilemap should be paused after it is reset.
+    ///     A value that indicates whether his <see cref="AnimatedTilemap"/> should be paused after it is reset.
     /// </param>
     public void Reset(bool paused = false)
     {
@@ -425,10 +443,11 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Creates and adds a new tilemap frame as the next frame of animation in this tilemap.
+    ///     Creates and adds a new <see cref="AnimatedTilemapFrame"/> element as the next frame of animation in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="duration">The total amount of time the frame is displayed during the animation.</param>
-    /// <returns>The tilemap frame created by this method.</returns>
+    /// <param name="duration">The duration to assign the <see cref="AnimatedTilemapFrame"/> created.</param>
+    /// <returns>The <see cref="AnimatedTilemapFrame"/> created.</returns>
     public AnimatedTilemapFrame CreateFrame(TimeSpan duration)
     {
         AnimatedTilemapFrame frame = new(duration);
@@ -437,40 +456,46 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Adds the given tilemap frame as the next frame of animation in this tilemap.
+    ///     Adds the given <see cref="AnimatedTilemapFrame"/> as the next frame of animation in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="frame">The frame to add</param>
+    /// <param name="frame">The <see cref="AnimatedTilemapFrame"/> to add</param>
     public void AddFrame(AnimatedTilemapFrame frame) => _frames.Add(frame);
 
     /// <summary>
-    /// Gets the tilemap frame at the specified index in this tilemap.
+    ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the tilemap frame to locate.</param>
-    /// <returns>The tilemap frame that was located at the specified index in this tilemap.</returns>
+    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
+    /// <returns>The <see cref="AnimatedTilemapFrame"/> element that was located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the specified index is less than zero or is greater than or equal to the total number of tilemap
-    /// frames in this tilemap.
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
     /// </exception>
     public AnimatedTilemapFrame GetFrame(int index)
     {
         if (index < 0 || index >= frameCount)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the total number of tilemap frames in this tilemap.");
+            throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the total number of animated tilemap frame elements in this animated tilemap.");
         }
 
         return _frames[index];
     }
 
     /// <summary>
-    /// Gets the tilemap frame at the specified index in this tilemap.
+    ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the tilemap frame to locate.</param>
+    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
     /// <param name="frame">
-    /// When this method returns true, contains the tilemap frame that was located; otherwise, null.
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AnimatedTilemapFrame"/> located;
+    ///    otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
-    /// true if the tilemap frame was located; otherwise, false.  This method returns false when the specified index is
-    /// less than zero or is greater than or equal to the total number of tilemap frames in this tilemap.
+    ///     <see langword="true"/> if the <see cref="AnimatedTilemapFrame"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> when the specified index is less than
+    ///     zero or is greater than or equal to the total number of <see cref="AnimatedTilemapFrame"/> elements in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </returns>
     public bool TryGetFrame(int index, out AnimatedTilemapFrame? frame)
     {
@@ -485,12 +510,15 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Removes the tilemap frame at the specified index from this tilemap.
+    ///     Removes the <see cref="AnimatedTilemapFrame"/> element at the specified index from this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the tilemap frame to remove.</param>
+    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to remove.</param>
     /// <returns>
-    /// true if the frame was removed successfully; otherwise, false.  This method returns false when the specified
-    /// index is less than zero or is greater that or equal to the total number of tilemap frames in this tilemap.
+    ///     <see langword="true"/> if the <see cref="AnimatedTilemapFrame"/> was removed successfully; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> when the specified index is less than 
+    ///     zero or is greater that or equal to the total number of <see cref="AnimatedTilemapFrame"/> elements in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </returns>
     public bool RemoveFrame(int index)
     {
@@ -504,70 +532,72 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    /// Removes all tilemap frames from this tilemap.
+    ///     Removes all <see cref="AnimatedTilemapFrame"/> elements from this <see cref="AnimatedTilemap"/>.
     /// </summary>
     public void Clear() => _frames.Clear();
 
     /// <summary>
-    /// Returns an enumerator used to iterate through all of the tilemap frames in this tilemap.  The order of elements
-    /// in the enumeration is from first frame to last frame.
+    ///     Returns an enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
+    ///     <see cref="AnimatedTilemap"/>.  The order of elements in the enumeration is from first frame to last frame.
     /// </summary>
     /// <returns>
-    /// An enumerator used to iterate through all of the tilemap frames in this tilemap.
+    ///     An enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </returns>
     public IEnumerator<AnimatedTilemapFrame> GetEnumerator() => _frames.GetEnumerator();
 
     /// <summary>
-    /// Returns an enumerator used to iterate through all of the tilemap frames in this tilemap.  The order of elements
-    /// in the enumeration is from first frame to last frame.
+    ///     Returns an enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
+    ///     <see cref="AnimatedTilemap"/>.  The order of elements in the enumeration is from first frame to last frame.
     /// </summary>
     /// <returns>
-    /// An enumerator used to iterate through all of the tilemap frames in this tilemap.
+    ///     An enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
+    ///     <see cref="AnimatedTilemap"/>.
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>
-    /// Creates a new animated tilemap from a raw animated tilemap.
+    /// Creates a new <see cref="AnimatedTilemap"/> from a raw <see cref="AnimatedTilemap"/>.
     /// </summary>
     /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="rawTilemap">The raw animated tilemap to create the animated tilemap from.</param>
-    /// <returns>The animated tilemap created by this process.</returns>
-    public static AnimatedTilemap FromRaw(GraphicsDevice device, AnimatedTilemapContent rawTilemap)
+    /// <param name="rawTilemap">The raw <see cref="AnimatedTilemap"/> to create the <see cref="AnimatedTilemap"/> from.</param>
+    /// <returns>The <see cref="AnimatedTilemap"/> created by this process.</returns>
+    public static AnimatedTilemap FromRaw(GraphicsDevice device, RawAnimatedTilemap rawTilemap)
     {
-        AnimatedTilemap tilemap = new(rawTilemap.Name);
+        AnimatedTilemap animatedTilemap= new(rawTilemap.Name);
 
         Dictionary<int, Tileset> tilesetLookup = new();
 
         for (int i = 0; i < rawTilemap.RawTilesets.Length; i++)
         {
-            TilesetContent rawTileset = rawTilemap.RawTilesets[i];
+            RawTileset rawTileset = rawTilemap.RawTilesets[i];
             Tileset tileset = Tileset.FromRaw(device, rawTileset);
             tilesetLookup.Add(rawTileset.ID, tileset);
         }
 
         for (int f = 0; f < rawTilemap.RawTilemapFrames.Length; f++)
         {
-            TilemapFrameContent rawFrame = rawTilemap.RawTilemapFrames[f];
+            RawTilemapFrame rawFrame = rawTilemap.RawTilemapFrames[f];
 
             TimeSpan duration = TimeSpan.FromMilliseconds(rawFrame.DurationInMilliseconds);
-            AnimatedTilemapFrame tilemapFrame = tilemap.CreateFrame(duration);
+            AnimatedTilemapFrame animatedTilemapFrame= animatedTilemap.CreateFrame(duration);
 
             for (int l = 0; l < rawFrame.RawTilemapLayers.Length; l++)
             {
-                TilemapLayerContent rawLayer = rawFrame.RawTilemapLayers[l];
+                RawTilemapLayer rawLayer = rawFrame.RawTilemapLayers[l];
 
-                TilemapLayer layer = tilemapFrame.CreateLayer(rawLayer.Name, tilesetLookup[rawLayer.TilesetID], rawLayer.Columns, rawLayer.Rows, rawLayer.Offset.ToVector2());
+                TilemapLayer layer = animatedTilemapFrame.CreateLayer(rawLayer.Name, tilesetLookup[rawLayer.TilesetID], rawLayer.Columns, rawLayer.Rows, rawLayer.Offset.ToVector2());
 
                 for (int t = 0; t < rawLayer.RawTilemapTiles.Length; t++)
                 {
-                    TilemapTileContent rawTile = rawLayer.RawTilemapTiles[t];
+                    RawTilemapTile rawTile = rawLayer.RawTilemapTiles[t];
 
                     layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.Rotation);
                 }
             }
         }
 
-        return tilemap;
+        return animatedTilemap;
     }
 
 }

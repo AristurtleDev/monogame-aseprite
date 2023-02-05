@@ -22,32 +22,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.Content.Writers;
-using MonoGame.Aseprite.RawTypes;
+namespace MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Writers;
-
-[ContentTypeWriter]
-internal sealed class AnimatedTilemapContentTypeWriter : ContentTypeWriter<ContentProcessorResult<RawAnimatedTilemap>>
+/// <summary>
+/// Defines a class that represents the raw values of a tilemap frame.
+/// </summary>
+public sealed class RawTilemapFrame : IEquatable<RawTilemapFrame>
 {
-    protected override void Write(ContentWriter writer, ContentProcessorResult<RawAnimatedTilemap> content) =>
-        RawAnimatedTilemapWriter.Write(writer, content.Data);
+    private RawTilemapLayer[] _rawTilemapLayers;
 
     /// <summary>
-    /// Gets the assembly qualified name of the runtime type.
+    /// Gets the duration, in milliseconds, of the tilemap frame represented by this raw tilemap frame.
     /// </summary>
-    /// <param name="targetPlatform">The target platform.</param>
-    /// <returns>The assembly qualified name of the runtime type.</returns>
-    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Tilemaps.AnimatedTilemap, MonoGame.Aseprite";
+    public int DurationInMilliseconds { get; }
 
     /// <summary>
-    /// Gets the assembly qualified name of the runtime loader.
+    /// Gets a read-only span of the raw tilemap layers that represent the tilemap layers for the tilemap frame
+    /// represented by this raw tilemap frame.
     /// </summary>
-    /// <param name="targetPlatform">The target platform type.</param>
-    /// <returns>The assembly qualified name of the runtime loader.</returns>
-    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Reader.AnimatedTilemapContentTypeReader, MonoGame.Aseprite";
+    public ReadOnlySpan<RawTilemapLayer> RawTilemapLayers => _rawTilemapLayers;
+
+    internal RawTilemapFrame(int durationInMilliseconds, RawTilemapLayer[] rawLayers) =>
+        (DurationInMilliseconds, _rawTilemapLayers) = (durationInMilliseconds, rawLayers);
+
+    public bool Equals(RawTilemapFrame? other) => other is not null
+                                                  && DurationInMilliseconds == other.DurationInMilliseconds
+                                                  && RawTilemapLayers.SequenceEqual(other.RawTilemapLayers);
 }

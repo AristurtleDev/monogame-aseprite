@@ -48,7 +48,7 @@ public static class RawSpriteProcessor
     /// Thrown if the specified frame index is less than zero or is greater than or equal to the total number of frames
     /// in the given aseprite file.
     /// </exception>
-    public static SpriteContent Process(AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
+    public static RawSprite Process(AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
         AsepriteFrame aseFrame = aseFile.GetFrame(aseFrameIndex);
         return Process(aseFrame, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
@@ -64,11 +64,11 @@ public static class RawSpriteProcessor
     /// </param>
     /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
     /// <returns>The raw sprite created by this method.</returns>
-    internal static SpriteContent Process(AsepriteFrame aseFrame, bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers)
+    internal static RawSprite Process(AsepriteFrame aseFrame, bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers)
     {
         Color[] pixels = aseFrame.FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
-        TextureContent rawTexture = new(aseFrame.Name, pixels, aseFrame.Width, aseFrame.Height);
-        SpriteContent rawSprite = new(aseFrame.Name, rawTexture);
+        RawTexture rawTexture = new(aseFrame.Name, pixels, aseFrame.Width, aseFrame.Height);
+        RawSprite rawSprite = new(aseFrame.Name, rawTexture);
         return rawSprite;
     }
 }

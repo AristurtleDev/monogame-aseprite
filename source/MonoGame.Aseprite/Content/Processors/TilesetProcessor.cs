@@ -75,7 +75,7 @@ public static class TilesetProcessor
     /// <returns>The tileset created by this method.</returns>
     public static Tileset Process(GraphicsDevice device, AsepriteTileset aseTileset)
     {
-        TilesetContent rawTileset = RawTilesetProcessor.Process(aseTileset);
+        RawTileset rawTileset = RawTilesetProcessor.Process(aseTileset);
         return Tileset.FromRaw(device, rawTileset);
     }
 }

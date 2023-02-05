@@ -22,37 +22,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Collections.ObjectModel;
+
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of an animated tilemap.
+/// Defines a class that represents the raw values of a tilemap.
 /// </summary>
-public sealed class AnimatedTilemapContent : IEquatable<AnimatedTilemapContent>
+public sealed class RawTilemap : IEquatable<RawTilemap>
 {
-    private TilesetContent[] _rawTilesets;
-    private TilemapFrameContent[] _rawTilemapFrames;
+    private RawTileset[] _rawTilesets;
+    private RawTilemapLayer[] _rawLayers;
 
     /// <summary>
-    /// Gets the assigned name to the animated tilemap represented by this raw animated tilemap.
+    /// Gets the name assigned to the tilemap represented by this raw tilemap.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw tilesets that represent the source data for the tilesets used by the
-    /// tilemap layers in the animated tilemap represented by this raw animated tilemap.
+    /// Gets a read-only span of the raw tilesets that represent the tilesets used by the tilemap layers in the
+    /// tilemap represented by this raw tilemap.
     /// </summary>
-    public ReadOnlySpan<TilesetContent> RawTilesets => _rawTilesets;
+    public ReadOnlySpan<RawTileset> RawTilesets => _rawTilesets;
 
     /// <summary>
-    /// Gets a read-only span of the raw tilemap frames that represent the source data for the tilemap frames in
-    /// the animated tilemap represented by this raw animated tilemap.
+    /// Gets a read-only span of the raw tilemap layers that represent the tilemap layers for the tilemap
+    /// represented by this raw tilemap.
     /// </summary>
-    public ReadOnlySpan<TilemapFrameContent> RawTilemapFrames => _rawTilemapFrames;
+    public ReadOnlySpan<RawTilemapLayer> RawLayers => _rawLayers;
 
-    internal AnimatedTilemapContent(string name, TilesetContent[] rawTilesets, TilemapFrameContent[] rawTilemapFrames) =>
-        (Name, _rawTilesets, _rawTilemapFrames) = (name, rawTilesets, rawTilemapFrames);
+    internal RawTilemap(string name, RawTilemapLayer[] rawLayers, RawTileset[] rawTilesets) =>
+        (Name, _rawTilesets, _rawLayers) = (name, rawTilesets, rawLayers);
 
-    public bool Equals(AnimatedTilemapContent? other) => other is not null
-                                                     && Name == other.Name
-                                                     && RawTilesets.SequenceEqual(other.RawTilesets);
+    public bool Equals(RawTilemap? other) => other is not null
+                                             && Name == other.Name
+                                             && RawTilesets.SequenceEqual(other.RawTilesets)
+                                             && RawLayers.SequenceEqual(other.RawLayers);
 }

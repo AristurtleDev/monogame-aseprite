@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw spritsheet from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
-internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFile, SpriteSheetContent>
+internal sealed class SpriteSheetContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawSpriteSheet>>
 {
     /// <summary>
     /// Gets or Sets a value that indicates whether only cels on visible layers should be included.
@@ -83,12 +83,16 @@ internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFil
     /// <summary>
     /// Processes a raw spritesheet from an aseprite file.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that was created as a result of the content importer.</param>
+    /// <param name="content">The result of the content importer.</param>
     /// <param name="context">
     /// The content processor context that provides contextual information about the content being
     /// processed.
     /// </param>
-    /// <returns>The raw spritesheet created by this method.</returns>
-    public override SpriteSheetContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
-        RawSpriteSheetProcessor.Process(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
+    /// <returns>The content processor result created by this method..</returns>
+    public override ContentProcessorResult<RawSpriteSheet> Process(ContentImporterResult content, ContentProcessorContext context)
+    {
+        AsepriteFile aseFile = AsepriteFile.Load(content.Path);
+        RawSpriteSheet sheet = RawSpriteSheetProcessor.Process(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
+        return new(sheet);
+    }
 }

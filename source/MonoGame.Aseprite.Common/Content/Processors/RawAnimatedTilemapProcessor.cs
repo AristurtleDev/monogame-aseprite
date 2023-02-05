@@ -43,16 +43,16 @@ public static class RawAnimatedTilemapProcessor
     /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
     /// names even though Aseprite does not enforce unique names for layers.
     /// </exception>
-    public static AnimatedTilemapContent Process(AsepriteFile aseFile, bool onlyVisibleLayers = true)
+    public static RawAnimatedTilemap Process(AsepriteFile aseFile, bool onlyVisibleLayers = true)
     {
-        List<TilesetContent> rawTilesets = new();
-        TilemapFrameContent[] rawFrames = new TilemapFrameContent[aseFile.Frames.Length];
+        List<RawTileset> rawTilesets = new();
+        RawTilemapFrame[] rawFrames = new RawTilemapFrame[aseFile.Frames.Length];
         HashSet<int> tilesetIDCheck = new();
 
         for (int f = 0; f < aseFile.Frames.Length; f++)
         {
             AsepriteFrame aseFrame = aseFile.Frames[f];
-            List<TilemapLayerContent> rawLayers = new();
+            List<RawTilemapLayer> rawLayers = new();
             HashSet<string> layerNameCheck = new();
 
             for (int c = 0; c < aseFrame.Cels.Length; c++)
@@ -83,11 +83,11 @@ public static class RawAnimatedTilemapProcessor
 
                 if (tilesetIDCheck.Add(tilesetID))
                 {
-                    TilesetContent rawTileset = RawTilesetProcessor.Process(aseTilemapLayer.Tileset);
+                    RawTileset rawTileset = RawTilesetProcessor.Process(aseTilemapLayer.Tileset);
                     rawTilesets.Add(rawTileset);
                 }
 
-                TilemapTileContent[] tiles = new TilemapTileContent[tilemapCel.Tiles.Length];
+                RawTilemapTile[] tiles = new RawTilemapTile[tilemapCel.Tiles.Length];
 
                 for (int t = 0; t < tilemapCel.Tiles.Length; t++)
                 {
@@ -102,7 +102,7 @@ public static class RawAnimatedTilemapProcessor
                 int rows = tilemapCel.Rows;
                 Point offset = tilemapCel.Position;
 
-                TilemapLayerContent rawLayer = new(layerName, tilesetID, columns, rows, tiles, offset);
+                RawTilemapLayer rawLayer = new(layerName, tilesetID, columns, rows, tiles, offset);
                 rawLayers.Add(rawLayer);
 
             }

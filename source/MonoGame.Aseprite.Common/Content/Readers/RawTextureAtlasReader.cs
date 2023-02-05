@@ -37,14 +37,14 @@ public static class RawTextureAtlasReader
     /// </summary>
     /// <param name="path">The path to the file that contains the raw texture atlas to read.</param>
     /// <returns>The raw texture atlas that was read.</returns>
-    public static TextureAtlasContent Read(string path)
+    public static RawTextureAtlas Read(string path)
     {
         Stream stream = File.OpenRead(path);
         BinaryReader reader = new(stream);
         return Read(reader);
     }
 
-    internal static TextureAtlasContent Read(BinaryReader reader)
+    internal static RawTextureAtlas Read(BinaryReader reader)
     {
         reader.ReadMagic();
         return reader.ReadRawTextureAtlas();

@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
@@ -82,7 +82,7 @@ public sealed class RawSpriteProcessorTests : IClassFixture<RawSpriteProcessorTe
     [InlineData(1)]
     public void Sprite_And_Texture_Name_Include_Correct_Index(int frame)
     {
-        SpriteContent sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, frame);
+        RawSprite sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, frame);
 
         string name = $"{_fixture.Name} {frame}";
 
@@ -102,8 +102,8 @@ public sealed class RawSpriteProcessorTests : IClassFixture<RawSpriteProcessorTe
     [Fact]
     public void Processes_Given_Frame()
     {
-        SpriteContent frame0Sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, 0);
-        SpriteContent frame1Sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, 1);
+        RawSprite frame0Sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, 0);
+        RawSprite frame1Sprite = RawSpriteProcessor.Process(_fixture.AsepriteFile, 1);
 
         Color[] frame0Expected=  new Color[] { Color.Black, Color.Black, Color.Black, Color.Black };
         Color[] frame1Expected = new Color[] { Color.White, Color.White, Color.White, Color.White };

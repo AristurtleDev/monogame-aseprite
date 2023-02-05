@@ -42,7 +42,7 @@ public static class RawTilesetProcessor
     /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
     /// tilesets in the given aseprite file.
     /// </exception>
-    public static TilesetContent Process(AsepriteFile aseFile, int tilesetIndex)
+    public static RawTileset Process(AsepriteFile aseFile, int tilesetIndex)
     {
         AsepriteTileset aseTileset = aseFile.GetTileset(tilesetIndex);
         return Process(aseTileset);
@@ -57,7 +57,7 @@ public static class RawTilesetProcessor
     /// <exception cref="InvalidOperationException">
     /// Thrown if the given aseprite file does not contain an tileset with the specified name.
     /// </exception>
-    public static TilesetContent Process(AsepriteFile aseFile, string tilesetName)
+    public static RawTileset Process(AsepriteFile aseFile, string tilesetName)
     {
         AsepriteTileset aseTileset = aseFile.GetTileset(tilesetName);
         return Process(aseTileset);
@@ -68,9 +68,9 @@ public static class RawTilesetProcessor
     /// </summary>
     /// <param name="aseTileset">The  tileset to process.</param>
     /// <returns>The raw tileset created by this method.</returns>
-    public static TilesetContent Process(AsepriteTileset aseTileset)
+    public static RawTileset Process(AsepriteTileset aseTileset)
     {
-        TextureContent texture = new(aseTileset.Name, aseTileset.Pixels.ToArray(), aseTileset.Width, aseTileset.Height);
+        RawTexture texture = new(aseTileset.Name, aseTileset.Pixels.ToArray(), aseTileset.Width, aseTileset.Height);
         return new(aseTileset.ID, aseTileset.Name, texture, aseTileset.TileWidth, aseTileset.TileHeight);
     }
 }

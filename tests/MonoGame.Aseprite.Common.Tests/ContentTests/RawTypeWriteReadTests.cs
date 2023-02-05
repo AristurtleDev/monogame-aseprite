@@ -24,9 +24,9 @@ SOFTWARE.
 
 using System.Text;
 using Microsoft.Xna.Framework;
-using MonoGame.Aseprite.RawReaders;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Content.Writers;
 using MonoGame.Aseprite.RawTypes;
-using MonoGame.Aseprite.RawWriters;
 
 namespace MonoGame.Aseprite.Tests;
 
@@ -35,11 +35,11 @@ public sealed class RawTypeWriteReadTests
     [Fact]
     public void Write_Then_Read_RawSprite()
     {
-        TextureContent texture = new(nameof(TextureContent), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
-        SpriteContent sprite = new(nameof(SpriteContent), texture);
+        RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+        RawSprite sprite = new(nameof(RawSprite), texture);
 
         Write((writer) => RawSpriteWriter.Write(writer, sprite), out MemoryStream stream);
-        Read(stream, (reader) => RawSpriteReader.Read(reader), out SpriteContent actual);
+        Read(stream, (reader) => RawSpriteReader.Read(reader), out RawSprite actual);
 
         Assert.Equal(sprite, actual);
     }
@@ -47,33 +47,33 @@ public sealed class RawTypeWriteReadTests
     [Fact]
     public void Write_Then_Read_RawSpriteSheet()
     {
-        TextureContent texture = new(nameof(TextureContent), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
-        TextureRegionContent[] regions = new TextureRegionContent[]
+        RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+        RawTextureRegion[] regions = new RawTextureRegion[]
         {
-            new(nameof(TextureRegionContent), new Rectangle(0, 0, 0, 0)),
-            new(nameof(TextureRegionContent), new Rectangle(1, 1, 1, 1)),
-            new(nameof(TextureRegionContent), new Rectangle(2, 2, 2, 2)),
-            new(nameof(TextureRegionContent), new Rectangle(3, 3, 3, 3))
+            new(nameof(RawTextureRegion), new Rectangle(0, 0, 0, 0)),
+            new(nameof(RawTextureRegion), new Rectangle(1, 1, 1, 1)),
+            new(nameof(RawTextureRegion), new Rectangle(2, 2, 2, 2)),
+            new(nameof(RawTextureRegion), new Rectangle(3, 3, 3, 3))
         };
-        TextureAtlasContent atlas = new(nameof(TextureAtlasContent), texture, regions);
-        AnimationFrameContent[] frames = new AnimationFrameContent[]
+        RawTextureAtlas atlas = new(nameof(RawTextureAtlas), texture, regions);
+        RawAnimationFrame[] frames = new RawAnimationFrame[]
         {
             new(0, 0),
             new(1, 100),
             new(2, 200),
             new(3, 300)
         };
-        AnimationTagContent[] tags = new AnimationTagContent[]
+        RawAnimationTag[] tags = new RawAnimationTag[]
         {
-            new(nameof(AnimationTagContent), frames, true, true, true),
-            new(nameof(AnimationTagContent), frames, false, false, false),
-            new(nameof(AnimationTagContent), frames, true, false, true),
-            new(nameof(AnimationTagContent), frames, false, true, false),
+            new(nameof(RawAnimationTag), frames, true, true, true),
+            new(nameof(RawAnimationTag), frames, false, false, false),
+            new(nameof(RawAnimationTag), frames, true, false, true),
+            new(nameof(RawAnimationTag), frames, false, true, false),
         };
-        SpriteSheetContent sheet = new(nameof(SpriteSheetContent), atlas, tags);
+        RawSpriteSheet sheet = new(nameof(RawSpriteSheet), atlas, tags);
 
         Write(writer => RawSpriteSheetWriter.Write(writer, sheet), out MemoryStream stream);
-        Read(stream, (reader) => RawSpriteSheetReader.Read(reader), out SpriteSheetContent actual);
+        Read(stream, (reader) => RawSpriteSheetReader.Read(reader), out RawSpriteSheet actual);
 
         Assert.Equal(sheet, actual);
     }
@@ -81,18 +81,18 @@ public sealed class RawTypeWriteReadTests
     [Fact]
     public void Write_Then_Read_RawTextureAtlas()
     {
-        TextureContent texture = new(nameof(TextureContent), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
-        TextureRegionContent[] regions = new TextureRegionContent[]
+        RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+        RawTextureRegion[] regions = new RawTextureRegion[]
         {
-            new(nameof(TextureRegionContent), new Rectangle(0, 0, 0, 0)),
-            new(nameof(TextureRegionContent), new Rectangle(1, 1, 1, 1)),
-            new(nameof(TextureRegionContent), new Rectangle(2, 2, 2, 2)),
-            new(nameof(TextureRegionContent), new Rectangle(3, 3, 3, 3))
+            new(nameof(RawTextureRegion), new Rectangle(0, 0, 0, 0)),
+            new(nameof(RawTextureRegion), new Rectangle(1, 1, 1, 1)),
+            new(nameof(RawTextureRegion), new Rectangle(2, 2, 2, 2)),
+            new(nameof(RawTextureRegion), new Rectangle(3, 3, 3, 3))
         };
-        TextureAtlasContent atlas = new(nameof(TextureAtlasContent), texture, regions);
+        RawTextureAtlas atlas = new(nameof(RawTextureAtlas), texture, regions);
 
         Write((writer) => RawTextureAtlasWriter.Write(writer, atlas), out MemoryStream stream);
-        Read(stream, (reader) => RawTextureAtlasReader.Read(reader), out TextureAtlasContent actual);
+        Read(stream, (reader) => RawTextureAtlasReader.Read(reader), out RawTextureAtlas actual);
 
         Assert.Equal(atlas, actual);
     }
@@ -100,11 +100,11 @@ public sealed class RawTypeWriteReadTests
     [Fact]
     public void Write_Then_Read_RawTileset()
     {
-        TextureContent texture = new(nameof(TextureContent), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
-        TilesetContent tileset = new(0, nameof(TilesetContent), texture, 1, 1);
+        RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+        RawTileset tileset = new(0, nameof(RawTileset), texture, 1, 1);
 
         Write((writer) => RawTilesetWriter.Write(writer, tileset), out MemoryStream stream);
-        Read(stream, (reader) => RawTilesetReader.Read(reader), out TilesetContent actual);
+        Read(stream, (reader) => RawTilesetReader.Read(reader), out RawTileset actual);
 
         Assert.Equal(tileset, actual);
     }
@@ -112,14 +112,14 @@ public sealed class RawTypeWriteReadTests
     [Fact]
     public void Write_Then_Read_RawTilemap()
     {
-        TextureContent texture = new(nameof(TextureContent), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+        RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
 
-        TilesetContent[] tilesets = new TilesetContent[]
+        RawTileset[] tilesets = new RawTileset[]
         {
-            new(0, nameof(TilesetContent), texture, 1, 1)
+            new(0, nameof(RawTileset), texture, 1, 1)
         };
 
-        TilemapTileContent[] tiles = new TilemapTileContent[]
+        RawTilemapTile[] tiles = new RawTilemapTile[]
         {
             new(0, true, true, 0.0f),
             new(1, true, false, 1.0f),
@@ -127,15 +127,15 @@ public sealed class RawTypeWriteReadTests
             new(3, false, false, 3.0f)
         };
 
-        TilemapLayerContent[] layers = new TilemapLayerContent[]
+        RawTilemapLayer[] layers = new RawTilemapLayer[]
         {
-            new(nameof(TilemapLayerContent), 0, 1, 2, tiles, new(1, 2))
+            new(nameof(RawTilemapLayer), 0, 1, 2, tiles, new(1, 2))
         };
 
-        TilemapContent tilemap = new(nameof(TilemapContent), layers, tilesets);
+        RawTilemap tilemap = new(nameof(RawTilemap), layers, tilesets);
 
         Write((writer) => RawTilemapWriter.Write(writer, tilemap), out MemoryStream stream);
-        Read(stream, (reader) => RawTilemapReader.Read(reader), out TilemapContent actual);
+        Read(stream, (reader) => RawTilemapReader.Read(reader), out RawTilemap actual);
 
         Assert.Equal(tilemap, actual);
     }
@@ -143,14 +143,14 @@ public sealed class RawTypeWriteReadTests
     [Fact]
     public void Write_Then_Read_RawAnimatedTilemap()
     {
-        TextureContent texture = new(nameof(TextureContent), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+        RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
 
-        TilesetContent[] tilesets = new TilesetContent[]
+        RawTileset[] tilesets = new RawTileset[]
         {
-            new(0, nameof(TilesetContent), texture, 1, 1)
+            new(0, nameof(RawTileset), texture, 1, 1)
         };
 
-        TilemapTileContent[] tiles = new TilemapTileContent[]
+        RawTilemapTile[] tiles = new RawTilemapTile[]
         {
             new(0, true, true, 0.0f),
             new(1, true, false, 1.0f),
@@ -158,20 +158,20 @@ public sealed class RawTypeWriteReadTests
             new(3, false, false, 3.0f)
         };
 
-        TilemapLayerContent[] layers = new TilemapLayerContent[]
+        RawTilemapLayer[] layers = new RawTilemapLayer[]
         {
-            new(nameof(TilemapLayerContent), 0, 1, 2, tiles, new(1, 2))
+            new(nameof(RawTilemapLayer), 0, 1, 2, tiles, new(1, 2))
         };
 
-        TilemapFrameContent[] frames = new TilemapFrameContent[]
+        RawTilemapFrame[] frames = new RawTilemapFrame[]
         {
             new(100, layers)
         };
 
-        AnimatedTilemapContent tilemap = new(nameof(AnimatedTilemapContent), tilesets, frames);
+        RawAnimatedTilemap tilemap = new(nameof(RawAnimatedTilemap), tilesets, frames);
 
         Write((writer) => RawAnimatedTilemapWriter.Write(writer, tilemap), out MemoryStream stream);
-        Read(stream, (reader) => RawAnimatedTilemapReader.Read(reader), out AnimatedTilemapContent actual);
+        Read(stream, (reader) => RawAnimatedTilemapReader.Read(reader), out RawAnimatedTilemap actual);
 
         Assert.Equal(tilemap, actual);
     }

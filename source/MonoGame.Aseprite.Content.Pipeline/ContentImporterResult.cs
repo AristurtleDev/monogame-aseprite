@@ -22,30 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.RawTypes;
-
 /// <summary>
-/// Defines a class that represents the raw values of a tilemap frame.
+/// Defines the result content importer.
 /// </summary>
-public sealed class TilemapFrameContent : IEquatable<TilemapFrameContent>
+public sealed class ContentImporterResult
 {
-    private TilemapLayerContent[] _rawTilemapLayers;
+    internal string Path { get; }
 
-    /// <summary>
-    /// Gets the duration, in milliseconds, of the tilemap frame represented by this raw tilemap frame.
-    /// </summary>
-    public int DurationInMilliseconds { get; }
-
-    /// <summary>
-    /// Gets a read-only span of the raw tilemap layers that represent the tilemap layers for the tilemap frame
-    /// represented by this raw tilemap frame.
-    /// </summary>
-    public ReadOnlySpan<TilemapLayerContent> RawTilemapLayers => _rawTilemapLayers;
-
-    internal TilemapFrameContent(int durationInMilliseconds, TilemapLayerContent[] rawLayers) =>
-        (DurationInMilliseconds, _rawTilemapLayers) = (durationInMilliseconds, rawLayers);
-
-    public bool Equals(TilemapFrameContent? other) => other is not null
-                                                  && DurationInMilliseconds == other.DurationInMilliseconds
-                                                  && RawTilemapLayers.SequenceEqual(other.RawTilemapLayers);
+    internal ContentImporterResult(string path) => Path = path;
 }

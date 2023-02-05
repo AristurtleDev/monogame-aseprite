@@ -39,14 +39,14 @@ public static class RawTilesetWriter
     /// path, one will be created.  If a file already exists, it will be overwritten.
     /// </param>
     /// <param name="rawTileset">The raw tileset to write.</param>
-    public static void Write(string path, TilesetContent rawTileset)
+    public static void Write(string path, RawTileset rawTileset)
     {
         Stream stream = File.Create(path);
         BinaryWriter writer = new(stream);
         Write(writer, rawTileset);
     }
 
-    internal static void Write(BinaryWriter writer, TilesetContent rawTileset)
+    internal static void Write(BinaryWriter writer, RawTileset rawTileset)
     {
         writer.WriteMagic();
         writer.Write(rawTileset);

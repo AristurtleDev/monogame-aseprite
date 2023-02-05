@@ -25,34 +25,23 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a texture atlas.
+/// Defines a class that represents the raw values of a sprite.
 /// </summary>
-public sealed class TextureAtlasContent : IEquatable<TextureAtlasContent>
+public sealed class RawSprite : IEquatable<RawSprite>
 {
-    private TextureRegionContent[] _rawTextureRegions;
-
     /// <summary>
-    /// Gets the name assigned to the texture atlas represented by this raw texture atlas.
+    /// Gets the name assigned to the sprite represented by this raw sprite.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the raw texture that represents the source texture of the texture atlas represented by this raw texture
-    /// atlas.
+    /// Gets the raw texture that represents the source texture for the sprite represented by this raw sprite.
     /// </summary>
-    public TextureContent RawTexture { get; }
+    public RawTexture RawTexture { get; }
 
-    /// <summary>
-    /// Gets a read-only span of the raw texture regions that represent the texture regions for the texture atlas
-    /// represented by this raw texture atlas.
-    /// </summary>
-    public ReadOnlySpan<TextureRegionContent> RawTextureRegions => _rawTextureRegions;
+    internal RawSprite(string name, RawTexture rawTexture) => (Name, RawTexture) = (name, rawTexture);
 
-    internal TextureAtlasContent(string name, TextureContent rawTexture, TextureRegionContent[] rawRegions) =>
-        (Name, RawTexture, _rawTextureRegions) = (name, rawTexture, rawRegions);
-
-    public bool Equals(TextureAtlasContent? other) => other is not null
-                                                  && Name == other.Name
-                                                  && RawTexture.Equals(other.RawTexture)
-                                                  && RawTextureRegions.SequenceEqual(other.RawTextureRegions);
+    public bool Equals(RawSprite? other) => other is not null
+                                            && Name == other.Name
+                                            && RawTexture.Equals(other.RawTexture);
 }

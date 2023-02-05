@@ -22,41 +22,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
+
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a tilemap tile.
+/// Defines a class that represents the raw values of a texture.
 /// </summary>
-public sealed class TilemapTileContent : IEquatable<TilemapTileContent>
+public sealed class RawTexture : IEquatable<RawTexture>
 {
-    /// <summary>
-    /// Gets the ID of the source tile in the tileset that represents the texture region used by the tilemap tile that
-    /// is represented by this raw tilemap tile.
-    /// </summary>
-    public int TilesetTileID { get; }
+    private Color[] _pixels;
 
     /// <summary>
-    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile should be flipped
-    /// horizontally along its x-axis.
+    /// Get the name assigned to the texture represented by this raw texture.
     /// </summary>
-    public bool FlipHorizontally { get; }
+    public string Name { get; }
 
     /// <summary>
-    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile should be flipped
-    /// vertically along its y-axis.
+    /// Gets a read-only span of the color values that represent the pixel data for the texture represented by this raw
+    /// texture.
     /// </summary>
-    public bool FlipVertically { get; }
+    public ReadOnlySpan<Color> Pixels => _pixels;
 
     /// <summary>
-    /// Gets the rotation, in radians, of the tilemap tile represented by this raw tilemap tile.
+    /// Gets the width, in pixels of the texture represented by this raw texture.
     /// </summary>
-    public float Rotation { get; }
+    public int Width { get; }
 
-    internal TilemapTileContent(int tilesetTileID, bool flipHorizontally, bool flipVertically, float rotation) =>
-        (TilesetTileID, FlipHorizontally, FlipVertically, Rotation) = (tilesetTileID, flipHorizontally, flipVertically, rotation);
+    /// <summary>
+    /// Gets the height, in pixels of the texture represented by this raw texture.
+    /// </summary>
+    internal int Height { get; }
 
-    public bool Equals(TilemapTileContent? other) => other is not null
-                                                 && TilesetTileID == other.TilesetTileID
-                                                 && FlipHorizontally == other.FlipHorizontally
-                                                 && FlipVertically == other.FlipVertically;
+    internal RawTexture(string name, Color[] pixels, int width, int height) =>
+        (Name, _pixels, Width, Height) = (name, pixels, width, height);
+
+    public bool Equals(RawTexture? other) => other is not null
+                                             && Name == other.Name
+                                             && Pixels.SequenceEqual(other.Pixels)
+                                             && Width == other.Width
+                                             && Height == other.Height;
 }

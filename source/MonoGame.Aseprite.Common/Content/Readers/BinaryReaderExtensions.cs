@@ -70,7 +70,7 @@ internal static class BinaryReaderExtensions
         return result;
     }
 
-    internal static TextureContent ReadRawTexture(this BinaryReader reader)
+    internal static RawTexture ReadRawTexture(this BinaryReader reader)
     {
         string name = reader.ReadString();
         int width = reader.ReadInt32();
@@ -87,13 +87,13 @@ internal static class BinaryReaderExtensions
         return new(name, pixels, width, height);
     }
 
-    internal static TextureAtlasContent ReadRawTextureAtlas(this BinaryReader reader)
+    internal static RawTextureAtlas ReadRawTextureAtlas(this BinaryReader reader)
     {
         string name = reader.ReadString();
-        TextureContent texture = reader.ReadRawTexture();
+        RawTexture texture = reader.ReadRawTexture();
 
         int regionCount = reader.ReadInt32();
-        TextureRegionContent[] regions = new TextureRegionContent[regionCount];
+        RawTextureRegion[] regions = new RawTextureRegion[regionCount];
 
         for (int i = 0; i < regionCount; i++)
         {
@@ -105,18 +105,18 @@ internal static class BinaryReaderExtensions
         return new(name, texture, regions);
     }
 
-    internal static TilesetContent ReadRawTileset(this BinaryReader reader)
+    internal static RawTileset ReadRawTileset(this BinaryReader reader)
     {
         int id = reader.ReadInt32();
         string name = reader.ReadString();
-        TextureContent texture = reader.ReadRawTexture();
+        RawTexture texture = reader.ReadRawTexture();
         int tileWidth = reader.ReadInt32();
         int tileHeight = reader.ReadInt32();
 
         return new(id, name, texture, tileWidth, tileHeight);
     }
 
-    internal static TilemapLayerContent ReadRawTilemapLayer(this BinaryReader reader)
+    internal static RawTilemapLayer ReadRawTilemapLayer(this BinaryReader reader)
     {
         string name = reader.ReadString();
         int tilesetID = reader.ReadInt32();
@@ -125,7 +125,7 @@ internal static class BinaryReaderExtensions
         Point offset = reader.ReadPoint();
         int tileCount = reader.ReadInt32();
 
-        TilemapTileContent[] tiles = new TilemapTileContent[tileCount];
+        RawTilemapTile[] tiles = new RawTilemapTile[tileCount];
 
         for (int i = 0; i < tileCount; i++)
         {
@@ -135,7 +135,7 @@ internal static class BinaryReaderExtensions
         return new(name, tilesetID, columns, rows, tiles, offset);
     }
 
-    internal static TilemapTileContent ReadRawTilemapTile(this BinaryReader reader)
+    internal static RawTilemapTile ReadRawTilemapTile(this BinaryReader reader)
     {
         int tilesetTileID = reader.ReadInt32();
         bool flipHorizontally = reader.ReadBoolean();

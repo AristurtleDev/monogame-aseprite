@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Tests;
@@ -99,7 +99,7 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void Atlas_And_Texture_Name_Same_As_File_Name()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
         Assert.Equal(_fixture.Name, atlas.Name);
         Assert.Equal(_fixture.Name, atlas.RawTexture.Name);
     }
@@ -107,14 +107,14 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void One_Region_Per_Frame()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
         Assert.Equal(_fixture.AsepriteFile.Frames.Length, atlas.RawTextureRegions.Length);
     }
 
     [Fact]
     public void Region_Names_Are_Frame_Names()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile);
 
         Assert.Equal(_fixture.AsepriteFile.Frames[0].Name, atlas.RawTextureRegions[0].Name);
         Assert.Equal(_fixture.AsepriteFile.Frames[1].Name, atlas.RawTextureRegions[1].Name);
@@ -125,7 +125,7 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void Duplicate_Frame_Is_Merged()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, mergeDuplicates: true);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, mergeDuplicates: true);
 
         Color[] expected = new Color[]
         {
@@ -147,7 +147,7 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void Duplicate_Frame_Not_Merged()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, mergeDuplicates: false);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, mergeDuplicates: false);
 
         Color[] expected = new Color[]
         {
@@ -169,7 +169,7 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void Border_Padding_Added_Correctly()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, borderPadding: 1);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, borderPadding: 1);
 
         Color[] expected = new Color[]
         {
@@ -193,7 +193,7 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void Spacing_Added_Correctly()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, spacing: 1);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, spacing: 1);
 
         Color[] expected = new Color[]
         {
@@ -216,7 +216,7 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void InnerPadding_Added_Correctly()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, innerPadding: 1);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, innerPadding: 1);
 
         Color[] expected = new Color[]
         {
@@ -242,7 +242,7 @@ public sealed class RawTextureAtlasProcessorTests : IClassFixture<RawTextureAtla
     [Fact]
     public void Combined_Border_Padding_Spacing_Inner_Padding_Added_Correctly()
     {
-        TextureAtlasContent atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, borderPadding: 1, spacing: 1, innerPadding: 1);
+        RawTextureAtlas atlas = RawTextureAtlasProcessor.Process(_fixture.AsepriteFile, borderPadding: 1, spacing: 1, innerPadding: 1);
 
         Color[] expected = new Color[]
         {

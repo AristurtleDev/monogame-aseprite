@@ -25,34 +25,41 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a spritesheet.
+/// Defines a class that represents the raw values of a tileset.
 /// </summary>
-public sealed class SpriteSheetContent : IEquatable<SpriteSheetContent>
+public sealed class RawTileset : IEquatable<RawTileset>
 {
-    private AnimationTagContent[] _rawAnimationTags;
+    /// <summary>
+    /// Gets the unique ID assigned to the tileset represented by this raw tileset.
+    /// </summary>
+    public int ID { get; }
 
     /// <summary>
-    /// Gets the name assigned to the spritesheet represented by this raw spritesheet.
+    /// Gets the name assigned to the tileset represented by this raw tileset.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets raw texture atlas that represents the source texture atlas for the spritesheet represented by this raw
-    /// spritesheet.
+    /// Gets the raw texture that represents the source texture of the tileset represented by this raw tileset.
     /// </summary>
-    public TextureAtlasContent RawTextureAtlas { get; }
+    public RawTexture RawTexture { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw animation tags that represent the animations tags for the spritesheet
-    /// represented by this raw spritesheet.
+    /// Gets the width, in pixels, of each tile in the tileset represented by this raw tileset.
     /// </summary>
-    public ReadOnlySpan<AnimationTagContent> RawAnimationTags => _rawAnimationTags;
+    public int TileWidth { get; }
 
-    internal SpriteSheetContent(string name, TextureAtlasContent rawAtlas, AnimationTagContent[] rawAnimationTags) =>
-        (Name, RawTextureAtlas, _rawAnimationTags) = (name, rawAtlas, rawAnimationTags);
+    /// <summary>
+    /// Gets the height, in pixels, of each tile in the tileset represented by this raw tileset.
+    /// </summary>
+    public int TileHeight { get; }
 
-    public bool Equals(SpriteSheetContent? other) => other is not null
-                                                 && Name == other.Name
-                                                 && RawTextureAtlas.Equals(other.RawTextureAtlas)
-                                                 && RawAnimationTags.SequenceEqual(other.RawAnimationTags);
+    internal RawTileset(int id, string name, RawTexture rawTexture, int tileWidth, int tileHeight) =>
+        (ID, Name, RawTexture, TileWidth, TileHeight) = (id, name, rawTexture, tileWidth, tileHeight);
+
+    public bool Equals(RawTileset? other) => other is not null
+                                             && Name == other.Name
+                                             && RawTexture.Equals(other.RawTexture)
+                                             && TileWidth == other.TileWidth
+                                             && TileHeight == other.TileHeight;
 }

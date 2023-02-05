@@ -27,7 +27,7 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
-/// Defines an animated sprite with methods to control the playing of the sprite animation.
+///     Defines an animated sprite with methods to control the playing of the sprite animation.
 /// </summary>
 public sealed class AnimatedSprite : Sprite
 {
@@ -35,55 +35,64 @@ public sealed class AnimatedSprite : Sprite
     private int _direction;
 
     /// <summary>
-    /// Gets the source animation tag that defines the animation of this animated sprite.
+    ///     Gets the source <see cref="AnimationTag"/> that defines the animation.
     /// </summary>
     public AnimationTag AnimationTag { get; }
 
     /// <summary>
-    /// Gets a value that indicates if this animated sprite is currently paused.
+    ///     Gets a value that indicates if this <see cref="AnimatedSprite"/> is currently paused.
     /// </summary>
     public bool IsPaused { get; private set; }
 
     /// <summary>
-    /// Gets a value that indicates if this animated sprite has completed it's animation.
+    ///     Gets a value that indicates if this <see cref="AnimatedSprite"/> has completed its animation.
     /// </summary>
     public bool IsAnimating { get; private set; }
 
     /// <summary>
-    /// Gets the source animation frame of the current frame of animation for this animated sprite.
+    ///     Gets the source <see cref="AnimationFrame"/> of the current frame of animation for this 
+    ///     <see cref="AnimatedSprite"/>.
     /// </summary>
     public AnimationFrame CurrentFrame => AnimationTag.Frames[_currentIndex];
 
     /// <summary>
-    /// Gets or Sets an action method to invoke at the start of each frame of animation.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke at the start of each frame of animation.
     /// </summary>
     public Action<AnimatedSprite>? OnFrameBegin { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action method to invoke at the end fo each frame of animation.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke at the end of each frame of animation.
     /// </summary>
     public Action<AnimatedSprite>? OnFrameEnd { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action method to invoke at the start of the animation.  This will trigger only once when the
-    /// animation starts before the first frame's OnFrameBegin triggers.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke at the start of the animation.
     /// </summary>
+    /// <remarks>
+    ///     This will trigger only once when the animation starts before the the first frame's 
+    ///     <see cref="OnFrameBegin"/> triggers.
+    /// </remarks>
     public Action<AnimatedSprite>? OnAnimationBegin { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action to invoke each time the animation loops.  This will trigger each time the animation loops
-    /// after the last frame's OnFrameEnd triggers.
+    ///     Gets or Sets an <see cref="Action"/> to invoke each time the animation loops.
     /// </summary>
+    /// <remarks>
+    ///     This will trigger each time the animation loops after the last frame's <see cref="OnFrameEnd"/> triggers.
+    /// </remarks>
     public Action<AnimatedSprite>? OnAnimationLoop { get; set; } = default;
 
     /// <summary>
-    /// Gets or Sets an action method to invoke when the animation ends.  This will only trigger when the animation ends
-    /// in a non-looping animation, or if a looping animation is stopped by calling the Stop method manually.
+    ///     Gets or Sets an <see cref="Action"/> method to invoke when the animation ends.
     /// </summary>
+    /// <remarks>
+    ///     This will only trigger when the animation ends in a non-looping animation, or if a looping animation is 
+    ///     stopped by calling <see cref="Stop"/> manually.
+    /// </remarks>
     public Action<AnimatedSprite>? OnAnimationEnd { get; set; } = default;
 
     /// <summary>
-    /// Gets the amount of time remaining for the current frame of animation before moving to the next frame.
+    ///     Gets the amount of time remaining for the <see cref="CurrentFrame"/> before moving to the next frame.
     /// </summary>
     public TimeSpan CurrentFrameTimeRemaining { get; private set; }
 
@@ -95,8 +104,11 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
-    /// Updates this animated sprite.  This should only be called once per game update cycle.
+    ///     Updates this <see cref="AnimatedSprite"/>.
     /// </summary>
+    /// <remarks>
+    ///     This should only be called once per update cycle.
+    /// </remarks>
     /// <param name="deltaTimeInMilliseconds">
     /// The amount of time, in milliseconds, that have elapsed since the last update cycle in the game.
     /// </param>
@@ -108,8 +120,11 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
-    /// Updates this animated sprite.  This should only be called once per game update cycle.
+    ///     Updates this <see cref="AnimatedSprite"/>.
     /// </summary>
+    /// <remarks>
+    ///     This should only be called once per update cycle.
+    /// </remarks>
     /// <param name="gameTime">A snapshot of the game timing values for the current update cycle.</param>
     public void Update(GameTime gameTime)
     {
@@ -244,16 +259,17 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
-    /// Pauses the animation of this animated sprite and prevents it from being updated until it is unpaused.
+    ///     Paused this <see cref="AnimatedSprite"/> and prevents it from being updated until it is unpaused.
     /// </summary>
     /// <param name="resetFrameDuration">
-    /// A value that indicates whether the the duration of the current frame of the animation of this animated sprite
-    /// should be reset.  When this method returns false, the duration will not be reset even if this is specified as
-    /// true.
+    ///     A value that indicates whether the <see cref="CurrentFrameTimeRemaining"/> should be reset.  When this
+    ///     method returns <see langword="false"/>, this indicates the <see cref="CurrentFrameTimeRemaining"/> was not
+    ///     reset even if this was specified as <see langword="true"/>.
     /// </param>
     /// <returns>
-    /// true if the animation of this animated sprite was successfully paused; otherwise, false.  This method returns
-    /// false if the animation of this animated sprite is not currently animating or if it is already paused.
+    ///     <see langword="true"/> if this <see cref="AnimatedSprite"/> was successfully paused; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="AnimatedSprite"/>
+    ///     is not currently animating or if it is already paused.
     /// </returns>
     public bool Pause(bool resetFrameDuration = false)
     {
@@ -275,16 +291,17 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
-    /// Unpauses the animation of this animated sprite.
+    ///     Unpaused this <see cref="AnimatedSprite"/>.
     /// </summary>
     /// <param name="advanceToNextFrame">
-    /// A value that indicates whether the animation of this animated sprite should immediately be advanced to the next
-    /// frame after unpausing.  When this method returns false, the animation of this animated sprite will -not- be
-    /// advanced to the next frame, even if this was specified as true.
+    ///     A value that indicates whether this <see cref="AnimatedSprite"/> should immediately advance to the next 
+    ///     frame after unpausing.  When this method returns <see langword="false"/>, this <see cref="AnimatedSprite"/>
+    ///     will -not- be advanced to the next frame, even if this was specified as <see langword="true"/>.
     /// </param>
     /// <returns>
-    /// true if the animation of this animated sprite was successfully unpaused; otherwise, false.  This method return
-    /// false if the animation of this animated sprite is not currently animating or if it has not already been paused.
+    ///     <see langword="true"/> if this <see cref="AnimatedSprite"/> was successfully unpaused; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="AnimatedSprite"/>
+    ///     is not currently animating or if it is not paused.
     /// </returns>
     public bool Unpause(bool advanceToNextFrame = false)
     {
@@ -306,13 +323,16 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
-    /// Stops the animation of this animated sprite on the current frame.  This will trigger the OnAnimationEnd action
-    /// method if one was set.
+    ///     Stops this <see cref="AnimatedSprite"/> on the current frame.  
     /// </summary>
+    /// <remarks>
+    ///     This will trigger the <see cref="OnAnimationEnd"/> action if one was set.
+    /// </remarks>
     /// <returns>
-    /// true if the animation of this animated sprite was successfully stopped; otherwise, false.  This method returns
-    /// false if the animation of this animated sprite is not currently animating.  If this method returns false, this
-    /// indicates that the OnAnimationEnd action method was not invoked.
+    ///     <see langword="true"/> if this <see cref="AnimatedSprite"/> was successfully stopped; otherwise,
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="AnimatedSprite"/>
+    ///     is not currently animating.  If this method returns <see langword="false"/>, this also indicates that the
+    ///     <see cref="OnAnimationEnd"/> was not triggered.
     /// </returns>
     public bool Stop()
     {
@@ -329,10 +349,10 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
-    /// Resets the animation for this animated sprite back to its first frame of animation.
+    ///     Resets this <see cref="AnimatedSprite"/> back to its first frame of animation.
     /// </summary>
     /// <param name="paused">
-    /// A value that indicates whether the animation for this animated sprite should be paused after it is reset.
+    ///     A value that indicates whether this <see cref="AnimatedSprite"/> should be paused after it is reset.
     /// </param>
     public void Reset(bool paused = false)
     {
