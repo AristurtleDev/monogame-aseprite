@@ -258,14 +258,14 @@ public sealed class SpriteSheet
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawSpriteSheet">The raw spritesheet to create the spritesheet from.</param>
     /// <returns>The spritesheet created by this method.</returns>
-    public static SpriteSheet FromRaw(GraphicsDevice device, RawSpriteSheet rawSpriteSheet)
+    public static SpriteSheet FromRaw(GraphicsDevice device, SpriteSheetContent rawSpriteSheet)
     {
         TextureAtlas atlas = TextureAtlas.FromRaw(device, rawSpriteSheet.RawTextureAtlas);
         SpriteSheet spriteSheet = new(rawSpriteSheet.Name, atlas);
 
         for (int i = 0; i < rawSpriteSheet.RawAnimationTags.Length; i++)
         {
-            RawAnimationTag tag = rawSpriteSheet.RawAnimationTags[i];
+            AnimationTagContent tag = rawSpriteSheet.RawAnimationTags[i];
 
             spriteSheet.CreateAnimationTag(tag.Name, builder =>
             {
@@ -275,7 +275,7 @@ public sealed class SpriteSheet
 
                 for (int j = 0; j < tag.RawAnimationFrames.Length; j++)
                 {
-                    RawAnimationFrame rawAnimationFrame = tag.RawAnimationFrames[j];
+                    AnimationFrameContent rawAnimationFrame = tag.RawAnimationFrames[j];
                     TimeSpan duration = TimeSpan.FromMilliseconds(rawAnimationFrame.DurationInMilliseconds);
                     builder.AddFrame(rawAnimationFrame.FrameIndex, duration);
                 }

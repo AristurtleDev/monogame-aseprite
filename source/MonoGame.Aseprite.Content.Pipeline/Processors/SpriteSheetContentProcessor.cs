@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw spritsheet from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Spritesheet Processor - MonoGame.Aseprite")]
-internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFile, RawSpriteSheet>
+internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFile, SpriteSheetContent>
 {
     /// <summary>
     /// Gets or Sets a value that indicates whether only cels on visible layers should be included.
@@ -89,6 +89,6 @@ internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFil
     /// processed.
     /// </param>
     /// <returns>The raw spritesheet created by this method.</returns>
-    public override RawSpriteSheet Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+    public override SpriteSheetContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawSpriteSheetProcessor.Process(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
 }

@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw sprite from an frame in an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, RawSprite>
+internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, SpriteContent>
 {
     /// <summary>
     /// Gets or Sets a the index of the frame in the aseprite file to process.
@@ -77,6 +77,6 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, Ra
     /// Thrown if the FrameIndex property is less than zero or is greater than or equal to the total number of frames in
     /// the aseprite file being processed.
     /// </exception>
-    public override RawSprite Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+    public override SpriteContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawSpriteProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
 }

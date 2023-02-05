@@ -24,15 +24,15 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Writers;
 using MonoGame.Aseprite.RawTypes;
-using MonoGame.Aseprite.RawWriters;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class AnimatedTilemapContentTypeWriter : ContentTypeWriter<RawAnimatedTilemap>
+internal sealed class AnimatedTilemapContentTypeWriter : ContentTypeWriter<AnimatedTilemapContent>
 {
-    protected override void Write(ContentWriter writer, RawAnimatedTilemap rawAnimatedTilemap) =>
+    protected override void Write(ContentWriter writer, AnimatedTilemapContent rawAnimatedTilemap) =>
         RawAnimatedTilemapWriter.Write(writer, rawAnimatedTilemap);
 
     /// <summary>

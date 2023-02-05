@@ -31,7 +31,7 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// </summary>
 public sealed class AsepriteTag
 {
-    private Color _tagColor;
+    internal Color _tagColor;
 
     /// <summary>
     /// Gets the index of the first frame of animation defined by this tag.

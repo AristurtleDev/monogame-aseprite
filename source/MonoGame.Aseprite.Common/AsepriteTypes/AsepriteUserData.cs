@@ -47,7 +47,8 @@ public sealed class AsepriteUserData
     /// <summary>
     /// Gets a value that indicates whether this userdata contains a color value.  When true, guarantees that the color
     /// property is not null.
-    /// </summary>en(true, nameof(Color))]
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(Color))]
     public bool HasColor => Color is not null;
 
     /// <summary>

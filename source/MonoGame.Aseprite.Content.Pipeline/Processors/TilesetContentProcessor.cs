@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw tileset from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
-internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, RawTileset>
+internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, TilesetContent>
 {
     /// <summary>
     /// Gets or Sets the name of the tileset to processes from the aseprite file.
@@ -54,6 +54,6 @@ internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, R
     /// Thrown if the aseprite file being processes does not contain an tileset with the name specified for the
     /// the TilesetName property.
     /// </exception>
-    public override RawTileset Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+    public override TilesetContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawTilesetProcessor.Process(aseFile, TilesetName);
 }

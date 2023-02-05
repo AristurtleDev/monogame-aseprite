@@ -200,9 +200,9 @@ public class Sprite
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTexture">The raw sprite to create the sprite from.</param>
     /// <returns>The sprite created by this method.</returns>
-    public static Sprite FromRaw(GraphicsDevice device, RawSprite rawSprite)
+    public static Sprite FromRaw(GraphicsDevice device, SpriteContent rawSprite)
     {
-        RawTexture rawTexture = rawSprite.RawTexture;
+        TextureContent rawTexture = rawSprite.RawTexture;
 
         Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
         texture.Name = rawTexture.Name;

@@ -532,7 +532,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTilemap">The raw animated tilemap to create the animated tilemap from.</param>
     /// <returns>The animated tilemap created by this process.</returns>
-    public static AnimatedTilemap FromRaw(GraphicsDevice device, RawAnimatedTilemap rawTilemap)
+    public static AnimatedTilemap FromRaw(GraphicsDevice device, AnimatedTilemapContent rawTilemap)
     {
         AnimatedTilemap tilemap = new(rawTilemap.Name);
 
@@ -540,27 +540,27 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
 
         for (int i = 0; i < rawTilemap.RawTilesets.Length; i++)
         {
-            RawTileset rawTileset = rawTilemap.RawTilesets[i];
+            TilesetContent rawTileset = rawTilemap.RawTilesets[i];
             Tileset tileset = Tileset.FromRaw(device, rawTileset);
             tilesetLookup.Add(rawTileset.ID, tileset);
         }
 
         for (int f = 0; f < rawTilemap.RawTilemapFrames.Length; f++)
         {
-            RawTilemapFrame rawFrame = rawTilemap.RawTilemapFrames[f];
+            TilemapFrameContent rawFrame = rawTilemap.RawTilemapFrames[f];
 
             TimeSpan duration = TimeSpan.FromMilliseconds(rawFrame.DurationInMilliseconds);
             AnimatedTilemapFrame tilemapFrame = tilemap.CreateFrame(duration);
 
             for (int l = 0; l < rawFrame.RawTilemapLayers.Length; l++)
             {
-                RawTilemapLayer rawLayer = rawFrame.RawTilemapLayers[l];
+                TilemapLayerContent rawLayer = rawFrame.RawTilemapLayers[l];
 
                 TilemapLayer layer = tilemapFrame.CreateLayer(rawLayer.Name, tilesetLookup[rawLayer.TilesetID], rawLayer.Columns, rawLayer.Rows, rawLayer.Offset.ToVector2());
 
                 for (int t = 0; t < rawLayer.RawTilemapTiles.Length; t++)
                 {
-                    RawTilemapTile rawTile = rawLayer.RawTilemapTiles[t];
+                    TilemapTileContent rawTile = rawLayer.RawTilemapTiles[t];
 
                     layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.Rotation);
                 }

@@ -24,7 +24,6 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.RawProcessors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -33,7 +32,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw tilemap from a frame in an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
-public sealed class TilemapContentProcessor : ContentProcessor<AsepriteFile, RawTilemap>
+public sealed class TilemapContentProcessor : ContentProcessor<AsepriteFile, TilemapContent>
 {
     /// <summary>
     /// Gets or Sets the index of the frame in the aseprite file that contains the tilemap to process.
@@ -62,6 +61,6 @@ public sealed class TilemapContentProcessor : ContentProcessor<AsepriteFile, Raw
     /// Thrown if the FrameIndex property specified is less than zero or is greater than or equal to the total number of
     /// frames in the aseprite file.
     /// </exception>
-    public override RawTilemap Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+    public override TilemapContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawTilemapProcessor.Process(aseFile, FrameIndex, OnlyVisibleLayers);
 }

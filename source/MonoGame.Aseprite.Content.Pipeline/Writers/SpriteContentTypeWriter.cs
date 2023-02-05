@@ -24,15 +24,15 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Writers;
 using MonoGame.Aseprite.RawTypes;
-using MonoGame.Aseprite.RawWriters;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class SpriteContentTypeWriter : ContentTypeWriter<RawSprite>
+internal sealed class SpriteContentTypeWriter : ContentTypeWriter<SpriteContent>
 {
-    protected override void Write(ContentWriter writer, RawSprite rawSprite) =>
+    protected override void Write(ContentWriter writer, SpriteContent rawSprite) =>
         RawSpriteWriter.Write(writer, rawSprite);
 
     /// <summary>

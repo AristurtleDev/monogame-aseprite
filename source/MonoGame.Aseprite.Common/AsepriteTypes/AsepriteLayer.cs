@@ -29,6 +29,9 @@ namespace MonoGame.Aseprite.AsepriteTypes;
 /// </summary>
 public class AsepriteLayer
 {
+    //  Used for serialization when writing to file with AsepriteFileWriter
+    internal int SerializationID { get; set; }
+
     /// <summary>
     /// Gets the flags set for this layer.
     /// </summary>

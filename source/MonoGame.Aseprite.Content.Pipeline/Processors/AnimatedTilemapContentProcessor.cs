@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw animated tilemap from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Animated Tilemap Processor - MonoGame.Aseprite")]
-public sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, RawAnimatedTilemap>
+public sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, AnimatedTilemapContent>
 {
     /// <summary>
     /// Gets or Sets a value that indicates whether only visible layers should be included.
@@ -51,6 +51,6 @@ public sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteF
     /// processed.
     /// </param>
     /// <returns>The raw animated tilemap created by this method.</returns>
-    public override RawAnimatedTilemap Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+    public override AnimatedTilemapContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawAnimatedTilemapProcessor.Process(aseFile, OnlyVisibleLayers);
 }

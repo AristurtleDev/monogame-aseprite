@@ -271,28 +271,28 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTilemap">The raw tilemap to create the tilemap from.</param>
     /// <returns>The tilemap created by this method.</returns>
-    public static Tilemap FromRaw(GraphicsDevice device, RawTilemap rawTilemap)
+    public static Tilemap FromRaw(GraphicsDevice device, TilemapContent rawTilemap)
     {
         Tilemap tilemap = new(rawTilemap.Name);
         Dictionary<int, Tileset> tilesetLookup = new();
 
         for (int i = 0; i < rawTilemap.RawTilesets.Length; i++)
         {
-            RawTileset rawTileset = rawTilemap.RawTilesets[i];
+            TilesetContent rawTileset = rawTilemap.RawTilesets[i];
             Tileset tileset = Tileset.FromRaw(device, rawTileset);
             tilesetLookup.Add(rawTileset.ID, tileset);
         }
 
         for (int l = 0; l < rawTilemap.RawLayers.Length; l++)
         {
-            RawTilemapLayer rawLayer = rawTilemap.RawLayers[l];
+            TilemapLayerContent rawLayer = rawTilemap.RawLayers[l];
             Tileset tileset = tilesetLookup[rawLayer.TilesetID];
 
             TilemapLayer layer = tilemap.CreateLayer(rawLayer.Name, tileset, rawLayer.Columns, rawLayer.Rows, rawLayer.Offset.ToVector2());
 
             for (int t = 0; t < rawLayer.RawTilemapTiles.Length; t++)
             {
-                RawTilemapTile rawTile = rawLayer.RawTilemapTiles[t];
+                TilemapTileContent rawTile = rawLayer.RawTilemapTiles[t];
 
                 layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.Rotation);
             }

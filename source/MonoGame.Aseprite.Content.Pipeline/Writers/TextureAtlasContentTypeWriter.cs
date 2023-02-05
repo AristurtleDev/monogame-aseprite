@@ -24,15 +24,15 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Writers;
 using MonoGame.Aseprite.RawTypes;
-using MonoGame.Aseprite.RawWriters;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<RawTextureAtlas>
+internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<TextureAtlasContent>
 {
-    protected override void Write(ContentWriter writer, RawTextureAtlas rawTextureAtlas) =>
+    protected override void Write(ContentWriter writer, TextureAtlasContent rawTextureAtlas) =>
         RawTextureAtlasWriter.Write(writer, rawTextureAtlas);
 
     /// <summary>

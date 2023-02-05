@@ -386,9 +386,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <param name="device">The graphics device used to create graphical resources.</param>
     /// <param name="rawTextureAtlas">The raw texture atlas to create the texture atlas from.</param>
     /// <returns>The texture atlas created by this method.</returns>
-    public static TextureAtlas FromRaw(GraphicsDevice device, RawTextureAtlas rawTextureAtlas)
+    public static TextureAtlas FromRaw(GraphicsDevice device, RawTypes.TextureAtlasContent rawTextureAtlas)
     {
-        RawTexture rawTexture = rawTextureAtlas.RawTexture;
+        TextureContent rawTexture = rawTextureAtlas.RawTexture;
 
         Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
         texture.SetData<Color>(rawTexture.Pixels.ToArray());
@@ -396,7 +396,7 @@ public class TextureAtlas : IEnumerable<TextureRegion>
 
         TextureAtlas atlas = new(rawTextureAtlas.Name, texture);
 
-        ReadOnlySpan<RawTextureRegion> rawTextureRegions = rawTextureAtlas.RawTextureRegions;
+        ReadOnlySpan<TextureRegionContent> rawTextureRegions = rawTextureAtlas.RawTextureRegions;
 
         for (int i = 0; i < rawTextureRegions.Length; i++)
         {

@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using MonoGame.Aseprite.RawProcessors;
+using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 /// Defines a content processor that processes a raw texture atlas from an aseprite file.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Texture Atlas Processor - MonoGame.Aseprite")]
-internal sealed class TextureAtlasContentProcessor : ContentProcessor<AsepriteFile, RawTextureAtlas>
+internal sealed class TextureAtlasContentProcessor : ContentProcessor<AsepriteFile, TextureAtlasContent>
 {
     /// <summary>
     /// Gets or Sets a value that indicates whether only cels on visible layers should be included.
@@ -95,6 +95,6 @@ internal sealed class TextureAtlasContentProcessor : ContentProcessor<AsepriteFi
     /// processed.
     /// </param>
     /// <returns>The raw texture atlas that is created by this method.</returns>
-    public override RawTextureAtlas Process(AsepriteFile aseFile, ContentProcessorContext context) =>
+    public override TextureAtlasContent Process(AsepriteFile aseFile, ContentProcessorContext context) =>
         RawTextureAtlasProcessor.Process(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
 }
