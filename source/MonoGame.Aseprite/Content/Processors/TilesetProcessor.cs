@@ -30,20 +30,29 @@ using MonoGame.Aseprite.Tilemaps;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a tileset from an aseprite file.
+/// Defines a processor that processes a <see cref="Tileset"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class TilesetProcessor
 {
     /// <summary>
-    /// Processes a tileset from the tileset at the specified index in the given aseprite file.
+    ///     Processes a <see cref="Tileset"/> from the <see cref="AsepriteTile"/> element at the specified index in the
+    ///     given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseFile">The aseprite file that contains the tileset to processes.</param>
-    /// <param name="tilesetIndex">The index of the tileset in the aseprite file to processes.</param>
-    /// <returns>The tileset created by this method.</returns>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteTileset"/> to processes.
+    /// </param>
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="AsepriteTile"/> element in the <see cref="AsepriteFile"/> to processes.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> created by this method.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
-    /// tilesets in the given aseprite file.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of
+    ///     <see cref="AsepriteTileset"/> elements in the given <see cref="AsepriteFile"/>.
     /// </exception>
     public static Tileset Process(GraphicsDevice device, AsepriteFile aseFile, int tilesetIndex)
     {
@@ -52,14 +61,24 @@ public static class TilesetProcessor
     }
 
     /// <summary>
-    /// Processes a tileset from the tileset with the specified name int he given aseprite file.
+    ///     Processes a <see cref="Tileset"/> from the <see cref="AsepriteTileset"/> with the specified name in the 
+    ///     given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseFile">The aseprite file that contains the tileset to process.</param>
-    /// <param name="tilesetName">The name of the tileset in the Aseprite file to process.</param>
-    /// <returns>The tileset created by this method.</returns>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteTileset"/> to process.
+    /// </param>
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="AsepriteTileset"/> element in the <see cref="AsepriteFile"/> to process.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> created by this method.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the given aseprite file does not contain an tileset with the specified name.
+    ///     Thrown if the given <see cref="AsepriteFile"/> does not contain an <see cref="AsepriteTileset"/> element 
+    ///     with the specified name.
     /// </exception>
     public static Tileset Process(GraphicsDevice device, AsepriteFile aseFile, string tilesetName)
     {
@@ -68,11 +87,17 @@ public static class TilesetProcessor
     }
 
     /// <summary>
-    /// Processes a tileset from an tileset.
+    ///     Processes a <see cref="Tileset"/> from an <see cref="AserpiteTileset"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseTileset">The tileset to process.</param>
-    /// <returns>The tileset created by this method.</returns>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <param name="aseTileset">
+    ///     The <see cref="AsepriteTileset"/> to process.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tileset"/> created by this method.
+    /// </returns>
     public static Tileset Process(GraphicsDevice device, AsepriteTileset aseTileset)
     {
         RawTileset rawTileset = RawTilesetProcessor.Process(aseTileset);

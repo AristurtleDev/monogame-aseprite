@@ -29,10 +29,6 @@ using MonoGame.Aseprite.Tilemaps;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-/// <summary>
-/// Defines a content type reader that reads a tileset from the xnb file created by the MonoGame pipeline using the
-/// MonoGame Aseprite Content Pipeline assembly.
-/// </summary>
 internal sealed class TilesetContentTypeReader : ContentTypeReader<Tileset>
 {
     protected override Tileset Read(ContentReader reader, Tileset? existingInstance)

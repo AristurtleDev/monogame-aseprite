@@ -53,7 +53,9 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
+    /// <param name="index">
+    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
+    /// </param>
     /// <returns>
     ///     The <see cref="AnimatedTilemapFrame"/> element that was located at the specified index in this 
     ///     <see cref="AnimatedTilemap"/>.
@@ -149,7 +151,9 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// <summary>
     ///     Initializes a new instance of the <see cref="AnimatedTilemap"/> class.
     /// </summary>
-    /// <param name="name">The name to assign the <see cref="AnimatedTilemap"/>.</param>
+    /// <param name="name">
+    ///     The name to assign the <see cref="AnimatedTilemap"/>.
+    /// </param>
     /// <param name="isLooping">
     ///     Indicates whether the animation for the <see cref="AnimatedTilemap"/> should loop
     /// </param>
@@ -191,7 +195,9 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// <remarks>
     ///     This should only be called once per game update cycle.
     /// </remarks>
-    /// <param name="gameTime">A snapshot of the game timing values for the current update cycle.</param>
+    /// <param name="gameTime">
+    ///     A snapshot of the game timing values for the current update cycle.
+    /// </param>
     public void Update(GameTime gameTime)
     {
         if (!IsAnimating || IsPaused)
@@ -446,8 +452,12 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Creates and adds a new <see cref="AnimatedTilemapFrame"/> element as the next frame of animation in this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="duration">The duration to assign the <see cref="AnimatedTilemapFrame"/> created.</param>
-    /// <returns>The <see cref="AnimatedTilemapFrame"/> created.</returns>
+    /// <param name="duration">
+    ///     The duration to assign the <see cref="AnimatedTilemapFrame"/> created.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AnimatedTilemapFrame"/> created.
+    /// </returns>
     public AnimatedTilemapFrame CreateFrame(TimeSpan duration)
     {
         AnimatedTilemapFrame frame = new(duration);
@@ -459,15 +469,21 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Adds the given <see cref="AnimatedTilemapFrame"/> as the next frame of animation in this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="frame">The <see cref="AnimatedTilemapFrame"/> to add</param>
+    /// <param name="frame">
+    ///     The <see cref="AnimatedTilemapFrame"/> to add
+    /// </param>
     public void AddFrame(AnimatedTilemapFrame frame) => _frames.Add(frame);
 
     /// <summary>
     ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
-    /// <returns>The <see cref="AnimatedTilemapFrame"/> element that was located.</returns>
+    /// <param name="index">
+    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AnimatedTilemapFrame"/> element that was located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of 
     ///     <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
@@ -486,7 +502,9 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
+    /// <param name="index">
+    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
+    /// </param>
     /// <param name="frame">
     ///     When this method returns <see langword="true"/>, contains the <see cref="AnimatedTilemapFrame"/> located;
     ///    otherwise, <see langword="null"/>.
@@ -513,7 +531,9 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Removes the <see cref="AnimatedTilemapFrame"/> element at the specified index from this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to remove.</param>
+    /// <param name="index">
+    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to remove.
+    /// </param>
     /// <returns>
     ///     <see langword="true"/> if the <see cref="AnimatedTilemapFrame"/> was removed successfully; otherwise, 
     ///     <see langword="false"/>.  This method returns <see langword="false"/> when the specified index is less than 
@@ -557,14 +577,21 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>
-    /// Creates a new <see cref="AnimatedTilemap"/> from a raw <see cref="AnimatedTilemap"/>.
+    ///     Creates a new instance of the <see cref="AnimatedTilemap"/> class from the given 
+    ///     <see cref="RawAnimatedTilemap"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="rawTilemap">The raw <see cref="AnimatedTilemap"/> to create the <see cref="AnimatedTilemap"/> from.</param>
-    /// <returns>The <see cref="AnimatedTilemap"/> created by this process.</returns>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    /// </param>
+    /// <param name="rawTilemap">
+    ///     The <see cref="RawAnimatedTilemap"/> to create the <see cref="AnimatedTilemap"/> from.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AnimatedTilemap"/> created by this method.
+    /// </returns>
     public static AnimatedTilemap FromRaw(GraphicsDevice device, RawAnimatedTilemap rawTilemap)
     {
-        AnimatedTilemap animatedTilemap= new(rawTilemap.Name);
+        AnimatedTilemap animatedTilemap = new(rawTilemap.Name);
 
         Dictionary<int, Tileset> tilesetLookup = new();
 
@@ -580,7 +607,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
             RawTilemapFrame rawFrame = rawTilemap.RawTilemapFrames[f];
 
             TimeSpan duration = TimeSpan.FromMilliseconds(rawFrame.DurationInMilliseconds);
-            AnimatedTilemapFrame animatedTilemapFrame= animatedTilemap.CreateFrame(duration);
+            AnimatedTilemapFrame animatedTilemapFrame = animatedTilemap.CreateFrame(duration);
 
             for (int l = 0; l < rawFrame.RawTilemapLayers.Length; l++)
             {

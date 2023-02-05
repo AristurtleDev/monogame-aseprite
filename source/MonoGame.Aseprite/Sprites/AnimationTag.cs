@@ -50,8 +50,12 @@ public sealed class AnimationTag
     /// <summary>
     ///     Gets the <see cref="AnimationFrame"/> element at the specified index from this <see cref="AnimationTag"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="AnimationFrame"/> to locate.</param>
-    /// <returns>The <see cref="AnimationFrame"/> located.</returns>
+    /// <param name="index">
+    ///     The index of the <see cref="AnimationFrame"/> to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AnimationFrame"/> located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified <paramref name="index"/> is less than zero or is greater than or equal to the total
     ///     number of <see cref="AnimationFrame"/> elements in this <see cref="AnimationTag"/>.
@@ -80,8 +84,12 @@ public sealed class AnimationTag
     /// <summary>
     ///     Gets the <see cref="AnimationFrame"/> element at the specified index from this <see cref="AnimationTag"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="AnimationFrame"/> to locate.</param>
-    /// <returns>The <see cref="AnimationFrame"/> located.</returns>
+    /// <param name="index">
+    ///     The index of the <see cref="AnimationFrame"/> to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AnimationFrame"/> located.<
+    /// /returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified <paramref name="index"/> is less than zero or is greater than or equal to the total
     ///     number of <see cref="AnimationFrame"/> elements in this <see cref="AnimationTag"/>.

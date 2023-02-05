@@ -29,10 +29,6 @@ using MonoGame.Aseprite.Sprites;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-/// <summary>
-/// Defines a content type reader that reads a texture atlas from the xnb file created by the MonoGame pipeline using
-/// the MonoGame Aseprite Content Pipeline assembly.
-/// </summary>
 internal sealed class TextureAtlasContentTypeReader : ContentTypeReader<TextureAtlas>
 {
     protected override TextureAtlas Read(ContentReader reader, TextureAtlas? existingInstance)

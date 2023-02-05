@@ -48,8 +48,12 @@ public sealed class AnimationTagBuilder
     ///     The index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
     ///     <see cref="SpriteSheet"/>.
     /// </param>
-    /// <param name="duration">The duration of the frame of animation.</param>
-    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    /// <param name="duration">
+    ///     The duration of the frame of animation.
+    /// </param>
+    /// <returns>
+    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Throw if the specified index is less than zero or is greater than or equal to the total number of regions in
     ///     the <see cref="TextureAtlas"/>.
@@ -71,8 +75,12 @@ public sealed class AnimationTagBuilder
     ///     The name of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
     ///     <see cref="SpriteSheet"/>.
     /// </param>
-    /// <param name="duration">The duration of the frame of animation.</param>
-    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    /// <param name="duration">
+    ///     The duration of the frame of animation.
+    /// </param>
+    /// <returns>
+    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
+    /// </returns>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> does not contain a 
     ///     <see cref="TextureRegion"/> with the specified name.
@@ -89,8 +97,12 @@ public sealed class AnimationTagBuilder
     /// <summary>
     ///     Sets whether the animation should loop.
     /// </summary>
-    /// <param name="isLooping">A value that indicates whether the animation should loop.</param>
-    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    /// <param name="isLooping">
+    ///     A value that indicates whether the animation should loop.
+    /// </param>
+    /// <returns>
+    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
+    /// </returns>
     public AnimationTagBuilder IsLooping(bool isLooping)
     {
         _isLooping = isLooping;
@@ -100,8 +112,12 @@ public sealed class AnimationTagBuilder
     /// <summary>
     ///     Sets whether the animation should play in reverse.
     /// </summary>
-    /// <param name="isReversed">A value that indicates whether the animation should play in reverse.</param>
-    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    /// <param name="isReversed">
+    ///     A value that indicates whether the animation should play in reverse
+    /// </param>
+    /// <returns>
+    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
+    /// </returns>
     public AnimationTagBuilder IsReversed(bool isReversed)
     {
         _isReversed = isReversed;
@@ -111,8 +127,12 @@ public sealed class AnimationTagBuilder
     /// <summary>
     ///     Sets whether the animation should ping-pong once reaching the last frame of animation.
     /// </summary>
-    /// <param name="isPingPong">A value that indicates whether the animation should ping-pong.</param>
-    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    /// <param name="isPingPong">
+    ///     A value that indicates whether the animation should ping-pong.
+    /// </param>
+    /// <returns>
+    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
+    /// </returns>
     public AnimationTagBuilder IsPingPong(bool isPingPong)
     {
         _isPingPong = isPingPong;

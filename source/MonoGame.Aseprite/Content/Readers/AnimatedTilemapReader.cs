@@ -29,16 +29,22 @@ using MonoGame.Aseprite.Tilemaps;
 namespace MonoGame.Aseprite.Content.Readers;
 
 /// <summary>
-/// Defines a reader that reads an animated tilemap from a file.
+/// Defines a reader that reads an <see cref="AnimatedTilemap"/> from a file.
 /// </summary>
 public static class AnimatedTilemapReader
 {
     /// <summary>
-    /// Reads the animated tilemap from the file at the specified path.
+    ///     Reads the <see cref="AnimatedTilemap"/> from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the animated tilemap to read.</param>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <returns>The animated tilemap that was read.</returns>
+    /// <param name="path">
+    ///     The path and name of the file that contains the <see cref="AnimatedTilemap"/> to read.
+    /// </param>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <returns>
+    ///     The <see cref="AnimatedTilemap"/> that was read.
+    /// </returns>
     public static AnimatedTilemap Read(string path, GraphicsDevice device)
     {
         Stream stream = File.OpenRead(path);

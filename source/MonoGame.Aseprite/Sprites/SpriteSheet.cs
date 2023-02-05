@@ -57,20 +57,28 @@ public sealed class SpriteSheet
     /// <summary>
     ///     Initializes a new instance of the <see cref="SpriteSheet"/> class.
     /// </summary>
-    /// <param name="name">The name assign the <see cref="SpriteSheet"/>.</param>
-    /// <param name="atlas">The source <see cref="TextureAtlas"/> to give the <see cref="SpriteSheet"/>.</param>
+    /// <param name="name">
+    ///     The name assign the <see cref="SpriteSheet"/>.
+    /// </param>
+    /// <param name="atlas">
+    ///     The source <see cref="TextureAtlas"/> to give the <see cref="SpriteSheet"/>.
+    /// </param>
     public SpriteSheet(string name, TextureAtlas atlas) => (Name, TextureAtlas) = (name, atlas);
 
     /// <summary>
     ///     Creates a new <see cref="Sprite"/> from the <see cref="TextureRegion"/> at the specified index in the
     ///     <see cref="TextureAtlas"/> of this <see cref="SpriteSheet"/>.
     /// </summary>
-    /// <param name="spriteName">The name to assign the <see cref="Sprite"/> that is created.</param>
+    /// <param name="spriteName">
+    ///     The name to assign the <see cref="Sprite"/> that is created.
+    /// </param>
     /// <param name="regionIndex">
     ///     The index of the <see cref="TextureRegion"/> element in the <see cref="TextureAtlas"/> assign the 
     ///     <see cref="Sprite"/> that is created.
     /// </param>
-    /// <returns>The <see cref="Sprite"/> that is created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="Sprite"/> that is created by this method.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
     ///     <see cref="TextureRegion"/> elements in the <see cref="TextureAtlas"/>.
@@ -105,12 +113,16 @@ public sealed class SpriteSheet
     ///     Creates a new <see cref="Sprite"/> from the <see cref="TextureRegion"/> at the specified index in the
     ///     <see cref="TextureAtlas"/> of this <see cref="SpriteSheet"/>.
     /// </summary>
-    /// <param name="spriteName">The name to assign the <see cref="Sprite"/> that is created.</param>
+    /// <param name="spriteName">
+    ///     The name to assign the <see cref="Sprite"/> that is created.
+    /// </param>
     /// <param name="regionName">
     ///     The name of the <see cref="TextureRegion"/> element in the <see cref="TextureAtlas"/> assign the 
     ///     <see cref="Sprite"/> that is created.
     /// </param>
-    /// <returns>The <see cref="Sprite"/> that is created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="Sprite"/> that is created by this method.
+    /// </returns>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if the <see cref="TextureAtlas"/> does not contain a <see cref="TextureRegion"/> with the name 
     ///     specified.
@@ -165,7 +177,9 @@ public sealed class SpriteSheet
     ///     An <see cref="Action"/> method used to build the <see cref="AnimationTag"/> with an 
     ///     <see cref="AnimationTagBuilder"/>.
     /// </param>
-    /// <returns>The <see cref="AnimationTag"/> that is created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="AnimationTag"/> that is created by this method.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
     ///     Thrown if this <see cref="SpriteSheet"/> already contains an <see cref="AnimationTag"/> element with the 
     ///     name specified.
@@ -184,8 +198,12 @@ public sealed class SpriteSheet
     /// <summary>
     ///     Gets the <see cref="AnimationTag"/> element with the specified name in this <see cref="SpriteSheet"/>.
     /// </summary>
-    /// <param name="name">The name of the <see cref="AnimationTag"/> to locate.</param>
-    /// <returns>The <see cref="AnimationTag"/> that was located.</returns>
+    /// <param name="name">
+    ///     The name of the <see cref="AnimationTag"/> to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AnimationTag"/> that was located.
+    /// </returns>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if this <see cref="SpriteSheet"/> does not contain an <see cref="AnimationTag"/> element with the
     ///     specified name.
@@ -203,7 +221,9 @@ public sealed class SpriteSheet
     /// <summary>
     ///     Gets the <see cref="AnimationTag"/> element with the specified name in this <see cref="SpriteSheet"/>.
     /// </summary>
-    /// <param name="name">The name of the <see cref="AnimationTag"/> to locate.</param>
+    /// <param name="name">
+    ///     The name of the <see cref="AnimationTag"/> to locate.
+    /// </param>
     /// <param name="tag">
     ///     When this method returns <see langword="true"/>, contains the <see cref="AnimationTag"/> located; otherwise, 
     ///     <see langword="null"/>
@@ -230,7 +250,9 @@ public sealed class SpriteSheet
     ///     Returns a value that indicates whether this <see cref="SpriteSheet"/> contains an <see cref="AnimationTag"/> 
     ///     with the specified name.
     /// </summary>
-    /// <param name="name">The name fo the <see cref="AnimationTag"/> element to locate.</param>
+    /// <param name="name">
+    ///     The name fo the <see cref="AnimationTag"/> element to locate.
+    /// </param>
     /// <returns>
     ///     <see langword="true"/> if this <see cref="SpriteSheet"/> contains an <see cref="AnimationTag"/> with the 
     ///     specified name; otherwise, <see langword="false"/>.
@@ -259,7 +281,9 @@ public sealed class SpriteSheet
     ///     The name of the <see cref="AnimationTag"/> element in this <see cref="SpriteSheet"/> to create the 
     ///     <see cref="AnimatedSprite"/> with.
     /// </param>
-    /// <returns>The <see cref="AnimatedSprite"/> that is created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="AnimatedSprite"/> that is created by this method.
+    /// </returns>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if this <see cref="SpriteSheet"/> does not contain an <see cref="AnimationTag"/> element with the 
     ///     specified name.
@@ -282,7 +306,9 @@ public sealed class SpriteSheet
     /// <param name="rawSpriteSheet">
     ///     The <see cref="RawSpriteSheet"/> to create the <see cref="SpriteSheet"/> from.
     /// </param>
-    /// <returns>The <see cref="SpriteSheet"/> created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="SpriteSheet"/> created by this method.
+    /// </returns>
     public static SpriteSheet FromRaw(GraphicsDevice device, RawSpriteSheet rawSpriteSheet)
     {
         TextureAtlas atlas = TextureAtlas.FromRaw(device, rawSpriteSheet.RawTextureAtlas);

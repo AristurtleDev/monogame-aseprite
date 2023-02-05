@@ -30,94 +30,162 @@ using MonoGame.Aseprite.Tilemaps;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-/// Defines extension methods for the sprite batch to render graphical resource types in this library.
+/// Defines extension methods for the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to render graphical resource types in this library.
 /// </summary>
 public static class SpriteBatchExtensions
 {
     #region Texture Region
 
     /// <summary>
-    /// Draws a texture region using the sprite batch.
+    ///     Draws a <see cref="TextureRegion"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering.</param>
-    /// <param name="region">The texture region to render.</param>
-    /// <param name="destinationRectangle">
-    /// A rectangular bound that defines the destination to render the texture region into.
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
-    /// <param name="color">The color mask to apply when rendering the texture region.</param>
+    /// <param name="region">
+    ///     The <see cref="TextureRegion"/> to render.
+    /// </param>
+    /// <param name="destinationRectangle">
+    ///     A rectangular bound that defines the destination to render the <see cref="TextureRegion"/> into.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Rectangle destinationRectangle, Color color) =>
         spriteBatch.Draw(region.Texture, destinationRectangle, region.Bounds, color);
 
     /// <summary>
-    /// Draws a texture region using the sprite batch.
+    ///     Draws a <see cref="TextureRegion"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering.</param>
-    /// <param name="region">The texture region to render.</param>
-    /// <param name="position">The x- and y-coordinate location to render the texture region at.</param>
-    /// <param name="color">The color mask to apply when rendering the texture region.</param>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// </param>
+    /// <param name="region">
+    ///     The <see cref="TextureRegion"/> to render.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="TextureRegion"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Vector2 position, Color color) =>
         spriteBatch.Draw(region.Texture, position, region.Bounds, color);
 
     /// <summary>
-    /// Draws a texture region using the sprite batch.
+    ///     Draws a <see cref="TextureRegion"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering.</param>
-    /// <param name="region">The texture region to render.</param>
-    /// <param name="position">The x- and y-coordinate location to render the texture region at.</param>
-    /// <param name="color">The color mask to apply when rendering the texture region.</param>
-    /// <param name="rotation">The amount of rotation, in radians, to apply when rendering the texture region.</param>
-    /// <param name="origin">The x- and y-coordinate point of origin to apply when rendering the texture region.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the texture region.</param>
-    /// <param name="effects">
-    /// The sprite effects for horizontal and vertical axis flipping to apply when rendering the texture region.
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the texture region.</param>
+    /// <param name="region">
+    ///     The <see cref="TextureRegion"/> to render.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="TextureRegion"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="effects">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    ///     flipping when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth) =>
         spriteBatch.Draw(region.Texture, position, region.Bounds, color, rotation, origin, scale, effects, layerDepth);
 
     /// <summary>
-    /// Draws a texture region using the sprite batch.
+    ///     Draws a <see cref="TextureRegion"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering.</param>
-    /// <param name="region">The texture region to render.</param>
-    /// <param name="position">The x- and y-coordinate location to render the texture region at.</param>
-    /// <param name="color">The color mask to apply when rendering the texture region.</param>
-    /// <param name="rotation">The amount of rotation, in radians, to apply when rendering the texture region.</param>
-    /// <param name="origin">The x- and y-coordinate point of origin to apply when rendering the texture region.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the texture region.</param>
-    /// <param name="effects">
-    /// The sprite effects for horizontal and vertical axis flipping to apply when rendering the texture region.
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the texture region.</param>
+    /// <param name="region">
+    ///     The <see cref="TextureRegion"/> to render.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="TextureRegion"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="effects">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    ///     flipping when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth) =>
         spriteBatch.Draw(region.Texture, position, region.Bounds, color, rotation, origin, scale, effects, layerDepth);
 
     /// <summary>
-    /// Renders a texture region using the sprite batch.
+    ///     Draws a <see cref="TextureRegion"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the texture region.</param>
-    /// <param name="region">The texture region to render.</param>
-    /// <param name="destinationRectangle">
-    /// A rectangular bound that defines the destination to render the texture region into
-    /// .</param>
-    /// <param name="color">The color mask to apply when rendering the texture region.</param>
-    /// <param name="rotation">The amount of rotation, in radians, to apply when rendering the texture region.</param>
-    /// <param name="origin">The x- and y-coordinate point of origin to apply when rendering the texture region.</param>
-    /// <param name="effects">
-    /// The sprite effects for horizontal and vertical axis flipping to apply when rendering the texture region.
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the texture region.</param>
+    /// <param name="region">
+    ///     The <see cref="TextureRegion"/> to render.
+    /// </param>
+    /// <param name="destinationRectangle">
+    ///     A rectangular bound that defines the destination to render the <see cref="TextureRegion"/> into.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="effects">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    ///     flipping when rendering the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="TextureRegion"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TextureRegion region, Rectangle destinationRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth) =>
         spriteBatch.Draw(region.Texture, destinationRectangle, region.Bounds, color, rotation, origin, effects, layerDepth);
 
     #endregion Texture Region
 
     /// <summary>
-    /// Renders a sprite using the sprite batch.
+    ///     Draws a <see cref="Sprite"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the texture region.</param>
-    /// <param name="sprite">The sprite to render.</param>
-    /// <param name="position">The x- and y-coordinate location to render the sprite at.</param>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="Sprite"/>.
+    /// </param>
+    /// <param name="sprite">
+    ///     The <see cref="Sprite"/> to render.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="Sprite"/> at.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, Sprite sprite, Vector2 position) =>
         spriteBatch.Draw(sprite.TextureRegion, position, sprite.Color * sprite.Transparency, sprite.Rotation, sprite.Origin, sprite.Scale, sprite.SpriteEffects, sprite.LayerDepth);
 
@@ -125,36 +193,71 @@ public static class SpriteBatchExtensions
     #region Animated Tilemap
 
     /// <summary>
-    /// Draws an animated tilemap using the sprite batch.
+    ///     Draws an <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the animated tilemap.</param>
-    /// <param name="animatedTilemap">The animated tilemap to draw.</param>
-    /// <param name="position">The x- and y-coordinate location to render the animated tilemap at.</param>
-    /// <param name="color">The color mask to apply when rendering the animated tilemap.</param>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="animatedTilemap">
+    /// T   he <see cref="AnimatedTilemap"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap animatedTilemap, Vector2 position, Color color) =>
         Draw(spriteBatch, animatedTilemap, position, color, Vector2.One, 0.0f);
 
     /// <summary>
-    /// Draws an animated tilemap using the sprite batch.
+    ///     Draws an <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the animated tilemap.</param>
-    /// <param name="animatedTilemap">The animated tilemap to draw.</param>
-    /// <param name="position">The x- and y-coordinate location to render the animated tilemap at.</param>
-    /// <param name="color">The color mask to apply when rendering the animated tilemap.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the animated tilemap.</param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the animated tilemap.</param>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="animatedTilemap">
+    /// T   he <see cref="AnimatedTilemap"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap animatedTilemap, Vector2 position, Color color, float scale, float layerDepth) =>
         Draw(spriteBatch, animatedTilemap, position, color, new Vector2(scale, scale), layerDepth);
 
     /// <summary>
-    /// Draws an animated tilemap using the sprite batch.
+    ///     Draws an <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the animated tilemap.</param>
-    /// <param name="animatedTilemap">The animated tilemap to draw.</param>
-    /// <param name="position">The x- and y-coordinate location to render the animated tilemap at.</param>
-    /// <param name="color">The color mask to apply when rendering the animated tilemap.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the animated tilemap.</param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the animated tilemap.</param>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="animatedTilemap">
+    ///     The <see cref="AnimatedTilemap"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap animatedTilemap, Vector2 position, Color color, Vector2 scale, float layerDepth)
     {
         AnimatedTilemapFrame frame = animatedTilemap.CurrentFrame;
@@ -174,36 +277,68 @@ public static class SpriteBatchExtensions
     #region Tilemap
 
     /// <summary>
-    /// Draws a tilemap using the sprite batch.
+    ///     Draws a <see cref="Tilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the tilemap.</param>
-    /// <param name="tilemap">The tilemap to draw.</param>
-    /// <param name="position">The x- and y-coordinate location to render the tilemap at.</param>
-    /// <param name="color">The color mask to apply when rendering the tilemap.</param>
+    /// <param name="spriteBatch">
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the <see cref="Tilemap"/>.
+    /// </param>
+    /// <param name="tilemap">
+    ///     The <see cref="Tilemap"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="Tilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="Tilemap"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, Tilemap tilemap, Vector2 position, Color color) =>
         Draw(spriteBatch, tilemap, position, color, Vector2.One, 0.0f);
 
     /// <summary>
-    /// Draws a tilemap using the sprite batch.
+    ///     Draws a <see cref="Tilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the tilemap.</param>
-    /// <param name="tilemap">The  tilemap to draw.</param>
-    /// <param name="position">The x- and y-coordinate location to render the tilemap at.</param>
-    /// <param name="color">The color mask to apply when rendering the tilemap.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the tilemap.</param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the tilemap.</param>
+    /// <param name="spriteBatch">
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the <see cref="Tilemap"/>.
+    /// </param>
+    /// <param name="tilemap">
+    ///     The <see cref="Tilemap"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="Tilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="Tilemap"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="Tilemap"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="Tilemap"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, Tilemap tilemap, Vector2 position, Color color, float scale, float layerDepth) =>
         Draw(spriteBatch, tilemap, position, color, new Vector2(scale, scale), layerDepth);
 
     /// <summary>
-    /// Draws a tilemap using the sprite batch.
+    ///     Draws a <see cref="Tilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the tilemap.</param>
-    /// <param name="tilemap">The tilemap to draw.</param>
-    /// <param name="position">The x- and y-coordinate location to render the tilemap at.</param>
-    /// <param name="color">The color mask to apply when rendering the tilemap.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the tilemap.</param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the tilemap.</param>
+    /// <param name="spriteBatch">
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the <see cref="Tilemap"/>.
+    /// </param>
+    /// <param name="tilemap">
+    ///     The <see cref="Tilemap"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="Tilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="Tilemap"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="Tilemap"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="Tilemap"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, Tilemap tilemap, Vector2 position, Color color, Vector2 scale, float layerDepth)
     {
         foreach (TilemapLayer layer in tilemap)
@@ -221,45 +356,77 @@ public static class SpriteBatchExtensions
     #region Tilemap Layer
 
     /// <summary>
-    /// Draws a tilemap layer using the sprite batch.
+    ///     Draws a <see cref="TilemapLayer"/> layer using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the tilemap layer.</param>
-    /// <param name="layer">The tilemap layer to draw.</param>
-    /// <param name="position">
-    /// The x- and y-coordinate location to draw the tilemap layer at.  Drawing tilemap layer using this method ignores
-    /// the offset property of the layer.
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="TilemapLayer"/>.
     /// </param>
-    /// <param name="color">The color mask to apply when rendering the tilemap layer.</param>
+    /// <param name="layer">
+    /// The <see cref="TilemapLayer"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to draw the <see cref="TilemapLayer"/> at.  Drawing the 
+    ///     <see cref="TilemapLayer"/> using this method ignores the <see cref="TilemapLayer.Offset"/>.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TilemapLayer"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TilemapLayer layer, Vector2 position, Color color) =>
         Draw(spriteBatch, layer, position, color, Vector2.One, 0.0f);
 
     /// <summary>
-    /// Draws a tilemap layer using the sprite batch.
+    ///     Draws a <see cref="TilemapLayer"/> layer using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the tilemap layer.</param>
-    /// <param name="layer">The tilemap layer to draw.</param>
-    /// <param name="position">
-    /// The x- and y-coordinate location to draw the tilemap layer at.  Drawing tilemap layer using this method ignores
-    /// the offset property of the layer.
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="TilemapLayer"/>.
     /// </param>
-    /// <param name="color">The color mask to apply when rendering the tilemap layer.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the tilemap layer.</param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the tilemap layer.</param>
+    /// <param name="layer">
+    /// The <see cref="TilemapLayer"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to draw the <see cref="TilemapLayer"/> at.  Drawing the 
+    ///     <see cref="TilemapLayer"/> using this method ignores the <see cref="TilemapLayer.Offset"/>.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TilemapLayer"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="TilemapLayer"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="TilemapLayer"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TilemapLayer layer, Vector2 position, Color color, float scale, float layerDepth) =>
         Draw(spriteBatch, layer, position, color, new Vector2(scale, scale), layerDepth);
 
     /// <summary>
-    /// Draws a tilemap layer using the sprite batch.
+    ///     Draws a <see cref="TilemapLayer"/> layer using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch to use for rendering the tilemap layer.</param>
-    /// <param name="layer">The tilemap layer to draw.</param>
-    /// <param name="position">
-    /// The x- and y-coordinate location to draw the tilemap layer at.  Drawing tilemap layer using this method ignores
-    /// the offset property of the layer.
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="TilemapLayer"/>.
     /// </param>
-    /// <param name="color">The color mask to apply when rendering the tilemap layer.</param>
-    /// <param name="scale">The amount of scaling to apply when rendering the tilemap layer.</param>
-    /// <param name="layerDepth">The layer depth to apply when rendering the tilemap layer.</param>
+    /// <param name="layer">
+    /// The <see cref="TilemapLayer"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to draw the <see cref="TilemapLayer"/> at.  Drawing the 
+    ///     <see cref="TilemapLayer"/> using this method ignores the <see cref="TilemapLayer.Offset"/>.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="TilemapLayer"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="TilemapLayer"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="TilemapLayer"/>.
+    /// </param>
     public static void Draw(this SpriteBatch spriteBatch, TilemapLayer layer, Vector2 position, Color color, Vector2 scale, float layerDepth)
     {
         Vector2 tPosition = position;

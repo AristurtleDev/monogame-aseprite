@@ -28,34 +28,40 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-/// Defines a named rectangular region that represents the location and extents of a region within a source texture.
+///     Defines a named rectangular region that represents the location and extents of a region within a source texture.
 /// </summary>
 public class TextureRegion
 {
     /// <summary>
-    /// Gets the name of this texture region.
+    ///     Gets the name assigned to this <see cref="TextureRegion"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the source texture used by this texture region.
+    ///     Gets the source texture used by this <see cref="TextureRegion"/>.
     /// </summary>
     public Texture2D Texture { get; }
 
     public bool IsDisposed { get; private set; }
 
     /// <summary>
-    /// Gets the rectangular bounds that define the location and width and height extents, in pixels of the region
-    /// within the source texture that is represented by this texture region.
+    ///     Gets the rectangular bounds that define the location and width and height extents, in pixels, of the region
+    ///     within the source texture that is represented by this <see cref="TextureRegion"/>.
     /// </summary>
     public Rectangle Bounds { get; }
 
     /// <summary>
-    /// Creates a new texture region.
+    ///     Initializes a new instance of the <see cref="TextureRegion"/> class.
     /// </summary>
-    /// <param name="name">The name to give the texture region.</param>
-    /// <param name="texture">The source texture image this region is from.</param>
-    /// <param name="bounds">The rectangular bounds of this region within the source texture.</param>
+    /// <param name="name">
+    ///     The name to assign the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="texture">
+    ///     The source texture image this region is from.
+    /// </param>
+    /// <param name="bounds">
+    ///     The rectangular bounds of this region within the source texture.
+    /// </param>
     public TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
         (Name, Texture, Bounds) = (name, texture, bounds);
 }

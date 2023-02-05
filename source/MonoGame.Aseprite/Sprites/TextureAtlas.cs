@@ -88,8 +88,12 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <summary>
     ///     Initializes a new instance of the <see cref="TextureAtlas"/> class.
     /// </summary>
-    /// <param name="name">The name to assign the <see cref="TextureAtlas"/>.</param>
-    /// <param name="texture">The source image to give the <see cref="TextureAtlas"/>.</param>
+    /// <param name="name">
+    ///     The name to assign the <see cref="TextureAtlas"/>.
+    /// </param>
+    /// <param name="texture">T
+    ///     he source image to give the <see cref="TextureAtlas"/>.
+    /// </param>
     public TextureAtlas(string name, Texture2D texture) => (Name, Texture) = (name, texture);
 
     private void AddRegion(TextureRegion region)
@@ -121,13 +125,19 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     The y-coordinate location of the upper-left corner of the <see cref="TextureRegion"/> within the source
     ///     image of this <see cref="TextureAtlas"/>.
     /// </param>
-    /// <param name="width">The width, in pixels, of the <see cref="TextureRegion"/>.</param>
-    /// <param name="height">The height, in pixels, of the <see cref="TextureRegion"/>.</param>
+    /// <param name="width">
+    ///     The width, in pixels, of the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="height">
+    ///     The height, in pixels, of the <see cref="TextureRegion"/>.
+    /// </param>
     /// <exception cref="InvalidOperationException">
     ///     Thrown if this <see cref="TextureAtlas"/> already contains a <see cref="TextureRegion"/> element with the 
     ///     specified name.
     /// </exception>
-    /// <returns>The <see cref="TextureRegion"/> created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="TextureRegion"/> created by this method.
+    /// </returns>
     public TextureRegion CreateRegion(string name, int x, int y, int width, int height) =>
         CreateRegion(name, new Rectangle(x, y, width, height));
 
@@ -147,7 +157,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     Thrown if this <see cref="TextureAtlas"/> already contains a <see cref="TextureRegion"/> element with the 
     ///     specified name.
     /// </exception>
-    /// <returns>The <see cref="TextureRegion"/> created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="TextureRegion"/> created by this method.
+    /// </returns>
     public TextureRegion CreateRegion(string name, Point location, Point size) =>
         CreateRegion(name, new Rectangle(location, size));
 
@@ -166,7 +178,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     Thrown if this <see cref="TextureAtlas"/> already contains a <see cref="TextureRegion"/> element with the 
     ///     specified name.
     /// </exception>
-    /// <returns>The <see cref="TextureRegion"/> created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="TextureRegion"/> created by this method.
+    /// </returns>
     public TextureRegion CreateRegion(string name, Rectangle bounds)
     {
         TextureRegion region = new(name, Texture, bounds);
@@ -178,7 +192,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     Returns a value that indicates whether this <see cref="TextureAtlas"/> contains a 
     ///     <see cref="TextureRegion"/> element with the specified name.
     /// </summary>
-    /// <param name="name">The name of the <see cref="TextureRegion"/> to locate.</param>
+    /// <param name="name">
+    ///     The name of the <see cref="TextureRegion"/> to locate.
+    /// </param>
     /// <returns>
     ///     <see langword="true"/> if this <see cref="TextureAtlas"/> contains a <see cref="TextureRegion"/> element
     ///     with the specified name; otherwise, <see langword="false"/>.
@@ -189,8 +205,12 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     Returns the index of the <see cref="TextureRegion"/> element with the specified name in this 
     ///     <see cref="TextureAtlas"/>.
     /// </summary>
-    /// <param name="name">The name of the <see cref="TextureRegion"/> to locate.</param>
-    /// <returns>The index of the <see cref="TextureRegion"/> located.</returns>
+    /// <param name="name">
+    ///     The name of the <see cref="TextureRegion"/> to locate.
+    /// </param>
+    /// <returns>
+    ///     The index of the <see cref="TextureRegion"/> located.
+    /// </returns>
     /// <returns>
     ///     <see langword="true"/> if this <see cref="TextureAtlas"/> contains a <see cref="TextureRegion"/> element
     ///     with the specified name; otherwise, <see langword="false"/>.
@@ -213,8 +233,12 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <summary>
     ///     Gets the <see cref="TextureRegion"/> element at the specified index in this <see cref="TextureAtlas"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="TextureRegion"/> element to locate.</param>
-    /// <returns>The <see cref="TextureRegion"/> element that was located.</returns>
+    /// <param name="index">
+    ///     The index of the <see cref="TextureRegion"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="TextureRegion"/> element that was located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
     ///     <see cref="TextureRegion/"> elements in this <see cref="TextureAtlas"/>.
@@ -232,8 +256,12 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <summary>
     ///     Gets the <see cref="TextureRegion"/> element with the specified name in this <see cref="TextureAtlas"/>.
     /// </summary>
-    /// <param name="name">The name of the <see cref="TextureRegion"/> element to locate.</param>
-    /// <returns>The <see cref="TextureRegion"/> element that was located.</returns>
+    /// <param name="name">
+    ///     The name of the <see cref="TextureRegion"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="TextureRegion"/> element that was located.
+    /// </returns>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if this <see cref="TextureAtlas"/> does not contain a <see cref="TextureRegion"/> element with the 
     ///     specified name.
@@ -255,8 +283,12 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     this <see cref="TextureAtlas"/>. Order of the elements in the collection returned is the same as the order 
     ///     of the indexes specified.
     /// </summary>
-    /// <param name="indexes">The indexes of the <see cref="TextureRegion"/> elements to locate.</param>
-    /// <returns>A new <see cref="List{T}"/> containing the <see cref="TextureRegion"/> elements located.</returns>
+    /// <param name="indexes">
+    ///     The indexes of the <see cref="TextureRegion"/> elements to locate.
+    /// </param>
+    /// <returns>
+    ///     A new <see cref="List{T}"/> containing the <see cref="TextureRegion"/> elements located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if any of the specified indexes are less than zero or if any are greater than or equal to the total
     ///     number of <see cref="TextureRegion"/> elements in this <see cref="TextureAtlas"/>.
@@ -277,8 +309,12 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     this <see cref="TextureAtlas"/>. Order of the elements in the collection returned is the same as the order 
     ///     of names specified.
     /// </summary>
-    /// <param name="names">The names of the <see cref="TextureRegion"/> elements to locate.</param>
-    /// <returns>A new <see cref="List{T}"/> containing the <see cref="TextureRegion"/> elements located.</returns>
+    /// <param name="names">
+    ///     The names of the <see cref="TextureRegion"/> elements to locate.
+    /// </param>
+    /// <returns>
+    ///     A new <see cref="List{T}"/> containing the <see cref="TextureRegion"/> elements located.
+    /// </returns>
     /// <exception cref="KeyNotFoundException">
     ///     Thrown if any of the specified names do not match a <see cref="TextureRegion"/> element in this 
     ///     <see cref="TextureAtlas"/>.
@@ -298,7 +334,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <summary>
     ///     Gets the <see cref="TextureRegion"/> element at the specified index in this <see cref="TextureAtlas"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="TextureRegion"/> element to locate.</param>
+    /// <param name="index">
+    ///     The index of the <see cref="TextureRegion"/> element to locate.
+    /// </param>
     /// <param name="region">
     ///     When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> located; 
     ///     otherwise, <see langword="null"/>.
@@ -325,7 +363,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <summary>
     ///     Gets the <see cref="TextureRegion"/> element with the specified name in this <see cref="TextureAtlas"/>.
     /// </summary>
-    /// <param name="name">The name of the <see cref="TextureRegion"/> element to locate.</param>
+    /// <param name="name">
+    ///     The name of the <see cref="TextureRegion"/> element to locate.
+    /// </param>
     /// <param name="region">
     ///     When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> located; 
     ///     otherwise, <see langword="null"/>.
@@ -341,7 +381,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <summary>
     ///     Removes the <see cref="TextureRegion"/> element at the specified index from this <see cref="TextureAtlas"/>.
     /// </summary>
-    /// <param name="index">The index of the <see cref="TextureRegion"/> element to remove.</param>
+    /// <param name="index">
+    ///     The index of the <see cref="TextureRegion"/> element to remove.
+    /// </param>
     /// <returns>
     ///     <see langword="true"/> if the <see cref="TextureRegion"/> element was successfully removed; otherwise, 
     ///     <see langword="false"/>.  This method returns <see langword="false"/> if the specified index is less than
@@ -362,7 +404,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     ///     Removes the <see cref="TextureRegion"/> element with the specified name from this 
     ///     <see cref="TextureAtlas"/>.
     /// </summary>
-    /// <param name="name">The name of the <see cref="TextureRegion"/> element to remove.</param>
+    /// <param name="name">
+    ///     The name of the <see cref="TextureRegion"/> element to remove.
+    /// </param>
     /// <returns>
     ///     <see langword="true"/> if the <see cref="TextureRegion"/> element was successfully removed; otherwise, 
     ///     <see langword="false"/>.  This method returns <see langword="false"/> if this<see cref="TextureAtlas"/> 
@@ -417,7 +461,9 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// <param name="rawTextureAtlas">
     ///     The <see cref="RawTextureAtlas"/> to create the <see cref="TextureAtlas"/> from.
     /// </param>
-    /// <returns>The <see cref="TextureAtlas"/> created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="TextureAtlas"/> created by this method.
+    /// </returns>
     public static TextureAtlas FromRaw(GraphicsDevice device, RawTextureAtlas rawTextureAtlas)
     {
         RawTexture rawTexture = rawTextureAtlas.RawTexture;

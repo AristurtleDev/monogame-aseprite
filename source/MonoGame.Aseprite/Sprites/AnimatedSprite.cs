@@ -110,7 +110,7 @@ public sealed class AnimatedSprite : Sprite
     ///     This should only be called once per update cycle.
     /// </remarks>
     /// <param name="deltaTimeInMilliseconds">
-    /// The amount of time, in milliseconds, that have elapsed since the last update cycle in the game.
+    ///     The amount of time, in milliseconds, that have elapsed since the last update cycle in the game.
     /// </param>
     public void Update(float deltaTimeInMilliseconds)
     {
@@ -125,7 +125,9 @@ public sealed class AnimatedSprite : Sprite
     /// <remarks>
     ///     This should only be called once per update cycle.
     /// </remarks>
-    /// <param name="gameTime">A snapshot of the game timing values for the current update cycle.</param>
+    /// <param name="gameTime">
+    ///     A snapshot of the game timing values for the current update cycle.
+    /// </param>
     public void Update(GameTime gameTime)
     {
         if (!IsAnimating || IsPaused)

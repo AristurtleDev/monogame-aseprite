@@ -28,7 +28,7 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.Tilemaps;
 
 /// <summary>
-/// Defines a layer in a tilemap that contains a collection of tiles.
+///     Defines a grid-like layer in a tilemap that contains a collection of tiles.
 /// </summary>
 public sealed class TilemapLayer : IEnumerable<Tile>
 {
@@ -36,55 +36,57 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     private Vector2 _offset = Vector2.Zero;
 
     /// <summary>
-    /// Gets a read-only span of all tiles in this tilemap layer.
+    ///     Gets a read-only span of the <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </summary>
     public ReadOnlySpan<Tile> Tiles => _tiles;
 
     /// <summary>
-    /// Gets the name of this tilemap layer.
+    ///     Gets the name assigned to this  <see cref="TilemapLayer"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets or Sets the source tileset referenced by the tiles in this tilemap layer.
+    ///     Gets or Sets the source <see cref="Tileset"/> referenced by the <see cref="Tile"/> elements in this 
+    ///     <see cref="TilemapLayer"/>.
     /// </summary>
     public Tileset Tileset { get; set; }
 
     /// <summary>
-    /// Gets the total number of columns in this tilemap layer.
+    ///     Gets the total number of columns in this <see cref="TilemapLayer"/>.
     /// </summary>
     public int Columns { get; }
 
     /// <summary>
-    /// Gets the total number of rows in this tilemap layer.
+    ///     Gets the total number of rows in this <see cref="TilemapLayer"/>.
     /// </summary>
     public int Rows { get; }
 
     /// <summary>
-    /// Gets the width, in pixels, of this tilemap layer.
-    /// <code>Width = Tileset.TileWidth * Columns</code>
+    ///     Gets the width, in pixels, of this <see cref="TilemapLayer"/>.
+    ///     <code>Width = Tileset.TileWidth * Columns</code>
     /// </summary>
     public int Width => Tileset.TileWidth * Columns;
 
     /// <summary>
-    /// Gets the height, in pixels, of this tilemap layer.
-    /// <code>Height = Tileset.TileHeight * Rows</code>
+    ///     Gets the height, in pixels, of this <see cref="TilemapLayer"/>.
+    ///     <code>Height = Tileset.TileHeight * Rows</code>
     /// </summary>
     public int Height => Tileset.TileHeight * Rows;
 
     /// <summary>
-    /// Gets or Sets the transparency of this tilemap layer.
+    ///     Gets or Sets the transparency of this <see cref="TilemapLayer"/>.
     /// </summary>
     public float Transparency { get; set; } = 1.0f;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether this tilemap layer is visible and should be rendered.
+    ///     Gets or Sets a value that indicates whether this <see cref="TilemapLayer"/> is visible and should be 
+    ///     rendered.
     /// </summary>
     public bool IsVisible { get; set; } = true;
 
     /// <summary>
-    /// Gets or Sets the x- and y-coordinate position offset to render this tilemap layer at relative to the position
-    /// the tilemap it is in is rendered at.
+    ///     Gets or Sets the x- and y-coordinate position offset, relative to the position of the <see cref="Tilemap"/>,
+    ///     to render this <see cref="TilemapLayer"/> at 
     /// </summary>
     public Vector2 Offset
     {
@@ -93,8 +95,8 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Gets or Sets the x-coordinate position offset to render this tilemap layer at relative to the position of the
-    /// tilemap it is in is rendered at.
+    ///     Gets or Sets the x-position offset, relative to the position of the <see cref="Tilemap"/>, to render this 
+    ///     <see cref="TilemapLayer"/> at 
     /// </summary>
     public float OffsetX
     {
@@ -103,8 +105,8 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Gets or Sets the y-coordinate position offset to render this tilemap layer at relative to the position of the
-    /// tilemap it is in is rendered at.
+    ///     Gets or Sets the y-position offset, relative to the position of the <see cref="Tilemap"/>, to render this 
+    ///     <see cref="TilemapLayer"/> at 
     /// </summary>
     public float OffsetY
     {
@@ -113,54 +115,78 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Gets the total number of tiles in this tilemap layer.
+    ///     Gets the total number of <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </summary>
     public int TileCount => _tiles.Length;
 
     /// <summary>
-    /// Gets the tile from this tilemap layer at the specified index.
+    ///     Gets the <see cref="Tile"/> element at the specified index in this <see cref="TilemapLayer"/> 
     /// </summary>
-    /// <param name="tileIndex">The index of the tile in this tilemap layer to locate.</param>
-    /// <returns>The tile at the specified index in this tilemap layer.</returns>
+    /// <param name="tileIndex">
+    ///     The index of the <see cref="Tile"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tile"/> element located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tiles in this
-    /// tilemap layer.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </exception>
     public Tile this[int tileIndex] => GetTile(tileIndex);
 
     /// <summary>
-    /// Gets the tile located at the specified column and row in this tilemap layer.
+    ///     Gets the <see cref="Tile"/> element located at the specified column and row in this 
+    ///     <see cref="TilemapLayer"/>.
     /// </summary>
-    /// <param name="column">The column of the tile to locate in this tilemap layer.</param>
-    /// <param name="row">The row of the tile to locate in this tilemap layer.</param>
-    /// <returns>The tile at the specified column and row in this tilemap layer.</returns>
+    /// <param name="column">
+    ///     The column of the <see cref="Tile"/> element to locate.
+    /// </param>
+    /// <param name="row">
+    /// The row of the <see cref="Tile"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The  <see cref="Tile"/> element located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or rows specified is less than zero or if either is greater than or equal to the
-    /// total number of columns or rows respectively.
+    ///     Thrown if either the column or rows specified is less than zero or if either is greater than or equal to the
+    ///     total number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public Tile this[int column, int row] => GetTile(column, row);
 
     /// <summary>
-    /// Gets the tile located at the specified column and row location in this tilemap layer.
+    ///     Gets the <see cref="Tile"/> element located at the specified column and row location in this 
+    ///     <see cref="TilemapLayer"/>.
     /// </summary>
-    /// <param name="location">The column and row location of the tile to locate in this tilemap layer.</param>
-    /// <returns>The tile at the specified column and row location in this tilemap layer.</returns>
+    /// <param name="location">
+    ///     The column and row location of the <see cref="Tile"/> element to locate.
+    /// </param>
+    /// <returns>
+    /// The <see cref="Tile"/> element located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or rows specified in the location is less than zero or if either is greater than or
-    /// equal to the total number of columns or rows respectively.
+    ///     Thrown if either the column or rows specified in the location is less than zero or if either is greater
+    ///     than or equal to the total number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public Tile this[Point location] => GetTile(location);
 
     /// <summary>
-    /// Creates a new tilemap layer class.
+    ///     Initializes a new instance of the <see cref="TilemapLayer"/> class.
     /// </summary>
-    /// <param name="name">The name to give this tilemap layer.</param>
-    /// <param name="tileset">The source tileset used by the tiles in this tilemap layer.</param>
-    /// <param name="columns">The total number of columns in this tilemap layer.</param>
-    /// <param name="rows">The total number of rows in this tilemap layer.</param>
+    /// <param name="name">
+    ///     The name assign the <see cref="TilemapLayer"/>.
+    /// </param>
+    /// <param name="tileset">
+    ///     The source tileset used by the tiles in this <see cref="TilemapLayer"/>.
+    /// </param>
+    /// <param name="columns">
+    ///     The total number of columns to assign the <see cref="TilemapLayer"/>.
+    /// </param>
+    /// <param name="rows">
+    /// The total number of rows to assign the <see cref="TilemapLayer"/>.
+    /// </param>
     /// <param name="offset">
-    /// The x- and y-coordinate position offset to render this tilemap layer at relative to the position of the tilemap
-    /// it is in is rendered at.
+    ///     The x- and y-coordinate position offset, relative to the position of the <see cref="Tilemap"/> to assign the
+    ///     <see cref="TilemapLayer"/>.
     /// </param>
     public TilemapLayer(string name, Tileset tileset, int columns, int rows, Vector2 offset)
     {
@@ -173,59 +199,82 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Returns a value that indicates whether the tile at the specified index in this tilemap layer is empty.
+    ///     Returns a value that indicates whether the <see cref="Tile"/> element at the specified index in this 
+    ///     <see cref="TilemapLayer"/>  is empty.
     /// </summary>
-    /// <param name="index">The index of the tile in this tilemap layer to check.</param>
-    /// <returns>true if the tile at the specified index is empty; otherwise, false.</returns>
+    /// <param name="index">
+    ///     The index of the <see cref="Tile"/> element to check.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="Tile"/> element at the specified index is empty; otherwise, 
+    ///     <see langword="false"/>.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tiles in this
-    /// tilemap layer.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </exception>
     public bool IsEmpty(int index) => GetTile(index).IsEmpty;
 
     /// <summary>
-    /// Returns a value that indicates whether the tile at the specified column and row in this tilemap layer is empty.
+    ///     Returns a value that indicates whether the <see cref="Tile"/> element at the specified column and row in 
+    ///     this <see cref="TilemapLayer"/> is empty.
     /// </summary>
-    /// <param name="column">The column of the tile to check.</param>
-    /// <param name="row">The row of the tile to check.</param>
-    /// <returns>true if the tile at the specified column and row in this tilemap is empty; otherwise, false.</returns>
+    /// <param name="column">
+    ///     The column of the <see cref="Tile"/> element to check.
+    /// </param>
+    /// <param name="row">
+    ///     The row of the <see cref="Tile"/> element to check.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="Tile"/> element at the specified column and row in this 
+    ///     <see cref="TilemapLayer"/> is empty; otherwise, <see langword="false"/>.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or row specified is less than zero or if either is greater than or equal to the
-    /// total number of columns or rows respectively.
+    ///     Thrown if either the column or row specified is less than zero or if either is greater than or equal to the
+    ///     total number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public bool IsEmpty(int column, int row) => GetTile(column, row).IsEmpty;
 
     /// <summary>
-    /// Returns a value that indicates whether the tile at the specified column and row location in this tilemap layer
-    /// is empty.
+    ///     Returns a value that indicates whether the <see cref="Tile"/> element at the specified column and row 
+    ///     location in  this <see cref="TilemapLayer"/> is empty.
     /// </summary>
-    /// <param name="location">The column and row location of the tile to check.</param>
+    /// <param name="location">
+    ///     The column and row location of the <see cref="Tile"/> element to check.
+    /// </param>
     /// <returns>
-    /// true if the tile at the specified column and row location in this tilemap is empty; otherwise, false.
+    ///     <see langword="true"/> if the <see cref="Tile"/> element at the specified column and row location in this 
+    ///     <see cref="TilemapLayer"/> is empty; otherwise, <see langword="false"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or row location specified is less than zero or if either is greater than or equal to
-    /// the total number of columns or rows respectively.
+    ///     Thrown if either the column or row in the specified location is less than zero or if either is greater 
+    ///     than or equal to the total number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public bool IsEmpty(Point location) => GetTile(location).IsEmpty;
 
     /// <summary>
-    /// Sets the tile at the specified index in this tilemap layer using the values provided.
+    ///     Sets the <see cref="Tile"/> element at the specified index in this <see cref="TilemapLayer"/> using the 
+    ///     values provided.
     /// </summary>
-    /// <param name="index">The index of the tile in this tilemap layer to set.</param>
+    /// <param name="index">
+    ///     The index of the <see cref="Tile"/> element in this <see cref="TilemapLayer"/> to set.
+    /// </param>
     /// <param name="tilesetTileID">
-    /// The ID of the source tile in the tileset that represents the texture region to render for the tile being set.
+    ///     The ID of the source tile in the <see cref="Tileset"/> that represents the <see cref="TextureRegion"/> to 
+    ///     render for the <see cref="Tile"/> element being set.
     /// </param>
     /// <param name="flipHorizontally">
-    /// Indicates whether the tile being set should be flipped horizontally along its x-axis when rendered.
+    ///     Indicates whether the <see cref="Tile"/> element being set should be flipped horizontally when rendered.
     /// </param>
     /// <param name="flipVertically">
-    /// Indicates if the tile being set should be flipped vertically along its y-axis when rendered.
+    ///     Indicates if the <see cref="Tile"/> element being set should be flipped vertically when rendered.
     /// </param>
-    /// <param name="rotation">The amount of rotation, in radians, to apply when rendering the tile being set.</param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/> element being set.
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tiles in this
-    /// tilemap layer.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </exception>
     public void SetTile(int index, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, float rotation = 0.0f)
     {
@@ -238,23 +287,31 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Sets the tile at the specified column and row in this tilemap layer using the values provided.
+    ///     Sets the <see cref="Tile"/> element at the specified column and row in this <see cref="TilemapLayer"/> 
+    ///     using the values provided.
     /// </summary>
-    /// <param name="column">The column in this tilemap layer to set the tile at.</param>
-    /// <param name="row">The row in this tilemap layer to set the tile at.</param>
+    /// <param name="column">
+    ///     The column in this <see cref="TilemapLayer"/> to set the <see cref="Tile"/> element at.
+    /// </param>
+    /// <param name="row">
+    ///     The row in this <see cref="TilemapLayer"/> to set the <see cref="Tile"/> element at.
+    /// </param>
     /// <param name="tilesetTileID">
-    /// The ID of the source tile in the tileset that represents the texture region to render for the tile being set.
+    ///     The ID of the source tile in the <see cref="Tileset"/> that represents the <see cref="TextureRegion"/> to 
+    ///     render for the <see cref="Tile"/> element being set.
     /// </param>
     /// <param name="flipHorizontally">
-    /// Indicates whether the tile being set should be flipped horizontally along its x-axis when rendered.
+    ///     Indicates whether the <see cref="Tile"/> element being set should be flipped horizontally when rendered.
     /// </param>
     /// <param name="flipVertically">
-    /// Indicates if the tile being set should be flipped vertically along its y-axis when rendered.
+    ///     Indicates if the <see cref="Tile"/> element being set should be flipped vertically when rendered.
     /// </param>
-    /// <param name="rotation">The amount of rotation, in radians, to apply when rendering the tile being set.</param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/> element being set.
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or row  specified is less than zero or are greater than or equal to the total number
-    /// of columns or rows respectively.
+    ///     Thrown if either the column or row  specified is less than zero or are greater than or equal to the total 
+    ///     number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public void SetTile(int column, int row, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, float rotation = 0.0f)
     {
@@ -267,22 +324,28 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Sets the tile at the specified column and row location in this tilemap layer using the values provided.
+    ///     Sets the <see cref="Tile"/> element at the specified column and row location in this <see cref="TilemapLayer"/> 
+    ///     using the values provided.
     /// </summary>
-    /// <param name="location">The column and row location in this tilemap layer to set the tile at.</param>
+    /// <param name="location">
+    ///     The column and row location in this <see cref="TilemapLayer"/> to set the <see cref="Tile"/> element at.
+    /// </param>
     /// <param name="tilesetTileID">
-    /// The ID of the source tile in the tileset that represents the texture region to render for the tile being set.
+    ///     The ID of the source tile in the <see cref="Tileset"/> that represents the <see cref="TextureRegion"/> to 
+    ///     render for the <see cref="Tile"/> element being set.
     /// </param>
     /// <param name="flipHorizontally">
-    /// Indicates whether the tile being set should be flipped horizontally along its x-axis when rendered.
+    ///     Indicates whether the <see cref="Tile"/> element being set should be flipped horizontally when rendered.
     /// </param>
     /// <param name="flipVertically">
-    /// Indicates if the tile being set should be flipped vertically along its y-axis when rendered.
+    ///     Indicates if the <see cref="Tile"/> element being set should be flipped vertically when rendered.
     /// </param>
-    /// <param name="rotation">The amount of rotation, in radians, to apply when rendering the tile being set.</param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/> element being set.
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or row in the location specified is less than zero or are greater than or equal to
-    /// the total number of columns or rows respectively.
+    ///     Thrown if either the column or row in the specified location is less than zero or are greater than or equal 
+    ///     to the total number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public void SetTile(Point location, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, float rotation = 0.0f)
     {
@@ -295,13 +358,17 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Sets the specified index in this tilemap layer to the tile given.
+    ///     Sets the specified index in this <see cref="TilemapLayer"/> to the <see cref="Tile"/> element given.
     /// </summary>
-    /// <param name="index">The index in this tilemap layer to set.</param>
-    /// <param name="tile">The tile to set at the index.</param>
+    /// <param name="index">
+    ///     The index in this <see cref="TilemapLayer"/> to set.
+    /// </param>
+    /// <param name="tile">
+    ///     The <see cref="Tile"/> element to set at the index.
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tiles in this
-    /// tilemap layer.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of
+    ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </exception>
     public void SetTile(int index, Tile tile)
     {
@@ -310,14 +377,21 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Sets the specified column and row to the tile given.
+    ///     Sets the specified column and row in this <see cref="TilemapLayer"/> to the <see cref="Tile"/> element 
+    ///     given.
     /// </summary>
-    /// <param name="column">The column in this tilemap layer to set.</param>
-    /// <param name="row">The row in this tilemap layer to set.</param>
-    /// <param name="tile">The tile to set at the column and row.</param>
+    /// <param name="column">
+    ///     The column in this <see cref="TilemapLayer"/> to set.
+    /// </param>
+    /// <param name="row">
+    ///     The row in this <see cref="TilemapLayer"/> to set.
+    /// </param>
+    /// <param name="tile">
+    ///     The <see cref="Tile"/> element to set at the column and row.
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or row specified are less than zero or are greater than or equal to the total number
-    /// of columns or rows in this tilemap layer.
+    ///     Thrown if either the column or row specified are less than zero or are greater than or equal to the total 
+    ///     number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public void SetTile(int column, int row, Tile tile)
     {
@@ -328,13 +402,18 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Sets the specified column and row location to the tile given.
+    ///     Sets the specified column and row location in this <see cref="TilemapLayer"/> to the <see cref="Tile"/>
+    ///     element given.
     /// </summary>
-    /// <param name="location">The column and row location in this tilemap layer to set.</param>
-    /// <param name="tile">The tile to set at the column and row location.</param>
+    /// <param name="location">
+    ///     The column and row location in this <see cref="TilemapLayer"/> to set.
+    /// </param>
+    /// <param name="tile">
+    ///     The <see cref="Tile"/> element to set at the column and row location.
+    /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or row in the location specified are less than zero or are greater than or equal to
-    /// the total number of columns or rows in this tilemap layer.
+    ///     Thrown if either the column or row in the specified location are less than zero or are greater than or equal
+    ///     to the total  number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public void SetTile(Point location, Tile tile)
     {
@@ -344,13 +423,17 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Gets the tile located at the specified index in this tilemap layer.
+    ///     Gets the <see cref="Tile"/> element located at the specified index in this <see cref="TilemapLayer"/>.
     /// </summary>
-    /// <param name="index">The index of the tile in this tilemap layer to locate.</param>
-    /// <returns>The tile located</returns>
+    /// <param name="index">
+    ///     The index of the <see cref="Tile"/> element in this to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tile"/> element located
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the index specified is less than zero or is greater than or equal to the total number of tile indexes
-    /// in this tilemap layer.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </exception>
     public Tile GetTile(int index)
     {
@@ -359,14 +442,21 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Gets the tile located at the specified column and row in this tilemap layer.
+    ///     Gets the <see cref="Tile"/> element located at the specified column and row in this 
+    ///     <see cref="TilemapLayer"/>.
     /// </summary>
-    /// <param name="column">The column of the tile to locate in this tilemap layer.</param>
-    /// <param name="row">The row of the tile to locate in this tilemap layer.</param>
-    /// <returns>The tile located.</returns>
+    /// <param name="column">
+    ///     The column of the <see cref="Tile"/> element to locate.
+    /// </param>
+    /// <param name="row">
+    ///     The row of the <see cref="Tile"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tile"/> element located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or rows specified are less than zero or are greater than or equal to the total
-    /// number of columns or rows in this tilemap layer.
+    ///     Thrown if either the column or rows specified are less than zero or are greater than or equal to the total
+    ///     number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public Tile GetTile(int column, int row)
     {
@@ -377,16 +467,18 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Gets the tile located at the specified column and row location in this tilemap layer.
+    ///     Gets the <see cref="Tile"/> element located at the specified column and row location in this 
+    ///     <see cref="TilemapLayer"/>.
     /// </summary>
-    /// <param name="location">The column and row location of the tile to locate in this tilemap layer.</param>
+    /// <param name="location">
+    ///     The column and row location of the <see cref="Tile"/> element to locate.
+    /// </param>
     /// <returns>
-    /// The tile at the specified colum nad row location in this tilemap layer, if a tile has been set at that location;
-    /// otherwise, null.
+    ///     The <see cref="Tile"/> element located.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if either the column or rows specified in the location are less than zero or are greater than or equal to
-    /// the total number of columns or rows in this tilemap layer..
+    ///     Thrown if either the column or rows in the specified location are less than zero or are greater than or 
+    ///     equal to the total number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
     public Tile GetTile(Point location)
     {
@@ -397,7 +489,8 @@ public sealed class TilemapLayer : IEnumerable<Tile>
 
 
     /// <summary>
-    /// Clears all tiles in this tilemap layer by resetting them to an empty value.
+    ///     Clears all <see cref="Tile"/> elements in this <see cref="TilemapLayer"/> by resetting them to an empty 
+    ///     value.
     /// </summary>
     public void Clear()
     {
@@ -405,11 +498,11 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Returns an enumerator that iterates through all tiles in this tilemap layer.  The order tiles in the enumeration
-    /// is from top-to-bottom, read left-to-right.
+    ///     Returns an enumerator that iterates through all <see cref="Tile"/> elements in this 
+    ///     <see cref="TilemapLayer"/>.  The order tiles in the enumeration is from top-to-bottom, read left-to-right.
     /// </summary>
     /// <returns>
-    /// An enumerator that iterates through all tiles in this tilemap layer.
+    ///     An enumerator that iterates through all <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </returns>
     public IEnumerator<Tile> GetEnumerator()
     {
@@ -420,11 +513,11 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     }
 
     /// <summary>
-    /// Returns an enumerator that iterates through all tiles in this tilemap layer.  The order tiles in the enumeration
-    /// is from top-to-bottom, read left-to-right.
+    ///     Returns an enumerator that iterates through all <see cref="Tile"/> elements in this 
+    ///     <see cref="TilemapLayer"/>.  The order tiles in the enumeration is from top-to-bottom, read left-to-right.
     /// </summary>
     /// <returns>
-    /// An enumerator that iterates through all tiles in this tilemap layer.
+    ///     An enumerator that iterates through all <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

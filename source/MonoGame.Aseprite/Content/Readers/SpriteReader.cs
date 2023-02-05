@@ -29,16 +29,22 @@ using MonoGame.Aseprite.Sprites;
 namespace MonoGame.Aseprite.Content.Readers;
 
 /// <summary>
-/// Defines a reader that reads a sprite from a file.
+///     Defines a reader that reads a <see cref="Sprite"/> from a file.
 /// </summary>
 public static class SpriteReader
 {
     /// <summary>
-    /// Reads the sprite from the file at the specified path.
+    ///     Reads the <see cref="Sprite"/> from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the sprite to read.</param>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <returns>The sprite that was read.</returns>
+    /// <param name="path">
+    ///     The path and name of the file that contains the sprite to read.
+    /// </param>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <returns>
+    ///     The <see cref="Sprite"/> that was read.
+    /// </returns>
     public static Sprite Read(string path, GraphicsDevice device)
     {
         Stream stream = File.OpenRead(path);

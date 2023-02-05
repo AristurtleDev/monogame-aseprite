@@ -29,16 +29,22 @@ using MonoGame.Aseprite.Sprites;
 namespace MonoGame.Aseprite.Content.Readers;
 
 /// <summary>
-/// Defines a reader that reads a texture atlas from a file.
+///     Defines a reader that reads a <see cref="TextureAtlas"/> from a file.
 /// </summary>
 public static class TextureAtlasReader
 {
     /// <summary>
-    /// Reads the texture atlas from the file at the specified path.
+    ///     Reads the <see cref="TextureAtlas"/> from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the texture atlas to read.</param>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <returns>The texture atlas that was read.</returns>
+    /// <param name="path">
+    ///     The path and name of the file that contains the <see cref="TextureAtlas"/> to read.
+    /// </param>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <returns>
+    ///     The <see cref="TextureAtlas"/> that was read/
+    /// </returns>
     public static Sprites.TextureAtlas Read(string path, GraphicsDevice device)
     {
         Stream stream = File.OpenRead(path);

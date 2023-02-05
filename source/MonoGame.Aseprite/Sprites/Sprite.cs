@@ -164,8 +164,12 @@ public class Sprite
     /// <summary>
     ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
-    /// <param name="name">The name to assign the <see cref="Sprite"/>.</param>
-    /// <param name="textureRegion">The source <see cref="TextureRegion"/> to assign the <see cref="Sprite"/>.</param>
+    /// <param name="name">
+    ///     The name to assign the <see cref="Sprite"/>.
+    /// </param>
+    /// <param name="textureRegion">
+    ///     The source <see cref="TextureRegion"/> to assign the <see cref="Sprite"/>.
+    /// </param>
     public Sprite(string name, TextureRegion textureRegion)
     {
         _textureRegion = textureRegion;
@@ -182,8 +186,12 @@ public class Sprite
     /// <summary>
     ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
-    /// <param name="name">The name to assign the <see cref="Sprite"/>.</param>
-    /// <param name="texture">The source image for the <see cref="Sprite"/>.</param>
+    /// <param name="name">
+    ///     The name to assign the <see cref="Sprite"/>.
+    /// </param>
+    /// <param name="texture">
+    ///     The source image for the <see cref="Sprite"/>.
+    /// </param>
     public Sprite(string name, Texture2D texture)
         : this(name, new TextureRegion(name, texture, texture.Bounds)) { }
 
@@ -191,9 +199,12 @@ public class Sprite
     ///     Renders this <see cref="Sprite"/>.
     /// </summary>
     /// <param name="spriteBatch">
-    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this <see cref="Sprite"/>.
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
+    ///     <see cref="Sprite"/>.
     /// </param>
-    /// <param name="position">The x- and y-coordinate location to render this <see cref="Sprite"/> at.</param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render this <see cref="Sprite"/> at.
+    /// </param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position) => spriteBatch.Draw(this, position);
 
     /// <summary>
@@ -202,8 +213,12 @@ public class Sprite
     /// <param name="device">
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
     /// </param>
-    /// <param name="rawTexture">The <see cref="RawSprite"/> to create the <see cref="Sprite"/> from.</param>
-    /// <returns>The <see cref="Sprite"/> created by this method.</returns>
+    /// <param name="rawTexture">
+    ///     The <see cref="RawSprite"/> to create the <see cref="Sprite"/> from.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Sprite"/> created by this method.
+    /// </returns>
     public static Sprite FromRaw(GraphicsDevice device, RawSprite rawSprite)
     {
         RawTexture rawTexture = rawSprite.RawTexture;

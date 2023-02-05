@@ -25,43 +25,74 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Tilemaps;
 
 /// <summary>
-/// Defines a tile in a tilemap layer with a source texture region.
+///     Defines a tile value in a <see cref="TilemapLayer"/>.
 /// </summary>
 public struct Tile
 {
     /// <summary>
-    /// Represents a tile with its properties left uninitialized.
+    ///     Represents a <see cref="Tile"/> with its properties left uninitialized.
     /// </summary>
     public static readonly Tile Empty;
 
     /// <summary>
-    /// The ID of the source tile in the tileset used by this tile that represents the texture region to draw for this
-    /// tile.
+    ///     The ID (or index) of the source tile in the <see cref="Tileset"/> that represents the 
+    ///     <see cref="TextureRegion"/> to render for this <see cref="Tile"/>.
     /// </summary>
     public int TilesetTileID = 0;
 
     /// <summary>
-    /// Indicates whether this tile should be flipped horizontally along it's x-axis when rendered.
+    ///     Indicates whether this <see cref="Tile"/> should be flipped horizontally rendered.
     /// </summary>
     public bool FlipHorizontally = false;
 
     /// <summary>
-    /// Indicates whether this tile should be flipped vertically along it's y-axis when rendered.
+    ///     Indicates whether this <see cref="Tile"/> should be flipped vertically rendered.
     /// </summary>
     public bool FlipVertically = false;
 
     /// <summary>
-    /// The amount of rotation, in radians, to apply when rendering this tile.
+    ///     The amount of rotation, in radians, to apply when rendering this <see cref="Tile"/>.
     /// </summary>
     public float Rotation = 0.0f;
 
     /// <summary>
-    /// Gets a value that indicates if this is an empty tile.  Empty tiles use tileset id 0.
+    ///     Gets a value that indicates if this is an empty <see cref="Tile"/>. 
     /// </summary>
+    /// <remarks>
+    ///     Empty tiles have a <see cref="TilesetTileID"/> equal to zero.
+    /// </remarks>
     public bool IsEmpty => TilesetTileID == 0;
 
     /// <summary>
-    /// Creates a new tile.
+    ///     Initializes a new instance of the <see cref="Tile"/> class.
     /// </summary>
     public Tile() { }
+
+    /// <summary>
+    ///     Initializes a new <see cref="Tile"/> value.
+    /// </summary>
+    /// <param name="tilesetTileID">
+    ///     The ID (or index) of the source tile in the <see cref="Tileset"/> that represents the 
+    ///     <see cref="TextureRegion"/> to assign for this <see cref="Tile"/>.
+    /// </param>
+    public Tile(int tilesetTileID) => TilesetTileID = tilesetTileID;
+
+    /// <summary>
+    ///     Initializes a new <see cref="Tile"/> value.
+    /// </summary>
+    /// <param name="tilesetTileID">
+    ///     The ID (or index) of the source tile in the <see cref="Tileset"/> that represents the 
+    ///     <see cref="TextureRegion"/> to assign for this <see cref="Tile"/>.
+    /// </param>
+    /// <param name="flipHorizontally">
+    ///     Indicates whether the <see cref="Tile"/> should be flipped horizontally when rendered.
+    /// </param>
+    /// <param name="flipVertically">
+    ///     Indicates whether the <see cref="Tile"/> should be flipped vertically when rendered.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/>.
+    /// </param>
+    public Tile(int tilesetTileID, bool flipHorizontally, bool flipVertically, float rotation) =>
+        (TilesetTileID, FlipHorizontally, FlipVertically, Rotation) = (tilesetTileID, flipHorizontally, flipVertically, rotation);
 }

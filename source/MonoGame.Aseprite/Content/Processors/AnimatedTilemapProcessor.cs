@@ -29,20 +29,28 @@ using MonoGame.Aseprite.Tilemaps;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes an animated tilemap from an aseprite file.
+///     Defines a processor that processes an <see cref="AnimatedTilemap"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class AnimatedTilemapProcessor
 {
     /// <summary>
-    /// Processes an animated tilemap from the given aseprite file.
+    ///     Processes an <see cref="AnimatedTilemap"/> from the given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseFile">The aseprite file to processed the animated tilemap from.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only layers that are visible should be processed.</param>
-    /// <returns>The animated tilemap created by this method. </returns>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> to processed the <see cref="AnimatedTilemap"/> from.
+    /// </param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only layers that are visible should be processed.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AnimatedTilemap"/> created by this method.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
-    /// names even though Aseprite does not enforce unique names for layers.
+    ///     Thrown if layers are found in the <see cref="AsepriteFile"/> with duplicate names.  Tilemaps must contain 
+    ///     layers with unique names even though Aseprite does not enforce unique names for layers.
     /// </exception>
     public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true)
     {

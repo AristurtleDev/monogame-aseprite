@@ -29,25 +29,37 @@ using MonoGame.Aseprite.Tilemaps;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a tilemap from an aseprite file.
+/// Defines a processor that processes a <see cref="Tilemap"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class TilemapProcessor
 {
     /// <summary>
-    /// Processes a tilemap from the frame at the specified index in the given aseprite file.
+    ///     Processes a <see cref="Tilemap"/> from the <see cref="AsepriteFile"/> at the specified index in the given 
+    ///     <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphical resources.</param>
-    /// <param name="aseFile">The aseprite file that contains the animated tilemap to process.</param>
-    /// <param name="frameIndex">The index of the frame in the aseprite file to process.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only layers that are visible should be processed.</param>
-    /// <returns>The tilemap created by this method. </returns>
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> that contains the animated <see cref="Tilemap"/> to process.
+    /// </param>
+    /// <param name="frameIndex">
+    ///     The index of the <see cref="AsepriteFile"/> element in the <see cref="AsepriteFile"/> to process.
+    /// </param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteLayer"/> elements that are visible should be processed.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Tilemap"/> created by this method.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the frame index specified is less than zero or is greater than or equal to the total number of frames
-    /// in the given aseprite file.
+    ///     Thrown if the frame index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="AsepriteFile"/> elements in the given <see cref="AsepriteFile"/>.
     /// </exception>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
-    /// names even though aseprite does not enforce unique names for layers.
+    ///     Thrown if <see cref="AsepriteLayer"/> elements are found in the <see cref="AsepriteFile"/> with duplicate 
+    ///     names.  A <see cref="Tilemap"/> must contain layers with unique names even though aseprite does not enforce
+    ///     unique names for <see cref="AsepriteLayer"/> elements.
     /// </exception>
     public static Tilemap Process(GraphicsDevice device, AsepriteFile aseFile, int frameIndex, bool onlyVisibleLayers = true)
     {

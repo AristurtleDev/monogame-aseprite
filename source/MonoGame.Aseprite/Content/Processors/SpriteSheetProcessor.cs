@@ -23,40 +23,56 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 using MonoGame.Aseprite.Sprites;
 
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a spritesheet from an aseprite file.
+///     Defines a processor that processes a <see cref="SpriteSheet"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class SpriteSheetProcessor
 {
     /// <summary>
-    /// Processes a spritesheet from the given aseprite file.
+    ///     Processes a <see cref="SpriteSheet"/> from the given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">The graphics device used to create graphics resources.</param>
-    /// <param name="aseFile">The aseprite file to process the spritesheet from.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included.</param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates if  cels on the layer marked as the background layer should be included.
+    /// <param name="device">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
+    ///  </param>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> to process the <see cref="SpriteSheet"/> from.
     /// </param>
-    /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
-    /// <param name="mergeDuplicates">Indicates if duplicate frames should be merged into one.</param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should 
+    ///     be included.
+    /// </param>
+    /// <param name="includeBackgroundLayer">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on the <see cref="AsepriteLayer"/> elements marked as the 
+    ///     background layer should be included.
+    /// </param>
+    /// <param name="includeTilemapLayers">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on a <see cref="AsepriteTilemapLayer"/> element should be 
+    ///     included.</param>
+    /// <param name="mergeDuplicates">
+    ///     Indicates if duplicate <see cref="AsepriteFrame"/> elements should be merged into one.
+    /// </param>
     /// <param name="borderPadding">
-    /// The amount of transparent pixels to add between the edge of the generated image
+    ///     The amount of transparent pixels to add between the edge of the generated image
     /// </param>
     /// <param name="spacing">
-    /// The amount of transparent pixels to add between each texture region in the generated image.
+    ///     The amount of transparent pixels to add between each texture region in the generated image.
     /// </param>
     /// <param name="innerPadding">
-    /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
+    ///     The amount of transparent pixels to add around the edge of each texture region in the generated image.
     /// </param>
-    /// <returns>The spritesheet created by this method.</returns>
+    /// <returns>
+    ///     The <see cref="SpriteSheet"/> created by this method.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if tags are found in the aseprite file with duplicate names.  Spritesheets must contain tags with unique
-    /// names even though aseprite does not enforce unique names for tags.
+    ///     Thrown if <see cref="AsepriteTag"/> elements are found in the <see cref="AsepriteFile"/> with duplicate 
+    ///     names.  A <see cref="SpriteSheet"/> must contain tags with unique names even though aseprite does not 
+    ///     enforce unique names for <see cref="AsepriteTag"/> elements.
     /// </exception>
     public static SpriteSheet Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
