@@ -106,4 +106,129 @@ public class TextureRegion
     /// </param>
     public TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
         (Name, Texture, Bounds) = (name, texture, bounds);
+
+    /// <summary>
+    ///     Draws this <see cref="TextureRegion"/> instance using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// </param>
+    /// <param name="destinationRectangle">
+    ///     A rectangular bound that defines the destination to render this <see cref="TextureRegion"/> into.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color) =>
+        spriteBatch.Draw(this, destinationRectangle, color);
+
+    /// <summary>
+    ///     Draws this <see cref="TextureRegion"/> instance using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color) =>
+        spriteBatch.Draw(this, position, color);
+
+    /// <summary>
+    ///     Draws this <see cref="TextureRegion"/> using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="effects">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    ///     flipping when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth) =>
+        spriteBatch.Draw(this, position, color, rotation, origin, scale, effects, layerDepth);
+
+    /// <summary>
+    ///     Draws this <see cref="TextureRegion"/> using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="effects">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    ///     flipping when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth) =>
+        spriteBatch.Draw(this, position, color, rotation, origin, scale, effects, layerDepth);
+
+    /// <summary>
+    ///     Draws this <see cref="TextureRegion"/> using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// </param>
+    /// <param name="destinationRectangle">
+    ///     A rectangular bound that defines the destination to render this <see cref="TextureRegion"/> into.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="rotation">
+    ///     The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="origin">
+    ///     The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="effects">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    ///     flipping when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering this <see cref="TextureRegion"/>.
+    /// </param>
+    public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth) =>
+        spriteBatch.Draw(this, destinationRectangle, color, rotation, origin, effects, layerDepth);
 }
