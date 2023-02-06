@@ -27,34 +27,35 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Defines a cel in a frame that contains tile data for a tilemap.
+///     Defines a cel in an <see cref="AsepriteFile"/> that contains tile data for a tilemap.
 /// </summary>
 public sealed class AsepriteTilemapCel : AsepriteCel
 {
     private AsepriteTile[] _tiles;
 
     /// <summary>
-    /// Gets a read-only span of the tile data for this tilemap cel.
+    ///     Gets a read-only span of the <see cref="AsepriteTile"/> data for this <see cref="AsepriteTilemapCel"/>.
     /// </summary>
     public ReadOnlySpan<AsepriteTile> Tiles => _tiles;
 
     /// <summary>
-    /// Gets the total number of columns in this tilemap cel.
+    ///     Gets the total number of columns in this <see cref="AsepriteTilemapCel"/>.
     /// </summary>
     public int Columns { get; }
 
     /// <summary>
-    /// Gets the total number of rows in this tilemap cel.
+    ///     Gets the total number of rows in this <see cref="AsepriteTilemapCel"/>.
     /// </summary>
     public int Rows { get; }
 
     /// <summary>
-    /// Gets the total number of tiles in this tilemap cel.\
+    ///     Gets the total number of tiles in this <see cref="AsepriteTilemapCel"/>.
     /// </summary>
     public int TileCount => _tiles.Length;
 
     /// <summary>
-    /// Gets a reference to the tileset used by this tiles in this tilemap cel.
+    ///     Gets a reference to the <see cref="AsepriteTileset"/> used by this tiles in this 
+    ///     <see cref="AsepriteTilemapCel"/>.
     /// </summary>
     public AsepriteTileset Tileset => LayerAs<AsepriteTilemapLayer>().Tileset;
 

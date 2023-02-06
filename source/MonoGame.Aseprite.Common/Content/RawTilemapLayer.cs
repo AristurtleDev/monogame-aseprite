@@ -27,46 +27,57 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a tilemap layer.
+///     Defines a class that represents the raw values of a tilemap layer.
 /// </summary>
 public sealed class RawTilemapLayer : IEquatable<RawTilemapLayer>
 {
     private RawTilemapTile[] _rawTilemapTiles;
 
     /// <summary>
-    /// Gets the name assigned to the tilemap layer represented by this raw tilemap layer.
+    ///     Gets the name assigned to the tilemap layer.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the id of the source tileset used by the tilemap layer represented by this raw tilemap layer.
+    ///     Gets the id of the source tileset used by the tilemap layer.
     /// </summary>
     public int TilesetID { get; }
 
     /// <summary>
-    /// Gets the total number of columns in tilemap layer represented by this raw tilemap layer.
+    ///     Gets the total number of columns in tilemap layer.
     /// </summary>
     public int Columns { get; }
 
     /// <summary>
-    /// Gets the total number of rows in tilemap layer represented by this raw tilemap layer.
+    ///     Gets the total number of rows in tilemap layer.
     /// </summary>
     public int Rows { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw tilemap tiles that represent the tiles for the tilemap layer represented
-    /// by this raw tilemap layer.
+    ///     Gets a read-only span of the <see cref="RawTilemapTile"/> elements that represent the tiles for the tilemap
+    ///     layer.
     /// </summary>
     public ReadOnlySpan<RawTilemapTile> RawTilemapTiles => _rawTilemapTiles;
 
     /// <summary>
-    /// Gets the offset of the tilemap layer represented by this raw tilemap layer.
+    ///     Gets the offset of the tilemap layer.
     /// </summary>
     public Point Offset { get; }
 
     internal RawTilemapLayer(string name, int tilesetID, int columns, int rows, RawTilemapTile[] rawTilemapTiles, Point offset) =>
         (Name, TilesetID, Columns, Rows, _rawTilemapTiles, Offset) = (name, tilesetID, columns, rows, rawTilemapTiles, offset);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawTilemapLayer"/> is equal to this
+    ///     <see cref="RawTilemapLayer"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawTilemapLayer"/> to check for equality with this <see cref="RawTilemapLayer"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawTilemapLayer"/> is equal to this 
+    ///     <see cref="RawTilemapLayer"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawTilemapLayer? other) => other is not null
                                                   && Name == other.Name
                                                   && TilesetID == other.TilesetID

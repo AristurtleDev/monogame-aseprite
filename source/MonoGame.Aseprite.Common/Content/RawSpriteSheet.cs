@@ -25,32 +25,41 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a spritesheet.
+///     Defines a class that represents the raw values of a spritesheet.
 /// </summary>
 public sealed class RawSpriteSheet : IEquatable<RawSpriteSheet>
 {
     private RawAnimationTag[] _rawAnimationTags;
 
     /// <summary>
-    /// Gets the name assigned to the spritesheet represented by this raw spritesheet.
+    ///     Gets the name assigned to the spritesheet.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets raw texture atlas that represents the source texture atlas for the spritesheet represented by this raw
-    /// spritesheet.
+    ///     Gets raw texture atlas that represents the source texture atlas for the spritesheet.
     /// </summary>
     public RawTextureAtlas RawTextureAtlas { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw animation tags that represent the animations tags for the spritesheet
-    /// represented by this raw spritesheet.
+    ///     Gets a read-only span of the raw animation tags that represent the animations tags for the spritesheet.
     /// </summary>
     public ReadOnlySpan<RawAnimationTag> RawAnimationTags => _rawAnimationTags;
 
     internal RawSpriteSheet(string name, RawTextureAtlas rawAtlas, RawAnimationTag[] rawAnimationTags) =>
         (Name, RawTextureAtlas, _rawAnimationTags) = (name, rawAtlas, rawAnimationTags);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawSpriteSheet"/> is equal to this
+    ///     <see cref="RawSpriteSheet"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawSpriteSheet"/> to check for equality with this <see cref="RawSpriteSheet"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawSpriteSheet"/> is equal to this 
+    ///     <see cref="RawSpriteSheet"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawSpriteSheet? other) => other is not null
                                                  && Name == other.Name
                                                  && RawTextureAtlas.Equals(other.RawTextureAtlas)

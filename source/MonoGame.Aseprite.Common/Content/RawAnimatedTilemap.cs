@@ -33,23 +33,35 @@ public sealed class RawAnimatedTilemap : IEquatable<RawAnimatedTilemap>
     private readonly RawTilemapFrame[] _rawTilemapFrames;
 
     /// <summary>
-    /// Gets the name of the animated tilemap.
+    ///     Gets the name assigned to the animated tilemap.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw tileset data for the tilesets used by the layers of the animated tilemap.
+    ///     Gets a read-only span of the <see cref="RawTileset"/> data for the tilesets used by the layers of the 
+    ///     animated tilemap.
     /// </summary>
     public ReadOnlySpan<RawTileset> RawTilesets => _rawTilesets;
 
     /// <summary>
-    /// Gets a read-only span of the raw tilemap frame data for animated tilemap.
+    ///     Gets a read-only span of the <see cref="RawTilemapFrame"/> data for animated tilemap.
     /// </summary>
     public ReadOnlySpan<RawTilemapFrame> RawTilemapFrames => _rawTilemapFrames;
 
     internal RawAnimatedTilemap(string name, RawTileset[] rawTilesets, RawTilemapFrame[] rawTilemapFrames) =>
         (Name, _rawTilesets, _rawTilemapFrames) = (name, rawTilesets, rawTilemapFrames);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawAnimatedTilemap"/> is equal to this
+    ///     <see cref="RawAnimatedTilemap"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawAnimatedTilemap"/> to check for equality with this <see cref="RawAnimatedTilemap"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawAnimatedTilemap"/> is equal to this 
+    ///     <see cref="RawAnimatedTilemap"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawAnimatedTilemap? other) => other is not null
                                                      && Name == other.Name
                                                      && RawTilesets.SequenceEqual(other.RawTilesets);

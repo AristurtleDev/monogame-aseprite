@@ -27,23 +27,34 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a texture region.
+///     Defines a class that represents the raw values of a texture region.
 /// </summary>
 public sealed class RawTextureRegion : IEquatable<RawTextureRegion>
 {
     /// <summary>
-    /// Gets the name assigned to the texture region represented by this raw texture region.
+    ///     Gets the name assigned to the texture region.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the rectangular bounds of the texture region represented by this raw texture region.
+    ///     Gets the rectangular bounds of the texture region.
     /// </summary>
     public Rectangle Bounds { get; }
 
     internal RawTextureRegion(string name, Rectangle bounds) =>
         (Name, Bounds) = (name, bounds);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawTextureRegion"/> is equal to this
+    ///     <see cref="RawTextureRegion"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawTextureRegion"/> to check for equality with this <see cref="RawTextureRegion"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawTextureRegion"/> is equal to this 
+    ///     <see cref="RawTextureRegion"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawTextureRegion? other) => other is not null
                                                    && Name == other.Name
                                                    && Bounds == other.Bounds;

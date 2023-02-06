@@ -25,23 +25,34 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of an animation frame.
+///     Defines a class that represents the raw values of an animation frame.
 /// </summary>
 public sealed class RawAnimationFrame : IEquatable<RawAnimationFrame>
 {
     /// <summary>
-    /// Gets the index of the source frame for the animation frame represented by this raw animation frame.
+    ///     Gets the index of the source frame for the animation frame.
     /// </summary>
     public int FrameIndex { get; }
 
     /// <summary>
-    /// Gets the duration, in milliseconds, of the animation frame represented by this raw animation frame.
+    ///     Gets the duration, in milliseconds, of the animation frame.
     /// </summary>
     public int DurationInMilliseconds { get; }
 
     internal RawAnimationFrame(int frameIndex, int durationInMilliseconds) =>
         (FrameIndex, DurationInMilliseconds) = (frameIndex, durationInMilliseconds);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawAnimationFrame"/> is equal to this
+    ///     <see cref="RawAnimationFrame"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawAnimationFrame"/> to check for equality with this <see cref="RawAnimationFrame"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawAnimationFrame"/> is equal to this 
+    ///     <see cref="RawAnimationFrame"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawAnimationFrame? other) => other is not null
                                                     && FrameIndex == other.FrameIndex
                                                     && DurationInMilliseconds == other.DurationInMilliseconds;

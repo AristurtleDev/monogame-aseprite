@@ -25,47 +25,47 @@ SOFTWARE.
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Defines the flag values for a layer in aseprite.
+///     Defines the flag values for a <see cref="AsepriteLayer"/>.
 /// </summary>
 public enum AsepriteLayerFlags : ushort
 {
     /// <summary>
-    /// Defines that no flags are set
+    ///     Defines that no flags are set
     /// </summary>
     None = 0,
 
     /// <summary>
-    /// Defines that the layer is visible.
+    /// Defines that the <see cref="AsepriteLayer"/> is visible.
     /// </summary>
     Visible = 1,
 
     /// <summary>
-    /// Defines that the layer is editable in the Aseprite application.
+    ///     Defines that the <see cref="AsepriteLayer"/> is editable in the Aseprite application.
     /// </summary>
     Editable = 2,
 
     /// <summary>
-    /// Defines that the layer movement is locked in the Aseprite application.
+    ///     Defines that the <see cref="AsepriteLayer"/> movement is locked in the Aseprite application.
     /// </summary>
     LockMovement = 4,
 
     /// <summary>
-    /// Defines that the layer was set as the background layer.
+    ///     Defines that the <see cref="AsepriteLayer"/> was set as the background layer.
     /// </summary>
     Background = 8,
 
     /// <summary>
-    /// Defines that the layer prefers linked cels.
+    ///     Defines that the lay<see cref="AsepriteLayer"/>er prefers linked cels.
     /// </summary>
     PreferLinkedCels = 16,
 
     /// <summary>
-    /// Defines that the layer should be displayed collapsed in the Aseprite application.
+    ///     Defines that the <see cref="AsepriteLayer"/> should be displayed collapsed in the Aseprite application.
     /// </summary>
     DisplayedCollapsed = 32,
 
     /// <summary>
-    /// Defines that the layer is a reference layer.
+    ///     Defines that the <see cref="AsepriteLayer"/> is a reference layer.
     /// </summary>
     ReferenceLayer = 64
 }

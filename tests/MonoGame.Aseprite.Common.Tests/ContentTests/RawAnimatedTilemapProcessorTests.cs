@@ -134,8 +134,8 @@ public sealed class RawAnimatedTilemapProcessorTests : IClassFixture<RawAnimated
         Assert.Equal(2, tilemap.RawTilemapFrames.Length);
 
         //  Expect that the duration of the tilemap frames was taken from the frames in the file
-        Assert.Equal(_fixture.AsepriteFile.Frames[0].Duration, tilemap.RawTilemapFrames[0].DurationInMilliseconds);
-        Assert.Equal(_fixture.AsepriteFile.Frames[1].Duration, tilemap.RawTilemapFrames[1].DurationInMilliseconds);
+        Assert.Equal(_fixture.AsepriteFile.Frames[0].DurationInMilliseconds, tilemap.RawTilemapFrames[0].DurationInMilliseconds);
+        Assert.Equal(_fixture.AsepriteFile.Frames[1].DurationInMilliseconds, tilemap.RawTilemapFrames[1].DurationInMilliseconds);
 
         //  Again, one of the layers is hidden, so expect only one layer processed for each frame.
         Assert.Equal(1, tilemap.RawTilemapFrames[0].RawTilemapLayers.Length);
@@ -175,8 +175,8 @@ public sealed class RawAnimatedTilemapProcessorTests : IClassFixture<RawAnimated
         Assert.Equal(2, tilemap.RawTilemapFrames.Length);
 
         //  Expect that the duration of the tilemap frames was taken from the frames in the file
-        Assert.Equal(_fixture.AsepriteFile.Frames[0].Duration, tilemap.RawTilemapFrames[0].DurationInMilliseconds);
-        Assert.Equal(_fixture.AsepriteFile.Frames[1].Duration, tilemap.RawTilemapFrames[1].DurationInMilliseconds);
+        Assert.Equal(_fixture.AsepriteFile.Frames[0].DurationInMilliseconds, tilemap.RawTilemapFrames[0].DurationInMilliseconds);
+        Assert.Equal(_fixture.AsepriteFile.Frames[1].DurationInMilliseconds, tilemap.RawTilemapFrames[1].DurationInMilliseconds);
 
         //  Since all layers were processed, and there are 2 layers, expect that each frame has 2 layers.
         Assert.Equal(2, tilemap.RawTilemapFrames[0].RawTilemapLayers.Length);

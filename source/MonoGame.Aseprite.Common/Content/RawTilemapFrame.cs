@@ -25,26 +25,37 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a tilemap frame.
+///     Defines a class that represents the raw values of a tilemap frame.
 /// </summary>
 public sealed class RawTilemapFrame : IEquatable<RawTilemapFrame>
 {
     private RawTilemapLayer[] _rawTilemapLayers;
 
     /// <summary>
-    /// Gets the duration, in milliseconds, of the tilemap frame represented by this raw tilemap frame.
+    ///     Gets the duration, in milliseconds, of the tilemap frame.
     /// </summary>
     public int DurationInMilliseconds { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw tilemap layers that represent the tilemap layers for the tilemap frame
-    /// represented by this raw tilemap frame.
+    ///     Gets a read-only span of the <see cref="RawTilemapLayer"/> that represent the tilemap layers for the 
+    ///     tilemap frame.
     /// </summary>
     public ReadOnlySpan<RawTilemapLayer> RawTilemapLayers => _rawTilemapLayers;
 
     internal RawTilemapFrame(int durationInMilliseconds, RawTilemapLayer[] rawLayers) =>
         (DurationInMilliseconds, _rawTilemapLayers) = (durationInMilliseconds, rawLayers);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawTilemapFrame"/> is equal to this
+    ///     <see cref="RawTilemapFrame"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawTilemapFrame"/> to check for equality with this <see cref="RawTilemapFrame"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawTilemapFrame"/> is equal to this 
+    ///     <see cref="RawTilemapFrame"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawTilemapFrame? other) => other is not null
                                                   && DurationInMilliseconds == other.DurationInMilliseconds
                                                   && RawTilemapLayers.SequenceEqual(other.RawTilemapLayers);

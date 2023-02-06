@@ -27,18 +27,18 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Writers;
 
 /// <summary>
-/// Defines a writer that writes the contents of a raw tileset to a file.
+///     Defines a writer that writes the contents of a <see cref="RawTileset"/> to a file.
 /// </summary>
 public static class RawTilesetWriter
 {
     /// <summary>
-    /// Writes the contents of the raw tileset given to the file at the path specified.
+    ///     Writes the contents of the <see cref="RawTileset"/> given to the file at the path specified.
     /// </summary>
     /// <param name="path">
-    /// The path and name of the file to write the contents of the raw tileset to.  If no file exists at this
-    /// path, one will be created.  If a file already exists, it will be overwritten.
+    ///     The path and name of the file to write the contents of the <see cref="RawTileset"/> to.  If no file exists 
+    ///     at this path, one will be created.  If a file already exists, it will be overwritten.
     /// </param>
-    /// <param name="rawTileset">The raw tileset to write.</param>
+    /// <param name="rawTileset">The <see cref="RawTileset"/> to write.</param>
     public static void Write(string path, RawTileset rawTileset)
     {
         Stream stream = File.Create(path);

@@ -67,7 +67,7 @@ public sealed class RawAnimationTagProcessorTests : IClassFixture<RawAnimationTa
         for (int i = 0; i < frameCount; i++)
         {
             int index = from + i;
-            int duration = _fixture.Frames[index].Duration;
+            int duration = _fixture.Frames[index].DurationInMilliseconds;
 
             Assert.Equal(index, rawTag.RawAnimationFrames[i].FrameIndex);
             Assert.Equal(duration, rawTag.RawAnimationFrames[i].DurationInMilliseconds);

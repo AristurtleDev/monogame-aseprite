@@ -29,24 +29,38 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a raw sprite from a frame in an aseprite file.
+///     Defines a processor that processes a  <see cref="RawSprite"/> from a <see cref="AsepriteFrame"/> in an 
+///     <see cref="AsepriteFile"/>.
 /// </summary>
 public static class RawSpriteProcessor
 {
     /// <summary>
-    /// Processes a raw sprite from the frame at the specified index in the given aseprite file.
+    ///     Processes a <see cref="RawSprite"/> from the <see cref="AsepriteFrame"/> at the specified index in the 
+    ///     given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that contains the frame to processes.</param>
-    /// <param name="aseFrameIndex">The index of the frame in the aseprite file to process.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included.</param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates if cels on the layer marked as the background layer should be included.
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteFrame"/> to processes.
     /// </param>
-    /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
-    /// <returns>The raw sprite created by this method.</returns>
+    /// <param name="aseFrameIndex">
+    ///     The index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> to process.
+    /// </param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should 
+    ///     be included.
+    /// </param>
+    /// <param name="includeBackgroundLayer">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on an <see cref="AsepriteLayer"/> marked as the background 
+    ///     layer should be included.
+    /// </param>
+    /// <param name="includeTilemapLayers">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on a <see cref="AsepriteTilemapLayer"/> should be included.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawSprite"/> created by this method.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the specified frame index is less than zero or is greater than or equal to the total number of frames
-    /// in the given aseprite file.
+    ///     Thrown if the specified  <see cref="AsepriteFrame"/> index is less than zero or is greater than or equal to 
+    ///     the total number of  <see cref="AsepriteFrame"/> elements in the given  <see cref="AsepriteFile"/>.
     /// </exception>
     public static RawSprite Process(AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
@@ -55,15 +69,25 @@ public static class RawSpriteProcessor
     }
 
     /// <summary>
-    /// Processes a raw sprite from the given frame.
+    ///     Processes a <see cref="RawSprite"/> from the given <see cref="AsepriteFrame"/>.
     /// </summary>
-    /// <param name="aseFrame">The frame to process.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included.</param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates if cels on the layer marked as the background layer should be included.
+    /// <param name="aseFrame">
+    ///     The <see cref="AsepriteFrame"/> to process.
     /// </param>
-    /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
-    /// <returns>The raw sprite created by this method.</returns>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should 
+    ///     be included.
+    /// </param>
+    /// <param name="includeBackgroundLayer">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on an <see cref="AsepriteLayer"/> marked as the background 
+    ///     layer should be included.
+    /// </param>
+    /// <param name="includeTilemapLayers">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on a <see cref="AsepriteTilemapLayer"/> should be included.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawSprite"/> created by this method.
+    /// </returns>
     internal static RawSprite Process(AsepriteFrame aseFrame, bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers)
     {
         Color[] pixels = aseFrame.FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);

@@ -235,7 +235,7 @@ public sealed class AsepriteFileReaderTests : IClassFixture<AsepriteFileReaderFi
         Assert.Equal(celCount, frame.Cels.Length);
         Assert.Equal(width, frame.Width);
         Assert.Equal(height, frame.Height);
-        Assert.Equal(duration, frame.Duration);
+        Assert.Equal(duration, frame.DurationInMilliseconds);
     }
 
     private void AssertCel(AsepriteCel cel, string layerName, int x, int y, int opacity, string? userDataText, Color? userDataColor)

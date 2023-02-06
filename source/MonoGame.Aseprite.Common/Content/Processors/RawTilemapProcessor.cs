@@ -29,24 +29,34 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a raw tilemap from an aseprite file.
+/// Defines a processor that processes a <see cref="RawTilemap"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class RawTilemapProcessor
 {
     /// <summary>
-    /// Processes a raw tilemap from the frame as the specified index in the given aseprite file.
+    ///     Processes a <see cref="RawTilemap"/> from the <see cref="AsepriteFrame"/> elements as the specified index 
+    ///     in the given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="aseFile">The aseprite file to processes the raw tilemap from.</param>
-    /// <param name="frameIndex">The index of the frame in the aseprite file to processes.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only layers that are visible should be processed.</param>
-    /// <returns>The raw tilemap created by this method.</returns>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> to processes the <see cref="RawTilemap"/> from.
+    /// </param>
+    /// <param name="frameIndex">
+    ///     The index of the <see cref="AsepriteFrame"/> element in the <see cref="AsepriteFile"/> to processes.
+    /// </param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteLayer"/> elements that are visible should be processed.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawTilemap"/> created by this method.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the frame index specified is less than zero or is greater than or equal to the total number of frames
-    /// in the given aseprite file.
+    ///     Thrown if the <see cref="AsepriteFrame"/> elements index specified is less than zero or is greater than or 
+    ///     equal to the total number of <see cref="AsepriteFrame"/> elements in the given <see cref="AsepriteFile"/>.
     /// </exception>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if layers are found in the aseprite file with duplicate names.  Tilemaps must contain layers with unique
-    /// names even though aseprite does not enforce unique names for layers.
+    ///     Thrown if <see cref="AsepriteLayer"/> elements are found in the <see cref="AsepriteFile"/> with duplicate 
+    ///     names.  Tilemaps must contain layers with unique names even though aseprite does not enforce unique names 
+    ///     for <see cref="AsepriteLayer"/> elements.
     /// </exception>
     public static RawTilemap Process(AsepriteFile aseFile, int frameIndex, bool onlyVisibleLayers = true)
     {
@@ -65,7 +75,7 @@ public static class RawTilemapProcessor
                 continue;
             }
 
-            //  Only continue if layer is visible or if explicitly told to include non-visible layers.
+            //  Only continue if layer is visible or if explicitly told to include non-visible <see cref="AsepriteLayer"/> elements.
             if (!tilemapCel.Layer.IsVisible && onlyVisibleLayers)
             {
                 continue;

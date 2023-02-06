@@ -30,7 +30,7 @@ using MonoGame.Aseprite.Content.Readers;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-/// Defines the contents of an imported aseprite file.
+///     Defines the contents of an imported aseprite file.
 /// </summary>
 public sealed class AsepriteFile
 {
@@ -42,82 +42,83 @@ public sealed class AsepriteFile
     private AsepriteTileset[] _tilesets;
 
     /// <summary>
-    /// Gets a read-only span of all frames in this aseprite file.
+    ///     Gets a read-only span of all <see cref="AsepriteFrame"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlySpan<AsepriteFrame> Frames => _frames;
 
     /// <summary>
-    /// Gets the total number of frames in this aseprite file.
+    ///     Gets the total number of <see cref="AsepriteFrame"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public int FrameCount => _frames.Length;
 
     /// <summary>
-    /// Gets a read-only span of all layers in this aseprite file.  Order of layer elements if from bottom-to-top.
+    ///     Gets a read-only span of all <see cref="AsepriteLayer"/> elements in this <see cref="AsepriteFile"/>.  
+    ///     Order of elements if from bottom-to-top.
     /// </summary>
     public ReadOnlySpan<AsepriteLayer> Layers => _layers;
 
     /// <summary>
-    /// Gets the total number of layers in this aseprite file.
+    ///     Gets the total number of <see cref="AsepriteLayer"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public int LayerCount => _layers.Length;
 
     /// <summary>
-    /// Gets a read-only span of all tags in this aseprite file.
+    ///     Gets a read-only span of all <see cref="AsepriteTag"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlySpan<AsepriteTag> Tags => _tags;
 
     /// <summary>
-    /// Gets the total number of tags in this aseprite file.
+    ///     Gets the total number of <see cref="AsepriteTag"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public int TagCount => _tags.Length;
 
     /// <summary>
-    /// Gets a read-only span of all slices in this aseprite file.
+    ///     Gets a read-only span of all <see cref="AsepriteSlice"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlySpan<AsepriteSlice> Slices => _slices;
 
     /// <summary>
-    /// Gets the total number of slices in this aseprite file.
+    ///     Gets the total number of <see cref="AsepriteSlice"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public int SliceCount => _slices.Length;
 
     /// <summary>
-    /// Gets a read-only span of all tilesets in this aseprite file.
+    ///     Gets a read-only span of all <see cref="AsepriteTileset"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlySpan<AsepriteTileset> Tilesets => _tilesets;
 
     /// <summary>
-    /// Gets the total number of tilesets in this aseprite file.
+    ///     Gets the total number of <see cref="AsepriteTileset"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     public int TilesetCount => _tilesets.Length;
 
     /// <summary>
-    /// Gets a read-only span of the color values that represent the palette of this aseprite file.
+    ///     Gets a read-only span of the color values that represent the palette of this <see cref="AsepriteFile"/>.
     /// </summary>
     public ReadOnlySpan<Color> Palette => _palette;
 
     /// <summary>
-    /// Gets the total number of color values in this palette of this aseprite file.
+    ///     Gets the total number of color values in this palette of this <see cref="AsepriteFile"/>.
     /// </summary>
     public int PaletteCount => _palette.Length;
 
     /// <summary>
-    /// Gets the name of this aseprite file.
+    ///     Gets the name assigned to this  <see cref="AsepriteFile"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the width, in pixels, of the canvas.
+    ///     Gets the width, in pixels, of the canvas.
     /// </summary>
     public int CanvasWidth { get; }
 
     /// <summary>
-    /// Gets the height, in pixels, of the canvas.
+    ///     Gets the height, in pixels, of the canvas.
     /// </summary>
     public int CanvasHeight { get; }
 
     /// <summary>
-    /// Gets the custom user data that was set for the sprite element in aseprite.
+    ///     Gets the <see cref="AsepriteUserData"/> that was set for the sprite element in aseprite.
     /// </summary>
     public AsepriteUserData UserData { get; }
 
@@ -135,13 +136,17 @@ public sealed class AsepriteFile
         UserData = userData;
     }
     /// <summary>
-    /// Gets the frame at the specified index in this aseprite file.
+    ///     Gets the <see cref="AsepriteFrame"/> at the specified index in this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="frameIndex">The index of the frame to locate.</param>
-    /// <returns>The frame located.</returns>
+    /// <param name="frameIndex">
+    ///     The index of the <see cref="AsepriteFrame"/> to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteFrame"/> located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the frame index specified is less than zero or is greater than or equal to the total number of frames
-    /// in this aseprite file.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of
+    ///     <see cref="AsepriteFrame"/> elements in this <see cref="AsepriteFile"/>.
     /// </exception>
     public AsepriteFrame GetFrame(int frameIndex)
     {
@@ -156,13 +161,20 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the frame at the specified index from this aseprite file.
+    ///     Gets the <see cref="AsepriteFrame"/> at the specified index from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="frameIndex">The index of the frame to locate</param>
-    /// <param name="located">When this method returns true, contains the frame located; otherwise, false.</param>
+    /// <param name="frameIndex">
+    ///     The index of the <see cref="AsepriteFrame"/> to locate
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the frame located; otherwise, 
+    ///     <see langword="null"/>.
+    /// </param>
     /// <returns>
-    /// true if the frame was located; otherwise, false.  This method returns false if this frame index specified is
-    /// less than zero or is greater than or equal to the total number of frames in this aseprite file.
+    ///     <see langword="true"/> if the <see cref="AsepriteFrame"/> was located; otherwise, <see langword="false"/>.  
+    ///     This method returns <see langword="false"/> if this frame index specified is less than zero or is greater 
+    ///     than or equal to the total number of <see cref="AsepriteFrame"/> elements in this 
+    ///     <see cref="AsepriteFile"/>.
     /// </returns>
     public bool TryGetFrame(int frameIndex, [NotNullWhen(true)] out AsepriteFrame? located)
     {
@@ -178,13 +190,17 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the tag at the specified index in this aseprite file.
+    ///     Gets the <see cref="AsepriteTag"/> element at the specified index in this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tagIndex">The index of the tag to locate.</param>
-    /// <returns>The tag located.</returns>
+    /// <param name="tagIndex">
+    ///     The index of the <see cref="AsepriteTag"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteTag"/> element located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the tag index specified is less than zero or is greater than or equal to the total number of tags in
-    /// this aseprite file.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="AsepriteTag"/> elements in this <see cref="AsepriteFile"/>.
     /// </exception>
     public AsepriteTag GetTag(int tagIndex)
     {
@@ -199,12 +215,17 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the tag with the specified name from this aseprite file.
+    ///     Gets the <see cref="AsepriteTag"/> element with the specified name from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tagName">The name of the tag to locate.</param>
-    /// <returns>The tag located.</returns>
+    /// <param name="tagName">
+    ///     The name of the <see cref="AsepriteTag"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteTag"/> element located.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if this aseprite file does not contain a tag with the specified name.
+    ///     Thrown if this <see cref="AsepriteFile"/> does not contain an <see cref="AsepriteTag"/> element with the 
+    ///     specified name.
     /// </exception>
     public AsepriteTag GetTag(string tagName)
     {
@@ -221,19 +242,25 @@ public sealed class AsepriteFile
             }
         }
 
-        InvalidOperationException ex = new($"No tag found with the name '{tagName}' in this aseprite file.");
+        InvalidOperationException ex = new($"No aseprite tag element found with the name '{tagName}' in this aseprite file.");
         ex.Data.Add(nameof(tagsFound), tagsFound);
         throw ex;
     }
 
     /// <summary>
-    /// Gets the tag at the specified index from this aseprite file.
+    ///     Gets the <see cref="AsepriteTag"/> element at the specified index from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tagIndex">The index of the tag to locate</param>
-    /// <param name="located">When this method returns true, contains the tag located; otherwise, false.</param>
+    /// <param name="tagIndex">
+    ///     The index of the <see cref="AsepriteTag"/> element to locate
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteTag"/> element located;
+    ///     otherwise, <see langword="null"/>.</param>
     /// <returns>
-    /// true if the tag was located; otherwise, false.  This method returns false if this tag index specified is less
-    /// than zero or is greater than or equal to the total number of tags in this aseprite file.
+    ///     <see langword="true"/> if the <see cref="AsepriteTag"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this index specified is less than 
+    ///     zero or is greater than or equal to the total number of <see cref="AsepriteTag"/> elements in this
+    ///     <see cref="AsepriteFile"/>.
     /// </returns>
     public bool TryGetTag(int tagIndex, [NotNullWhen(true)] out AsepriteTag? located)
     {
@@ -249,13 +276,19 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the tag with the specified name from this aseprite file.
+    ///     Gets the <see cref="AsepriteTag"/> element with the specified name from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tagName">The name of the tag to locate.</param>
-    /// <param name="located">When this method returns true, contains the tag located; otherwise, false.</param>
+    /// <param name="tagName">
+    ///     The name of the <see cref="AsepriteTag"/> element to locate.
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteTag"/> element located; 
+    ///     otherwise, <see langword="null"/>.
+    /// </param>
     /// <returns>
-    /// true if the tag was located; otherwise, false.  This method returns false if this aseprite file does not contain
-    /// a  tag with the specified name.
+    ///     <see langword="true"/> if the <see cref="AsepriteTag"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="AsepriteFile"/> 
+    ///     does not contain an <see cref="AsepriteTag"/> element with the specified name.
     /// </returns>
     public bool TryGetTag(string tagName, [NotNullWhen(true)] out AsepriteTag? located)
     {
@@ -274,13 +307,17 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the slice at the specified index in this aseprite file.
+    ///     Gets the <see cref="AsepriteSlice"/> element at the specified index in this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="sliceIndex">The index of the slice to locate.</param>
-    /// <returns>The slice located.</returns>
+    /// <param name="sliceIndex">
+    ///     The index of the <see cref="AsepriteSlice"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteSlice"/> element located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the slice index specified is less than zero or is greater than or equal to the total number of slices
-    /// in this aseprite file.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="AsepriteSlice"/> elements in this <see cref="AsepriteFile"/>.
     /// </exception>
     public AsepriteSlice GetSlice(int sliceIndex)
     {
@@ -296,12 +333,17 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the slice with the specified name from this aseprite file.
+    ///     Gets the <see cref="AsepriteSlice"/> with the specified name from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="sliceName">The name of the slice to locate.</param>
-    /// <returns>The slice located.</returns>
+    /// <param name="sliceName">
+    ///     The name of the <see cref="AsepriteSlice"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteSlice"/> element located.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if this aseprite file does not contain a slice with the specified name.
+    ///     Thrown if this <see cref="AsepriteFile"/> does not contain a <see cref="AsepriteSlice"/> element with the 
+    ///     specified name.
     /// </exception>
     public AsepriteSlice GetSlice(string sliceName)
     {
@@ -318,20 +360,27 @@ public sealed class AsepriteFile
             }
         }
 
-        InvalidOperationException ex = new($"This aseprite file does not contain a slice with the name '{sliceName}'.");
+        InvalidOperationException ex = new($"This aseprite file does not contain an aseprite slice element with the name '{sliceName}'.");
         ex.Data.Add(nameof(sliceName), sliceName);
         ex.Data.Add(nameof(slicesFound), slicesFound);
         throw ex;
     }
 
     /// <summary>
-    /// Gets the slice at the specified index from this aseprite file.
+    ///     Gets the <see cref="AsepriteSlice"/> element at the specified index from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="sliceIndex">The index of the slice to locate</param>
-    /// <param name="located">When this method returns true, contains the slice located; otherwise, false.</param>
+    /// <param name="sliceIndex">
+    ///     The index of the <see cref="AsepriteSlice"/> element to locate.
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteSlice"/> element located; 
+    ///     otherwise, <see langword="null"/>.
+    /// </param>
     /// <returns>
-    /// true if the slice was located; otherwise, false.  This method returns false if this slice index specified is
-    /// less than zero or is greater than or equal to the total number of slices in this aseprite file.
+    ///     <see langword="true"/> if the <see cref="AsepriteSlice"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this index specified is less than 
+    ///     zero or is greater than or equal to the total number of <see cref="AsepriteSlice"/> elements in this 
+    ///     <see cref="AsepriteFile"/>.
     /// </returns>
     public bool TryGetSlice(int sliceIndex, [NotNullWhen(true)] out AsepriteSlice? located)
     {
@@ -347,13 +396,19 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the slice with the specified name from this aseprite file.
+    ///     Gets the <see cref="AsepriteSlice"/> element with the specified name from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="sliceName">The name of the slice to locate.</param>
-    /// <param name="located">When this method returns true, contains the slice located; otherwise, false.</param>
+    /// <param name="sliceName">
+    ///     The name of the <see cref="AsepriteSlice"/> element to locate.
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteSlice"/> element located; 
+    ///     otherwise, <see langword="null"/>.
+    /// </param>
     /// <returns>
-    /// true if the slice  was located; otherwise, false.  This method returns false if this aseprite file does not
-    /// contain an slice with the specified name.
+    ///     <see langword="true"/> if the <see cref="AsepriteSlice"/> element  was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="AsepriteFile"/> 
+    ///     does not contain an <see cref="AsepriteSlice"/> element with the specified name.
     /// </returns>
     public bool TryGetSlice(string sliceName, [NotNullWhen(true)] out AsepriteSlice? located)
     {
@@ -372,13 +427,17 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the tileset at the specified index in this aseprite file.
+    ///     Gets the <see cref="AsepriteTileset"/> element at the specified index in this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tilesetIndex">The index of the tileset to locate.</param>
-    /// <returns>The tileset located.</returns>
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="AsepriteTileset"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteTileset"/> element located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
-    /// tilesets in this aseprite file.
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of
+    ///     <see cref="AsepriteTileset"/> elements in this <see cref="AsepriteFile"/>.
     /// </exception>
     public AsepriteTileset GetTileset(int tilesetIndex)
     {
@@ -393,12 +452,17 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the tileset with the specified name from this aseprite file.
+    ///     Gets the <see cref="AsepriteTileset"/> element with the specified name from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tilesetName">The name of the tileset to locate.</param>
-    /// <returns>The tileset located.</returns>
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="AsepriteTileset"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteTileset"/> element located.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if this aseprite file does not contain a tileset with the specified name.
+    ///     Thrown if this <see cref="AsepriteFile"/> does not contain a <see cref="AsepriteTileset"/> element with the
+    ///     specified name.
     /// </exception>
     public AsepriteTileset GetTileset(string tilesetName)
     {
@@ -421,13 +485,20 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the tileset at the specified index from this aseprite file.
+    ///     Gets the <see cref="AsepriteTileset"/> element at the specified index from this <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tilesetIndex">The index of the tileset to locate</param>
-    /// <param name="located">When this method returns true, contains the tileset located; otherwise, false.</param>
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="AsepriteTileset"/> element to locate.
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteTileset"/> element located;
+    ///     otherwise, <see langword="null"/>.
+    /// </param>
     /// <returns>
-    /// true if the tileset was located; otherwise, false.  This method returns false if this tileset index specified is
-    /// ess than zero or is greater than or equal to the total number of tilesets in this aseprite file.
+    ///     <see langword="true"/> if the <see cref="AsepriteTileset"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this index specified is less than 
+    ///     zero or is greater than or equal to the total number of <see cref="AsepriteTileset"/> elements in this 
+    ///     <see cref="AsepriteFile"/>.
     /// </returns>
     public bool TryGetTileset(int tilesetIndex, [NotNullWhen(true)] out AsepriteTileset? located)
     {
@@ -443,13 +514,20 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Gets the tileset with the specified name from this aseprite file.
+    ///     Gets the <see cref="AsepriteTileset"/> element  with the specified name from this 
+    ///     <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="tilesetName">The name of the tileset to locate.</param>
-    /// <param name="located">When this method returns true, contains the tileset located; otherwise, false.</param>
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="AsepriteTileset"/> element to locate.
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteTileset"/> element located;
+    ///     otherwise, <see langword="null"/>.
+    /// </param>
     /// <returns>
-    /// true if the tileset was located; otherwise, false.  This method returns false if this aseprite file does not
-    /// contain an tileset with the specified name.
+    ///     <see langword="true"/> if the <see cref="AsepriteTileset"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="AsepriteFile"/>
+    ///     does not contain a <see cref="AsepriteTileset"/> element with the specified name.
     /// </returns>
     public bool TryGetTileset(string tilesetName, [NotNullWhen(true)] out AsepriteTileset? located)
     {
@@ -468,15 +546,21 @@ public sealed class AsepriteFile
     }
 
     /// <summary>
-    /// Loads the aseprite file at the specified path.  The result is a new instance of the aseprite file class that
-    /// contains the contents of the aseprite file loaded.
+    ///     Loads the contents of the aseprite file at the specified path.  The result is a new instance of the 
+    ///     <see cref="AsepriteFile"/> class containing the contents of the file read.
     /// </summary>
-    /// <param name="path">The absolute file path to the aseprite file to load.</param>
-    /// <returns> A new instance of the aseprite file class that is create by this method.</returns>
-    /// <exception cref="FileNotFoundException">Thrown if no file is located at the specified path.</exception>
+    /// <param name="path">
+    ///     The path and name of the aseprite file to load.
+    /// </param>
+    /// <returns>
+    ///     A new instance of the <see cref="AsepriteFile"/> class create by this method.
+    /// </returns>
+    /// <exception cref="FileNotFoundException">
+    ///     Thrown if no file is located at the specified path.
+    /// </exception>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if an error occurs during the reading of the aseprite file.  The exception message will contain the
-    /// cause of the exception.
+    ///     Thrown if an error occurs during the reading of the <see cref="AsepriteFile"/>.  The exception message will 
+    ///     contain the cause of the exception.
     /// </exception>
     public static AsepriteFile Load(string path) => AsepriteFileReader.ReadFile(path);
 

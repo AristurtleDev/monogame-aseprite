@@ -25,38 +25,49 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a tileset.
+///     Defines a class that represents the raw values of a tileset.
 /// </summary>
 public sealed class RawTileset : IEquatable<RawTileset>
 {
     /// <summary>
-    /// Gets the unique ID assigned to the tileset represented by this raw tileset.
+    ///     Gets the unique ID assigned to the tileset.
     /// </summary>
     public int ID { get; }
 
     /// <summary>
-    /// Gets the name assigned to the tileset represented by this raw tileset.
+    ///     Gets the name assigned to the tileset.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the raw texture that represents the source texture of the tileset represented by this raw tileset.
+    ///     Gets the <see cref="RawTexture"/> that represents the source texture of the tileset.
     /// </summary>
     public RawTexture RawTexture { get; }
 
     /// <summary>
-    /// Gets the width, in pixels, of each tile in the tileset represented by this raw tileset.
+    ///     Gets the width, in pixels, of each tile in the tileset.
     /// </summary>
     public int TileWidth { get; }
 
     /// <summary>
-    /// Gets the height, in pixels, of each tile in the tileset represented by this raw tileset.
+    ///     Gets the height, in pixels, of each tile in the tileset.
     /// </summary>
     public int TileHeight { get; }
 
     internal RawTileset(int id, string name, RawTexture rawTexture, int tileWidth, int tileHeight) =>
         (ID, Name, RawTexture, TileWidth, TileHeight) = (id, name, rawTexture, tileWidth, tileHeight);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawTileset"/> is equal to this
+    ///     <see cref="RawTileset"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawTileset"/> to check for equality with this <see cref="RawTileset"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawTileset"/> is equal to this <see cref="RawTileset"/>;
+    ///     otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawTileset? other) => other is not null
                                              && Name == other.Name
                                              && RawTexture.Equals(other.RawTexture)

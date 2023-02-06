@@ -25,44 +25,53 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of an animation tag.
+///     Defines a class that represents the raw values of an animation tag.
 /// </summary>
 public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
 {
     private RawAnimationFrame[] _rawAnimationFrames;
 
     /// <summary>
-    /// Gets the name assigned to the animation tag represented by this raw animation tag.
+    ///     Gets the name assigned to the animation tag.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets a read-only span of the raw animation frames that represent the frames of animation for the animation tag
-    /// represented by this raw animation tag.
+    ///     Gets a read-only span of the <see cref="RawAnimationFrame"/> elements that represent the frames of animation
+    ///     for the animation tag.
     /// </summary>
     public ReadOnlySpan<RawAnimationFrame> RawAnimationFrames => _rawAnimationFrames;
 
     /// <summary>
-    /// Gets a value that indicates whether the animation defined by the animation tag represented by this raw animation
-    /// tag should loop.
+    ///     Gets a value that indicates whether the animation defined by the animation tag should loop.
     /// </summary>
     public bool IsLooping { get; }
 
     /// <summary>
-    /// Gets a value that indicates whether the animation defined by the animation tag represented by this raw animation
-    /// tag should play in reverse.
+    ///     ets a value that indicates whether the animation defined by the animation tag should play in reverse.
     /// </summary>
     public bool IsReversed { get; }
 
     /// <summary>
-    /// Gets a value that indicates whether the animation defined by the animation tag represented by this raw animation
-    /// tag should ping-pong once reaching the last frame of animation.
+    ///     Gets a value that indicates whether the animation defined by the animation tag should ping-pong once 
+    ///     reaching the last frame of animation.
     /// </summary>
     public bool IsPingPong { get; }
 
     internal RawAnimationTag(string name, RawAnimationFrame[] rawAnimationFrames, bool isLooping, bool isReversed, bool isPingPong) =>
         (Name, _rawAnimationFrames, IsLooping, IsReversed, IsPingPong) = (name, rawAnimationFrames, isLooping, isReversed, isPingPong);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawAnimationTag"/> is equal to this
+    ///     <see cref="RawAnimationTag"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawAnimationTag"/> to check for equality with this <see cref="RawAnimationTag"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawAnimationTag"/> is equal to this 
+    ///     <see cref="RawAnimationTag"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawAnimationTag? other) => other is not null
                                                   && Name == other.Name
                                                   && RawAnimationFrames.SequenceEqual(other.RawAnimationFrames)

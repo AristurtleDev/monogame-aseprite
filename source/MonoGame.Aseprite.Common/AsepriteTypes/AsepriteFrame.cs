@@ -28,48 +28,55 @@ using MonoGame.Aseprite.Utilities;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Defines a frame in an aseprite image.
+///     Defines a  <see cref="AsepriteFrame"/> in an aseprite image.
 /// </summary>
 public sealed class AsepriteFrame
 {
     private AsepriteCel[] _cels;
 
     /// <summary>
-    /// Gets a read-only span of the cels in this frame.
+    ///     Gets a read-only span of the <see cref="AsepriteCel"/> elements in this  <see cref="AsepriteFrame"/>.
     /// </summary>
     public ReadOnlySpan<AsepriteCel> Cels => _cels;
 
     /// <summary>
-    /// Gets the name of this frame.
+    ///     Gets the name assigned this <see cref="AsepriteFrame"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the width, in pixels, of this frame.
+    ///     Gets the width, in pixels, of this  <see cref="AsepriteFrame"/>.
     /// </summary>
     public int Width { get; }
 
     /// <summary>
-    /// Gets the height, in pixels, of this frame.
+    ///     Gets the height, in pixels, of this  <see cref="AsepriteFrame"/>.
     /// </summary>
     public int Height { get; }
 
     /// <summary>
-    /// Gets the duration, in milliseconds, of this frame.
+    ///     Gets the duration, in milliseconds, of this  <see cref="AsepriteFrame"/>.
     /// </summary>
-    public int Duration { get; }
+    public int DurationInMilliseconds { get; }
 
     internal AsepriteFrame(string name, int width, int height, int duration, AsepriteCel[] cels) =>
-        (Name, Width, Height, Duration, _cels) = (name, width, height, duration, cels);
+        (Name, Width, Height, DurationInMilliseconds, _cels) = (name, width, height, duration, cels);
 
     /// <summary>
-    /// Flattens this frame by combining all cels into a single image representation.
+    ///     Flattens this  <see cref="AsepriteFrame"/> by combining all <see cref="AsepriteCel"/> elements into a single 
+    ///     image representation.
     /// </summary>
-    /// <param name="onlyVisibleLayers">Indicates whether only cels on visible layers should be included.</param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates whether cels are a layer marked as a background layer should be included.
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates whether only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements 
+    ///     should be included.
     /// </param>
-    /// <returns>A new array of color values that represent the image of this frame.</returns>
+    /// <param name="includeBackgroundLayer">
+    ///     Indicates whether <see cref="AsepriteCel"/> elements are on a <see cref="AsepriteLayer"/> marked as a 
+    ///     background layer should be included.
+    /// </param>
+    /// <returns>
+    ///     A new <see cref="Array"/> of color values that represent the image of this  <see cref="AsepriteFrame"/>.
+    /// </returns>
     public Color[] FlattenFrame(bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapCel = true)
     {
         Color[] result = new Color[Width * Height];

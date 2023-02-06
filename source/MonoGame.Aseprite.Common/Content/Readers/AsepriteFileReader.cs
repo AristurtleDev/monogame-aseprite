@@ -29,7 +29,7 @@ using MonoGame.Aseprite.AsepriteTypes;
 namespace MonoGame.Aseprite.Content.Readers;
 
 /// <summary>
-/// Defines a reader that reads an aseprite file.
+/// Defines a reader that reads an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class AsepriteFileReader
 {
@@ -49,14 +49,20 @@ public static class AsepriteFileReader
     const ushort CHUNK_TYPE_TILESET = 0x2023;
 
     /// <summary>
-    /// Reads the aseprite file at the given path.
+    ///     Reads the <see cref="AsepriteFile"/> at the given path.
     /// </summary>
-    /// <param name="path">The path and filename of the aseprite file to read.</param>
-    /// <returns>The aseprite file created by this method.</returns>
-    /// <exception cref="FileNotFoundException">Thrown if no file is located at the specified path.</exception>
+    /// <param name="path">
+    ///     The path and name of the aseprite file to read.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteFile"/> created by this method.
+    /// </returns>
+    /// <exception cref="FileNotFoundException">
+    ///     Thrown if no file is located at the specified path.
+    /// </exception>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if an error occurs during the reading of the aseprite file.  The exception message will contain the
-    /// cause of the exception.
+    ///     Thrown if an error occurs during the reading of the aseprite file.  The exception message will contain the
+    ///     cause of the exception.
     /// </exception>
     public static AsepriteFile ReadFile(string path)
     {

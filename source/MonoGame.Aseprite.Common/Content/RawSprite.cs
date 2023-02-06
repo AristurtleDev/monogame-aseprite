@@ -25,22 +25,33 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a sprite.
+///     Defines a class that represents the raw values of a sprite.
 /// </summary>
 public sealed class RawSprite : IEquatable<RawSprite>
 {
     /// <summary>
-    /// Gets the name assigned to the sprite represented by this raw sprite.
+    ///     Gets the name assigned to the sprite.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the raw texture that represents the source texture for the sprite represented by this raw sprite.
+    ///     Gets the raw texture that represents the source texture for the sprite.
     /// </summary>
     public RawTexture RawTexture { get; }
 
     internal RawSprite(string name, RawTexture rawTexture) => (Name, RawTexture) = (name, rawTexture);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawSprite"/> is equal to this
+    ///     <see cref="RawSprite"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawSprite"/> to check for equality with this <see cref="RawSprite"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawSprite"/> is equal to this 
+    ///     <see cref="RawSprite"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawSprite? other) => other is not null
                                             && Name == other.Name
                                             && RawTexture.Equals(other.RawTexture);

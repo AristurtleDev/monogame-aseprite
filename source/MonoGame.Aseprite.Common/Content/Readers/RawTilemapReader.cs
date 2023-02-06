@@ -27,15 +27,19 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Readers;
 
 /// <summary>
-/// Defines a reader that reads a raw tilemap from a file.
+///     Defines a reader that reads a <see cref="RawTilemap"/> from a file.
 /// </summary>
 public static class RawTilemapReader
 {
     /// <summary>
-    /// Reads the raw tilemap from the file at the specified path.
+    ///     Reads the <see cref="RawTilemap"/> from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the raw tilemap to read.</param>
-    /// <returns>The raw tilemap that was read.</returns>
+    /// <param name="path">
+    ///     The path and name of the file that contains the <see cref="RawTilemap"/> to read.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawTilemap"/> that was read.
+    /// </returns>
     public static RawTilemap Read(string path)
     {
         Stream stream = File.OpenRead(path);

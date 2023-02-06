@@ -25,24 +25,25 @@ SOFTWARE.
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Defines the direction for an animation defined by a tag in aseprite
+///     Defines the direction for an animation defined by a <see cref="AsepriteTag"/>.
 /// </summary>
 public enum AsepriteLoopDirection : byte
 {
     /// <summary>
-    /// Defines that the animation for the tag is played in a forward direction from the first frame of animation to the
-    /// last.
+    ///  Defines that the animation for the <see cref="AsepriteTag"/> is played in a forward direction from the first
+    ///  frame of animation to the last.
     /// </summary>
     Forward = 0,
 
     /// <summary>
-    /// Defines that the animation for the tag is played in reversed from the last frame of animation to the first.
+    ///     Defines that the animation for the <see cref="AsepriteTag"/> is played in reversed from the last frame of 
+    ///     animation to the first.
     /// </summary>
     Reverse = 1,
 
     /// <summary>
-    /// Defines that the animation for the tag ping-pongs by first going from the first frame of animation to the last
-    /// then playing in reverse from the last frame of animation to the first.
+    ///     Defines that the animation for the <see cref="AsepriteTag"/> ping-pongs by first going from the first frame
+    ///     of animation to the last then playing in reverse from the last frame of animation to the first.
     /// </summary>
     PingPong = 2
 }

@@ -28,31 +28,35 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Represents the custom userdata that can be set for the sprite, or a cel, layer, slice, or tag element in aseprite.
+///     Represents the custom userdata that can be set for a <see cref="AsepriteFile"/>, <see cref="AsepriteCel"/>, 
+///     <see cref="AsepriteLayer"/>, <see cref="AsepriteSlice"/>, or <see cref="AsepriteTag"/> element in aseprite.
 /// </summary>
 public sealed class AsepriteUserData
 {
     /// <summary>
-    /// Gets a value that indicates if this userdata contains a text value.  When this is true, guarantees that the text
-    /// property is not null.
+    ///     Gets a value that indicates if this <see cref="AsepriteUserData"/> contains a text value.  When this is 
+    ///     <see langword="true"/>, guarantees that the <see cref="Text"/> value is not <see langword="null"/>.
     /// </summary>
     [MemberNotNullWhen(true, nameof(Text))]
     public bool HasText => Text is not null;
 
     /// <summary>
-    /// Gets the custom text that was set for this userdata, if any was set in aseprite; otherwise, null.
+    ///     Gets the custom text that was set for this <see cref="AsepriteUserData"/>, if any was set in aseprite; 
+    ///     otherwise, <see langword="null"/>.
     /// </summary>
     public string? Text { get; internal set; } = default;
 
     /// <summary>
-    /// Gets a value that indicates whether this userdata contains a color value.  When true, guarantees that the color
-    /// property is not null.
+    ///     Gets a value that indicates whether this <see cref="AsepriteUserData"/> contains a color value.  When 
+    ///     <see langword="true"/>, guarantees that the <see cref="AsepriteUserData.Color"/> value is not 
+    ///     <see langword="null"/>.
     /// </summary>
     [MemberNotNullWhen(true, nameof(Color))]
     public bool HasColor => Color is not null;
 
     /// <summary>
-    /// Gets the custom color that was set for this userdata, if any was set in aseprite; otherwise, null.
+    ///     Gets the custom color that was set for this <see cref="AsepriteUserData"/>, if any was set in aseprite; 
+    ///     otherwise, <see langword="null"/>.
     /// </summary>
     public Color? Color { get; internal set; } = default;
 

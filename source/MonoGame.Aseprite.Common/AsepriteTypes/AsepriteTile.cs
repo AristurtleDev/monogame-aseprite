@@ -25,39 +25,40 @@ SOFTWARE.
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Defines a tile in a tilemap cel.
+///     Defines a tile in a <see cref="AsepriteTilemapCel"/>
 /// </summary>
 public sealed class AsepriteTile : IEquatable<AsepriteTile>
 {
     /// <summary>
-    /// Gets the id of the tile in the tileset that contains the source image data for this tile.
+    ///     Gets the id of the source tile in the <see cref="AsepriteTileset"/> that contains the source image data for 
+    ///     this <see cref="AsepriteTile"/>.
     /// </summary>
     public int TilesetTileID { get; }
 
     /// <summary>
-    /// Gets the x-flip value for this tile.
+    ///     Gets the x-flip value for this <see cref="AsepriteTile"/>..
     /// </summary>
     /// <remarks>
-    /// As of the current Aseprite 1.3-beta-21, tile x-flip has not been implemented.  As such, this value will always
-    /// be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+    ///     As of the current Aseprite 1.3-beta-21, tile x-flip has not been implemented.  As such, this value will 
+    ///     always be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
     /// </remarks>
     public int XFlip { get; }
 
     /// <summary>
-    /// Gets the y-flip value for this tile.
+    ///     Gets the y-flip value for this <see cref="AsepriteTile"/>..
     /// </summary>
     /// <remarks>
-    /// As of the current Aseprite 1.3-beta-21, tile y-flip has not been implemented.  As such, this value will always
-    /// be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+    ///     As of the current Aseprite 1.3-beta-21, tile y-flip has not been implemented.  As such, this value will 
+    ///     always be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
     /// </remarks>
     public int YFlip { get; }
 
     /// <summary>
-    /// Gets the 90deg clockwise rotation value for this tile.
+    ///     Gets the 90deg clockwise rotation value for this <see cref="AsepriteTile"/>..
     /// </summary>
     /// <remarks>
-    /// As of the current Aseprite 1.3-beta-21, tile rotation has not been implemented.  As such, this value will always
-    /// be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
+    ///     As of the current Aseprite 1.3-beta-21, tile rotation has not been implemented.  As such, this value will 
+    ///     always be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
     /// </remarks>
     public int Rotation { get; }
 
@@ -65,10 +66,16 @@ public sealed class AsepriteTile : IEquatable<AsepriteTile>
         (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);
 
     /// <summary>
-    /// Returns a value that indicates whether the specified tile is equal to this tile.
+    ///     Returns a value that indicates whether the specified <see cref="AsepriteTile"/>. is equal to this 
+    ///     <see cref="AsepriteTile"/>..
     /// </summary>
-    /// <param name="other">The other aseprite file to check for equality with this tile.</param>
-    /// <returns>true if the specified tile is equal to this tile; otherwise, false.</returns>
+    /// <param name="other">
+    ///     The other <see cref="AsepriteTile"/> to check for equality with this <see cref="AsepriteTile"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the specified <see cref="AsepriteTile"/> is equal to this 
+    ///     <see cref="AsepriteTile"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(AsepriteTile? other) => other is not null &&
                                                XFlip == other.XFlip &&
                                                YFlip == other.YFlip &&

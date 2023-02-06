@@ -27,27 +27,28 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.AsepriteTypes;
 
 /// <summary>
-/// Defines a single cel in an frame.
+///     Defines a single cel in an frame.
 /// </summary>
 public abstract class AsepriteCel
 {
     /// <summary>
-    /// Gets a reference to the layer this cel is on.
+    ///     Gets a reference to the <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on.
     /// </summary>
     public AsepriteLayer Layer { get; }
 
     /// <summary>
-    /// Gets the x- and y-coordinate location of this cel relative to the bounds of the frame it is in.
+    ///     Gets the x- and y-coordinate location of this <see cref="AsepriteCel"/> relative to the bounds of the 
+    ///     <see cref="AsepriteFrame"/> it is in.
     /// </summary>
     internal Point Position { get; }
 
     /// <summary>
-    /// Gets the opacity level of this cel.
+    ///     Gets the opacity level of this <see cref="AsepriteCel"/>.
     /// </summary>
     internal int Opacity { get; }
 
     /// <summary>
-    /// Gets the custom user data that was set for this cel in aseprite.
+    ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteCel"/> in aseprite.
     /// </summary>
     internal AsepriteUserData UserData { get; } = new();
 
@@ -55,12 +56,16 @@ public abstract class AsepriteCel
         (Layer, Position, Opacity) = (layer, position, opacity);
 
     /// <summary>
-    /// Returns the layer this cel is on as the specified type.
+    ///     Returns the <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on as the specified type.
     /// </summary>
-    /// <typeparam name="T"> The type to return as.</typeparam>
-    /// <returns>The layer this cel is on as the specified type.</returns>
+    /// <typeparam name="T">
+    ///     The type to return as.
+    /// </typeparam>
+    /// <returns>
+    ///     The <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on as the specified type.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the layer this cel is on is not of the type specified.
+    ///     Thrown if the <see cref="AsepriteLayer"/> this <see cref="AsepriteCel"/> is on is not of the type specified.
     /// </exception>
     public T LayerAs<T>() where T : AsepriteLayer
     {

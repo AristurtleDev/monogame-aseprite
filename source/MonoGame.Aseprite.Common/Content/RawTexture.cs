@@ -27,36 +27,46 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a texture.
+///     Defines a class that represents the raw values of a texture.
 /// </summary>
 public sealed class RawTexture : IEquatable<RawTexture>
 {
     private Color[] _pixels;
 
     /// <summary>
-    /// Get the name assigned to the texture represented by this raw texture.
+    ///     Get the name assigned to the texture.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets a read-only span of the color values that represent the pixel data for the texture represented by this raw
-    /// texture.
+    ///     Gets a read-only span of the color values that represent the pixel data for the texture.
     /// </summary>
     public ReadOnlySpan<Color> Pixels => _pixels;
 
     /// <summary>
-    /// Gets the width, in pixels of the texture represented by this raw texture.
+    ///     Gets the width, in pixels of the texture.
     /// </summary>
     public int Width { get; }
 
     /// <summary>
-    /// Gets the height, in pixels of the texture represented by this raw texture.
+    ///     Gets the height, in pixels of the texture.
     /// </summary>
     internal int Height { get; }
 
     internal RawTexture(string name, Color[] pixels, int width, int height) =>
         (Name, _pixels, Width, Height) = (name, pixels, width, height);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawTexture"/> is equal to this
+    ///     <see cref="RawTexture"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawTexture"/> to check for equality with this <see cref="RawTexture"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawTexture"/> is equal to this 
+    ///     <see cref="RawTexture"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawTexture? other) => other is not null
                                              && Name == other.Name
                                              && Pixels.SequenceEqual(other.Pixels)

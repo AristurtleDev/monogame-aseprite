@@ -28,16 +28,24 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a raw animation tag from a tag in an aseprite file.
+///     Defines a processor that processes a  <see cref="RawAnimationTag"/> from a tag in an 
+///     <see cref="AsepriteFile"/>.
 /// </summary>
 public static class RawAnimationTagProcessor
 {
     /// <summary>
-    /// Processes the tag at the specified index in the given aseprite file as a raw animation tag.
+    ///     Processes the <see cref="AsepriteTag"/> at the specified index in the given <see cref="AsepriteFile"/> as a  
+    ///     <see cref="RawAnimationTag"/>.
     /// </summary>
-    /// <param name="file">The aseprite file that contains the tag to process.</param>
-    /// <param name="tagIndex">The index of the tag to locate in the aseprite file.</param>
-    /// <returns>The raw animation tag created by this method.</returns>
+    /// <param name="file">
+    ///     The <see cref="AsepriteFile"/> that contains the tag to process.
+    /// </param>
+    /// <param name="tagIndex">
+    ///     The index of the <see cref="AsepriteTag"/> to locate in the  <see cref="AsepriteFile"/>.
+    /// </param>
+    /// <returns>
+    ///     The  <see cref="RawAnimationTag"/> created by this method.
+    /// </returns>
     public static RawAnimationTag Process(AsepriteFile file, int tagIndex)
     {
         AsepriteTag aseTag = file.GetTag(tagIndex);
@@ -45,11 +53,18 @@ public static class RawAnimationTagProcessor
     }
 
     /// <summary>
-    /// Processes the tag with the specified name in the given aseprite file as a raw animation tag.
+    ///     Processes the <see cref="AsepriteTag"/> with the specified name in the given <see cref="AsepriteFile"/> as a
+    ///     <see cref="RawAnimationTag"/>.
     /// </summary>
-    /// <param name="file">The aseprite file that contains the tag to process.</param>
-    /// <param name="tagName">The name of the tag to locate in the aseprite file.</param>
-    /// <returns>The raw animation tag created by this method.</returns>
+    /// <param name="file">
+    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteTag"/> to process.
+    /// </param>
+    /// <param name="tagName">
+    ///     The name of the <see cref="AsepriteTag"/> to locate in the <see cref="AsepriteFile"/>.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawAnimationTag"/> created by this method.
+    /// </returns>
     public static RawAnimationTag Process(AsepriteFile file, string tagName)
     {
         AsepriteTag aseTag = file.GetTag(tagName);
@@ -66,7 +81,7 @@ public static class RawAnimationTagProcessor
         for (int i = 0; i < frameCount; i++)
         {
             int index = aseTag.From + i;
-            rawAnimationFrames[i] = new(index, aseFrames[index].Duration);
+            rawAnimationFrames[i] = new(index, aseFrames[index].DurationInMilliseconds);
         }
 
         // In aseprite, all tags are looping

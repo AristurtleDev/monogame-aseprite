@@ -22,21 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Readers;
 
 /// <summary>
-/// Defines a reader that reads a raw spritesheet from a file.
+///     Defines a reader that reads a <see cref="RawSpriteSheet"/> from a file.
 /// </summary>
 public static class RawSpriteSheetReader
 {
     /// <summary>
-    /// Reads the raw spritesheet from the file at the specified path.
+    ///     Reads the <see cref="RawSpriteSheet"/> from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the raw spritesheet to read.</param>
-    /// <returns>The raw spritesheet that was read.</returns>
+    /// <param name="path">
+    ///     The path and name of the file that contains the <see cref="RawSpriteSheet"/> to read.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawSpriteSheet"/> that was read.
+    /// </returns>
     public static RawSpriteSheet Read(string path)
     {
         Stream stream = File.OpenRead(path);

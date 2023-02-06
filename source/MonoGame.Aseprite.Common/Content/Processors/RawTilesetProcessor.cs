@@ -28,19 +28,26 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a raw tileset from an aseprite file.
+///     Defines a processor that processes a <see cref="RawTileset"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class RawTilesetProcessor
 {
     /// <summary>
-    /// Processes a raw tileset from the tileset at the specified index in the given aseprite file.
+    ///     Processes a <see cref="RawTileset"/> from the <see cref="AsepriteTileset"/> at the specified index in the
+    ///     given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that contains the tileset to process.</param>
-    /// <param name="tilesetIndex">The index of the tileset in the aseprite file to process.</param>
-    /// <returns>The raw tileset created by this method.</returns>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteTileset"/> to process.
+    /// </param>
+    /// <param name="tilesetIndex">
+    ///     The index of the <see cref="AsepriteTileset"/> in the <see cref="AsepriteFile"/> to process.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawTileset"/> created by this method.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the tileset index specified is less than zero or is greater than or equal to the total number of
-    /// tilesets in the given aseprite file.
+    ///     Thrown if the <see cref="AsepriteTileset"/> index specified is less than zero or is greater than or equal to
+    ///     the total number of <see cref="AsepriteTileset"/> elements in the given <see cref="AsepriteFile"/>.
     /// </exception>
     public static RawTileset Process(AsepriteFile aseFile, int tilesetIndex)
     {
@@ -49,13 +56,21 @@ public static class RawTilesetProcessor
     }
 
     /// <summary>
-    /// Processes a raw tileset from the tileset with the specified name in the given aseprite file.
+    ///     Processes a <see cref="RawTileset"/> from the <see cref="AsepriteTileset"/> with the specified name in the 
+    ///     given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="aseFile">The aseprite file that contains the tileset to process.</param>
-    /// <param name="tilesetName">The name of the tileset in the aseprite file to process.</param>
-    /// <returns>The raw tileset created by this method.</returns>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteTileset"/> to process.
+    /// </param>
+    /// <param name="tilesetName">
+    ///     The name of the <see cref="AsepriteTileset"/> in the <see cref="AsepriteFile"/> to process.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawTileset"/> created by this method.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the given aseprite file does not contain an tileset with the specified name.
+    ///     Thrown if the given <see cref="AsepriteFile"/> does not contain an <see cref="AsepriteTileset"/> element 
+    ///     with the specified name.
     /// </exception>
     public static RawTileset Process(AsepriteFile aseFile, string tilesetName)
     {
@@ -64,10 +79,14 @@ public static class RawTilesetProcessor
     }
 
     /// <summary>
-    /// Processes a raw tileset from the given tileset.
+    ///     Processes a <see cref="RawTileset"/> from the given <see cref="AsepriteTileset"/>.
     /// </summary>
-    /// <param name="aseTileset">The  tileset to process.</param>
-    /// <returns>The raw tileset created by this method.</returns>
+    /// <param name="aseTileset">
+    ///     The <see cref="AsepriteTileset"/> to process.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawTileset"/> created by this method.
+    /// </returns>
     public static RawTileset Process(AsepriteTileset aseTileset)
     {
         RawTexture texture = new(aseTileset.Name, aseTileset.Pixels.ToArray(), aseTileset.Width, aseTileset.Height);

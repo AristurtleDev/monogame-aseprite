@@ -22,21 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Readers;
 
 /// <summary>
-/// Defines a reader that reads a raw texture atlas from a file.
+///     Defines a reader that reads a <see cref="RawTextureAtlas"/> from a file.
 /// </summary>
 public static class RawTextureAtlasReader
 {
     /// <summary>
-    /// Reads the raw texture atlas from the file at the specified path.
+    ///     Reads the <see cref="RawTextureAtlas"/> from the file at the specified path.
     /// </summary>
-    /// <param name="path">The path to the file that contains the raw texture atlas to read.</param>
-    /// <returns>The raw texture atlas that was read.</returns>
+    /// <param name="path">
+    ///     The path and name of the file that contains the <see cref="RawTextureAtlas"/> to read.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawTextureAtlas"/> that was read.
+    /// </returns>
     public static RawTextureAtlas Read(string path)
     {
         Stream stream = File.OpenRead(path);

@@ -28,30 +28,40 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a raw texture atlas from an aseprite file.
+/// Defines a processor that processes a <see cref="RawTextureAtlas"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 public static class RawTextureAtlasProcessor
 {
     /// <summary>
-    /// Processes a raw texture atlas from the given aseprite file.
+    /// Processes a <see cref="RawTextureAtlas"/> from the given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="aseFile">The aseprite file to process the raw texture atlas from.</param>
-    /// <param name="onlyVisibleLayers">Indicates if only cels on visible layers should be included. </param>
-    /// <param name="includeBackgroundLayer">
-    /// Indicates if cels on the layer marked as the background layer should be included.
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> to process the <see cref="RawTextureAtlas"/> from.
     /// </param>
-    /// <param name="includeTilemapLayers">Indicates if cels on a tilemap layer should be included.</param>
-    /// <param name="mergeDuplicates">Indicates if duplicate frames should be merged into one.</param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should 
+    ///     be included.
+    /// </param>
+    /// <param name="includeBackgroundLayer">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on the <see cref="AsepriteLayer"/> marked as the background 
+    ///     layer should be included.
+    /// </param>
+    /// <param name="includeTilemapLayers">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on a <see cref="AsepriteTilemapLayer"/> should be included.
+    /// </param>
+    /// <param name="mergeDuplicates">
+    ///     Indicates if duplicate <see cref="AsepriteFrame"/> elements should be merged into one.
+    /// </param>
     /// <param name="borderPadding">
-    /// The amount of transparent pixels to add between the edge of the generated image
+    ///     The amount of transparent pixels to add between the edge of the generated image
     /// </param>
     /// <param name="spacing">
-    /// The amount of transparent pixels to add between each texture region in the generated image.
+    ///     The amount of transparent pixels to add between each texture region in the generated image.
     /// </param>
     /// <param name="innerPadding">
-    /// The amount of transparent pixels to add around the edge of each texture region in the generated image.
+    ///     The amount of transparent pixels to add around the edge of each texture region in the generated image.
     /// </param>
-    /// <returns>The raw texture atlas created by this method.</returns>
+    /// <returns>The <see cref="RawTextureAtlas"/> created by this method.</returns>
     public static RawTextureAtlas Process(AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
         int frameWidth = aseFile.CanvasWidth;
@@ -124,7 +134,7 @@ public static class RawTextureAtlasProcessor
                     + (spacing * column)
                     + (innerPadding * (column + column + 1));
 
-            int y =  (row * frameHeight)
+            int y = (row * frameHeight)
                      + borderPadding
                      + (spacing * row)
                      + (innerPadding * (row + row + 1));
@@ -132,16 +142,16 @@ public static class RawTextureAtlasProcessor
             for (int p = 0; p < frame.Length; p++)
             {
                 int px = (p % frameWidth) + x;
-                        // + (column * frameWidth)
-                        // + borderPadding
-                        // + (spacing * column)
-                        // + (innerPadding * (column + column + 1));
+                // + (column * frameWidth)
+                // + borderPadding
+                // + (spacing * column)
+                // + (innerPadding * (column + column + 1));
 
                 int py = (p / frameWidth) + y;
-                        // + (row * frameHeight)
-                        // + borderPadding
-                        // + (spacing * row)
-                        // + (innerPadding * (row + row + 1));
+                // + (row * frameHeight)
+                // + borderPadding
+                // + (spacing * row)
+                // + (innerPadding * (row + row + 1));
 
                 int index = py * imageWidth + px;
                 imagePixels[index] = frame[p];

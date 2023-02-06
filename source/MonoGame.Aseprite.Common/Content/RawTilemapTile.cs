@@ -25,36 +25,44 @@ SOFTWARE.
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-/// Defines a class that represents the raw values of a tilemap tile.
+///     Defines a class that represents the raw values of a tilemap tile.
 /// </summary>
 public sealed class RawTilemapTile : IEquatable<RawTilemapTile>
 {
     /// <summary>
-    /// Gets the ID of the source tile in the tileset that represents the texture region used by the tilemap tile that
-    /// is represented by this raw tilemap tile.
+    ///     Gets the ID of the source tile in the tileset that represents the texture region used by the tilemap tile.
     /// </summary>
     public int TilesetTileID { get; }
 
     /// <summary>
-    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile should be flipped
-    /// horizontally along its x-axis.
+    ///     Gets a value that indicates if the tilemap tile should be flipped horizontally.
     /// </summary>
     public bool FlipHorizontally { get; }
 
     /// <summary>
-    /// Gets a value that indicates if the tilemap tile represented by this raw tilemap tile should be flipped
-    /// vertically along its y-axis.
+    ///     Gets a value that indicates if the tilemap tile should be flipped vertically.
     /// </summary>
     public bool FlipVertically { get; }
 
     /// <summary>
-    /// Gets the rotation, in radians, of the tilemap tile represented by this raw tilemap tile.
+    ///     Gets the rotation, in radians, of the tilemap tile.
     /// </summary>
     public float Rotation { get; }
 
     internal RawTilemapTile(int tilesetTileID, bool flipHorizontally, bool flipVertically, float rotation) =>
         (TilesetTileID, FlipHorizontally, FlipVertically, Rotation) = (tilesetTileID, flipHorizontally, flipVertically, rotation);
 
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawTilemapTile"/> is equal to this
+    ///     <see cref="RawTilemapTile"/>.
+    /// </summary>
+    /// <param name="other">
+    ///     The other <see cref="RawTilemapTile"/> to check for equality with this <see cref="RawTilemapTile"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the given <see cref="RawTilemapTile"/> is equal to this 
+    ///     <see cref="RawTilemapTile"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public bool Equals(RawTilemapTile? other) => other is not null
                                                  && TilesetTileID == other.TilesetTileID
                                                  && FlipHorizontally == other.FlipHorizontally
