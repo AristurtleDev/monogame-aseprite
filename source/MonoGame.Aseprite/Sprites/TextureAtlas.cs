@@ -273,7 +273,7 @@ public class TextureAtlas : IEnumerable<TextureRegion>
             return frame;
         }
 
-        KeyNotFoundException ex = new($"This textue atlas does not contain a texture region with the name '{name}'.");
+        KeyNotFoundException ex = new($"This texture atlas does not contain a texture region with the name '{name}'.");
         ex.Data.Add("TextureRegions", _regions);
         throw ex;
     }
