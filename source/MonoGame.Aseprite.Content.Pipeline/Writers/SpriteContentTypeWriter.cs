@@ -36,18 +36,26 @@ internal sealed class SpriteContentTypeWriter : ContentTypeWriter<ContentProcess
         RawSpriteWriter.Write(writer, content.Data);
 
     /// <summary>
-    /// Gets the assembly qualified name of the runtime type.
+    ///     Gets the assembly qualified name of the runtime type.
     /// </summary>
-    /// <param name="targetPlatform">The target platform.</param>
-    /// <returns>The assembly qualified name of the runtime type.</returns>
+    /// <param name="targetPlatform">
+    ///     The target platform.
+    /// </param>
+    /// <returns>
+    ///     The assembly qualified name of the runtime type.
+    /// </returns>
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
         "MonoGame.Aseprite.Sprites.Sprite, MonoGame.Aseprite";
 
     /// <summary>
-    /// Gets the assembly qualified name of the runtime loader.
+    ///     Gets the assembly qualified name of the runtime loader.
     /// </summary>
-    /// <param name="targetPlatform">The target platform type.</param>
-    /// <returns>The assembly qualified name of the runtime loader.</returns>
+    /// <param name="targetPlatform">
+    ///     The target platform type.
+    /// </param>
+    /// <returns>
+    ///     The assembly qualified name of the runtime loader.
+    /// </returns>
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
         "MonoGame.Aseprite.Content.Pipeline.Reader.SpriteContentTypeReader, MonoGame.Aseprite";
 }

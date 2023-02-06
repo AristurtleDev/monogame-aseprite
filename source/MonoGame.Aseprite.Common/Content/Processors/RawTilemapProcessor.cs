@@ -50,8 +50,8 @@ public static class RawTilemapProcessor
     ///     The <see cref="RawTilemap"/> created by this method.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the <see cref="AsepriteFrame"/> elements index specified is less than zero or is greater than or 
-    ///     equal to the total number of <see cref="AsepriteFrame"/> elements in the given <see cref="AsepriteFile"/>.
+    ///     Thrown if the index specified is less than zero or is greater than or  equal to the total number of 
+    ///     <see cref="AsepriteFrame"/> elements in the given <see cref="AsepriteFile"/>.
     /// </exception>
     /// <exception cref="InvalidOperationException">
     ///     Thrown if <see cref="AsepriteLayer"/> elements are found in the <see cref="AsepriteFile"/> with duplicate 

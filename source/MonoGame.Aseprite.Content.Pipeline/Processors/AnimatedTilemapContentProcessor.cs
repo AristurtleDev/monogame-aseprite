@@ -30,27 +30,31 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw animated tilemap from an aseprite file.
+///     Defines a content processor that processes a <see cref="RawAnimatedTilemap"/> from an aseprite file that was
+///     imported.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Animated Tilemap Processor - MonoGame.Aseprite")]
 public sealed class AnimatedTilemapContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawAnimatedTilemap>>
 {
     /// <summary>
-    /// Gets or Sets a value that indicates whether only visible layers should be included.
+    ///     Gets or Sets a value that indicates whether only visible layer should be included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
-    [DefaultValue(true)]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    /// Processes a raw animated tilemap from an aseprite file.
+    ///     Processes a <see cref="RawAnimatedTilemap"/> from the contents of an aseprite file.
     /// </summary>
-    /// <param name="content">The result of the content importer.</param>
-    /// <param name="context">
-    /// The content processor context that provides contextual information about the content being
-    /// processed.
+    /// <param name="content">
+    ///     The <see cref="ContentImporterResult"/> from the import process.
     /// </param>
-    /// <returns>The content processor result created by this method..</returns>
+    /// <param name="context">
+    ///     The content processor context that provides contextual information about the content being processed.
+    /// </param>
+    /// <returns>
+    ///     A new <see cref="ContentProcessorResult{T}"/> containing the <see cref="RawAnimatedTilemap"/> created by
+    ///     this method.
+    /// </returns>
     public override ContentProcessorResult<RawAnimatedTilemap> Process(ContentImporterResult content, ContentProcessorContext context)
     {
         AsepriteFile aseFile = AsepriteFile.Load(content.Path);

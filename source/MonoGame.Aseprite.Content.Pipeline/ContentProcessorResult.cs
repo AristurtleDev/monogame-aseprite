@@ -25,9 +25,11 @@ SOFTWARE.
 namespace MonoGame.Aseprite.Content.Pipeline;
 
 /// <summary>
-/// Defines the result of a content processor.
+///     Defines the result of a content processor.
 /// </summary>
-/// <typeparam name="T">The type of data processed.</typeparam>
+/// <typeparam name="T">
+///     The type of the result of the process.
+/// </typeparam>
 public sealed class ContentProcessorResult<T>
 {
     internal T Data { get; }

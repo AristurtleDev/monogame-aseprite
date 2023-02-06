@@ -24,43 +24,53 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 using MonoGame.Aseprite.Content.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw tilemap from a frame in an aseprite file.
+///     Defines a content processor that processes a <see cref="RawTilemap"/> from an aseprite file that was imported.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
 public sealed class TilemapContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawTilemap>>
 {
     /// <summary>
-    /// Gets or Sets the index of the frame in the aseprite file that contains the tilemap to process.
+    ///     Gets or Sets the index of the <see cref="AsepriteFile"/> element in the <see cref="AsepriteFile"/> file that
+    ///     contains the tilemap to process.
     /// </summary>
     [DisplayName("Frame Index")]
-    [DefaultValue(0)]
     public int FrameIndex { get; set; } = 0;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether only visible layers should be included.
+    ///     Gets or Sets a value that indicates whether only visible <see cref="AsepriteLayer"/> elements should be 
+    ///     included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
-    [DefaultValue(true)]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    /// Processes a raw tilemap from an aseprite file.
+    ///     Processes a <see cref="RawTilemap"/> from the contents of an <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="content">The result of the content importer.</param>
-    /// <param name="context">
-    /// The content processor context that provides contextual information about the content being
-    /// processed.
+    /// <param name="content">
+    ///     The <see cref="ContentImporterResult"/> from the import process.
     /// </param>
-    /// <returns>The content processor result created by this method..</returns>
-    /// <exception cref="IndexOutOfRangeException">
-    /// Thrown if the FrameIndex property specified is less than zero or is greater than or equal to the total number of
-    /// frames in the aseprite file.
+    /// <param name="context">
+    ///     The content processor context that provides contextual information about the content being processed.
+    /// </param>
+    /// <returns>
+    ///     A new <see cref="ContentProcessorResult{T}"/> containing the <see cref="RawTilemap"/> created by this
+    ///     method.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the <see cref="FrameIndex"/> property is less than zero or is greater than or  equal to the total 
+    ///     number of  <see cref="AsepriteFrame"/> elements in the given <see cref="AsepriteFile"/>.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if <see cref="AsepriteLayer"/> elements are found in the <see cref="AsepriteFile"/> with duplicate 
+    ///     names.  Tilemaps must contain layers with unique names even though aseprite does not enforce unique names 
+    ///     for <see cref="AsepriteLayer"/> elements.
     /// </exception>
     public override ContentProcessorResult<RawTilemap> Process(ContentImporterResult content, ContentProcessorContext context)
     {

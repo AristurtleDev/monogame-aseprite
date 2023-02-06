@@ -24,58 +24,61 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw sprite from an frame in an aseprite file.
+///     Defines a content processor that processes a <see cref="RawSprite"/> from an aseprite file that was imported.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
 internal sealed class SpriteContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawSprite>>
 {
     /// <summary>
-    /// Gets or Sets a the index of the frame in the aseprite file to process.
+    ///     Gets or Sets a the index of the <see cref="AsepriteFrame"/> element in the <see cref="AsepriteFile"/> to 
+    ///     process.
     /// </summary>
     [DisplayName("Frame Index")]
-    [DefaultValue(0)]
     public int FrameIndex { get; set; } = 0;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether only cels on visible layers should be included.
+    ///     Gets or Sets a value that indicates whether only <see cref="AsepriteCel"/> elements on visible
+    ///     <see cref="AsepriteLayer"/> elements should be included.
     /// </summary>
     [DisplayName("Only Visible Layers")]
-    [DefaultValue(true)]
     public bool OnlyVisibleLayers { get; set; } = true;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether cels on an layer marked as the background layer
-    /// should be included.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteCel"/> elements on an 
+    ///     <see cref="AsepriteLayer"/> marked as the background layer should be included.
     /// </summary>
     [DisplayName("Include Background Layer")]
-    [DefaultValue(false)]
     public bool IncludeBackgroundLayer { get; set; } = false;
 
     /// <summary>
-    /// Gets or Sets a value that indicates whether cels on an tilemap layer should be included.
+    ///     Gets or Sets a value that indicates whether <see cref="AsepriteCel"/> elements  on an 
+    ///     <see cref="AsepriteTilemapLayer"/> element should be included.
     /// </summary>
     [DisplayName("Include Tilemap Layers")]
-    [DefaultValue(true)]
     public bool IncludeTilemapLayers { get; set; } = true;
 
     /// <summary>
-    /// Processes a sprite from the given aseprite file.
+    ///     Processes a <see cref="RawSprite"/> from the contents of an <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="content">The result of the content importer.</param>
-    /// <param name="context">
-    /// The content processor context that provides contextual information about the content being
-    /// processed.
+    /// <param name="content">
+    ///     The <see cref="ContentImporterResult"/> from the import process.
     /// </param>
-    /// <returns>The content processor result created by this method..</returns>
+    /// <param name="context">
+    ///     The content processor context that provides contextual information about the content being processed.
+    /// </param>
+    /// <returns>
+    ///     A new <see cref="ContentProcessorResult{T}"/> containing the <see cref="RawSprite"/> created by this method.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if the FrameIndex property is less than zero or is greater than or equal to the total number of frames in
-    /// the aseprite file being processed.
+    ///     Thrown if the <see cref="FrameIndex"/> property is less than zero or is greater than or equal to the total 
+    ///     number of <see cref="AsepriteFrame"/> elements in the <see cref="AsepriteFile"/> being processed.
     /// </exception>
     public override ContentProcessorResult<RawSprite> Process(ContentImporterResult content, ContentProcessorContext context)
     {

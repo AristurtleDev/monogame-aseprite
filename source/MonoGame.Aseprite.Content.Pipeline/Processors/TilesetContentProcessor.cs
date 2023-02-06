@@ -24,35 +24,40 @@ SOFTWARE.
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
-/// Defines a content processor that processes a raw tileset from an aseprite file.
+///     Defines a content processor that processes a <see cref="RawTileset"/> from an aseprite file that was imported.
 /// </summary>
 [ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
 internal sealed class TilesetContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<RawTileset>>
 {
     /// <summary>
-    /// Gets or Sets the name of the tileset to processes from the aseprite file.
+    ///     Gets or Sets the name of the <see cref="AsepriteTileset"/> to processes from the <see cref="AsepriteFile"/>.
     /// </summary>
     [DisplayName("Tileset Name")]
     public string TilesetName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Processes a raw tileset from an aseprite file.
+    ///     Processes a <see cref="RawTileset"/> from the contents of an <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="content">The result of the content importer.</param>
-    /// <param name="context">
-    /// The content processor context that provides contextual information about the content being
-    /// processed.
+    /// <param name="content">
+    ///     The <see cref="ContentImporterResult"/> from the import process.
     /// </param>
-    /// <returns>The content processor result created by this method..</returns>
+    /// <param name="context">
+    ///     The content processor context that provides contextual information about the content being processed.
+    /// </param>
+    /// <returns>
+    ///     A new <see cref="ContentProcessorResult{T}"/> containing the <see cref="RawTileset"/> created by this 
+    ///     method.
+    /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the aseprite file being processes does not contain an tileset with the name specified for the
-    /// the TilesetName property.
+    ///     Thrown if the given <see cref="AsepriteFile"/> does not contain an <see cref="AsepriteTileset"/> element 
+    ///     with the name specified in the <see cref="TilesetName"/> property.
     /// </exception>
     public override ContentProcessorResult<RawTileset> Process(ContentImporterResult content, ContentProcessorContext context)
     {

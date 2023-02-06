@@ -23,7 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 /// <summary>
-/// Defines the result content importer.
+///     Defines the result of the content importer.
 /// </summary>
 public sealed class ContentImporterResult
 {
