@@ -59,6 +59,48 @@ public class TextureRegion
     /// <param name="texture">
     ///     The source texture image this region is from.
     /// </param>
+    /// <param name="x">
+    ///     The x-coordinate location within the source texture of the upper-left corner of this region.
+    /// </param>
+    /// <param name="y">
+    ///     The y-coordinate location within the source texture of the upper-left corner of this region.
+    /// </param>
+    /// <param name="width">
+    ///     The width, in pixels, of this region.
+    /// </param>
+    /// <param name="height">
+    ///     The height, in pixels, of this region.
+    /// </param>
+    public TextureRegion(string name, Texture2D texture, int x, int y, int width, int height)
+        : this(name, texture, new Rectangle(x, y, width, height)) { }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="TextureRegion"/> class.
+    /// </summary>
+    /// <param name="name">
+    ///     The name to assign the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="texture">
+    ///     The source texture image this region is from.
+    /// </param>
+    /// <param name="location">
+    ///     The x- and y-coordinate location within the source texture of the upper-left corner of this region.
+    /// </param>
+    /// <param name="size">
+    ///     The width and height extents, in pixels, to of this region.
+    /// </param>
+    public TextureRegion(string name, Texture2D texture, Point location, Point size)
+        : this(name, texture, new Rectangle(location, size)) { }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="TextureRegion"/> class.
+    /// </summary>
+    /// <param name="name">
+    ///     The name to assign the <see cref="TextureRegion"/>.
+    /// </param>
+    /// <param name="texture">
+    ///     The source texture image this region is from.
+    /// </param>
     /// <param name="bounds">
     ///     The rectangular bounds of this region within the source texture.
     /// </param>
