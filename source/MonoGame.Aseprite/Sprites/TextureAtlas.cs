@@ -423,6 +423,99 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     }
 
     /// <summary>
+    ///     Creates a new <see cref="Sprite"/> from the <see cref="TextureRegion"/> at the specified index in this
+    ///     <see cref="TextureAtlas"/>.
+    /// </summary>
+    /// <param name="spriteName">
+    ///     The name to assign the <see cref="Sprite"/> that is created.
+    /// </param>
+    /// <param name="regionIndex">
+    ///     The index of the <see cref="TextureRegion"/> element in this <see cref="TextureAtlas"/> assign the 
+    ///     <see cref="Sprite"/> that is created.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Sprite"/> that is created by this method.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
+    ///     <see cref="TextureRegion"/> elements in this <see cref="TextureAtlas"/>.
+    /// </exception>
+    public Sprite CreateSprite(string spriteName, int regionIndex)
+    {
+        TextureRegion region = GetRegion(regionIndex);
+        Sprite sprite = new(spriteName, region);
+        return sprite;
+    }
+
+    /// <summary>
+    ///     Creates a new <see cref="Sprite"/> from the <see cref="TextureRegion"/> at the specified index in this
+    ///     <see cref="TextureAtlas"/>.
+    /// </summary>
+    /// <param name="regionIndex">
+    ///     The index of the <see cref="TextureRegion"/> element to assign the <see cref="Sprite"/> that is created.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Sprite"/> that is created by this method.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
+    ///     <see cref="TextureRegion"/> elements in this <see cref="TextureAtlas"/>.
+    /// </exception>
+    public Sprite CreateSprite(int regionIndex)
+    {
+        TextureRegion region = GetRegion(regionIndex);
+        Sprite sprite = new(region.Name, region);
+        return sprite;
+    }
+
+    /// <summary>
+    ///     Creates a new <see cref="Sprite"/> from the <see cref="TextureRegion"/>  with the specified name in this
+    ///     <see cref="TextureAtlas"/>.
+    /// </summary>
+    /// <param name="spriteName">
+    ///     The name to assign the <see cref="Sprite"/> that is created.
+    /// </param>
+    /// <param name="regionName">
+    ///     The name of the <see cref="TextureRegion"/> element in this <see cref="TextureAtlas"/> assign the 
+    ///     <see cref="Sprite"/> that is created.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Sprite"/> that is created by this method.
+    /// </returns>
+    /// <exception cref="KeyNotFoundException">
+    ///     Thrown if this <see cref="TextureAtlas"/> does not contain a <see cref="TextureRegion"/> with the name 
+    ///     specified.
+    /// </exception>
+    public Sprite CreateSprite(string spriteName, string regionName)
+    {
+        TextureRegion region = GetRegion(regionName);
+        Sprite sprite = new(spriteName, region);
+        return sprite;
+    }
+
+    /// <summary>
+    ///     Creates a new <see cref="Sprite"/> from the <see cref="TextureRegion"/> with the specified name in this
+    ///     <see cref="TextureAtlas"/>.
+    /// </summary>
+    /// <param name="regionName">
+    ///     The name of the <see cref="TextureRegion"/> element in this <see cref="TextureAtlas"/> assign the 
+    ///     <see cref="Sprite"/> that is created.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="Sprite"/> that is created by this method.
+    /// </returns>
+    /// <exception cref="KeyNotFoundException">
+    ///     Thrown if this <see cref="TextureAtlas"/> does not contain a <see cref="TextureRegion"/> with the name 
+    ///     specified.
+    /// </exception>
+    public Sprite CreateSprite(string regionName)
+    {
+        TextureRegion region = GetRegion(regionName);
+        Sprite sprite = new(region.Name, region);
+        return sprite;
+    }
+
+    /// <summary>
     ///     Removes all <see cref="TextureRegion"/> elements from this <see cref="TextureAtlas"/>.
     /// </summary>
     public void Clear()

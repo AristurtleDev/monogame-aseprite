@@ -30,8 +30,6 @@ namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 [ContentTypeWriter]
 internal sealed class AsepriteFileContentTypeWRiter : ContentTypeWriter<ContentProcessorResult<byte[]>>
 {
-    public object AsepriteFileWriter { get; private set; }
-
     protected override void Write(ContentWriter writer, ContentProcessorResult<byte[]> content) =>
         writer.Write(content.Data);
 
@@ -58,5 +56,5 @@ internal sealed class AsepriteFileContentTypeWRiter : ContentTypeWriter<ContentP
     ///     The assembly qualified name of the runtime loader.
     /// </returns>
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Reader.AsepriteFileTypeReader, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Content.Pipeline.Reader.AsepriteFileContentTypeReader, MonoGame.Aseprite";
 }

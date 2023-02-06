@@ -31,29 +31,15 @@
 /processor:SpriteSheetContentProcessor
 /processorParam:OnlyVisibleLayers=True
 /processorParam:IncludeBackgroundLayer=False
+/processorParam:IncludeTilemapLayers=True
 /processorParam:MergeDuplicateFrames=True
 /processorParam:BorderPadding=0
 /processorParam:Spacing=0
 /processorParam:InnerPadding=10
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipMaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizePowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
 /build:adventurer.aseprite
 
 #begin townmap.aseprite
 /importer:AsepriteFileImporter
-/processor:TilesetContentProcessor
-/processorParam:TilesetName=town
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipMaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizePowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
+/processor:AsepriteFileContentProcessor
 /build:townmap.aseprite
 

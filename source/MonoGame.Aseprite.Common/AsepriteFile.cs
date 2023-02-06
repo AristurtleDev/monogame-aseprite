@@ -135,6 +135,7 @@ public sealed class AsepriteFile
         _tilesets = tilesets;
         UserData = userData;
     }
+
     /// <summary>
     ///     Gets the <see cref="AsepriteFrame"/> at the specified index in this <see cref="AsepriteFile"/>.
     /// </summary>
@@ -186,6 +187,121 @@ public sealed class AsepriteFile
         }
 
         located = _frames[frameIndex];
+        return located is not null;
+    }
+
+    /// <summary>
+    ///     Gets the <see cref="AsepriteLayer"/> element at the specified index in this <see cref="AsepriteFile"/>.
+    /// </summary>
+    /// <param name="layerIndex">
+    ///     The index of the <see cref="AsepriteLayer"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteLayer"/> element located.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
+    ///     <see cref="AsepriteLayer"/> elements in this <see cref="AsepriteFile"/>.
+    /// </exception>
+    public AsepriteLayer GetLayer(int layerIndex)
+    {
+        if (layerIndex < 0 || layerIndex >= LayerCount)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+
+        return _layers[layerIndex];
+    }
+
+    /// <summary>
+    ///     Gets the <see cref="AsepriteLayer"/> element with the specified name from this <see cref="AsepriteFile"/>.
+    /// </summary>
+    /// <param name="layerName">
+    ///     The name of the <see cref="AsepriteLayer"/> element to locate.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteLayer"/> element located.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if this <see cref="AsepriteFile"/> does not contain an <see cref="AsepriteLayer"/> element with the 
+    ///     specified name.
+    /// </exception>
+    public AsepriteLayer GetLayer(string layerName)
+    {
+        List<string> layersFound = new();
+
+        for (int i = 0; i < _layers.Length; i++)
+        {
+            AsepriteLayer aseLayer = _layers[i];
+            layersFound.Add($"'{aseLayer.Name}'");
+
+            if (aseLayer.Name == layerName)
+            {
+                return aseLayer;
+            }
+        }
+
+        InvalidOperationException ex = new($"No aseprite layer element found with the name '{layerName}' in this aseprite file.");
+        ex.Data.Add(nameof(layersFound), layersFound);
+        throw ex;
+    }
+
+    /// <summary>
+    ///     Gets the <see cref="AsepriteLayer"/> element at the specified index from this <see cref="AsepriteFile"/>.
+    /// </summary>
+    /// <param name="layerIndex">
+    ///     The index of the <see cref="AsepriteLayer"/> element to locate
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteLayer"/> element located;
+    ///     otherwise, <see langword="null"/>.</param>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="AsepriteLayer"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this index specified is less than 
+    ///     zero or is greater than or equal to the total number of <see cref="AsepriteLayer"/> elements in this
+    ///     <see cref="AsepriteFile"/>.
+    /// </returns>
+    public bool TryGetLayer(int layerIndex, [NotNullWhen(true)] out AsepriteLayer? located)
+    {
+        located = default;
+
+        if (layerIndex < 0 || layerIndex >= LayerCount)
+        {
+            return false;
+        }
+
+        located = _layers[layerIndex];
+        return located is not null;
+    }
+
+    /// <summary>
+    ///     Gets the <see cref="AsepriteLayer"/> element with the specified name from this <see cref="AsepriteFile"/>.
+    /// </summary>
+    /// <param name="layerName">
+    ///     The name of the <see cref="AsepriteLayer"/> element to locate.
+    /// </param>
+    /// <param name="located">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="AsepriteLayer"/> element located; 
+    ///     otherwise, <see langword="null"/>.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="AsepriteLayer"/> element was located; otherwise, 
+    ///     <see langword="false"/>.  This method returns <see langword="false"/> if this <see cref="AsepriteFile"/> 
+    ///     does not contain an <see cref="AsepriteLayer"/> element with the specified name.
+    /// </returns>
+    public bool TryGetLayer(string layerName, [NotNullWhen(true)] out AsepriteLayer? located)
+    {
+        located = default;
+
+        for (int i = 0; i < _layers.Length; i++)
+        {
+            if (_layers[i].Name == layerName)
+            {
+                located = _layers[i];
+                break;
+            }
+        }
+
         return located is not null;
     }
 
