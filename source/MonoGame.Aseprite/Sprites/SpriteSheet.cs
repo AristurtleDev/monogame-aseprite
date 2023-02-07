@@ -257,7 +257,7 @@ public sealed class SpriteSheet
     ///     <see langword="true"/> if this <see cref="SpriteSheet"/> contains an <see cref="AnimationTag"/> with the 
     ///     specified name; otherwise, <see langword="false"/>.
     /// </returns>
-    public bool ContainsAnimationCycle(string name) => _animationTagLookup.ContainsKey(name);
+    public bool ContainsAnimationTag(string name) => _animationTagLookup.ContainsKey(name);
 
     /// <summary>
     ///     Removes the <see cref="AnimationTag"/> element with the specified name from this <see cref="SpriteSheet"/>.
@@ -271,7 +271,7 @@ public sealed class SpriteSheet
     ///     if this <see cref="SpriteSheet"/> does not contain an <see cref="AnimationTag"/> element with the specified
     ///     name.
     /// </returns>
-    public bool RemoveAnimationCycle(string name) => _animationTagLookup.Remove(name);
+    public bool RemoveAnimationTag(string name) => _animationTagLookup.Remove(name);
 
     /// <summary>
     ///     Creates a new <see cref="AnimatedSprite"/> using the <see cref="AnimationTag"/> element with the specified
