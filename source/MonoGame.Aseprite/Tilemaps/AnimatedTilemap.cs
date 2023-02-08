@@ -557,6 +557,83 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     public void Clear() => _frames.Clear();
 
     /// <summary>
+    ///     Draws this <see cref="AnimatedTilemap"/> using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
+    ///     <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render this <see cref="AnimatedTilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering this <see cref="AnimatedTilemap"/>.
+    /// </param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color) =>
+        Draw(spriteBatch, position, color, Vector2.One, 0.0f);
+
+    /// <summary>
+    ///     Draws this <see cref="AnimatedTilemap"/> using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
+    ///     <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render this <see cref="AnimatedTilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering this <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering this <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering this <see cref="AnimatedTilemap"/>.
+    /// </param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float scale, float layerDepth) =>
+        Draw(spriteBatch, position, color, new Vector2(scale, scale), layerDepth);
+
+    /// <summary>
+    ///     Draws this <see cref="AnimatedTilemap"/> using the 
+    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
+    /// </summary>
+    /// <param name="spriteBatch">
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    ///     <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="animatedTilemap">
+    ///     The <see cref="AnimatedTilemap"/> to draw.
+    /// </param>
+    /// <param name="position">
+    ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.
+    /// </param>
+    /// <param name="color">
+    ///     The color mask to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="scale">
+    ///     The amount of scaling to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
+    /// <param name="layerDepth">
+    ///     The layer depth to apply when rendering the <see cref="AnimatedTilemap"/>.
+    /// </param>
+    public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap animatedTilemap, Vector2 position, Color color, Vector2 scale, float layerDepth)
+    {
+        AnimatedTilemapFrame frame = animatedTilemap.CurrentFrame;
+
+        foreach (TilemapLayer layer in frame)
+        {
+            if (layer.IsVisible)
+            {
+                Vector2 actualPosition = position + (layer.Offset * scale);
+                Draw(spriteBatch, layer, actualPosition, color, scale, layerDepth);
+            }
+        }
+    }
+
+    /// <summary>
     ///     Returns an enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
     ///     <see cref="AnimatedTilemap"/>.  The order of elements in the enumeration is from first frame to last frame.
     /// </summary>

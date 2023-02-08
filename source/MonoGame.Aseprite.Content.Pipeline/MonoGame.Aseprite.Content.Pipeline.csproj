@@ -5,6 +5,40 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- dotnet pack Nuget Config stuff -->
+    <PropertyGroup>
+        <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
+        <Version>4.0.0-prerelease</Version>
+        <AssemblyVersion>4.0.0-prerelease</AssemblyVersion>
+        <FileVersion>4.0.0-prerelease</FileVersion>
+        <Authors>Christopher Whitley</Authors>
+        <Company>Aristurtle</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright (c) 2018 - 2023 Christoipher Whitley</Copyright>
+        <PackageProjectUrl>https://monogameaseprite.net</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryBranch>stable</RepositoryBranch>
+        <PackageTags>
+            MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
+        <PackageReleaseNotes>Version 4.0.0-prerelease</PackageReleaseNotes>
+        <Description>
+            MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds extension
+            support for the MonoGame MGCB Editor to import and processes Aseprite (.aseprite/.ase) files to be used in 
+            a MonoGame project that is using the MonoGame.Aseprite library.
+        </Description>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <!-- Includes for the icons and README.md that are in the <PackageIcon> and <PackageReadMeFile> tags above -->
+    <ItemGroup>
+        <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
+        <None Include="..\..\.\.nuget\README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+    <!-- Nuget Package References -->
     <ItemGroup>
         <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
             <PrivateAssets>All</PrivateAssets>
@@ -14,6 +48,7 @@
         </PackageReference>
     </ItemGroup>
 
+    <!-- Local Project References -->
     <ItemGroup>
         <ProjectReference Include="..\MonoGame.Aseprite.Common\MonoGame.Aseprite.Common.csproj" />
     </ItemGroup>
