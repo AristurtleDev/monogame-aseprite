@@ -41,7 +41,7 @@ After adding the `MonoGame.Aseprite` NuGet package to your project, you will hav
 
 ### (Optional) MGCB Editor Setup
 
-Starting with `MonoGame.Aseprite` version 4.0, using the MGCB Editor (aka the Content Pipeline Tool) is no longer a requirement. However, `MonoGame.Aseprite` still supports the user of it if it is something the end user would like to do.
+Starting with `MonoGame.Aseprite` version 4.0, using the MGCB Editor (aka the Content Pipeline Tool) is no longer a requirement. However, `MonoGame.Aseprite` still supports the use of it if it is something the end user would like to do.
 
 You will need to first add the `MonoGame.Aseprite.Content.Pipeline` NuGet package to your project. You can do this in your IDE like before, or using the command line
 
@@ -63,10 +63,13 @@ This will not add any references or output any build items for your project. Ins
 
 Next, open your `Content.mgcb` file in the MGCB Editor and perform the following
 
-1. CLick the **Content** node in the **Project** panel.
+1. Click the **Content** node in the **Project** panel.
 2. In the **Properties** panel below it, scroll down to the bottom to find the **References** field, and click it to open the **Reference Editor** dialog window
 3. Click the **Add** button
-4. Find and add the `MonoGame.Aseprite.Content.Pipeline.dll` file. With default NuGet configs, this should have been downloaded to `%userprofile$\.nuget\packages\monogame-aseprite-content-pipeline\4.0.0\` on Windows and `~/.nuget/packages/monogame-aseprite-content-pipeline/4.0.0/` on Mac and Linux
+4. Find and add the `MonoGame.Aseprite.Content.Pipeline.dll` file. 
+    * By default, NuGet downloads the package to the following locations:
+        * Windows: `%userprofile%\.nuget\packages\monogame-aseprite-content-pipeline\4.0.0\` 
+        * Mac/Linux: `~/.nuget/packages/monogame-aseprite-content-pipeline/4.0.0/`
 
 After that you should be set to use the MGCB Editor extensions for importing and processing.
 
