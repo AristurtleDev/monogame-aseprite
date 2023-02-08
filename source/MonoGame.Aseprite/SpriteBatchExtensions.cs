@@ -200,7 +200,7 @@ public static class SpriteBatchExtensions
     ///     <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="animatedTilemap">
-    /// T   he <see cref="AnimatedTilemap"/> to draw.
+    ///     The <see cref="AnimatedTilemap"/> to draw.
     /// </param>
     /// <param name="position">
     ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.
@@ -219,7 +219,7 @@ public static class SpriteBatchExtensions
     ///     <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="animatedTilemap">
-    /// T   he <see cref="AnimatedTilemap"/> to draw.
+    ///     The <see cref="AnimatedTilemap"/> to draw.
     /// </param>
     /// <param name="position">
     ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.
