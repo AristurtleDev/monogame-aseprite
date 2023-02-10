@@ -8,33 +8,25 @@
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite</PackageId>
-        <Version>4.0.0-prerelease</Version>
-        <AssemblyVersion>4.0.0-prerelease</AssemblyVersion>
-        <FileVersion>4.0.0-prerelease</FileVersion>
-        <Authors>Christopher Whitley</Authors>
-        <Company>Aristurtle</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>Copyright (c) 2018 - 2023 Christoipher Whitley</Copyright>
         <PackageProjectUrl>https://monogameaseprite.net</PackageProjectUrl>
         <PackageIcon>icon.png</PackageIcon>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryBranch>stable</RepositoryBranch>
         <PackageTags>
-            MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
+            MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb
+        </PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>Version 4.0.0-prerelease</PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
             Aseprite (.asepirte/.ase) files.
         </Description>
-        <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
-    <!-- Includes for the icons and README.md that are in the <PackageIcon> and <PackageReadMeFile> tags above -->
+    <!-- Includes for the dotnet pack NuGet package generation. -->
     <ItemGroup>
         <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
         <None Include="..\..\.\.nuget\README.md" Pack="true" PackagePath="" />
+        <Content Include="..\MonoGame.Aseprite.Content.Pipeline\bin\Debug\net6.0\MonoGame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="\pipeline"/>
     </ItemGroup>
 
     <!-- Nuget Package References -->
@@ -48,6 +40,9 @@
     <!-- Local Project References -->
     <ItemGroup>
         <ProjectReference Include="..\MonoGame.Aseprite.Common\MonoGame.Aseprite.Common.csproj" />
+        <ProjectReference Include="..\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj">
+            <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+        </ProjectReference>
     </ItemGroup>
 
     <!-- Allow the test project to use internal types for testing -->
@@ -56,4 +51,10 @@
             <_Parameter1>MonoGame.Aseprite.Tests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
+
+    <!-- Warning Supressions -->
+    <PropertyGroup>
+        <!-- Supress warning about Pipeline dll not being in lib folder for NuGet -->
+        <NoWarn>NU5100</NoWarn>
+    </PropertyGroup>
 </Project>

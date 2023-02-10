@@ -619,19 +619,8 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// <param name="layerDepth">
     ///     The layer depth to apply when rendering the <see cref="AnimatedTilemap"/>.
     /// </param>
-    public static void Draw(this SpriteBatch spriteBatch, AnimatedTilemap animatedTilemap, Vector2 position, Color color, Vector2 scale, float layerDepth)
-    {
-        AnimatedTilemapFrame frame = animatedTilemap.CurrentFrame;
-
-        foreach (TilemapLayer layer in frame)
-        {
-            if (layer.IsVisible)
-            {
-                Vector2 actualPosition = position + (layer.Offset * scale);
-                Draw(spriteBatch, layer, actualPosition, color, scale, layerDepth);
-            }
-        }
-    }
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, Vector2 scale, float layerDepth) =>
+        spriteBatch.Draw(this, position, color, scale, layerDepth);
 
     /// <summary>
     ///     Returns an enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 

@@ -73,16 +73,6 @@ Next, open your `Content.mgcb` file in the MGCB Editor and perform the following
 
 After that you should be set to use the MGCB Editor extensions for importing and processing.
 
-MonoGame.Aseprite is distributed via NuGet as a NuGet package. It can be installed into your existing MonoGame game project using NuGet Package Manger in Visual Studio.
-
-**Package Manager CLI**
-`Install-Package MonoGame.Aseprite -Version 3.1.0`
-
-**.NET CLI**
-`dotnet add package MonoGame.Aseprite --version 3.1.0`
-
-Documentation has not been updated as of this moment, however, all MonoGame 3.8.1 users can use the **MonoGame 3.8** documentation for getting starting and installation information. This documentation can be found at [https://aristurtle.net/monogame-aseprite/getting-started/monogame38installation](https://aristurtle.net/monogame-aseprite/getting-started/monogame38installation).
-
 ## Example Usage
 
 The following are quick examples to get your started with using the `MonoGame.Aseprite` library. For full documentation and examples, please visit the documentation site at https://monogameaseprite.net
