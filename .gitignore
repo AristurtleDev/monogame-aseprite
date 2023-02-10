@@ -6,8 +6,10 @@
 coverage*.json
 coverage*.xml
 coverage*.info
+tools/
 
 .vscode/
 .DS_Store
 Thumbs.db
+
 
