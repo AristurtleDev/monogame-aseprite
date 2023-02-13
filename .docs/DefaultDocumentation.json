@@ -1,0 +1,14 @@
+{
+    "LogLevel": "Off",
+    "GeneratedAccessModifiers": "Public",
+    "IncludeUndocumentedItems": "false",
+    "GeneratedPages": "Types,Members",
+    "Markdown.IgnoreLineBreak": "true",
+    "Plugins": [
+        "../source/DefaultDocumentation.Plugin/bin/Debug/net6.0/DefaultDocumentation.Plugin.dll"
+    ],
+    "FileNameFactory": "Folder",
+    "Sections": [
+        "Default"
+    ]
+}

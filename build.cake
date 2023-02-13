@@ -4,6 +4,7 @@
 /// Arguments
 //////////////////////////////////////////////////////////////////////
 private string _target = Argument("target", "All");
+private bool _docs = HasArgument("docs");
 private bool _incrementBuild = HasArgument("increment-build");
 private string _outputDirectory = Argument("output-directory", "./Artifacts");
 private string _configuration = Argument("configuration", "Debug");
@@ -13,6 +14,7 @@ private bool _noClean = HasArgument("no-clean") ? true : false;
 //////////////////////////////////////////////////////////////////////
 /// Setup
 //////////////////////////////////////////////////////////////////////
+private readonly string _defaultDocPluginProjectPath = "./source/DefaultDocumentation.Plugin/DefaultDocumentation.Plugin.csproj";
 private readonly string _monogameAsepriteProjectPath = "./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj";
 private readonly string _monogameAsepriteCommonProjectPath = "./source/MonoGame.Aseprite.Common/MonoGame.Aseprite.Common.csproj";
 private readonly string _monogameAsepriteContentPipelineProjectPath = "./source/Monogame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj";
@@ -137,8 +139,95 @@ private void PackTask()
     DotNetPack(_monogameAsepriteProjectPath, settings);
 }
 
+private void MonoGameAsepriteDocTask()
+{
+    //  Turn on document generation for the project
+    XmlPoke(_monogameAsepriteProjectPath, "//GenerateDocumentationFile", "true");
+
+        DotNetRestore(_monogameAsepriteProjectPath);
+    
+
+    DotNetToolSettings settings = new();
+    settings.ArgumentCustomization = (builder) =>
+    {
+        builder.AppendSwitchQuoted("--AssemblyFilePath", $"./source/Monogame.Aseprite/bin/{_configuration}/net6.0/MonoGame.Aseprite.dll");
+        builder.AppendSwitchQuoted("--DocumentationFilePath", $"./source/MonoGame.Aseprite/bin/{_configuration}/net6.0/MonoGame.Aseprite.xml");
+        builder.AppendSwitchQuoted("--ProjectDirectoryPath", "./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj");
+        builder.AppendSwitchQuoted("--OutputDirectoryPath", "./Artifacts/Documentation/MonoGame.Aseprite");
+        builder.AppendSwitchQuoted("--ConfigurationFilePath", "./DefaultDocumentation.json");
+        builder.AppendSwitchQuoted("--AssemblyPageName", "MonoGame.Aseprite");
+
+        return builder;
+    };
+
+    DotNetTool("defaultdocumentation", settings);
+
+    //  Turn it back off now that we're done
+    XmlPoke(_monogameAsepriteProjectPath, "//GenerateDocumentationFile", "false");
+}
+
+
+private void MonoGameAsepriteCommonDocTask()
+{
+    //  Turn on document generation for the project
+    XmlPoke(_monogameAsepriteCommonProjectPath, "//GenerateDocumentationFile", "true");
+
+    DotNetToolSettings settings = new();
+    settings.ArgumentCustomization = (builder) =>
+    {
+        builder.AppendSwitchQuoted("--AssemblyFilePath", $"./source/Monogame.Aseprite.Common/bin/{_configuration}/net6.0/MonoGame.Aseprite.Common.dll");
+        builder.AppendSwitchQuoted("--DocumentationFilePath", $"./source/MonoGame.Aseprite.Common/bin/{_configuration}/net6.0/MonoGame.Aseprite.Common.xml");
+        builder.AppendSwitchQuoted("--ProjectDirectoryPath", "./source/MonoGame.Aseprite.Common/MonoGame.Aseprite.Common.csproj");
+        builder.AppendSwitchQuoted("--OutputDirectoryPath", "./Artifacts/Documentation/MonoGame.Aseprite.Common");
+        builder.AppendSwitchQuoted("--ConfigurationFilePath", "./DefaultDocumentation.json");
+        builder.AppendSwitchQuoted("--AssemblyPageName", "MonoGame.Aseprite.Common");
+
+        return builder;
+    };
+
+    DotNetTool("defaultdocumentation", settings);
+
+    //  Turn it back off now that we're done
+    XmlPoke(_monogameAsepriteCommonProjectPath, "//GenerateDocumentationFile", "false");
+}
+
+private void MonoGameAsepriteContentPipelineTask()
+{
+    //  Turn on document generation for the project
+    XmlPoke(_monogameAsepriteContentPipelineProjectPath, "//GenerateDocumentationFile", "true");
+
+    DotNetToolSettings settings = new();
+    settings.ArgumentCustomization = (builder) =>
+    {
+        builder.AppendSwitchQuoted("--AssemblyFilePath", $"./source/Monogame.Aseprite.Content.Pipeline/bin/{_configuration}/net6.0/MonoGame.Aseprite.Content.Pipeline.dll");
+        builder.AppendSwitchQuoted("--DocumentationFilePath", $"./source/MonoGame.Aseprite.Content.Pipeline/bin/{_configuration}/net6.0/MonoGame.Aseprite.Content.Pipeline.xml");
+        builder.AppendSwitchQuoted("--ProjectDirectoryPath", "./source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj");
+        builder.AppendSwitchQuoted("--OutputDirectoryPath", "./Artifacts/Documentation/MonoGame.Aseprite.Content.Pipeline");
+        builder.AppendSwitchQuoted("--ConfigurationFilePath", "./DefaultDocumentation.json");
+        builder.AppendSwitchQuoted("--AssemblyPageName", "MonoGame.Aseprite.Content.Pipeline");
+
+        return builder;
+    };
+
+    DotNetTool("defaultdocumentation", settings);
+
+    //  Turn it back off now that we're done
+    XmlPoke(_monogameAsepriteContentPipelineProjectPath, "//GenerateDocumentationFile", "false");
+}
+
 private void DocsTask()
 {
+    DotNetBuildSettings settings = new();
+    settings.MSBuildSettings = _dotnetMsBuildSettings;
+    settings.NoRestore = true;
+    settings.Configuration = _configuration;
+    DotNetBuild("./source/DefaultDocumentation.Plugin/DefaultDocumentation.Plugin.csproj", settings);
+
+    MonoGameAsepriteDocTask();
+    MonoGameAsepriteCommonDocTask();
+    MonoGameAsepriteContentPipelineTask();
+
+    /*
     //  Remove all existing documentation files
     CleanDirectory("./Artifacts/Documentation");
 
@@ -164,6 +253,7 @@ private void DocsTask()
     settings.NoRestore = true;
     settings.Configuration = _configuration;
 
+    DotNetBuild(_defaultDocPluginProjectPath, settings);
     DotNetBuild(_monogameAsepriteProjectPath, settings);
     DotNetBuild(_monogameAsepriteCommonProjectPath, settings);
     DotNetBuild(_monogameAsepriteContentPipelineProjectPath, settings);
@@ -178,7 +268,7 @@ private void DocsTask()
     foreach(string file in files)
     {
         string text = System.IO.File.ReadAllText(file);
-        text = text.Replace("&#129106;", "➡️", ignoreCase: true, culture: default);
+        text = text.Replace("&#129106;", "→", ignoreCase: true, culture: default);
         System.IO.File.WriteAllText(file, text);
     }
 
@@ -186,6 +276,7 @@ private void DocsTask()
     XmlPoke(_monogameAsepriteProjectPath, "//GenerateDocumentationFile", "false");
     XmlPoke(_monogameAsepriteCommonProjectPath, "//GenerateDocumentationFile", "false");
     XmlPoke(_monogameAsepriteContentPipelineProjectPath, "//GenerateDocumentationFile", "false");
+    */
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -224,6 +315,10 @@ Task("Pack")
 Does(PackTask);
 
 Task("Docs")
+.IsDependentOn("Clean")
+.IsDependentOn("Restore")
+.IsDependentOn("Build")
+.WithCriteria(_docs)
 .Description("Generates the Markdown documentation for each projects")
 .Does(DocsTask);
 
@@ -232,7 +327,8 @@ Task("All").IsDependentOn("Clean")
            .IsDependentOn("Restore")
            .IsDependentOn("Build")
            .IsDependentOn("Test")
-           .IsDependentOn("Pack");
+           .IsDependentOn("Pack")
+           .IsDependentOn("Docs");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

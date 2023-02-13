@@ -7,6 +7,12 @@
       "commands": [
         "dotnet-cake"
       ]
+    },
+    "defaultdocumentation.console": {
+      "version": "0.8.2",
+      "commands": [
+        "defaultdocumentation"
+      ]
     }
   }
 }

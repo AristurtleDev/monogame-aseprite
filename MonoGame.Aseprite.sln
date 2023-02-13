@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Common", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Common.Tests", "tests\MonoGame.Aseprite.Common.Tests\MonoGame.Aseprite.Common.Tests.csproj", "{CF29820D-DE5F-438E-BC50-820C7A54D549}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultDocumentation.Plugin", "source\DefaultDocumentation.Plugin\DefaultDocumentation.Plugin.csproj", "{E8E0A961-74FE-4BB8-AE4D-F17569892EAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,11 +42,16 @@ Global
 		{CF29820D-DE5F-438E-BC50-820C7A54D549}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF29820D-DE5F-438E-BC50-820C7A54D549}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF29820D-DE5F-438E-BC50-820C7A54D549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8E0A961-74FE-4BB8-AE4D-F17569892EAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8E0A961-74FE-4BB8-AE4D-F17569892EAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8E0A961-74FE-4BB8-AE4D-F17569892EAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8E0A961-74FE-4BB8-AE4D-F17569892EAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7BF6FFCF-7EFD-4DBD-BC6A-66100BD63C47} = {561A08C7-8C1C-4CEA-AFFF-61051C64B04A}
 		{68AF76C9-C0FC-404E-91E7-8AF9DAA56F0F} = {561A08C7-8C1C-4CEA-AFFF-61051C64B04A}
 		{41D49397-5588-4E92-92D9-F3434EE6241C} = {561A08C7-8C1C-4CEA-AFFF-61051C64B04A}
 		{CF29820D-DE5F-438E-BC50-820C7A54D549} = {CDB61325-3DC8-4E61-99CA-22A54A607CAE}
+		{E8E0A961-74FE-4BB8-AE4D-F17569892EAB} = {561A08C7-8C1C-4CEA-AFFF-61051C64B04A}
 	EndGlobalSection
 EndGlobal

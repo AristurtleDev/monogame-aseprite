@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DefaultDocumentation" Version="0.8.2">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
       <!-- <PrivateAssets>All</PrivateAssets> -->
     </PackageReference>
