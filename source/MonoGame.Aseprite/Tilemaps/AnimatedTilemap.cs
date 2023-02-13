@@ -53,7 +53,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">
+    /// <param name="frameIndex">
     ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
     /// </param>
     /// <returns>
@@ -64,7 +64,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of 
     ///     <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
     /// </exception>
-    public AnimatedTilemapFrame this[int index] => GetFrame(index);
+    public AnimatedTilemapFrame this[int frameIndex] => GetFrame(frameIndex);
 
     /// <summary>
     ///     Gets a value that indicates if this <see cref="AnimatedTilemap"/> is currently paused.
@@ -478,7 +478,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
     ///     <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">
+    /// <param name="frameIndex">
     ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
     /// </param>
     /// <returns>
@@ -488,14 +488,14 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of 
     ///     <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
     /// </exception>
-    public AnimatedTilemapFrame GetFrame(int index)
+    public AnimatedTilemapFrame GetFrame(int frameIndex)
     {
-        if (index < 0 || index >= frameCount)
+        if (frameIndex < 0 || frameIndex >= frameCount)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} cannot be less than zero or greater than or equal to the total number of animated tilemap frame elements in this animated tilemap.");
+            throw new ArgumentOutOfRangeException(nameof(frameIndex), $"{nameof(frameIndex)} cannot be less than zero or greater than or equal to the total number of animated tilemap frame elements in this animated tilemap.");
         }
 
-        return _frames[index];
+        return _frames[frameIndex];
     }
 
     /// <summary>
@@ -556,6 +556,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// </summary>
     public void Clear() => _frames.Clear();
 
+
     /// <summary>
     ///     Draws this <see cref="AnimatedTilemap"/> using the 
     ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
@@ -603,9 +604,6 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// <param name="spriteBatch">
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
     ///     <see cref="AnimatedTilemap"/>.
-    /// </param>
-    /// <param name="animatedTilemap">
-    ///     The <see cref="AnimatedTilemap"/> to draw.
     /// </param>
     /// <param name="position">
     ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.

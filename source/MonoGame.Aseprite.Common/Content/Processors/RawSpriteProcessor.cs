@@ -65,34 +65,63 @@ public static class RawSpriteProcessor
     public static RawSprite Process(AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
         AsepriteFrame aseFrame = aseFile.GetFrame(aseFrameIndex);
-        return Process(aseFrame, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
-    }
 
-    /// <summary>
-    ///     Processes a <see cref="RawSprite"/> from the given <see cref="AsepriteFrame"/>.
-    /// </summary>
-    /// <param name="aseFrame">
-    ///     The <see cref="AsepriteFrame"/> to process.
-    /// </param>
-    /// <param name="onlyVisibleLayers">
-    ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should 
-    ///     be included.
-    /// </param>
-    /// <param name="includeBackgroundLayer">
-    ///     Indicates if <see cref="AsepriteCel"/> elements on an <see cref="AsepriteLayer"/> marked as the background 
-    ///     layer should be included.
-    /// </param>
-    /// <param name="includeTilemapLayers">
-    ///     Indicates if <see cref="AsepriteCel"/> elements on a <see cref="AsepriteTilemapLayer"/> should be included.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="RawSprite"/> created by this method.
-    /// </returns>
-    internal static RawSprite Process(AsepriteFrame aseFrame, bool onlyVisibleLayers, bool includeBackgroundLayer, bool includeTilemapLayers)
-    {
         Color[] pixels = aseFrame.FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
         RawTexture rawTexture = new(aseFrame.Name, pixels, aseFrame.Width, aseFrame.Height);
-        RawSprite rawSprite = new(aseFrame.Name, rawTexture);
-        return rawSprite;
+
+        RawSlice[] slices = ProcessSlices(aseFrameIndex, aseFile.Slices);
+
+        return new(aseFrame.Name, rawTexture, slices);
+    }
+
+    private static RawSlice[] ProcessSlices(int frameIndex, ReadOnlySpan<AsepriteSlice> slices)
+    {
+        List<RawSlice> result = new();
+        HashSet<string> sliceNameCheck = new();
+
+        for (int s = 0; s < slices.Length; s++)
+        {
+            AsepriteSlice slice = slices[s];
+            ReadOnlySpan<AsepriteSliceKey> keys = slice.Keys;
+
+            //  Traverse keys backwards until we find a match for the frame index
+            for (int k = keys.Length - 1; k >= 0; k--)
+            {
+                AsepriteSliceKey key = keys[k];
+
+                if (key.FrameIndex > frameIndex)
+                {
+                    continue;
+                }
+
+                string name = slice.Name;
+
+                if (sliceNameCheck.Contains(name))
+                {
+                    throw new InvalidOperationException($"Duplicate slice name '{name}' found. Slices must have unique names");
+                }
+
+                Rectangle bounds = key.Bounds;
+                Color color = slice.UserData.Color.GetValueOrDefault();
+                Vector2 origin = key.Pivot.GetValueOrDefault().ToVector2();
+
+                RawSlice rawSlice;
+
+                if (key.IsNinePatch)
+                {
+                    rawSlice = new RawNinePatchSlice(name, bounds, key.CenterBounds.GetValueOrDefault(), origin, color);
+                }
+                else
+                {
+                    rawSlice = new RawSlice(name, bounds, origin, color);
+                }
+
+                result.Add(rawSlice);
+                sliceNameCheck.Add(name);
+                break;
+            }
+        }
+
+        return result.ToArray();
     }
 }

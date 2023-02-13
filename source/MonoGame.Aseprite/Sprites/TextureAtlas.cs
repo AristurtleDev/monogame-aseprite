@@ -241,7 +241,7 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of
-    ///     <see cref="TextureRegion/"> elements in this <see cref="TextureAtlas"/>.
+    ///     <see cref="TextureRegion"/> elements in this <see cref="TextureAtlas"/>.
     /// </exception>
     public TextureRegion GetRegion(int index)
     {
@@ -571,7 +571,22 @@ public class TextureAtlas : IEnumerable<TextureRegion>
 
         for (int i = 0; i < rawTextureRegions.Length; i++)
         {
-            atlas.CreateRegion(rawTextureRegions[i].Name, rawTextureRegions[i].Bounds);
+            RawTextureRegion rawTextureRegion = rawTextureRegions[i];
+            TextureRegion textureRegion = atlas.CreateRegion(rawTextureRegion.Name, rawTextureRegion.Bounds);
+
+            for (int s = 0; s < rawTextureRegion.Slices.Length; s++)
+            {
+                RawSlice slice = rawTextureRegion.Slices[i];
+
+                if (slice is RawNinePatchSlice ninePatch)
+                {
+                    _ = textureRegion.CreateNinePatchSlice(ninePatch.Name, ninePatch.Bounds, ninePatch.CenterBounds, ninePatch.Origin, ninePatch.Color);
+                }
+                else
+                {
+                    _ = textureRegion.CreateSlice(slice.Name, slice.Bounds, slice.Origin, slice.Color);
+                }
+            }
         }
 
         return atlas;

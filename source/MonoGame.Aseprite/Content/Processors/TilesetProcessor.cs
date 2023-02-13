@@ -87,7 +87,7 @@ public static class TilesetProcessor
     }
 
     /// <summary>
-    ///     Processes a <see cref="Tileset"/> from an <see cref="AserpiteTileset"/>.
+    ///     Processes a <see cref="Tileset"/> from an <see cref="AsepriteTileset"/>.
     /// </summary>
     /// <param name="device">
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.

@@ -51,7 +51,7 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     /// <summary>
     ///     Gets the <see cref="TilemapLayer"/> element at the specified index in this <see cref="Tilemap"/>.
     /// </summary>
-    /// <param name="index">
+    /// <param name="layerIndex">
     ///     The index of the <see cref="TilemapLayer"/> element to locate.
     /// </param>
     /// <returns>
@@ -66,7 +66,7 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     /// <summary>
     ///     Gets the <see cref="TilemapLayer"/> element with the specified name in this <see cref="Tilemap"/>.
     /// </summary>
-    /// <param name="name">
+    /// <param name="layerName">
     ///     The name of the <see cref="TilemapLayer"/> element to locate.
     /// </param>
     /// <returns>
@@ -124,8 +124,8 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
     ///     Adds the given <see cref="TilemapLayer"/> element to this <see cref="Tilemap"/>.
     /// </summary>
     /// <param name="layer">
-    ///     The <see cref="TilemapLayer"/> element to add.<
-    /// /param>
+    ///     The <see cref="TilemapLayer"/> element to add.
+    /// </param>
     /// <exception cref="InvalidOperationException">
     ///     Thrown if this <see cref="Tilemap"/> already contains a <see cref="TilemapLayer"/> element with the same 
     ///     name as the <see cref="TilemapLayer"/> element given.

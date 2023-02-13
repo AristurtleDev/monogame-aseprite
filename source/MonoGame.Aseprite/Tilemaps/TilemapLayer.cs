@@ -548,9 +548,6 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
     ///     <see cref="TilemapLayer"/>.
     /// </param>
-    /// <param name="layer">
-    /// The <see cref="TilemapLayer"/> to draw.
-    /// </param>
     /// <param name="position">
     ///     The x- and y-coordinate location to draw this <see cref="TilemapLayer"/> at.  Drawing this 
     ///     <see cref="TilemapLayer"/> using this method ignores the <see cref="TilemapLayer.Offset"/>.

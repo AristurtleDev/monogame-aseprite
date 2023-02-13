@@ -51,7 +51,7 @@ public sealed class AnimatedTilemapFrame : IEnumerable<TilemapLayer>
     ///     Gets the <see cref="TilemapLayer"/> element at the specified index in this 
     ///     <see cref="AnimatedTilemapFrame"/>.
     /// </summary>
-    /// <param name="index">
+    /// <param name="layerIndex">
     ///     The index of the <see cref="TilemapLayer"/> element to locate.
     /// </param>
     /// <returns>
@@ -67,7 +67,7 @@ public sealed class AnimatedTilemapFrame : IEnumerable<TilemapLayer>
     ///     Gets the <see cref="TilemapLayer"/> element with the specified name in this 
     ///     <see cref="AnimatedTilemapFrame"/>.
     /// </summary>
-    /// <param name="name">
+    /// <param name="layerName">
     ///     The name of the <see cref="TilemapLayer"/> element to locate.
     /// </param>
     /// <returns>

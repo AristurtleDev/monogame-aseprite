@@ -173,7 +173,7 @@ public sealed class SpriteSheet
     ///     The name to assign the <see cref="AnimationTag"/> that is created by this method.  This name must be unique
     ///     across all <see cref="AnimationTag"/> elements defined in this <see cref="SpriteSheet"/>.
     /// </param>
-    /// <param name="build">
+    /// <param name="builder">
     ///     An <see cref="Action"/> method used to build the <see cref="AnimationTag"/> with an 
     ///     <see cref="AnimationTagBuilder"/>.
     /// </param>

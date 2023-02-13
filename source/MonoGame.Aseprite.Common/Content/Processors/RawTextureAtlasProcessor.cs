@@ -23,6 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Processors;
@@ -119,7 +120,7 @@ public static class RawTextureAtlasProcessor
             if (mergeDuplicates && duplicateMap.ContainsKey(i))
             {
                 RawTextureRegion original = originalToDuplicateLookup[duplicateMap[i]];
-                RawTextureRegion duplicate = new($"{aseFile.Name} {i}", original.Bounds);
+                RawTextureRegion duplicate = new($"{aseFile.Name} {i}", original.Bounds, GetSlicesForFrame(i, aseFile.Slices));
                 regions[i] = duplicate;
                 offset++;
                 continue;
@@ -159,12 +160,63 @@ public static class RawTextureAtlasProcessor
             }
 
             Rectangle bounds = new(x, y, frameWidth, frameHeight);
-            RawTextureRegion rawTextureRegion = new($"{aseFile.Name} {i}", bounds);
+            RawTextureRegion rawTextureRegion = new($"{aseFile.Name} {i}", bounds, GetSlicesForFrame(i, aseFile.Slices));
             regions[i] = rawTextureRegion;
             originalToDuplicateLookup.Add(i, rawTextureRegion);
         }
 
         RawTexture rawTexture = new(aseFile.Name, imagePixels, imageWidth, imageHeight);
         return new(aseFile.Name, rawTexture, regions);
+    }
+
+    private static RawSlice[] GetSlicesForFrame(int frameIndex, ReadOnlySpan<AsepriteSlice> slices)
+    {
+        List<RawSlice> result = new();
+        HashSet<string> sliceNameCheck = new();
+
+        for (int s = 0; s < slices.Length; s++)
+        {
+            AsepriteSlice slice = slices[s];
+            ReadOnlySpan<AsepriteSliceKey> keys = slice.Keys;
+
+            //  Traverse keys backwards until we find a match for the frame index
+            for (int k = keys.Length - 1; k >= 0; k--)
+            {
+                AsepriteSliceKey key = keys[k];
+
+                if (key.FrameIndex > frameIndex)
+                {
+                    continue;
+                }
+
+                string name = slice.Name;
+
+                if (sliceNameCheck.Contains(name))
+                {
+                    throw new InvalidOperationException($"Duplicate slice name '{name}' found. Slices must have unique names");
+                }
+
+                Rectangle bounds = key.Bounds;
+                Color color = slice.UserData.Color.GetValueOrDefault();
+                Vector2 origin = key.Pivot.GetValueOrDefault().ToVector2();
+
+                RawSlice rawSlice;
+
+                if (key.IsNinePatch)
+                {
+                    rawSlice = new RawNinePatchSlice(name, bounds, key.CenterBounds.GetValueOrDefault(), origin, color);
+                }
+                else
+                {
+                    rawSlice = new RawSlice(name, bounds, origin, color);
+                }
+
+                result.Add(rawSlice);
+                sliceNameCheck.Add(name);
+                break;
+            }
+        }
+
+        return result.ToArray();
     }
 }

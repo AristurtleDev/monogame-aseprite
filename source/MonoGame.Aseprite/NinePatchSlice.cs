@@ -22,33 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using MonoGame.Aseprite.RawTypes;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Writers;
+namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a writer that writes the contents of a <see cref="RawTextureAtlas"/> to a file.
+///     Defines a <see cref="Slice"/> with center bounds.
 /// </summary>
-public static class RawTextureAtlasWriter
+public sealed class NinePatchSlice : Slice
 {
     /// <summary>
-    ///     Writes the contents of the <see cref="RawTextureAtlas"/> given to the file at the path specified.
+    ///     Gets the rectangular bounds of the center rectangle for this <see cref="NinePatchSlice"/>,
+    ///     relative to it's bounds.
     /// </summary>
-    /// <param name="path">
-    ///     The path and name of the file to write the contents of the <see cref="RawTextureAtlas"/> to.  If no file 
-    ///     exists at this path,  one will be created.  If a file already exists, it will be overwritten.
-    /// </param>
-    /// <param name="rawTextureAtlas">The <see cref="RawTextureAtlas"/> to write.</param>
-    public static void Write(string path, RawTextureAtlas rawTextureAtlas)
-    {
-        Stream stream = File.Create(path);
-        BinaryWriter writer = new(stream);
-        Write(writer, rawTextureAtlas);
-    }
+    public Rectangle CenterBounds { get; }
 
-    internal static void Write(BinaryWriter writer, RawTextureAtlas rawTextureAtlas)
-    {
-        writer.WriteMagic();
-        writer.Write(rawTextureAtlas);
-    }
+    internal NinePatchSlice(string name, Rectangle bounds, Rectangle centerBounds, Vector2 origin, Color color)
+        : base(name, bounds, origin, color) => CenterBounds = centerBounds;
 }

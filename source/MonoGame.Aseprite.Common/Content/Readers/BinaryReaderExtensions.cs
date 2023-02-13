@@ -60,6 +60,14 @@ internal static class BinaryReaderExtensions
         return result;
     }
 
+    internal static Vector2 ReadVector2(this BinaryReader reader)
+    {
+        Vector2 result = new();
+        result.X = reader.ReadSingle();
+        result.Y = reader.ReadSingle();
+        return result;
+    }
+
     internal static Color ReadColor(this BinaryReader reader)
     {
         Color result = new();
@@ -87,6 +95,25 @@ internal static class BinaryReaderExtensions
         return new(name, pixels, width, height);
     }
 
+    internal static RawSlice ReadRawSlice(this BinaryReader reader)
+    {
+        string name = reader.ReadString();
+        Rectangle bounds = reader.ReadRectangle();
+        Vector2 origin = reader.ReadVector2();
+        Color color = reader.ReadColor();
+
+        bool isNine = reader.ReadBoolean();
+
+        if (isNine)
+        {
+            Rectangle centerBounds = reader.ReadRectangle();
+            return new RawNinePatchSlice(name, bounds, centerBounds, origin, color);
+        }
+
+        return new RawSlice(name, bounds, origin, color);
+
+    }
+
     internal static RawTextureAtlas ReadRawTextureAtlas(this BinaryReader reader)
     {
         string name = reader.ReadString();
@@ -99,7 +126,15 @@ internal static class BinaryReaderExtensions
         {
             string regionName = reader.ReadString();
             Rectangle regionBounds = reader.ReadRectangle();
-            regions[i] = new(regionName, regionBounds);
+            int count = reader.ReadInt32();
+            RawSlice[] slices = new RawSlice[count];
+
+            for (int s = 0; s < count; s++)
+            {
+                slices[s] = reader.ReadRawSlice();
+            }
+
+            regions[i] = new(regionName, regionBounds, slices);
         }
 
         return new(name, texture, regions);

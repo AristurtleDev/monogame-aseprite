@@ -213,7 +213,7 @@ public class Sprite
     /// <param name="device">
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
     /// </param>
-    /// <param name="rawTexture">
+    /// <param name="rawSprite">
     ///     The <see cref="RawSprite"/> to create the <see cref="Sprite"/> from.
     /// </param>
     /// <returns>
@@ -227,6 +227,22 @@ public class Sprite
         texture.Name = rawTexture.Name;
         texture.SetData<Color>(rawTexture.Pixels.ToArray());
 
-        return new(rawSprite.Name, texture);
+        TextureRegion textureRegion = new(texture.Name, texture, texture.Bounds);
+
+        for (int i = 0; i < rawSprite.Slices.Length; i++)
+        {
+            RawSlice slice = rawSprite.Slices[i];
+
+            if (slice is RawNinePatchSlice ninePatch)
+            {
+                _ = textureRegion.CreateNinePatchSlice(ninePatch.Name, ninePatch.Bounds, ninePatch.CenterBounds, ninePatch.Origin, ninePatch.Color);
+            }
+            else
+            {
+                _ = textureRegion.CreateSlice(slice.Name, slice.Bounds, slice.Origin, slice.Color);
+            }
+        }
+
+        return new(rawSprite.Name, textureRegion);
     }
 }

@@ -74,6 +74,10 @@ public sealed class AsepriteFrame
     ///     Indicates whether <see cref="AsepriteCel"/> elements are on a <see cref="AsepriteLayer"/> marked as a 
     ///     background layer should be included.
     /// </param>
+    /// <param name="includeTilemapCel">
+    ///     Indicates whether <see cref="AsepriteTilemapCel"/> elements are on <see cref="AsepriteTilemapLayer"/> 
+    ///     elements should be included. 
+    /// </param>
     /// <returns>
     ///     A new <see cref="Array"/> of color values that represent the image of this  <see cref="AsepriteFrame"/>.
     /// </returns>

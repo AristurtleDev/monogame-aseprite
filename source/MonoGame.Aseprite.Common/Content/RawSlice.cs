@@ -22,46 +22,52 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
+
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-///     Defines a class that represents the raw values of a sprite.
+///     Defines a class that represents the raw values of a slice.
 /// </summary>
-public sealed class RawSprite : IEquatable<RawSprite>
+public class RawSlice : IEquatable<RawSlice>
 {
-    private RawSlice[] _slices;
-
     /// <summary>
-    ///     Gets the name assigned to the sprite.
+    ///     Gets the name assigned to the slice.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the raw texture that represents the source texture for the sprite.
+    ///     Gets the rectangular bounds of the slice.
     /// </summary>
-    public RawTexture RawTexture { get; }
+    public Rectangle Bounds { get; }
 
     /// <summary>
-    ///     Gets a read-only span of the raw slice values the texture region that will be generated for the sprite.
+    ///     Gets the x- and y-coordinate point of the slice.
     /// </summary>
-    public ReadOnlySpan<RawSlice> Slices => _slices;
-
-    internal RawSprite(string name, RawTexture rawTexture, RawSlice[] slices) =>
-        (Name, RawTexture, _slices) = (name, rawTexture, slices);
+    public Vector2 Origin { get; }
 
     /// <summary>
-    ///     Returns a value that indicates if the given <see cref="RawSprite"/> is equal to this
-    ///     <see cref="RawSprite"/>.
+    ///     Gets the color of the slice.
+    /// </summary>
+    public Color Color { get; }
+
+    internal RawSlice(string name, Rectangle bounds, Vector2 origin, Color color) =>
+        (Name, Bounds, Origin, Color) = (name, bounds, origin, color);
+
+    /// <summary>
+    ///     Returns a value that indicates if the given <see cref="RawSlice"/> is equal to this
+    ///     <see cref="RawSlice"/>.
     /// </summary>
     /// <param name="other">
-    ///     The other <see cref="RawSprite"/> to check for equality with this <see cref="RawSprite"/>.
+    ///     The other <see cref="RawSlice"/> to check for equality with this <see cref="RawSprite"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the given <see cref="RawSprite"/> is equal to this 
-    ///     <see cref="RawSprite"/>; otherwise, <see langword="false"/>.
+    ///     <see langword="true"/> if the given <see cref="RawSlice"/> is equal to this 
+    ///     <see cref="RawSlice"/>; otherwise, <see langword="false"/>.
     /// </returns>
-    public bool Equals(RawSprite? other) => other is not null
+    public bool Equals(RawSlice? other) => other is not null
                                             && Name == other.Name
-                                            && RawTexture.Equals(other.RawTexture)
-                                            && Slices.SequenceEqual(other.Slices);
+                                            && Bounds == other.Bounds
+                                            && Origin == other.Origin
+                                            && Color == other.Color;
 }

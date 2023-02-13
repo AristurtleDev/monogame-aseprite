@@ -51,7 +51,7 @@ public sealed class AsepriteSliceKey
 
     /// <summary>
     ///     Gets the x- and y-coordinate location of the pivot point of the <see cref="AsepriteSlice"/>, relative to the
-    ///     <see cref="Bonds"/>, during this <see cref="AsepriteSliceKey"/>, if the <see cref="AsepriteSlice"/> contains 
+    ///     <see cref="Bounds"/>, during this <see cref="AsepriteSliceKey"/>, if the <see cref="AsepriteSlice"/> contains 
     ///     pivot values; otherwise, <see langword="null"/>.
     /// </summary>
     public Point? Pivot { get; }

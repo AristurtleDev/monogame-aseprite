@@ -22,33 +22,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using MonoGame.Aseprite.RawTypes;
+using Microsoft.Xna.Framework;
 
-namespace MonoGame.Aseprite.Content.Writers;
+namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a writer that writes the contents of a <see cref="RawTextureAtlas"/> to a file.
+///     Defines a named slice for a <see cref="TextureRegion"/> with a bounds, origin, and color.
 /// </summary>
-public static class RawTextureAtlasWriter
+public class Slice
 {
     /// <summary>
-    ///     Writes the contents of the <see cref="RawTextureAtlas"/> given to the file at the path specified.
+    ///     Gets the name assigned to this <see cref="Slice"/>.
     /// </summary>
-    /// <param name="path">
-    ///     The path and name of the file to write the contents of the <see cref="RawTextureAtlas"/> to.  If no file 
-    ///     exists at this path,  one will be created.  If a file already exists, it will be overwritten.
-    /// </param>
-    /// <param name="rawTextureAtlas">The <see cref="RawTextureAtlas"/> to write.</param>
-    public static void Write(string path, RawTextureAtlas rawTextureAtlas)
-    {
-        Stream stream = File.Create(path);
-        BinaryWriter writer = new(stream);
-        Write(writer, rawTextureAtlas);
-    }
+    public string Name { get; }
 
-    internal static void Write(BinaryWriter writer, RawTextureAtlas rawTextureAtlas)
-    {
-        writer.WriteMagic();
-        writer.Write(rawTextureAtlas);
-    }
+    /// <summary>
+    ///     Gets the rectangular bounds of this <see cref="Slice"/> relative to the bounds of the
+    ///     <see cref="TextureRegion"/> it is in.
+    /// </summary>
+    public Rectangle Bounds { get; }
+
+    /// <summary>
+    ///     Gets the x- and y-coordinate origin point for this <see cref="Slice"/> relative to the
+    ///     upper-left corner of the bonds of the <see cref="TextureRegion"/> it is in.
+    /// </summary>
+    public Vector2 Origin { get; }
+
+    /// <summary>
+    ///     Gets the <see cref="Microsoft.Xna.Framework.Color"/> value assigned to this 
+    ///     <see cref="Slice"/>.
+    /// </summary>
+    public Color Color { get; }
+
+    internal Slice(string name, Rectangle bounds, Vector2 origin, Color color) =>
+        (Name, Bounds, Color) = (name, bounds, color);
 }

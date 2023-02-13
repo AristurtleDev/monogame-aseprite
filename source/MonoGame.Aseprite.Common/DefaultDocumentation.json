@@ -1,0 +1,11 @@
+{
+    "LogLevel": "Off",
+    "OutputDirectoryPath": "../../Artifacts/Documentation/Prep/Monogame.Aseprite.Common/",
+    "GeneratedAccessModifiers": "Public",
+    "IncludeUndocumentedItems": "false",
+    "GeneratedPages": "Namespaces,Types,Members",
+    "FileNameFactory": "Name",
+    "Sections": [
+        "Default"
+    ]
+}

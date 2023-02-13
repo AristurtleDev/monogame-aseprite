@@ -48,6 +48,12 @@ internal static class BinaryWriterExtensions
         writer.Write(value.Y);
     }
 
+    internal static void Write(this BinaryWriter writer, Vector2 value)
+    {
+        writer.Write(value.X);
+        writer.Write(value.Y);
+    }
+
     internal static void Write(this BinaryWriter writer, Color value)
     {
         writer.Write(value.R);
@@ -69,6 +75,24 @@ internal static class BinaryWriterExtensions
         }
     }
 
+    internal static void Write(this BinaryWriter writer, RawSlice value)
+    {
+        writer.Write(value.Name);
+        writer.Write(value.Bounds);
+        writer.Write(value.Origin);
+        writer.Write(value.Color);
+
+        if (value is RawNinePatchSlice ninePatch)
+        {
+            writer.Write(true);
+            writer.Write(ninePatch.CenterBounds);
+        }
+        else
+        {
+            writer.Write(false);
+        }
+    }
+
     internal static void Write(this BinaryWriter writer, RawTextureAtlas value)
     {
         writer.Write(value.Name);
@@ -80,6 +104,12 @@ internal static class BinaryWriterExtensions
             RawTextureRegion rawTextureRegion = value.RawTextureRegions[i];
             writer.Write(rawTextureRegion.Name);
             writer.Write(rawTextureRegion.Bounds);
+            writer.Write(rawTextureRegion.Slices.Length);
+
+            for (int s = 0; s < rawTextureRegion.Slices.Length; s++)
+            {
+                writer.Write(rawTextureRegion.Slices[s]);
+            }
         }
     }
 

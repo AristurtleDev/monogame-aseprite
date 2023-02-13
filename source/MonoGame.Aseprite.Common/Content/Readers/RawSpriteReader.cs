@@ -53,6 +53,14 @@ public static class RawSpriteReader
 
         string name = reader.ReadString();
         RawTexture rawTexture = reader.ReadRawTexture();
-        return new(name, rawTexture);
+        int count = reader.ReadInt32();
+        RawSlice[] slices = new RawSlice[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            slices[i] = reader.ReadRawSlice();
+        }
+
+        return new(name, rawTexture, slices);
     }
 }

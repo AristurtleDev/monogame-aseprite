@@ -51,5 +51,11 @@ public static class RawSpriteWriter
         writer.WriteMagic();
         writer.Write(rawSprite.Name);
         writer.Write(rawSprite.RawTexture);
+        writer.Write(rawSprite.Slices.Length);
+
+        for (int i = 0; i < rawSprite.Slices.Length; i++)
+        {
+            writer.Write(rawSprite.Slices[i]);
+        }
     }
 }

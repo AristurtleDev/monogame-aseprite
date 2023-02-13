@@ -88,8 +88,8 @@ public sealed class AnimationTag
     ///     The index of the <see cref="AnimationFrame"/> to locate.
     /// </param>
     /// <returns>
-    ///     The <see cref="AnimationFrame"/> located.<
-    /// /returns>
+    ///     The <see cref="AnimationFrame"/> located.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified <paramref name="index"/> is less than zero or is greater than or equal to the total
     ///     number of <see cref="AnimationFrame"/> elements in this <see cref="AnimationTag"/>.

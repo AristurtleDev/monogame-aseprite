@@ -36,7 +36,14 @@ public sealed class RawTypeWriteReadTests
     public void Write_Then_Read_RawSprite()
     {
         RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
-        RawSprite sprite = new(nameof(RawSprite), texture);
+
+        RawSlice[] slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(0, 0, 0, 0), new(0, 0), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(1, 1, 1, 1), new(2, 2, 2, 2), new(3, 3), Color.Green)
+        };
+
+        RawSprite sprite = new(nameof(RawSprite), texture, slices);
 
         Write((writer) => RawSpriteWriter.Write(writer, sprite), out MemoryStream stream);
         Read(stream, (reader) => RawSpriteReader.Read(reader), out RawSprite actual);
@@ -48,12 +55,37 @@ public sealed class RawTypeWriteReadTests
     public void Write_Then_Read_RawSpriteSheet()
     {
         RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+
+        RawSlice[] region0Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(0, 0, 0, 0), new(0, 0), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(0, 0, 0, 0), new(0, 0, 0, 0), new(0, 0), Color.Green)
+        };
+
+        RawSlice[] region1Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(1, 1, 1, 1), new(1, 1), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(1, 1, 1, 1), new(1, 1, 1, 1), new(1, 1), Color.Green)
+        };
+
+        RawSlice[] region2Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(2, 2, 2, 2), new(2, 2), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(2, 2, 2, 2), new(2, 2, 2, 2), new(2, 2), Color.Green)
+        };
+
+        RawSlice[] region3Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(3, 3, 3, 3), new(3, 3), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(3, 3, 3, 3), new(3, 3, 3, 3), new(3, 3), Color.Green)
+        };
+
         RawTextureRegion[] regions = new RawTextureRegion[]
         {
-            new(nameof(RawTextureRegion), new Rectangle(0, 0, 0, 0)),
-            new(nameof(RawTextureRegion), new Rectangle(1, 1, 1, 1)),
-            new(nameof(RawTextureRegion), new Rectangle(2, 2, 2, 2)),
-            new(nameof(RawTextureRegion), new Rectangle(3, 3, 3, 3))
+            new(nameof(RawTextureRegion), new Rectangle(0, 0, 0, 0), region0Slices),
+            new(nameof(RawTextureRegion), new Rectangle(1, 1, 1, 1), region1Slices),
+            new(nameof(RawTextureRegion), new Rectangle(2, 2, 2, 2), region2Slices),
+            new(nameof(RawTextureRegion), new Rectangle(3, 3, 3, 3), region3Slices)
         };
         RawTextureAtlas atlas = new(nameof(RawTextureAtlas), texture, regions);
         RawAnimationFrame[] frames = new RawAnimationFrame[]
@@ -82,12 +114,37 @@ public sealed class RawTypeWriteReadTests
     public void Write_Then_Read_RawTextureAtlas()
     {
         RawTexture texture = new(nameof(RawTexture), new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue }, 2, 2);
+
+        RawSlice[] region0Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(0, 0, 0, 0), new(0, 0), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(0, 0, 0, 0), new(0, 0, 0, 0), new(0, 0), Color.Green)
+        };
+
+        RawSlice[] region1Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(1, 1, 1, 1), new(1, 1), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(1, 1, 1, 1), new(1, 1, 1, 1), new(1, 1), Color.Green)
+        };
+
+        RawSlice[] region2Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(2, 2, 2, 2), new(2, 2), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(2, 2, 2, 2), new(2, 2, 2, 2), new(2, 2), Color.Green)
+        };
+
+        RawSlice[] region3Slices = new RawSlice[]
+        {
+            new RawSlice(nameof(RawSlice), new(3, 3, 3, 3), new(3, 3), Color.Red),
+            new RawNinePatchSlice(nameof(RawNinePatchSlice), new(3, 3, 3, 3), new(3, 3, 3, 3), new(3, 3), Color.Green)
+        };
+
         RawTextureRegion[] regions = new RawTextureRegion[]
         {
-            new(nameof(RawTextureRegion), new Rectangle(0, 0, 0, 0)),
-            new(nameof(RawTextureRegion), new Rectangle(1, 1, 1, 1)),
-            new(nameof(RawTextureRegion), new Rectangle(2, 2, 2, 2)),
-            new(nameof(RawTextureRegion), new Rectangle(3, 3, 3, 3))
+            new(nameof(RawTextureRegion), new Rectangle(0, 0, 0, 0), region0Slices),
+            new(nameof(RawTextureRegion), new Rectangle(1, 1, 1, 1), region1Slices),
+            new(nameof(RawTextureRegion), new Rectangle(2, 2, 2, 2), region2Slices),
+            new(nameof(RawTextureRegion), new Rectangle(3, 3, 3, 3), region3Slices)
         };
         RawTextureAtlas atlas = new(nameof(RawTextureAtlas), texture, regions);
 

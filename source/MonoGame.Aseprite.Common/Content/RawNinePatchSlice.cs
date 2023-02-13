@@ -22,46 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
+
 namespace MonoGame.Aseprite.RawTypes;
 
 /// <summary>
-///     Defines a class that represents the raw values of a sprite.
+///     Defines a class that represents the raw values of a nine-patch slice.
 /// </summary>
-public sealed class RawSprite : IEquatable<RawSprite>
+public sealed class RawNinePatchSlice : RawSlice, IEquatable<RawNinePatchSlice>
 {
-    private RawSlice[] _slices;
 
     /// <summary>
-    ///     Gets the name assigned to the sprite.
+    ///     Gets the rectangular bounds of the center of the nine-patch slice.
     /// </summary>
-    public string Name { get; }
+    public Rectangle CenterBounds { get; }
+
+    internal RawNinePatchSlice(string name, Rectangle bounds, Rectangle centerBounds, Vector2 origin, Color color)
+        : base(name, bounds, origin, color) => CenterBounds = centerBounds;
 
     /// <summary>
-    ///     Gets the raw texture that represents the source texture for the sprite.
-    /// </summary>
-    public RawTexture RawTexture { get; }
-
-    /// <summary>
-    ///     Gets a read-only span of the raw slice values the texture region that will be generated for the sprite.
-    /// </summary>
-    public ReadOnlySpan<RawSlice> Slices => _slices;
-
-    internal RawSprite(string name, RawTexture rawTexture, RawSlice[] slices) =>
-        (Name, RawTexture, _slices) = (name, rawTexture, slices);
-
-    /// <summary>
-    ///     Returns a value that indicates if the given <see cref="RawSprite"/> is equal to this
-    ///     <see cref="RawSprite"/>.
+    ///     Returns a value that indicates if the given <see cref="RawNinePatchSlice"/> is equal to this
+    ///     <see cref="RawNinePatchSlice"/>.
     /// </summary>
     /// <param name="other">
-    ///     The other <see cref="RawSprite"/> to check for equality with this <see cref="RawSprite"/>.
+    ///     The other <see cref="RawNinePatchSlice"/> to check for equality with this <see cref="RawNinePatchSlice"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the given <see cref="RawSprite"/> is equal to this 
-    ///     <see cref="RawSprite"/>; otherwise, <see langword="false"/>.
+    ///     <see langword="true"/> if the given <see cref="RawNinePatchSlice"/> is equal to this 
+    ///     <see cref="RawNinePatchSlice"/>; otherwise, <see langword="false"/>.
     /// </returns>
-    public bool Equals(RawSprite? other) => other is not null
-                                            && Name == other.Name
-                                            && RawTexture.Equals(other.RawTexture)
-                                            && Slices.SequenceEqual(other.Slices);
+    public bool Equals(RawNinePatchSlice? other) => other is not null
+                                                    && CenterBounds == other.CenterBounds
+                                                    && Name == other.Name
+                                                    && Bounds == other.Bounds
+                                                    && Origin == other.Origin
+                                                    && Color == other.Color;
 }

@@ -31,6 +31,8 @@ namespace MonoGame.Aseprite.RawTypes;
 /// </summary>
 public sealed class RawTextureRegion : IEquatable<RawTextureRegion>
 {
+    private RawSlice[] _slices;
+
     /// <summary>
     ///     Gets the name assigned to the texture region.
     /// </summary>
@@ -41,8 +43,13 @@ public sealed class RawTextureRegion : IEquatable<RawTextureRegion>
     /// </summary>
     public Rectangle Bounds { get; }
 
-    internal RawTextureRegion(string name, Rectangle bounds) =>
-        (Name, Bounds) = (name, bounds);
+    /// <summary>
+    ///     Gets a read-only span of the slices for the texture region.
+    /// </summary>
+    public ReadOnlySpan<RawSlice> Slices => _slices;
+
+    internal RawTextureRegion(string name, Rectangle bounds, RawSlice[] slices) =>
+        (Name, Bounds, _slices) = (name, bounds, slices);
 
     /// <summary>
     ///     Returns a value that indicates if the given <see cref="RawTextureRegion"/> is equal to this
@@ -57,5 +64,6 @@ public sealed class RawTextureRegion : IEquatable<RawTextureRegion>
     /// </returns>
     public bool Equals(RawTextureRegion? other) => other is not null
                                                    && Name == other.Name
-                                                   && Bounds == other.Bounds;
+                                                   && Bounds == other.Bounds
+                                                   && Slices.SequenceEqual(other.Slices);
 }
