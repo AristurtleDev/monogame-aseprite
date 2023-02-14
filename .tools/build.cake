@@ -1,4 +1,12 @@
-#load "cake-scripts/common.cake"
-#load "cake-scripts/build.task.cake"
+#load "cake-scripts/common/common.cake"
+#load "cake-scripts/setup.cake"
+#load "cake-scripts/teardown.cake"
+#load "cake-scripts/tasks/tasks.cake"
 
-RunTarget(_target);
+
+CommonConfiguration.ParseArguments(Context);
+CommonConfiguration.ParseVersion(Context);
+CommonConfiguration.ParseRepositoryUrl(Context);
+CommonConfiguration.InitializeBuildSettings();
+
+RunTarget(CommonConfiguration.Target);
