@@ -12,6 +12,7 @@ Task("Docs")
     GenerateDocs("MonoGame.Aseprite.Common", MONOGAME_ASEPRITE_COMMON_CSPROJ, pluginPath);
     GenerateDocs("MonoGame.Aseprite.Content.Pipeline", MONOGAME_ASEPRITE_CONTENT_PIPELINE_CSPROJ, pluginPath);
 
+    ProcessDocuments();
     SanitizeDocs();
 });
 
@@ -67,4 +68,21 @@ private void SanitizeDocs()
         text = text.Replace("&#129106;", "→", ignoreCase: true, culture: default);
         System.IO.File.WriteAllText(file, text);
     }
+}
+
+private void ProcessDocument()
+{
+    //  Now that the documents have been created, additional processing needs to occur to make them ready for use in
+    //  Docusaurus.  We'll need to do the following
+    //      -   Sanitize the documents for invalid characters and replace them
+    //          -   DefaultDocumentation uses a "rightwards san-serif arrow" (U+1F825) character in the generated
+    //              output.  This isn't rendering property for me, either something with Docusaurus, or more likely,
+    //              it's something on my Mac since I develop on mac.  Either way, scan for this character and replace
+    //              it with the '→' character
+    //          -   Methods that use generics (e.g. Get<T>()) will output the <T> in the file. The filenames are already
+    //              sanitized to make it "Get_T_", but inside the file, this is a no-go. This is because Docusaurus
+    //              will parse all markdown files using JSX and JSX will assume the <T> is a JSX tag and throw an
+    //              error because it doesn't know what that is. 
+    //      -   Generate the yaml frontmatter
+    //          -
 }

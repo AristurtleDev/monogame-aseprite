@@ -39,6 +39,7 @@ namespace DefaultDocumentation.Plugin
 
         public string GetFileName(IGeneralContext context, DocItem item)
         {
+            
             //  File name is dependent on the DocItem type
             //  Below handles the AssemblyDocItem and EntityDocItem types
             //
