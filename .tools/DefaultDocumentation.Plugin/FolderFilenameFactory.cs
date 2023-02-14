@@ -12,48 +12,23 @@ namespace DefaultDocumentation.Plugin
         public string Name => "Folder";
 
 
-        private static class PathCleaner
-        {
-            private static readonly string[] toTrimChars = new[] { '=', ' ' }.Select(c => $"{c}").ToArray();
-            private static readonly string[] invalidChars = new[] { '\"', '<', '>', ':', '*', '?' }.Concat(Path.GetInvalidPathChars()).Select(c => $"{c}").ToArray();
-
-            public static string RemoveCamelCase(string value)
-            {
-                //  Split on camel case
-                value = Regex.Replace(value, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
-
-                //  Split on space
-                string[] split = value.Split(" ");
-
-                //  Join back with '-' between
-                value = string.Join('-', split);
-
-                return value;
-            }
-
-            public static string Clean(string value, string invalidCharReplacement)
-            {
-                foreach (string toTrimChar in toTrimChars)
-                {
-                    value = value.Replace(toTrimChar, string.Empty);
-                }
-
-                invalidCharReplacement = string.IsNullOrEmpty(invalidCharReplacement) ? "_" : invalidCharReplacement;
-
-                foreach (string invalidChar in invalidChars)
-                {
-                    value = value.Replace(invalidChar, invalidCharReplacement);
-                }
-
-                return value.Trim('/');
-            }
-        }
-
-
-
-        //  Opting to delete the entire output directory.  
+        /// <summary>
+        ///     Cleans the output directory of previously generated documentation file.
+        /// </summary>
+        /// <remarks>
+        ///     Implements IFileNameFactor.Clean interface member.  Perform
+        /// </remarks>
+        /// <param name="context">
+        ///     The context of the current documentation generation process.
+        /// </param>
         public void Clean(IGeneralContext context)
         {
+            //  Sample project goes file-by-file and deletes them. It seems to do that so it can skip deleting some
+            //  files like a "readme.md" file.
+            //
+            //  However, I have all documentation generated using a cake build script, which sets the 
+            //  context.Settings.OutputDirectory to a general purpose output. So I'm opting to delete the entire
+            //  directory instead since I know it only contains the generated output and not other files.
             context.Settings.Logger.Debug($"Deleting output folder '{context.Settings.OutputDirectory}'");
             if (Directory.Exists(context.Settings.OutputDirectory.FullName))
             {
@@ -64,6 +39,11 @@ namespace DefaultDocumentation.Plugin
 
         public string GetFileName(IGeneralContext context, DocItem item)
         {
+            //  File name is dependent on the DocItem type
+            //  Below handles the AssemblyDocItem and EntityDocItem types
+            //
+            //  My project does not have any ExternDocItem or NameSpaceDocItem types.  For now, I'll just throw an
+            //  exception that they are not implemented.  I'll revisit should I decide I need them.
             string value = item switch
             {
                 AssemblyDocItem assemblyDocItem when item is AssemblyDocItem => assemblyDocItem.FullName,
@@ -73,15 +53,47 @@ namespace DefaultDocumentation.Plugin
                 _ => throw new InvalidOperationException($"Unknown doc item type: {item.GetType()}")
             };
 
+            //  Clean up the file path by removing invalid characters and appending the ".md" extension.
             value = PathUtils.Sanitize(value, GetInvalidCharReplacement(context)) + ".md";
+
             return value;
         }
 
+        //  ----------------------------------------------------------------
+        //  Gets the path for EntityDocItem types
+        //  The should generate paths similar to the following
+        //
+        //  For this example, assume the following is true
+        //      - Assembly Name = "MonoGame.Aseprite"
+        //      - Namespace of class = "MonoGame.Aseprite.Sprites"
+        //      - Class Name = "Sprite"
+        //          - Has properties: Color and Name
+        //          - Has 2 constructors
+        //          - Has 2 methods
+        //
+        //  Assuming the above, the paths generated for this type
+        //  should be like the following
+        //
+        //  MonoGame.Aseprite/
+        //      ↳ MonoGame.Aseprite.Sprites/
+        //          ↳ Sprite/
+        //              ↳ Sprite.md
+        //              ↳ Properties/
+        //                  - Color.md
+        //                  - Name.md
+        //              ↳ Constructors/
+        //                  - Sprite(string,Texture2D).md
+        //                  - Sprite(string,TextureRegion).md
+        //              ↳ Methods/
+        //                  - Draw(SpriteBatch,Vector2).md
+        //                  - FromRaw(GraphicsDevice,RawSprite).md
+        //  ----------------------------------------------------------------
         private string GetFilenameFromEntityDoc(EntityDocItem item)
         {
             string path = GetPathForEntityDocItem(item);
             return $"{path}/{item.Name}";
         }
+
 
         private string GetPathForEntityDocItem(EntityDocItem item)
         {
@@ -105,62 +117,6 @@ namespace DefaultDocumentation.Plugin
             };
 
             return path;
-        }
-
-        private string Attempt(EntityDocItem item)
-        {
-            IEnumerable<DocItem> parents = item.GetParents().Skip(1);
-            string[] pathNames = new string[parents.Count()];
-
-            int i = 0;
-            foreach (DocItem parent in parents)
-            {
-                string parentName = parent.Name;
-                // if(parentName.Contains('.'))
-                // {
-                //     parentName = parentName.Replace('.', '-');
-                // }
-                // else
-                // {
-                //     parentName = PathCleaner.RemoveCamelCase(parentName);
-                // }
-                pathNames[i] = parentName;
-                i++;
-            }
-
-
-            string path = string.Join('/', pathNames);
-
-            if (item.Entity.SymbolKind == SymbolKind.TypeDefinition)
-            {
-                // string name = PathCleaner.RemoveCamelCase(item.Name);
-                path += $"/{item.Name}";
-            }
-
-            else if (item.Entity.SymbolKind == SymbolKind.Property)
-            {
-                path += $"/Properties";
-            }
-            else
-            {
-                path += $"/{item.Entity.SymbolKind}s";
-            }
-
-            // string itemName = PathCleaner.RemoveCamelCase(item.Name);
-            // path += item.Entity.SymbolKind switch
-            // {
-            //     SymbolKind.TypeDefinition => $"/{itemName}",
-            //     SymbolKind.Property => $"/properties",
-            //     _ => $"/{item.Entity.SymbolKind}s"
-            // };
-
-            string longName = string.Join(".", item.GetParents().Skip(2).Select(p => p.Name).Concat(Enumerable.Repeat(item.Name, 1)));
-            path += $"/{longName}";
-            Console.WriteLine(longName);
-
-            return path;
-
-
         }
     }
 }
