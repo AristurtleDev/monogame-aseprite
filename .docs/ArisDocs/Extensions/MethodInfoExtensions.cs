@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -32,20 +31,19 @@ internal static class MethodInfoExtensions
 {
     internal static string GetXmlName(this MethodBase methodBase)
     {
-
         Dictionary<string, int> methodGenericMap = new();
-        if (methodBase is MethodInfo methodInfo)
+        if (methodBase is MethodInfo)
         {
-            ThrowIfDeclaringTypeNull(methodInfo.DeclaringType, methodInfo.Name, nameof(methodBase));
-            if (methodInfo.DeclaringType.IsGenericType)
+            ThrowHelpers.ThrowIfDeclaringTypeNull(methodBase.DeclaringType, methodBase.Name, nameof(methodBase));
+            if (methodBase.DeclaringType.IsGenericType)
             {
-                Type genericTypeDefinition = methodInfo.DeclaringType.GetGenericTypeDefinition();
+                Type genericTypeDefinition = methodBase.DeclaringType.GetGenericTypeDefinition();
                 MethodInfo[] methods = genericTypeDefinition.GetMethods(BindingFlags.Static |
                                                                         BindingFlags.Public |
                                                                         BindingFlags.Instance |
                                                                         BindingFlags.NonPublic);
 
-                methodBase = methods.First(m => m.MetadataToken == methodInfo.MetadataToken);
+                methodBase = methods.First(m => m.MetadataToken == methodBase.MetadataToken);
             }
 
             Type[] methodGenericArguments = methodBase.GetGenericArguments();
@@ -56,7 +54,7 @@ internal static class MethodInfoExtensions
             }
         }
 
-        ThrowIfDeclaringTypeNull(methodBase.DeclaringType, methodBase.Name, nameof(methodBase));
+        ThrowHelpers.ThrowIfDeclaringTypeNull(methodBase.DeclaringType, methodBase.Name, nameof(methodBase));
 
         Dictionary<string, int> typeGenericMap = new();
         Type[] typeGenericArguments = methodBase.DeclaringType.GetGenericArguments();
@@ -73,21 +71,21 @@ internal static class MethodInfoExtensions
         string methodGenericArgumentsString = methodGenericMap.Count > 0 ? $"``{methodGenericMap.Count}" : string.Empty;
 
         string parametersString = string.Empty;
-        if(parameterInfos.Length > 0)
+        if (parameterInfos.Length > 0)
         {
             string[] parameters = new string[parameterInfos.Length];
             for (int i = 0; i < parameterInfos.Length; i++)
             {
                 parameters[i] = GetXmlDocumentationFormattedString(parameterInfos[i].ParameterType, true, typeGenericMap, methodGenericMap);
             }
-            parametersString = $"({string.Join(',', parameters)}}";
+            parametersString = $"({string.Join(',', parameters)})";
         }
 
         string key = $"M:{declarationTypeString}.{memberNameString}{methodGenericArgumentsString}{parametersString}";
 
-        if(methodBase is MethodInfo methodIInfo)
+        if (methodBase is MethodInfo methodInfo && (methodBase.Name is "op_Implicit" || methodBase.Name is "op_Explicit"))
         {
-            string returnTypeString = GetXmlDocumentationFormattedString(methodInfo.ReturnType, ThrowIfElementTypeNull, typeGenericMap, methodGenericMap);
+            string returnTypeString = GetXmlDocumentationFormattedString(methodInfo.ReturnType, true, typeGenericMap, methodGenericMap);
             key += $"~{returnTypeString}";
         }
 
@@ -110,7 +108,7 @@ internal static class MethodInfoExtensions
         if (type.HasElementType)
         {
             Type? elementType = type.GetElementType();
-            ThrowIfElementTypeNull(elementType, type.Name, nameof(type));
+            ThrowHelpers.ThrowIfElementTypeNull(elementType, type.Name, nameof(type));
             string elementTypeString = GetXmlDocumentationFormattedString(elementType, isMethodParameter, typeGenericMap, methodGenericMap);
 
             switch (type)
@@ -119,7 +117,7 @@ internal static class MethodInfoExtensions
                     return $"{elementTypeString}*";
                 case Type when type.IsByRef:
                     return $"{elementTypeString}@";
-                    case Type when type.IsArray:
+                case Type when type.IsArray:
                     int arrayRank = type.GetArrayRank();
                     string dimensions = arrayRank > 1
                                         ? $"[{string.Join(",", Enumerable.Repeat("0:", arrayRank))}]"
@@ -132,21 +130,21 @@ internal static class MethodInfoExtensions
         }
 
         string preface = $"{type.Namespace}.";
-        if(type.IsNested)
+        if (type.IsNested)
         {
-            ThrowIfDeclaringTypeNull(type.DeclaringType, type.Name, nameof(type));
+            ThrowHelpers.ThrowIfDeclaringTypeNull(type.DeclaringType, type.Name, nameof(type));
             string declaringTypeString = GetXmlDocumentationFormattedString(type.DeclaringType, isMethodParameter, typeGenericMap, methodGenericMap);
             preface = $"{declaringTypeString}.";
         }
 
         string typeName = type.Name;
-        if(isMethodParameter)
+        if (isMethodParameter)
         {
             typeName = Regex.Replace(type.Name, @"`\d+", string.Empty);
         }
 
         string genericArgument = string.Empty;
-        if(type.IsGenericType && isMethodParameter)
+        if (type.IsGenericType && isMethodParameter)
         {
             Type[] genericArgumentTypes = type.GetGenericArguments();
             string[] genericArguments = new string[genericArgumentTypes.Length];
@@ -162,21 +160,13 @@ internal static class MethodInfoExtensions
         return $"{preface}{typeName}{genericArgument}";
     }
 
-    private static void ThrowIfDeclaringTypeNull([NotNull] Type? declaringType, string typeName, string paramName)
+    internal static string GetVisibility(this MethodBase methodBase) => methodBase switch
     {
-        if (declaringType is null)
-        {
-            string message = $"{nameof(Type)}.{nameof(Type.DeclaringType)} is null for type: {typeName}";
-            throw new ArgumentException(message, paramName);
-        }
-    }
-
-    private static void ThrowIfElementTypeNull([NotNull] Type? elementType, string typeName, string paramName)
-    {
-        if (elementType is null)
-        {
-            string message = $"{nameof(Type)}.{nameof(Type.HasElementType)} was true but {nameof(Type)}.{nameof(Type.GetElementType)} returned null for type: '{typeName}'";
-            throw new ArgumentException(message, paramName);
-        }
-    }
+        { IsPublic: true } => "public",
+        { IsAssembly: true } => "internal",
+        { IsFamily: true } => "protected",
+        { IsFamilyOrAssembly: true } => "protected public",
+        { IsFamilyAndAssembly: true } => "private protected",
+        _ => throw new ArgumentException($"{nameof(MethodBase)}.{nameof(GetVisibility)} encountered an unknown visibility for {nameof(MethodBase)}: '{methodBase.Name}")
+    };
 }

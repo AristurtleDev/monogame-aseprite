@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------------
 MIT License
 
-Copyright (c) 2018-2023 Christopher Whitley
+Copyright (c) 2023 Christopher Whitley
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,32 +26,27 @@ using System.Text.RegularExpressions;
 
 namespace ArisDocs.Extensions;
 
-internal static class TypeExtensions
+public static class TypeExtensions
 {
     public static string GetXmlName(this Type type)
     {
-        if(type.FullName is null)
-        {
-            string message = $"{nameof(Type)}.{nameof(Type.FullName)} is null for type: {type.Name}";
-            throw new ArgumentException(message, nameof(type));
-        }
-
-        string xmlName = type.FullName;
-        return Regex.Replace(xmlName, @"\[.*\]", string.Empty).Replace('+', '.');
+        ThrowHelpers.ThrowIfFullNameNull(type.FullName, type.Name, nameof(type));
+        string xmlName = Regex.Replace(type.FullName, @"\[.*\]", string.Empty).Replace('+', '.');
+        return $"T:{xmlName}";
     }
 
-    public static string GetXmlFormattedString(Type type, bool isMethodParameter, Dictionary<string, int> typeGenericMap, Dictionary<string, int> methodGenericMap)
+    public static string GetSignature(this Type type)
     {
-        if(type.IsGenericParameter)
-        {
-            if(methodGenericMap.TryGetValue(type.Name, out int index))
-            {
-                return $"``{index}";
-            }
-
-            return $"`{typeGenericMap[type.Name]}";
-        }
-
         
+        string visibility = type switch
+        {
+            { IsPublic: true, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "public",
+            { IsPublic: false, IsAssembly: true, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "internal",
+            { IsPublic: false, IsAssembly: false, IsFamily: true, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "protected",
+            { IsPublic: false, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: true, IsFamilyAndAssembly: false } => "protected public",
+            { IsPublic: false, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: true } => "private protected",
+            _ => throw new ArgumentException($"{nameof(FieldInfo)}.{nameof(GetSignature)} encountered an unknown visibility for '{fieldInfo.Name}", nameof(fieldInfo))
+        };
+
     }
 }

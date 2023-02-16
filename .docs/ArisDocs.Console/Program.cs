@@ -1,30 +1,35 @@
 ﻿using System.Reflection;
 using ArisDocs;
+using ArisDocs.Extensions;
 
 
-string path = Path.GetFullPath("../../Artifacts/Debug/Build/MonoGame.Aseprite.Common.dll");
-Assembly asm = Assembly.LoadFrom(path);
-AssemblyToXmlMapper.LoadAssembly(asm);
+string asmPath = Path.GetFullPath("../../Artifacts/Debug/Build/MonoGame.Aseprite.Common.dll");
+string xmlPath = Path.GetFullPath("../../Artifacts/Debug/Build/MonoGame.Aseprite.Common.xml");
+string outputDir = Path.GetFullPath("../../Artifacts/DevDocs/");
 
-// Type? spriteType = asm.GetType("MonoGame.Aseprite.Sprites.Sprite");
-// if (spriteType is null)
+MarkdownDocumentation.WriteDocumentForAssembly(asmPath, xmlPath, outputDir);
+
+// //  Load the assembly
+// Assembly asm = Assembly.LoadFrom(asmPath);
+
+// //  Load the XML Documentation that was generated on build
+// AssemblyXmlDocumentation xmlDoc = AssemblyXmlDocumentation.LoadFrom(xmlPath);
+
+// //  Getting the Sprite type from the assembly
+// Type? spriteType = asm.GetType("MonoGame.Aseprite.AsepriteTypes.AsepriteCel");
+// if (spriteType is null) throw new Exception("Type not found in assembly");
+
+// string? summaryDoc = xmlDoc.GetDocumentation(spriteType);
+
+// MethodInfo[] properties = spriteType.GetMethods();
+// string?[] propertyDocs = new string[properties.Length];
+// for (int i = 0; i < properties.Length; i++)
 // {
-//     throw new Exception("Unable to get type from assembly");
+//     propertyDocs[i] = xmlDoc.GetDocumentation(properties[i]);
 // }
-// // Console.WriteLine(AssemblyDocument.GetDocumentation(spriteType));
-// Console.WriteLine(AssemblyDocument.ConvertToCSharpSource(typeof(List<(int, int, int)>), true));
-// Console.WriteLine(AssemblyDocument.MyConvertToCSharpSource(typeof(List<(int, int, int)>), true));
 
-Type? t = asm.GetType("MonoGame.Aseprite.AsepriteTypes.AsepriteCel");
+// for (int i = 0; i < propertyDocs.Length; i++)
+// {
+//     Console.WriteLine(propertyDocs[i]);
+// }
 
-if(t is null)
-{
-
-}
-
-MethodInfo[] infos = t.GetMethods();
-
-foreach(MethodInfo info in infos)
-{
-    Console.WriteLine(info.ToString());
-}
