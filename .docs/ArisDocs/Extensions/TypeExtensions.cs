@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ArisDocs.Extensions;
@@ -37,16 +40,38 @@ public static class TypeExtensions
 
     public static string GetSignature(this Type type)
     {
-        
-        string visibility = type switch
-        {
-            { IsPublic: true, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "public",
-            { IsPublic: false, IsAssembly: true, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "internal",
-            { IsPublic: false, IsAssembly: false, IsFamily: true, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "protected",
-            { IsPublic: false, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: true, IsFamilyAndAssembly: false } => "protected public",
-            { IsPublic: false, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: true } => "private protected",
-            _ => throw new ArgumentException($"{nameof(FieldInfo)}.{nameof(GetSignature)} encountered an unknown visibility for '{fieldInfo.Name}", nameof(fieldInfo))
-        };
+        CodeTypeDeclaration typeDeclaration = new(type.Name);
+        typeDeclaration.TypeAttributes = type.Attributes;
+        typeDeclaration.IsClass = type.IsClass;
+        typeDeclaration.IsEnum = type.IsEnum;
+        typeDeclaration.IsInterface = type.IsInterface;
+        typeDeclaration.IsStruct = type.IsValueType;
 
+
+        StringBuilder sb = new();
+        using StringWriter writer = new(sb);
+        CodeGeneratorOptions options = new();
+        options.BracingStyle = "C";
+        options.IndentString = "    ";
+        CodeDomProvider.CreateProvider("c#").GenerateCodeFromType(typeDeclaration, writer, options);
+
+        string signature = sb.ToString();
+        signature = signature.Replace("sealed abstract", "static");
+        return signature;
     }
+
+    // public static string GetSignature(this Type type)
+    // {
+
+    //     string visibility = type switch
+    //     {
+    //         { IsPublic: true, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "public",
+    //         { IsPublic: false, IsAssembly: true, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "internal",
+    //         { IsPublic: false, IsAssembly: false, IsFamily: true, IsFamilyOrAssembly: false, IsFamilyAndAssembly: false } => "protected",
+    //         { IsPublic: false, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: true, IsFamilyAndAssembly: false } => "protected public",
+    //         { IsPublic: false, IsAssembly: false, IsFamily: false, IsFamilyOrAssembly: false, IsFamilyAndAssembly: true } => "private protected",
+    //         _ => throw new ArgumentException($"{nameof(FieldInfo)}.{nameof(GetSignature)} encountered an unknown visibility for '{fieldInfo.Name}", nameof(fieldInfo))
+    //     };
+
+    // }
 }

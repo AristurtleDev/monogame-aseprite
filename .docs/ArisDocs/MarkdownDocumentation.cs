@@ -51,7 +51,7 @@ public static class MarkdownDocumentation
 
     public static void WriteDocumentationForType(Type type, AssemblyXmlDocumentation xmlDoc)
     {
-        Console.WriteLine(type.GetYamlID());
+        // Console.WriteLine(type.GetYamlID());
     }
 
     private static string GetFrontMatter(Type type)
@@ -59,7 +59,7 @@ public static class MarkdownDocumentation
         return
         $"""
         ---
-        id: 
+        id:
         ---
         """;
     }

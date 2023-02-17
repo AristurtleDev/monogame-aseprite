@@ -4,6 +4,10 @@
     <ProjectReference Include="..\ArisDocs\ArisDocs.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>

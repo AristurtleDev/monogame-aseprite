@@ -22,11 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Reflection;
+using System.Text;
 
 namespace ArisDocs.Extensions;
 
-internal static class PropertyInfoExtensions
+public static class PropertyInfoExtensions
 {
     public static string GetXmlName(this PropertyInfo propertyInfo)
     {
@@ -36,4 +39,46 @@ internal static class PropertyInfoExtensions
         //  Use [2..] to remove the "T:" from the type name string
         return $"P:{xmlTypeName[2..]}.{propertyInfo.Name}";
     }
+
+public static string GetSignature(this PropertyInfo propertyInfo)
+{
+    CodeMemberProperty memberProperty = new();
+    memberProperty.Name = propertyInfo.Name;
+    memberProperty.Type = new CodeTypeReference(propertyInfo.PropertyType);
+
+    bool isPublic = false;
+    bool isVirtual = false;
+    if (propertyInfo.GetGetMethod() is MethodInfo getMethod)
+    {
+        memberProperty.HasGet = true;
+        isPublic = getMethod.IsPublic;
+        isVirtual = getMethod.IsVirtual;
+    }
+
+    if (propertyInfo.GetSetMethod() is MethodInfo setMethod)
+    {
+        memberProperty.HasSet = true;
+        if (!isPublic) isPublic = setMethod.IsPublic;
+        if (!isVirtual) isVirtual = setMethod.IsVirtual;
+    }
+
+    //  Set initial attributes this way so that the public modifier appears correctly.
+    memberProperty.Attributes = ~MemberAttributes.AccessMask & ~MemberAttributes.ScopeMask;
+
+    memberProperty.Attributes |= isPublic ? MemberAttributes.Public : MemberAttributes.Private;
+    memberProperty.Attributes |= !isVirtual ? MemberAttributes.Final : 0;
+
+    StringBuilder sb = new();
+    using StringWriter writer = new(sb);
+    CodeGeneratorOptions options = new();
+    options.BracingStyle = "C";
+    options.IndentString = "";
+    CodeDomProvider.CreateProvider("c#").GenerateCodeFromMember(memberProperty, writer, options);
+
+    string signature = sb.ToString();
+    signature = signature.Replace(Environment.NewLine, " ")
+                            .Replace(" get { }", " get;")
+                            .Replace(" set { }", " set;");
+    return signature;
+}
 }

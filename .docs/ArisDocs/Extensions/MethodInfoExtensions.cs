@@ -163,6 +163,7 @@ internal static class MethodInfoExtensions
     internal static string GetVisibility(this MethodBase methodBase) => methodBase switch
     {
         { IsPublic: true } => "public",
+        { IsPrivate: true } => "private",
         { IsAssembly: true } => "internal",
         { IsFamily: true } => "protected",
         { IsFamilyOrAssembly: true } => "protected public",
