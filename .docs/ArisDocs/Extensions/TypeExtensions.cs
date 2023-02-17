@@ -29,6 +29,7 @@ using System.Text.RegularExpressions;
 
 namespace ArisDocs.Extensions;
 
+
 public static class TypeExtensions
 {
     public static string GetXmlName(this Type type)

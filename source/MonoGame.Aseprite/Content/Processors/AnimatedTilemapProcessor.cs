@@ -31,6 +31,41 @@ namespace MonoGame.Aseprite.Content.Processors;
 /// <summary>
 ///     Defines a processor that processes an <see cref="AnimatedTilemap"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
+/// <remarks>
+///     When using this processor, all <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFrame"/> elements from the
+///     <see cref="AsepriteFile"/> are processed. <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTag"/> elements
+///     are ignored at this time (though may be implemented to support tags in the future).  Only 
+///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTilemapCel"/> elements in each frame are processed to
+///     generate the tile data.
+/// </remarks>
+/// <example>
+///     <para>
+///         The following example demonstrates using the <see cref="AnimatedTilemapProcessor"/> to process an
+///         <see cref="AnimatedTilemap"/> from an <see cref="AsepriteFile"/>.
+///     </para>
+///     <code title="Add Using Statements">
+///        using MonoGame.Aseprite;
+///        using MonoGame.Aseprite.Tilemaps;
+///        using MonoGame.Aseprite.Content.Processors;
+///     </code>
+///     <code title="Create an AnimatedTilemap using the AnimatedTilemapProcessor">
+///     public override void LoadContent()
+///     {
+///         //  Load the Aseprite File
+///         AsepriteFile aseFile = AsepriteFile.Load("path-to-aseprite-file");
+///         
+///         //  If you are using the MGCB Editor to import your Aseprite file, use the ContentManager.Load method
+///         //  instead
+///         //  AsepriteFile aseFile = Content.Load&lt;AsepriteFile&gt;("content-name");
+///         
+///         //  Use the AnimatedTilemapProcessor to create the AnimatedTilemap from the AsepriteFile
+///         AnimatedTilemap animatedTilemap = AnimatedTilemapProcessor.Process(GraphicsDevice, aseFile);
+///     }
+///     </code>
+/// </example>
+/// <seealso cref="AnimatedTilemap"/>
+/// <seealso cref="AsepriteFile"/>
+/// <signature>public static class AnimatedTilemapProcessor;</signature>
 public static class AnimatedTilemapProcessor
 {
     /// <summary>
