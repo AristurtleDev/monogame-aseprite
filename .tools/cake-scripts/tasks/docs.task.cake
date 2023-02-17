@@ -12,7 +12,6 @@ Task("Docs")
     GenerateDocs("MonoGame.Aseprite.Common", MONOGAME_ASEPRITE_COMMON_CSPROJ, pluginPath);
     GenerateDocs("MonoGame.Aseprite.Content.Pipeline", MONOGAME_ASEPRITE_CONTENT_PIPELINE_CSPROJ, pluginPath);
 
-    ProcessDocuments();
     SanitizeDocs();
 });
 
