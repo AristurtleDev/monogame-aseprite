@@ -30,8 +30,9 @@ using MonoGame.Aseprite.Sprites;
 namespace MonoGame.Aseprite.Content.Processors;
 
 /// <summary>
-/// Defines a processor that processes a <see cref="Sprite"/> from an frame in an <see cref="AsepriteFile"/>
+///     Defines a processor that processes a <see cref="Sprite"/> from an frame in an <see cref="AsepriteFile"/>
 /// </summary>
+/// <arisdocs-signature-format value="public static class {0};"/>
 public static class SpriteProcessor
 {
     /// <summary>
@@ -47,24 +48,61 @@ public static class SpriteProcessor
     /// <param name="aseFrameIndex">
     ///     The index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> to process.
     /// </param>
-    /// <param name="onlyVisibleLayers">
+    /// <param name="onlyVisibleLayers" default="true">
     ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should
     ///     be included.
     /// </param>
-    /// <param name="includeBackgroundLayer">
+    /// <param name="includeBackgroundLayer" default="false">
     ///     Indicates if <see cref="AsepriteCel"/> on the <see cref="AsepriteLayer"/> marked as the background layer 
     ///     should be included.
     /// </param>
-    /// <param name="includeTilemapLayers">
+    /// <param name="includeTilemapLayers" default="true">
     ///     Indicates if <see cref="AsepriteCel"/> on a <see cref="AsepriteTilemapLayer"/> should be included.
     /// </param>
-    /// <returns>
+    /// <returns cref="Sprite">
     ///     The <see cref="Sprite"/> created by this method.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the specified frame index is less than zero or is greater than or equal to the total number 
     ///     <see cref="AsepriteFrame"/> elements in the given <see cref="AsepriteFile"/>.
     /// </exception>
+    /// <example>
+    ///     <para>
+    ///         The following example demonstrates how to use this method to process a <see cref="Sprite"/> from a
+    ///         single frame in the <see cref="AsepriteFile"/>.
+    ///     </para>
+    ///     <code title="Add Using Statements">
+    ///        using MonoGame.Aseprite;
+    ///        using MonoGame.Aseprite.Sprites;
+    ///        using MonoGame.Aseprite.Content.Processors;
+    ///     </code>
+    ///     <code title="Create a Sprite using the SpriteProcessor.Process method">
+    ///     public override void LoadContent()
+    ///     {
+    ///         //  Load the Aseprite File
+    ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-aseprite-file");
+    ///         
+    ///         //  If you are using the MGCB Editor to import your Aseprite file, use the ContentManager.Load method
+    ///         //  instead
+    ///         //  AsepriteFile aseFile = Content.Load&lt;AsepriteFile&gt;("content-name");
+    ///         
+    ///         //  Use the SpriteProcessor to create the Sprite from the AsepriteFile.
+    ///         //  You have to specify which frame to process it from.
+    ///         Sprite sprite = SpriteProcessor.Process(GraphicsDevice, aseFile, frameIndex: 0);
+    ///     }
+    ///     </code>
+    /// </example>
+    /// <seealso cref="AsepriteFile"/>
+    /// <seealso cref="Sprite"/>
+    /// <arisdocs>
+    ///     <id value="monogame-aseprite-content-processors-spriteprocessor"/>
+    ///     <title value="SpriteProcessor.Process Method"/>
+    ///     <sidebar-label value="Process"/>
+    ///     <path value="monogame-aseprite/content/processors/spriteprocessor/methods/processor.md"/>
+    ///     <member-type value="method"/>
+    ///     <access public="true">
+    ///     <modifiers static="true"/>
+    /// </arisdocs>
     public static Sprite Process(GraphicsDevice device, AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
         RawSprite rawSprite = RawSpriteProcessor.Process(aseFile, aseFrameIndex, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);

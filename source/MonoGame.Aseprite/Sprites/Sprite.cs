@@ -308,10 +308,10 @@ public class Sprite
     /// <summary>
     ///     Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
-    /// <param name="name">
+    /// <param name="name" cref="string">
     ///     The name to assign the <see cref="Sprite"/>.
     /// </param>
-    /// <param name="textureRegion">
+    /// <param name="textureRegion" cref="TextureRegion">
     ///     The source <see cref="TextureRegion"/> to assign the <see cref="Sprite"/>.
     /// </param>
     public Sprite(string name, TextureRegion textureRegion)

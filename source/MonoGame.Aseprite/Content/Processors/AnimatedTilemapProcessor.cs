@@ -31,62 +31,63 @@ namespace MonoGame.Aseprite.Content.Processors;
 /// <summary>
 ///     Defines a processor that processes an <see cref="AnimatedTilemap"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
-/// <remarks>
-///     When using this processor, all <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFrame"/> elements from the
-///     <see cref="AsepriteFile"/> are processed. <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTag"/> elements
-///     are ignored at this time (though may be implemented to support tags in the future).  Only 
-///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTilemapCel"/> elements in each frame are processed to
-///     generate the tile data.
-/// </remarks>
-/// <example>
-///     <para>
-///         The following example demonstrates using the <see cref="AnimatedTilemapProcessor"/> to process an
-///         <see cref="AnimatedTilemap"/> from an <see cref="AsepriteFile"/>.
-///     </para>
-///     <code title="Add Using Statements">
-///        using MonoGame.Aseprite;
-///        using MonoGame.Aseprite.Tilemaps;
-///        using MonoGame.Aseprite.Content.Processors;
-///     </code>
-///     <code title="Create an AnimatedTilemap using the AnimatedTilemapProcessor">
-///     public override void LoadContent()
-///     {
-///         //  Load the Aseprite File
-///         AsepriteFile aseFile = AsepriteFile.Load("path-to-aseprite-file");
-///         
-///         //  If you are using the MGCB Editor to import your Aseprite file, use the ContentManager.Load method
-///         //  instead
-///         //  AsepriteFile aseFile = Content.Load&lt;AsepriteFile&gt;("content-name");
-///         
-///         //  Use the AnimatedTilemapProcessor to create the AnimatedTilemap from the AsepriteFile
-///         AnimatedTilemap animatedTilemap = AnimatedTilemapProcessor.Process(GraphicsDevice, aseFile);
-///     }
-///     </code>
-/// </example>
-/// <seealso cref="AnimatedTilemap"/>
-/// <seealso cref="AsepriteFile"/>
 /// <signature>public static class AnimatedTilemapProcessor;</signature>
 public static class AnimatedTilemapProcessor
 {
     /// <summary>
     ///     Processes an <see cref="AnimatedTilemap"/> from the given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">
+    /// <remarks>
+    ///     When using this processor, all <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteFrame"/> elements from the
+    ///     <see cref="AsepriteFile"/> are processed. <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTag"/> elements
+    ///     are ignored at this time (though may be implemented to support tags in the future).  Only 
+    ///     <see cref="MonoGame.Aseprite.AsepriteTypes.AsepriteTilemapCel"/> elements in each frame are processed to
+    ///     generate the tile data.
+    /// </remarks>
+    /// <param name="device" cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice">
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
     ///  </param>
-    /// <param name="aseFile">
+    /// <param name="aseFile" cref="AsepriteFile">
     ///     The <see cref="AsepriteFile"/> to processed the <see cref="AnimatedTilemap"/> from.
     /// </param>
-    /// <param name="onlyVisibleLayers">
+    /// <param name="onlyVisibleLayers" cref="bool">
     ///     Indicates if only layers that are visible should be processed.
     /// </param>
-    /// <returns>
+    /// <returns cref="AnimatedTilemap">
     ///     The <see cref="AnimatedTilemap"/> created by this method.
     /// </returns>
     /// <exception cref="InvalidOperationException">
     ///     Thrown if layers are found in the <see cref="AsepriteFile"/> with duplicate names.  Tilemaps must contain 
     ///     layers with unique names even though Aseprite does not enforce unique names for layers.
     /// </exception>
+    /// <example>
+    ///     <para>
+    ///         The following example demonstrates using method to  process an <see cref="AnimatedTilemap"/> from an 
+    ///         <see cref="AsepriteFile"/>.
+    ///     </para>
+    ///     <code title="Add Using Statements">
+    ///        using MonoGame.Aseprite;
+    ///        using MonoGame.Aseprite.Tilemaps;
+    ///        using MonoGame.Aseprite.Content.Processors;
+    ///     </code>
+    ///     <code title="Create an AnimatedTilemap using the AnimatedTilemapProcessor">
+    ///     public override void LoadContent()
+    ///     {
+    ///         //  Load the Aseprite File
+    ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-aseprite-file");
+    ///         
+    ///         //  If you are using the MGCB Editor to import your Aseprite file, use the ContentManager.Load method
+    ///         //  instead
+    ///         //  AsepriteFile aseFile = Content.Load&lt;AsepriteFile&gt;("content-name");
+    ///         
+    ///         //  Use the AnimatedTilemapProcessor to create the AnimatedTilemap from the AsepriteFile
+    ///         AnimatedTilemap animatedTilemap = AnimatedTilemapProcessor.Process(GraphicsDevice, aseFile);
+    ///     }
+    ///     </code>
+    /// </example>
+    /// <seealso cref="AnimatedTilemap"/>
+    /// <seealso cref="AsepriteFile"/>
+    /// <signature>public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true);</signature>
     public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true)
     {
         RawAnimatedTilemap rawTilemap = RawAnimatedTilemapProcessor.Process(aseFile, onlyVisibleLayers);

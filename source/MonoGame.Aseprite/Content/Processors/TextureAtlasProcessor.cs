@@ -32,43 +32,72 @@ namespace MonoGame.Aseprite.Content.Processors;
 /// <summary>
 ///     Defines a processor that processes a <see cref="TextureAtlas"/> from an aseprite file.
 /// </summary>
+/// <signature>public static class TextureAtlasProcessor;</signature>
 public static class TextureAtlasProcessor
 {
     /// <summary>
     ///     Processes a <see cref="TextureAtlas"/> from the given <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">
+    /// <param name="device" cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice">
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
     ///  </param>
-    /// <param name="aseFile">
+    /// <param name="aseFile" cref="AsepriteFile">
     ///     The <see cref="AsepriteFile"/> to process the <see cref="TextureAtlas"/> from.
     /// </param>
-    /// <param name="onlyVisibleLayers">
+    /// <param name="onlyVisibleLayers" cref="bool">
     ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should 
     ///     be included.
     /// </param>
-    /// <param name="includeBackgroundLayer">
+    /// <param name="includeBackgroundLayer" cref="bool">
     ///     Indicates if <see cref="AsepriteCel"/> elements on the <see cref="AsepriteLayer"/> elements marked as the 
     ///     background layer should be included.
     /// </param>
-    /// <param name="includeTilemapLayers">
+    /// <param name="includeTilemapLayers" cref="bool">
     ///     Indicates if <see cref="AsepriteCel"/> elements on a <see cref="AsepriteTilemapLayer"/> element should be 
     ///     included.</param>
-    /// <param name="mergeDuplicates">
+    /// <param name="mergeDuplicates" cref="bool">
     ///     Indicates if duplicate <see cref="AsepriteFrame"/> elements should be merged into one.
     /// </param>
-    /// <param name="borderPadding">
+    /// <param name="borderPadding" cref="int">
     ///     The amount of transparent pixels to add between the edge of the generated image
     /// </param>
-    /// <param name="spacing">
+    /// <param name="spacing" cref="int">
     ///     The amount of transparent pixels to add between each texture region in the generated image.
     /// </param>
-    /// <param name="innerPadding">
+    /// <param name="innerPadding" cref="int">
     ///     The amount of transparent pixels to add around the edge of each texture region in the generated image.
     /// </param>
-    /// <returns>
+    /// <returns cref="TextureAtlas">
     ///     The <see cref="TextureAtlas"/> created by this method.
     /// </returns>
+    /// <example>
+    ///     <para>
+    ///         The following example demonstrates how to use this method to process a <see cref="TextureAtlas"/> from
+    ///         an <see cref="AsepriteFile"/>.
+    ///     </para>
+    ///     <code title="Add Using Statements">
+    ///        using MonoGame.Aseprite;
+    ///        using MonoGame.Aseprite.Sprites;
+    ///        using MonoGame.Aseprite.Content.Processors;
+    ///     </code>
+    ///     <code title="Create a TextureAtlas using the TextureAtlasProcessor.Process method">
+    ///     public override void LoadContent()
+    ///     {
+    ///         //  Load the Aseprite File
+    ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-aseprite-file");
+    ///         
+    ///         //  If you are using the MGCB Editor to import your Aseprite file, use the ContentManager.Load method
+    ///         //  instead
+    ///         //  AsepriteFile aseFile = Content.Load&lt;AsepriteFile&gt;("content-name");
+    ///         
+    ///         //  Use the TextureAtlasProcessor to create the TextureAtlas from the AsepriteFile.
+    ///         TextureAtlas atlas = TextureAtlasProcessor.Process(GraphicsDevice, aseFile);
+    ///     }
+    ///     </code>
+    /// </example>
+    /// <seealso cref="AsepriteFile"/>
+    /// <seealso cref="TextureAtlas"/>
+    /// <signature>public static Sprites.TextureAtlas Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0);</signature>
     public static Sprites.TextureAtlas Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true, bool mergeDuplicates = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
     {
         RawTextureAtlas rawAtlas = RawTextureAtlasProcessor.Process(aseFile, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicates, borderPadding, spacing, innerPadding);

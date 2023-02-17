@@ -32,25 +32,26 @@ namespace MonoGame.Aseprite.Content.Processors;
 /// <summary>
 /// Defines a processor that processes a <see cref="Tilemap"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
+/// <signature>public static class TilemapProcessor;</signature>
 public static class TilemapProcessor
 {
     /// <summary>
     ///     Processes a <see cref="Tilemap"/> from the <see cref="AsepriteFile"/> at the specified index in the given 
     ///     <see cref="AsepriteFile"/>.
     /// </summary>
-    /// <param name="device">
+    /// <param name="device" cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice">
     ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
     ///  </param>
-    /// <param name="aseFile">
+    /// <param name="aseFile" cref="AsepriteFile">
     ///     The <see cref="AsepriteFile"/> that contains the animated <see cref="Tilemap"/> to process.
     /// </param>
-    /// <param name="frameIndex">
+    /// <param name="frameIndex" cref="int">
     ///     The index of the <see cref="AsepriteFile"/> element in the <see cref="AsepriteFile"/> to process.
     /// </param>
-    /// <param name="onlyVisibleLayers">
+    /// <param name="onlyVisibleLayers" cref="bool">
     ///     Indicates if only <see cref="AsepriteLayer"/> elements that are visible should be processed.
     /// </param>
-    /// <returns>
+    /// <returns cref="Tilemap">
     ///     The <see cref="Tilemap"/> created by this method.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
