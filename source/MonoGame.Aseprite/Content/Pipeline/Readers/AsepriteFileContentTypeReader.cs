@@ -31,11 +31,16 @@ internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<Aseprite
 {
     protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
     {
-        if(existingInstance is not null)
+        if (existingInstance is not null)
         {
             return existingInstance;
         }
 
-        return AsepriteFileReader.Read(reader.AssetName, reader);
+        int len = reader.ReadInt32();
+        byte[] data = reader.ReadBytes(len);
+
+        using Stream stream = new MemoryStream(data);
+        using BinaryReader internalReader = new(stream);
+        return AsepriteFileReader.Read(reader.AssetName, internalReader);
     }
 }

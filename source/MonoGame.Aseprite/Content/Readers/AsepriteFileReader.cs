@@ -135,7 +135,7 @@ public static class AsepriteFileReader
             IgnoreDword(reader);
             ushort magic = ReadWord(reader);
 
-            if (magic != 0xF1fA)
+            if (magic != 0xF1FA)
             {
                 throw new InvalidOperationException($"Invalid frame magic in frame number {frameNum}");
             }
