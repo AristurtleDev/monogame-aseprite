@@ -35,6 +35,7 @@ public static class CommonConfiguration
 
     public static void ParseArguments(ICakeContext context)
     {
+        Console.WriteLine("Parsing Arguments <<<<<<<<");
         _target = context.Argument(nameof(Target), _target);
         _generateDocs = context.Argument(nameof(GenerateDocs), _generateDocs);
         _incrementBuild = context.Argument(nameof(IncrementBuild), _incrementBuild);

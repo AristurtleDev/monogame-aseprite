@@ -9,11 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "source
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Content.Pipeline", "source\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{68AF76C9-C0FC-404E-91E7-8AF9DAA56F0F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CDB61325-3DC8-4E61-99CA-22A54A607CAE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D63184C5-16DF-42D9-B5EF-7A5456BDBC47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Common", "source\MonoGame.Aseprite.Common\MonoGame.Aseprite.Common.csproj", "{41D49397-5588-4E92-92D9-F3434EE6241C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Common.Tests", "tests\MonoGame.Aseprite.Common.Tests\MonoGame.Aseprite.Common.Tests.csproj", "{CF29820D-DE5F-438E-BC50-820C7A54D549}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Tests", "tests\MonoGame.Aseprite.Tests\MonoGame.Aseprite.Tests.csproj", "{174AE103-8ECC-440D-9A67-94CBE486D3E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,19 +30,14 @@ Global
 		{68AF76C9-C0FC-404E-91E7-8AF9DAA56F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68AF76C9-C0FC-404E-91E7-8AF9DAA56F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68AF76C9-C0FC-404E-91E7-8AF9DAA56F0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{41D49397-5588-4E92-92D9-F3434EE6241C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41D49397-5588-4E92-92D9-F3434EE6241C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41D49397-5588-4E92-92D9-F3434EE6241C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41D49397-5588-4E92-92D9-F3434EE6241C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF29820D-DE5F-438E-BC50-820C7A54D549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF29820D-DE5F-438E-BC50-820C7A54D549}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF29820D-DE5F-438E-BC50-820C7A54D549}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF29820D-DE5F-438E-BC50-820C7A54D549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{174AE103-8ECC-440D-9A67-94CBE486D3E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{174AE103-8ECC-440D-9A67-94CBE486D3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{174AE103-8ECC-440D-9A67-94CBE486D3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{174AE103-8ECC-440D-9A67-94CBE486D3E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7BF6FFCF-7EFD-4DBD-BC6A-66100BD63C47} = {561A08C7-8C1C-4CEA-AFFF-61051C64B04A}
 		{68AF76C9-C0FC-404E-91E7-8AF9DAA56F0F} = {561A08C7-8C1C-4CEA-AFFF-61051C64B04A}
-		{41D49397-5588-4E92-92D9-F3434EE6241C} = {561A08C7-8C1C-4CEA-AFFF-61051C64B04A}
-		{CF29820D-DE5F-438E-BC50-820C7A54D549} = {CDB61325-3DC8-4E61-99CA-22A54A607CAE}
+		{174AE103-8ECC-440D-9A67-94CBE486D3E1} = {D63184C5-16DF-42D9-B5EF-7A5456BDBC47}
 	EndGlobalSection
 EndGlobal

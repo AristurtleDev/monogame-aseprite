@@ -28,6 +28,5 @@ SOFTWARE.
 public sealed class ContentImporterResult
 {
     internal string Path { get; }
-
     internal ContentImporterResult(string path) => Path = path;
 }

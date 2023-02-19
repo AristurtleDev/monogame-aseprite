@@ -22,7 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 using MonoGame.Aseprite.Tilemaps;
 
@@ -31,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Processors;
 /// <summary>
 ///     Defines a processor that processes an <see cref="AnimatedTilemap"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
-/// <signature>public static class AnimatedTilemapProcessor;</signature>
+/// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
 public static class AnimatedTilemapProcessor
 {
     /// <summary>
@@ -60,37 +62,99 @@ public static class AnimatedTilemapProcessor
     ///     Thrown if layers are found in the <see cref="AsepriteFile"/> with duplicate names.  Tilemaps must contain 
     ///     layers with unique names even though Aseprite does not enforce unique names for layers.
     /// </exception>
-    /// <example>
-    ///     <para>
-    ///         The following example demonstrates using method to  process an <see cref="AnimatedTilemap"/> from an 
-    ///         <see cref="AsepriteFile"/>.
-    ///     </para>
-    ///     <code title="Add Using Statements">
-    ///        using MonoGame.Aseprite;
-    ///        using MonoGame.Aseprite.Tilemaps;
-    ///        using MonoGame.Aseprite.Content.Processors;
-    ///     </code>
-    ///     <code title="Create an AnimatedTilemap using the AnimatedTilemapProcessor">
-    ///     public override void LoadContent()
-    ///     {
-    ///         //  Load the Aseprite File
-    ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-aseprite-file");
-    ///         
-    ///         //  If you are using the MGCB Editor to import your Aseprite file, use the ContentManager.Load method
-    ///         //  instead
-    ///         //  AsepriteFile aseFile = Content.Load&lt;AsepriteFile&gt;("content-name");
-    ///         
-    ///         //  Use the AnimatedTilemapProcessor to create the AnimatedTilemap from the AsepriteFile
-    ///         AnimatedTilemap animatedTilemap = AnimatedTilemapProcessor.Process(GraphicsDevice, aseFile);
-    ///     }
-    ///     </code>
-    /// </example>
     /// <seealso cref="AnimatedTilemap"/>
     /// <seealso cref="AsepriteFile"/>
-    /// <signature>public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true);</signature>
     public static AnimatedTilemap Process(GraphicsDevice device, AsepriteFile aseFile, bool onlyVisibleLayers = true)
     {
-        RawAnimatedTilemap rawTilemap = RawAnimatedTilemapProcessor.Process(aseFile, onlyVisibleLayers);
+        RawAnimatedTilemap rawTilemap = ProcessRaw(aseFile, onlyVisibleLayers);
         return AnimatedTilemap.FromRaw(device, rawTilemap);
+    }
+
+    /// <summary>
+    ///     Processes a <see cref="RawAnimatedTilemap"/> from the given <see cref="AsepriteFile"/>.
+    /// </summary>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> to processes the <see cref="RawAnimatedTilemap"/> from.
+    /// </param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteLayer"/> elements that are visible should be processed.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawAnimatedTilemap"/> created by this method.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if <see cref="AsepriteLayer"/> elements are found in the <see cref="AsepriteFile"/> with duplicate
+    ///     names. Tilemaps must contain layers with unique names even though Aseprite does not enforce unique names
+    ///     for layers.
+    /// </exception>
+    public static RawAnimatedTilemap ProcessRaw(AsepriteFile aseFile, bool onlyVisibleLayers = true)
+    {
+        List<RawTileset> rawTilesets = new();
+        RawTilemapFrame[] rawFrames = new RawTilemapFrame[aseFile.Frames.Length];
+        HashSet<int> tilesetIDCheck = new();
+
+        for (int f = 0; f < aseFile.Frames.Length; f++)
+        {
+            AsepriteFrame aseFrame = aseFile.Frames[f];
+            List<RawTilemapLayer> rawLayers = new();
+            HashSet<string> layerNameCheck = new();
+
+            for (int c = 0; c < aseFrame.Cels.Length; c++)
+            {
+                //  Only care about tilemap cels.
+                if (aseFrame.Cels[c] is not AsepriteTilemapCel tilemapCel)
+                {
+                    continue;
+                }
+
+                //  Only continue if layer is visible or if explicitly told to include non-visible layers.
+                if (!tilemapCel.Layer.IsVisible && onlyVisibleLayers)
+                {
+                    continue;
+                }
+
+                //  Need to perform a check that we don't have duplicate layer names.  This is because aseprite allows
+                //  duplicate layer names, but we require unique names from this point on.
+                AsepriteTilemapLayer aseTilemapLayer = tilemapCel.LayerAs<AsepriteTilemapLayer>();
+                string layerName = aseTilemapLayer.Name;
+
+                if (!layerNameCheck.Add(layerName))
+                {
+                    throw new InvalidOperationException($"Duplicate layer name '{tilemapCel.Layer.Name}' found.  Layer names must be unique for tilemaps");
+                }
+
+                int tilesetID = aseTilemapLayer.Tileset.ID;
+
+                if (tilesetIDCheck.Add(tilesetID))
+                {
+                    RawTileset rawTileset = TilesetProcessor.ProcessRaw(aseTilemapLayer.Tileset);
+                    rawTilesets.Add(rawTileset);
+                }
+
+                RawTilemapTile[] tiles = new RawTilemapTile[tilemapCel.Tiles.Length];
+
+                for (int t = 0; t < tilemapCel.Tiles.Length; t++)
+                {
+                    AsepriteTile aseTile = tilemapCel.Tiles[t];
+                    bool flipHorizontally = aseTile.XFlip != 0;
+                    bool flipVertically = aseTile.YFlip != 0;
+
+                    tiles[t] = new(aseTile.TilesetTileID, flipHorizontally, flipVertically, aseTile.Rotation);
+                }
+
+                int columns = tilemapCel.Columns;
+                int rows = tilemapCel.Rows;
+                Point offset = tilemapCel.Position;
+
+                RawTilemapLayer rawLayer = new(layerName, tilesetID, columns, rows, tiles, offset);
+                rawLayers.Add(rawLayer);
+
+            }
+
+            rawFrames[f] = new(aseFrame.DurationInMilliseconds, rawLayers.ToArray());
+        }
+
+        return new(aseFile.Name, rawTilesets.ToArray(), rawFrames);
+
     }
 }

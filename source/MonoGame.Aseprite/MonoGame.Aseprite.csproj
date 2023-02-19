@@ -27,7 +27,7 @@
     <ItemGroup>
         <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
         <None Include="..\..\.\.nuget\README.md" Pack="true" PackagePath="" />
-        <None Include="..\MonoGame.Aseprite.Content.Pipeline\bin\Debug\net6.0\MonoGame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="\content\pipeline" />
+        <!-- <None Include="..\MonoGame.Aseprite.Content.Pipeline\bin\$(Configuration)\net6.0\MonoGame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="\content\pipeline" /> -->
     </ItemGroup>
 
     <!-- Nuget Package References -->
@@ -40,12 +40,11 @@
 
 
     <!-- Local Project References -->
-    <ItemGroup>
-        <ProjectReference Include="..\MonoGame.Aseprite.Common\MonoGame.Aseprite.Common.csproj" />
+    <!-- <ItemGroup>
         <ProjectReference Include="..\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj">
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
-    </ItemGroup>
+    </ItemGroup> -->
 
     <!-- Allow the test project to use internal types for testing -->
     <ItemGroup>

@@ -2,7 +2,7 @@
 
 Task("Test")
 .IsDependentOn("Build")
-.Description("Calls `dotnet test` on the Monogame.Aseprite.sln solution file")
+.Description("Runs the unit tests")
 .Does(() =>
 {
     DotNetTestSettings settings = new();

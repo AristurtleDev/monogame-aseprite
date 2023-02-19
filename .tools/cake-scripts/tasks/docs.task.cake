@@ -1,87 +1,133 @@
 #load "../common/common.cake"
 
 Task("Docs")
-.IsDependentOn("Build")
+.IsDependentOn("Rebuild")
 .Description("Builds the documentation markdown to be used for the website API pages")
 .Does(() =>
 {
-    //  Ensure that the DefaultDocument.Plugin has been build
-    string pluginPath = BuildDefaultDocumentPlugin();
+    MdDocs();
+    RenameIndexMDFiles();
+    FixLinks();
+    InjectFrontMatter();
 
-    GenerateDocs("MonoGame.Aseprite", MONOGAME_ASEPRITE_CSPROJ, pluginPath);
-    GenerateDocs("MonoGame.Aseprite.Common", MONOGAME_ASEPRITE_COMMON_CSPROJ, pluginPath);
-    GenerateDocs("MonoGame.Aseprite.Content.Pipeline", MONOGAME_ASEPRITE_CONTENT_PIPELINE_CSPROJ, pluginPath);
-
-    SanitizeDocs();
 });
 
-private string BuildDefaultDocumentPlugin()
-{
-    DotNetBuildSettings settings = new();
-    settings.MSBuildSettings = CommonConfiguration.DotNetMsBuildSettings;
-    settings.NoRestore = false;
-    settings.Configuration = CommonConfiguration.Configuration;
-    settings.OutputDirectory = System.IO.Path.Combine(CommonConfiguration.Output, CommonConfiguration.Configuration, "DefaultDocument.Plugin");
-
-    DotNetBuild(DEFAULT_DOC_PLUGIN_SLN_PATH, settings);
-    return settings.OutputDirectory.FullPath;
-}
-
-private void GenerateDocs(string assemblyName, string projPath, string pluginPath)
+private void MdDocs()
 {
     DotNetToolSettings settings = new();
 
-    string assemblyFilePath = $"{CommonConfiguration.Output}{CommonConfiguration.Configuration}/Build/{assemblyName}.dll";
-    string documentationFilePath = $"{CommonConfiguration.Output}{CommonConfiguration.Configuration}/Build/{assemblyName}.xml";
-    string outputPath = $"{CommonConfiguration.Output}Documentation/{assemblyName}";
-
+    string[] assembliesToDocument = new string[]
+    {
+        $"{CommonConfiguration.Output}{CommonConfiguration.Configuration}/Build/MonoGame.Aseprite.dll",
+    };
+    
     settings.ArgumentCustomization = builder =>
     {
-        builder.AppendSwitchQuoted("--AssemblyFilePath", assemblyFilePath);
-        builder.AppendSwitchQuoted("--DocumentationFilePath", documentationFilePath);
-        builder.AppendSwitchQuoted("--ProjectDirectoryPath", projPath);
-        builder.AppendSwitchQuoted("--OutputDirectoryPath", outputPath);
-        builder.AppendSwitchQuoted("--ConfigurationFilePath", "./DefaultDocumentation.json");
-        builder.AppendSwitchQuoted("--AssemblyPageName", assemblyName);
-        builder.AppendSwitchQuoted("--Plugins", $"{pluginPath}/DefaultDocumentation.Plugin.dll");
+        builder.Append("apireference");
+        builder.AppendSwitch("--configurationFilePath", "./mddocs.config.json");
+        builder.AppendSwitch("--assemblies", string.Join(" ", assembliesToDocument));
+        builder.AppendSwitchQuoted("--outdir", $"{CommonConfiguration.Output}Documentation");
         return builder;
     };
 
-    DotNetTool("defaultdocumentation", settings);
+    DotNetTool("mddocs", settings);
 }
 
-private void SanitizeDocs()
+private void FixLinks()
 {
-    //  Default Documentation seems to use a "rightwards san-serif arrow" (U+1F852) character in the generated output,
-    //  but this is not rendering for some reason in Docusaurus correctly.  It could be that I'm developing on Mac and
-    //  my Mac isn't rendering it, I dunno.  Either way, scan each document for this character and replace it with
-    //  something else.
-    //
-    //  The markdown files generated are not very large, so using a simple ReadALlText -> Replace -> WriteAllText is
-    //  "ok"... but if anyone looking at this has large file generation, you might want to consider instead doing chunk
-    //  reads and replacements using streams.
-    string[] files = System.IO.Directory.GetFiles($"{CommonConfiguration.Output}Documentation", "*.md", System.IO.SearchOption.AllDirectories);
+    string[] files = System.IO.Directory.GetFiles($"{CommonConfiguration.Output}Documentation", "*.md", SearchOption.AllDirectories);
+
     foreach(string file in files)
     {
         string text = System.IO.File.ReadAllText(file);
-        text = text.Replace("&#129106;", "→", ignoreCase: true, culture: default);
+        text = text.Replace("index.md", string.Empty);
         System.IO.File.WriteAllText(file, text);
     }
 }
 
-private void ProcessDocument()
+private void RenameIndexMDFiles()
 {
-    //  Now that the documents have been created, additional processing needs to occur to make them ready for use in
-    //  Docusaurus.  We'll need to do the following
-    //      -   Sanitize the documents for invalid characters and replace them
-    //          -   DefaultDocumentation uses a "rightwards san-serif arrow" (U+1F825) character in the generated
-    //              output.  This isn't rendering property for me, either something with Docusaurus, or more likely,
-    //              it's something on my Mac since I develop on mac.  Either way, scan for this character and replace
-    //              it with the '→' character
-    //          -   Methods that use generics (e.g. Get<T>()) will output the <T> in the file. The filenames are already
-    //              sanitized to make it "Get_T_", but inside the file, this is a no-go. This is because Docusaurus
-    //              will parse all markdown files using JSX and JSX will assume the <T> is a JSX tag and throw an
-    //              error because it doesn't know what that is. 
-    //      -   Generate the yaml frontmatter
-    //          -
+    string[] files = System.IO.Directory.GetFiles($"{CommonConfiguration.Output}Documentation", "index.md", SearchOption.AllDirectories);
+
+    foreach(string file in files)
+    {
+        FileInfo fileInfo = new FileInfo(file);
+
+        if(fileInfo.Name == "index.md")
+        {
+            if(fileInfo.Directory is null)
+            {
+                throw new Exception("Unable to get directory name for file");
+            }
+
+            string newName = fileInfo.Directory.Name + ".md";
+
+            fileInfo.MoveTo(System.IO.Path.Combine(fileInfo.Directory.FullName, newName ));
+        }
+    }
+}
+
+private void InjectFrontMatter()
+{
+    string[] files = System.IO.Directory.GetFiles($"{CommonConfiguration.Output}Documentation", "*.md", SearchOption.AllDirectories);
+
+
+    foreach(string file in files)
+    {
+        string? newText = default;
+
+        using (FileStream readStream = System.IO.File.OpenRead(file))
+        {
+            using (StreamReader streamReader = new(readStream))
+            {
+                string? firstLine = streamReader.ReadLine();
+
+                if(firstLine is not null && firstLine.StartsWith("#"))
+                {
+                    firstLine = firstLine.Replace("#", string.Empty).Trim();
+                    string title = firstLine;
+
+                    string id = title.ToLower().Replace('.', '-')
+                                               .Replace(' ', '-');
+
+                    string? label = default;
+
+                    if(firstLine.Contains("Namespace"))
+                    {
+                        FileInfo fileInfo = new FileInfo(file);
+                        label = fileInfo.Directory?.Name;
+                    }
+
+                    if(label is null)
+                    {
+                        label = title.Replace("Namespace", string.Empty)
+                                     .Replace("Class", string.Empty)
+                                     .Replace("Method", string.Empty)
+                                     .Replace("Property", string.Empty)
+                                     .Replace("Enum", string.Empty)
+                                     .Replace("Field", string.Empty)
+                                     .Replace("Event", string.Empty)
+                                     .Trim();
+                    }
+
+                    string yaml =
+                    $"""
+                    ---
+                    id: {id}
+                    title: {title}
+                    sidebar_label: {label}
+                    ---
+                    """;
+
+                    newText = yaml + streamReader.ReadToEnd();
+                };
+            }
+        }
+
+        if(newText is not null)
+        {
+            System.IO.File.WriteAllText(file, newText);
+        }
+    }
+
 }

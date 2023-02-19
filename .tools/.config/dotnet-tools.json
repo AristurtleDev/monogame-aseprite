@@ -13,6 +13,12 @@
       "commands": [
         "defaultdocumentation"
       ]
+    },
+    "grynwald.mddocs": {
+      "version": "0.5.180",
+      "commands": [
+        "mddocs"
+      ]
     }
   }
 }

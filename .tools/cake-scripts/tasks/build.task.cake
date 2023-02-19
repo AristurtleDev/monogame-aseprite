@@ -2,7 +2,7 @@
 
 
 Task("Build")
-.Description("Calls `dotnet build` on the Monogame.Aseprite.sln solution file")
+.Description("Performs builds of the library projects.")
 .Does(() =>
 {
     DotNetBuildSettings settings = new();
@@ -11,7 +11,5 @@ Task("Build")
     settings.Configuration = CommonConfiguration.Configuration;
     settings.OutputDirectory = System.IO.Path.Combine(CommonConfiguration.Output, CommonConfiguration.Configuration, "Build");
 
-    //  By calling build on the .sln we can clean all projects in the sln instead of calling build
-    //  on the projects individually.
     DotNetBuild(MONOGAME_ASEPRITE_SLN_PATH, settings);
 });

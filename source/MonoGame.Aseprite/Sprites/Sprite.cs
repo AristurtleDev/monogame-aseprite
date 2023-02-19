@@ -30,16 +30,16 @@ namespace MonoGame.Aseprite.Sprites;
 
 /// <summary>
 ///     <para>
-///         Defines a named sprite 
+///         Defines a named sprite
 ///     </para>
 ///     <para>
-///         The <see cref="Sprite"/> class is a general purpose wrapper around a 
+///         The <see cref="Sprite"/> class is a general purpose wrapper around a
 ///         <see cref="MonoGame.Aseprite.TextureRegion"/> with properties to control how it is rendered.  When creating
-///         a <see cref="Sprite"/> from an <see cref="AsepriteFile"/>, it represents the image of the frame used to 
+///         a <see cref="Sprite"/> from an <see cref="AsepriteFile"/>, it represents the image of the frame used to
 ///         create it.
 ///     </para>
 ///     <para>
-///         The most common methods for creating a <see cref="Sprite"/> will be either by using the 
+///         The most common methods for creating a <see cref="Sprite"/> will be either by using the
 ///         <see cref="MonoGame.Aseprite.Content.Processors.SpriteProcessor"/> to create an instance from a frame in
 ///         your Aseprite File, or by using a <see cref="TextureAtlas"/> to create a <see cref="Sprite"/> from one of
 ///         the regions in the atlas.  An instance can also be created manually using the constructor for a more general
@@ -62,7 +62,7 @@ namespace MonoGame.Aseprite.Sprites;
 ///         using the <see cref="TextureAtlas"/>.  By doing this, you will be generating a single source
 ///         <see cref="Microsoft.Xna.Framework.Graphics.Texture2D"/> for the <see cref="TextureAtlas"/>.  Each
 ///         <see cref="Sprite"/> that is then created from the <see cref="TextureAtlas"/> will be references the single
-///         source <see cref="Texture2D"/> instead of separate <see cref="Texture2D"/> instances per 
+///         source <see cref="Texture2D"/> instead of separate <see cref="Texture2D"/> instances per
 ///         <see cref="Sprite"/>.
 ///     </para>
 ///     <para>
@@ -74,36 +74,36 @@ namespace MonoGame.Aseprite.Sprites;
 /// <example>
 ///     The following example demonstrates how to create a <see cref="Sprite"/> using a
 ///     <see cref="MonoGame.Aseprite.Content.Processors.SpriteProcessor"/>.
-///     <code>
-///     //  Load an Aseprite file
-///     AsepriteFile aseFile = AsepriteFile.Load("path-to-file");
-///     
-///     //  Use the SpriteProcessor to create a Sprite
-///     Sprite sprite = SpriteProcessor.Process(GraphicsDevice, aseFile, frameIndex: 0);
+///     <code language="cs">
+///         //  Load an Aseprite file
+///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file");
+///           
+///         //  Use the SpriteProcessor to create a Sprite
+///         Sprite sprite = SpriteProcessor.Process(GraphicsDevice, aseFile, frameIndex: 0);
 ///     </code>
-///     
+///
 ///     The following example demonstrates how to create a <see cref="Sprite"/> from a <see cref="TextureAtlas"/>.
-///     <code>
-///     //  Load an Aseprite File
-///     AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
-///     
-///     //  Create a TextureAtlas from the AsepriteFile using the TextureAtlasProcessor
-///     TextureAtlas atlas = TextureAtlasProcessor.Process(GraphicsDevice, aseFile);
-///     
-///     //  Create a Sprite from region 0 in the TextureAtlas
-///     Sprite sprite = atlas.CreateSprite(regionIndex: 0);
+///     <code language="cs">
+///         //  Load an Aseprite File
+///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
+///           
+///         //  Create a TextureAtlas from the AsepriteFile using the TextureAtlasProcessor
+///         TextureAtlas atlas = TextureAtlasProcessor.Process(GraphicsDevice, aseFile);
+///           
+///         //  Create a Sprite from region 0 in the TextureAtlas
+///         Sprite sprite = atlas.CreateSprite(regionIndex: 0);
 ///     </code>
-///     
+///
 ///     The following example demonstrates how to create a <see cref="Sprite"/> from a <see cref="SpriteSheet"/>.
-///     <code>
-///     //  Load an Aseprite File
-///     AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
-///     
-///     //  Create a SpriteSheet from the AsepriteFile using the SpriteSheetProcessor
-///     SpriteSheet spriteSheet = SpriteSheetProcessor.Process(GraphicsDevice, aseFile);
-///     
-///     //  Create a Sprite from region 0 in the SpriteSheet
-///     Sprite sprite = spriteSheet.CreateSprite(regionIndex: 0);
+///     <code language="cs">
+///         //  Load an Aseprite File
+///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
+///           
+///         //  Create a SpriteSheet from the AsepriteFile using the SpriteSheetProcessor
+///         SpriteSheet spriteSheet = SpriteSheetProcessor.Process(GraphicsDevice, aseFile);
+///           
+///         //  Create a Sprite from region 0 in the SpriteSheet
+///         Sprite sprite = spriteSheet.CreateSprite(regionIndex: 0);
 ///     </code>
 /// </example>
 /// <seealso cref="MonoGame.Aseprite.Content.Processors.SpriteProcessor"/>
@@ -135,75 +135,31 @@ public class Sprite
     }
 
     /// <summary>
+    ///     Gets the width, in pixels, of this <see cref="Sprite"/>
+    /// </summary>
+    /// <value>
+    ///     The width, in pixels, of this <see cref="Sprite"/>.
+    /// </value>
+    public int Width => _textureRegion.Bounds.Width;
+
+    /// <summary>
+    ///     Gets the height, in pixels, of this <see cref="Sprite"/>
+    /// </summary>
+    /// <value>
+    ///     The height, in pixels, of this <see cref="Sprite"/>.
+    /// </value>
+    public int Height => _textureRegion.Bounds.Height;
+
+    /// <summary>
     ///     Gets or Sets the color mask to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     /// <value>
     ///     The color mask to apply when rendering this <see cref="Sprite"/>.
     /// </value>
-    /// <example>
-    ///     <para>
-    ///         In the following example, in the `LoadContent` method, we first load an <see cref="AsepriteFile"/>, then 
-    ///         use the <see cref="MonoGame.Aseprite.Content.Processors.SpriteProcessor"/> to create a new
-    ///         <see cref="Sprite"/> from `frameIndex: 0`.  Then we set the <see cref="Sprite.Color"/> value to 
-    ///         `Color.Red`.
-    ///     </para>
-    ///     <para>
-    ///         Then, when we draw the <see cref="Sprite"/> in the `Game.Draw` method, the color mask will be applied
-    ///         automatically when rendering with the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
-    ///     </para>
-    ///     <code>
-    ///     using Microsoft.Xna.Framework;
-    ///     using Microsoft.Xna.Framework.Graphics;
-    ///     using MonoGame.Aseprite;
-    ///     using MonoGame.Aseprite.Sprites;
-    ///     using MonoGame.Aseprite.Processors;
-    ///     
-    ///     namespace Example;
-    ///     
-    ///     public class ExampleGame : Game
-    ///     {
-    ///         private SpriteBatch _spriteBatch;
-    ///         private GraphicsDeviceManager _graphics;
-    ///     
-    ///         private Sprite _sprite;
-    ///     
-    ///     
-    ///         public ExampleGame()
-    ///         {
-    ///             _graphics = new(this);
-    ///             Content.RootDirectory = "Content";
-    ///         }
-    ///     
-    ///         protected override void LoadContent()
-    ///         {
-    ///             _spriteBatch = new(GraphicsDevice);
-    ///     
-    ///             AsepriteFile aseFile = AsepriteFile.Load("path-to-file");
-    ///             _sprite = SpriteProcessor.Process(GraphicsDevice, aseFile, frameIndex: 0);
-    ///     
-    ///             //  Use the Sprite.Color property to change the color mask applied when rendering.
-    ///             _sprite.Color = Color.Red;
-    ///         }
-    ///     
-    ///         protected override void Draw(GameTime gameTime)
-    ///         {
-    ///             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-    ///     
-    ///             //  Render the sprite. The color mask set will be applied automatically from the Sprite.Color property.
-    ///             _sprite.Draw(_spriteBatch, position: Vector2.Zero);
-    ///     
-    ///             _spriteBatch.End();
-    ///         }
-    ///     }
-    ///     </code>
-    /// </example>
-    /// <seealso cref="AsepriteFile"/>
-    /// <seealso cref="Sprite"/>
-    /// <seealso cref="MonoGame.Aseprite.Content.Processors.SpriteProcessor"/>
     public Color Color { get; set; }
 
     /// <summary>
-    ///     Gets or Sets the level of transparency, between 0.0f, and 1.0f, to apply when rendering this 
+    ///     Gets or Sets the level of transparency, between 0.0f, and 1.0f, to apply when rendering this
     ///     <see cref="Sprite"/>.
     /// </summary>
     public float Transparency
@@ -272,7 +228,7 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for vertical and 
+    ///     Gets or Sets the <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for vertical and
     ///     horizontal flipping when rendering this <see cref="Sprite"/>.
     /// </summary>
     public SpriteEffects SpriteEffects { get; set; }
@@ -321,6 +277,7 @@ public class Sprite
         _transparency = 1.0f;
         Rotation = 0.0f;
         _origin = Vector2.Zero;
+        _scale = Vector2.One;
         SpriteEffects = SpriteEffects.None;
         LayerDepth = 0.0f;
         IsVisible = true;
@@ -343,7 +300,7 @@ public class Sprite
     ///     Renders this <see cref="Sprite"/>.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
+    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this
     ///     <see cref="Sprite"/>.
     /// </param>
     /// <param name="position">

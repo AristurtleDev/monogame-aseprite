@@ -1,8 +1,8 @@
 #load "../common/common.cake"
 
 Task("Pack")
-.IsDependentOn("Build")
-.Description("Calls `dotnet pack` on the Monogame.Aseprite.csproj project file")
+.IsDependentOn("Test")
+.Description("Creates the NuGet files to be uploaded.")
 .Does(() =>
 {
     DotNetPackSettings settings = new();
@@ -11,6 +11,7 @@ Task("Pack")
     settings.Configuration = CommonConfiguration.Configuration;
     settings.OutputDirectory = System.IO.Path.Combine(CommonConfiguration.Output, CommonConfiguration.Configuration, "NuGet");
 
-    //  Call pack on the project itself, not the solution.
+    //  Call pack on the projects themselves, not the solution, otherwise, we'll get a pack of the test project.
     DotNetPack(MONOGAME_ASEPRITE_CSPROJ, settings);
+    DotNetPack(MONOGAME_ASEPRITE_CONTENT_PIPELINE_CSPROJ, settings);
 });

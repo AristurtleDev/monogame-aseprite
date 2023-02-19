@@ -26,9 +26,9 @@
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
         <PackageReleaseNotes>Version 4.0.0-prerelease</PackageReleaseNotes>
         <Description>
-            MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds extension
-            support for the MonoGame MGCB Editor to import and processes Aseprite (.aseprite/.ase) files to be used in 
-            a MonoGame project that is using the MonoGame.Aseprite library.
+            MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
+            MGCB Editor for importing Aseprite (.ase | .aseprite) files to be used in a MonoGame project using the
+            MonoGame.Aseprite library.
         </Description>
         <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
@@ -51,6 +51,6 @@
 
     <!-- Local Project References -->
     <ItemGroup>
-        <ProjectReference Include="..\MonoGame.Aseprite.Common\MonoGame.Aseprite.Common.csproj" />
+        <ProjectReference Include="..\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
     </ItemGroup>
 </Project>

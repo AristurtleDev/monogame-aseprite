@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
@@ -32,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Processors;
 /// <summary>
 ///     Defines a processor that processes a <see cref="Sprite"/> from an frame in an <see cref="AsepriteFile"/>
 /// </summary>
-/// <arisdocs-signature-format value="public static class {0};"/>
+/// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
 public static class SpriteProcessor
 {
     /// <summary>
@@ -66,46 +67,102 @@ public static class SpriteProcessor
     ///     Thrown if the specified frame index is less than zero or is greater than or equal to the total number 
     ///     <see cref="AsepriteFrame"/> elements in the given <see cref="AsepriteFile"/>.
     /// </exception>
-    /// <example>
-    ///     <para>
-    ///         The following example demonstrates how to use this method to process a <see cref="Sprite"/> from a
-    ///         single frame in the <see cref="AsepriteFile"/>.
-    ///     </para>
-    ///     <code title="Add Using Statements">
-    ///        using MonoGame.Aseprite;
-    ///        using MonoGame.Aseprite.Sprites;
-    ///        using MonoGame.Aseprite.Content.Processors;
-    ///     </code>
-    ///     <code title="Create a Sprite using the SpriteProcessor.Process method">
-    ///     public override void LoadContent()
-    ///     {
-    ///         //  Load the Aseprite File
-    ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-aseprite-file");
-    ///         
-    ///         //  If you are using the MGCB Editor to import your Aseprite file, use the ContentManager.Load method
-    ///         //  instead
-    ///         //  AsepriteFile aseFile = Content.Load&lt;AsepriteFile&gt;("content-name");
-    ///         
-    ///         //  Use the SpriteProcessor to create the Sprite from the AsepriteFile.
-    ///         //  You have to specify which frame to process it from.
-    ///         Sprite sprite = SpriteProcessor.Process(GraphicsDevice, aseFile, frameIndex: 0);
-    ///     }
-    ///     </code>
-    /// </example>
     /// <seealso cref="AsepriteFile"/>
     /// <seealso cref="Sprite"/>
-    /// <arisdocs>
-    ///     <id value="monogame-aseprite-content-processors-spriteprocessor"/>
-    ///     <title value="SpriteProcessor.Process Method"/>
-    ///     <sidebar-label value="Process"/>
-    ///     <path value="monogame-aseprite/content/processors/spriteprocessor/methods/processor.md"/>
-    ///     <member-type value="method"/>
-    ///     <access public="true">
-    ///     <modifiers static="true"/>
-    /// </arisdocs>
     public static Sprite Process(GraphicsDevice device, AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
     {
-        RawSprite rawSprite = RawSpriteProcessor.Process(aseFile, aseFrameIndex, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
+        RawSprite rawSprite = ProcessRaw(aseFile, aseFrameIndex, onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
         return Sprite.FromRaw(device, rawSprite);
+    }
+
+    /// <summary>
+    ///     Processes a <see cref="RawSprite"/> from the <see cref="AsepriteFrame"/> at the specified index in the 
+    ///     given <see cref="AsepriteFile"/>.
+    /// </summary>
+    /// <param name="aseFile">
+    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteFrame"/> to processes.
+    /// </param>
+    /// <param name="aseFrameIndex">
+    ///     The index of the <see cref="AsepriteFrame"/> in the <see cref="AsepriteFile"/> to process.
+    /// </param>
+    /// <param name="onlyVisibleLayers">
+    ///     Indicates if only <see cref="AsepriteCel"/> elements on visible <see cref="AsepriteLayer"/> elements should 
+    ///     be included.
+    /// </param>
+    /// <param name="includeBackgroundLayer">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on an <see cref="AsepriteLayer"/> marked as the background 
+    ///     layer should be included.
+    /// </param>
+    /// <param name="includeTilemapLayers">
+    ///     Indicates if <see cref="AsepriteCel"/> elements on a <see cref="AsepriteTilemapLayer"/> should be included.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="RawSprite"/> created by this method.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the specified  <see cref="AsepriteFrame"/> index is less than zero or is greater than or equal to 
+    ///     the total number of  <see cref="AsepriteFrame"/> elements in the given  <see cref="AsepriteFile"/>.
+    /// </exception>
+    public static RawSprite ProcessRaw(AsepriteFile aseFile, int aseFrameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = true)
+    {
+        AsepriteFrame aseFrame = aseFile.GetFrame(aseFrameIndex);
+
+        Color[] pixels = aseFrame.FlattenFrame(onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers);
+        RawTexture rawTexture = new(aseFrame.Name, pixels, aseFrame.Width, aseFrame.Height);
+
+        RawSlice[] slices = ProcessSlices(aseFrameIndex, aseFile.Slices);
+
+        return new(aseFrame.Name, rawTexture, slices);
+    }
+
+    private static RawSlice[] ProcessSlices(int frameIndex, ReadOnlySpan<AsepriteSlice> slices)
+    {
+        List<RawSlice> result = new();
+        HashSet<string> sliceNameCheck = new();
+
+        for (int s = 0; s < slices.Length; s++)
+        {
+            AsepriteSlice slice = slices[s];
+            ReadOnlySpan<AsepriteSliceKey> keys = slice.Keys;
+
+            //  Traverse keys backwards until we find a match for the frame index
+            for (int k = keys.Length - 1; k >= 0; k--)
+            {
+                AsepriteSliceKey key = keys[k];
+
+                if (key.FrameIndex > frameIndex)
+                {
+                    continue;
+                }
+
+                string name = slice.Name;
+
+                if (sliceNameCheck.Contains(name))
+                {
+                    throw new InvalidOperationException($"Duplicate slice name '{name}' found. Slices must have unique names");
+                }
+
+                Rectangle bounds = key.Bounds;
+                Color color = slice.UserData.Color.GetValueOrDefault();
+                Vector2 origin = key.Pivot.GetValueOrDefault().ToVector2();
+
+                RawSlice rawSlice;
+
+                if (key.IsNinePatch)
+                {
+                    rawSlice = new RawNinePatchSlice(name, bounds, key.CenterBounds.GetValueOrDefault(), origin, color);
+                }
+                else
+                {
+                    rawSlice = new RawSlice(name, bounds, origin, color);
+                }
+
+                result.Add(rawSlice);
+                sliceNameCheck.Add(name);
+                break;
+            }
+        }
+
+        return result.ToArray();
     }
 }
