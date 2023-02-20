@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>MonoGame.Aseprite</id>
     <version>4.0.0</version>
@@ -16,7 +16,9 @@
     <tags>MonoGame Aseprite import processes read write sprite animation tileset tilemap spritesheet pipeline mgcb</tags>
     <repository type="git" url="https://github.com/AristurtleDev/monogame-aseprite" branch="stable" />
     <dependencies>
-      <group targetFramework="net6.0" />
+      <group targetFramework="net6.0">
+        <dependency id="MonoGame.Framework.DesktopGL" version="3.8.1.303" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
 </package>

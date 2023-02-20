@@ -41,8 +41,8 @@ public static class RawAnimatedTilemapWriter
     /// <param name="rawAnimatedTilemap">The <see cref="RawAnimatedTilemap"/> to write.</param>
     public static void Write(string path, RawAnimatedTilemap rawAnimatedTilemap)
     {
-        Stream stream = File.Create(path);
-        BinaryWriter writer = new(stream);
+        using Stream stream = File.Create(path);
+        using BinaryWriter writer = new(stream);
         Write(writer, rawAnimatedTilemap);
     }
 

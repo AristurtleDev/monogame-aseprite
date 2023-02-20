@@ -41,8 +41,8 @@ public static class RawSpriteWriter
     /// <param name="rawSprite">The <see cref="RawSprite"/> to write.</param>
     public static void Write(string path, RawSprite rawSprite)
     {
-        Stream stream = File.Create(path);
-        BinaryWriter writer = new(stream);
+        using Stream stream = File.Create(path);
+        using BinaryWriter writer = new(stream);
         Write(writer, rawSprite);
     }
 

@@ -41,8 +41,8 @@ public static class RawTextureAtlasWriter
     /// <param name="rawTextureAtlas">The <see cref="RawTextureAtlas"/> to write.</param>
     public static void Write(string path, RawTextureAtlas rawTextureAtlas)
     {
-        Stream stream = File.Create(path);
-        BinaryWriter writer = new(stream);
+        using Stream stream = File.Create(path);
+        using BinaryWriter writer = new(stream);
         Write(writer, rawTextureAtlas);
     }
 

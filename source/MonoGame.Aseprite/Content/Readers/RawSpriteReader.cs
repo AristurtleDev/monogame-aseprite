@@ -42,8 +42,8 @@ public static class RawSpriteReader
     /// </returns>
     public static RawSprite Read(string path)
     {
-        Stream stream = File.OpenRead(path);
-        BinaryReader reader = new(stream);
+        using Stream stream = File.OpenRead(path);
+        using BinaryReader reader = new(stream);
         return Read(reader);
     }
 

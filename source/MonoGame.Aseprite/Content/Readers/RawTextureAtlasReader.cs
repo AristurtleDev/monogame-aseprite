@@ -42,8 +42,8 @@ public static class RawTextureAtlasReader
     /// </returns>
     public static RawTextureAtlas Read(string path)
     {
-        Stream stream = File.OpenRead(path);
-        BinaryReader reader = new(stream);
+        using Stream stream = File.OpenRead(path);
+        using BinaryReader reader = new(stream);
         return Read(reader);
     }
 

@@ -41,8 +41,8 @@ public static class RawSpriteSheetWriter
     /// <param name="rawSpriteSheet">The <see cref="RawSpriteSheet"/> to write.</param>
     public static void Write(string path, RawSpriteSheet rawSpriteSheet)
     {
-        Stream stream = File.Create(path);
-        BinaryWriter writer = new(stream);
+        using Stream stream = File.Create(path);
+        using BinaryWriter writer = new(stream);
         Write(writer, rawSpriteSheet);
     }
 

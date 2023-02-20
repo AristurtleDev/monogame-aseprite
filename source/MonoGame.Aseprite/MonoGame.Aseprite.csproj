@@ -28,24 +28,12 @@
         <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
         <None Include="..\..\.nuget\README.md" Pack="true" PackagePath="" />
         <None Include="..\..\Artifacts\$(Configuration)\Build\MonoGame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content"/>
-        <!-- <None Include="..\MonoGame.Aseprite.Content.Pipeline\bin\$(Configuration)\net6.0\MonoGame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="\content\pipeline" /> -->
     </ItemGroup>
 
     <!-- Nuget Package References -->
     <ItemGroup>
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
-            <PrivateAssets>All</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     </ItemGroup>
-
-
-
-    <!-- Local Project References -->
-    <!-- <ItemGroup>
-        <ProjectReference Include="..\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj">
-            <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-        </ProjectReference>
-    </ItemGroup> -->
 
     <!-- Allow the test project to use internal types for testing -->
     <ItemGroup>
@@ -55,8 +43,8 @@
     </ItemGroup>
 
     <!-- Warning Supressions -->
-    <!-- <PropertyGroup> -->
-    <!-- Supress warning about Pipeline dll not being in lib folder for NuGet -->
-    <!-- <NoWarn>NU5100</NoWarn> -->
-    <!-- </PropertyGroup> -->
+    <PropertyGroup>
+        <!-- Supress warning about Pipeline dll not being in lib folder for NuGet -->
+        <NoWarn>NU5100</NoWarn>
+    </PropertyGroup>
 </Project>

@@ -41,8 +41,8 @@ public static class RawTilesetWriter
     /// <param name="rawTileset">The <see cref="RawTileset"/> to write.</param>
     public static void Write(string path, RawTileset rawTileset)
     {
-        Stream stream = File.Create(path);
-        BinaryWriter writer = new(stream);
+        using Stream stream = File.Create(path);
+        using BinaryWriter writer = new(stream);
         Write(writer, rawTileset);
     }
 

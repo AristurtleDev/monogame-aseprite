@@ -42,8 +42,8 @@ public static class RawTilesetReader
     /// </returns>
     public static RawTileset Read(string path)
     {
-        Stream stream = File.OpenRead(path);
-        BinaryReader reader = new(stream);
+        using Stream stream = File.OpenRead(path);
+        using BinaryReader reader = new(stream);
         return Read(reader);
     }
 
