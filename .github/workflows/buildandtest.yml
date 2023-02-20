@@ -1,10 +1,25 @@
-name: build and test
-on:
-  push:
-on: push
+name: build-and-test
+on: [push]
+
+env: 
+  DOTNET_VERSION: '6.0.400'
+
 jobs:
-  my-job:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: my-step
-        run: echo "Hello World!"
+      - name: Clone Repository
+        uses: actions/checkout@v3
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with: 
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cake Target Test
+        shell: bash
+        run: |
+          dotnet new tool-manifest
+          dotnet tool install Cake.Tool
+          dotnet tool restore
+          dotnet cake --target=Test

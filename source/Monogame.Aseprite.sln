@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{E896ADEA-72E5-43AD-9DA7-D088E3126482}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Content.Pipeline", "MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E896ADEA-72E5-43AD-9DA7-D088E3126482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E896ADEA-72E5-43AD-9DA7-D088E3126482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E896ADEA-72E5-43AD-9DA7-D088E3126482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E896ADEA-72E5-43AD-9DA7-D088E3126482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
