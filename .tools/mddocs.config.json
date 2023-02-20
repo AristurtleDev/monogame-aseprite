@@ -1,5 +1,4 @@
 {
-    "$schema": "./mddocs.schema.json",
     "mddocs": {
         "apireference": {
             "template": {
