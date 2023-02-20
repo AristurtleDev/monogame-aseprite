@@ -162,7 +162,6 @@ Task("Docs")
 .IsDependentOn("Default")
 .Does(() =>
 {
-
     // ---------------------------------------------------
     //  Use mddcos dotnet tool to create the initial
     //  documentation files in the .artfacts directory
