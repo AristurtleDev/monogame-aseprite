@@ -28,7 +28,6 @@ jobs:
       - name: Cake Target Test
         shell: bash
         run: |
-          dotnet new tool-manifest
-          dotnet tool install Cake.Tool
+          cd ./.tools
           dotnet tool restore
           dotnet cake --target=Test

@@ -33,13 +33,13 @@ namespace MonoGame.Aseprite.Sprites;
 ///         Defines a named sprite
 ///     </para>
 ///     <para>
-///         The <see cref="Sprite"/> class is a general purpose wrapper around a
+///         The <see cref="Sprite"/> class is a general purpose wrapper around a 
 ///         <see cref="MonoGame.Aseprite.TextureRegion"/> with properties to control how it is rendered.  When creating
 ///         a <see cref="Sprite"/> from an <see cref="AsepriteFile"/>, it represents the image of the frame used to
 ///         create it.
 ///     </para>
 ///     <para>
-///         The most common methods for creating a <see cref="Sprite"/> will be either by using the
+///         The most common methods for creating a <see cref="Sprite"/> will be either by using the 
 ///         <see cref="MonoGame.Aseprite.Content.Processors.SpriteProcessor"/> to create an instance from a frame in
 ///         your Aseprite File, or by using a <see cref="TextureAtlas"/> to create a <see cref="Sprite"/> from one of
 ///         the regions in the atlas.  An instance can also be created manually using the constructor for a more general
@@ -53,9 +53,11 @@ namespace MonoGame.Aseprite.Sprites;
 ///         <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> when rendering this sprite. For one-off rendering
 ///         where you can override the parameter values passed to the
 ///         <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>, you can render the
-///         <see cref="Sprite.TextureRegion"/> instead.
-///     </para>
-///     ### Performance Considerations
+///         <see cref="Sprite.TextureRegion"/> instead.  
+///     </para>  
+///     
+///     ### Performance Considerations  
+///     
 ///     <para>
 ///         If you plan to create multiple <see cref="Sprite"/> instances from various frames in your Aseprite file,
 ///         consider first creating a <see cref="TextureAtlas"/>, then creating each <see cref="Sprite"/> instance
@@ -72,18 +74,18 @@ namespace MonoGame.Aseprite.Sprites;
 ///     </para>
 /// </remarks>
 /// <example>
-///     The following example demonstrates how to create a <see cref="Sprite"/> using a
-///     <see cref="MonoGame.Aseprite.Content.Processors.SpriteProcessor"/>.
-///     <code language="cs">
+///     <para>
+///         The following examples demonstrate various ways to create a <see cref="Sprite"/>:
+///     </para>
+///     <code language="cs {5} title='Create Sprite using SpriteProcessor' showLineNumbers">
 ///         //  Load an Aseprite file
 ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file");
 ///           
 ///         //  Use the SpriteProcessor to create a Sprite
 ///         Sprite sprite = SpriteProcessor.Process(GraphicsDevice, aseFile, frameIndex: 0);
 ///     </code>
-///
-///     The following example demonstrates how to create a <see cref="Sprite"/> from a <see cref="TextureAtlas"/>.
-///     <code language="cs">
+///     
+///     <code language="cs {8} title='Create Sprite using TextureAtlas' showLineNumbers">
 ///         //  Load an Aseprite File
 ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
 ///           
@@ -93,9 +95,8 @@ namespace MonoGame.Aseprite.Sprites;
 ///         //  Create a Sprite from region 0 in the TextureAtlas
 ///         Sprite sprite = atlas.CreateSprite(regionIndex: 0);
 ///     </code>
-///
-///     The following example demonstrates how to create a <see cref="Sprite"/> from a <see cref="SpriteSheet"/>.
-///     <code language="cs">
+///     
+///     <code language="cs {8} title='Create Sprite using SpriteSheet' showLineNumbers">
 ///         //  Load an Aseprite File
 ///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
 ///           
@@ -110,8 +111,8 @@ namespace MonoGame.Aseprite.Sprites;
 /// <seealso cref="SpriteSheet"/>
 /// <seealso cref="TextureAtlas"/>
 /// <seealso cref="TextureRegion"/>
-/// <seealso cref="Microsoft.Xna.Framework.Graphics.Texture2D"/>
-/// <seealso cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
+/// <seealso href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html"/>
+/// <seealso href="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
 public class Sprite
 {
     private TextureRegion _textureRegion;
