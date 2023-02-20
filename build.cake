@@ -12,8 +12,9 @@ string[] projects = new string[]
 Task("Clean")
 .Does(() => 
 {
-    DotNetClean("./source/MonoGame.Aseprite.sln");
-    DotNetClean("./tests/MonoGame.Aseprite.Tests.sln");
+    DotNetClean("./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj");
+    DotNetClean("./source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj");
+    DotNetClean("./tests/MonoGame.Aseprite.Tests/MonoGame.Aseprite.Tests.csproj");
     CleanDirectory("./.artifacts");
 });
 
@@ -21,8 +22,9 @@ Task("Restore")
 .IsDependentOn("Clean")
 .Does(() => 
 {
-    DotNetRestore("./source/MonoGame.Aseprite.sln");
-    DotNetRestore("./tests/MonoGame.Aseprite.Tests.sln");
+    DotNetRestore("./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj");
+    DotNetRestore("./source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj");
+    DotNetRestore("./tests/MonoGame.Aseprite.Tests/MonoGame.Aseprite.Tests.csproj");
 });
 
 Task("Version")
@@ -47,9 +49,9 @@ Task("Build")
     buildSettings.Configuration = configuration;
     buildSettings.MSBuildSettings = msBuildSettings;
 
-    
-    DotNetBuild("./source/MonoGame.Aseprite.sln", buildSettings);
-    DotNetBuild("./tests/MonoGame.Aseprite.Tests.sln", buildSettings);
+    DotNetBuild("./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", buildSettings);
+    DotNetBuild("./source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj", buildSettings);
+    DotNetBuild("./tests/MonoGame.Aseprite.Tests/MonoGame.Aseprite.Tests.csproj", buildSettings);
 });
 
 Task("Test")
@@ -60,7 +62,7 @@ Task("Test")
     testSettings.Configuration = configuration;
     testSettings.NoBuild = true;
 
-    DotNetTest("./tests/MonoGame.Aseprite.Tests.sln", testSettings);
+    DotNetTest("./tests/MonoGame.Aseprite.Tests/MonoGame.Aseprite.Tests.csproj", testSettings);
 });
 
 Task("Pack")
@@ -78,7 +80,7 @@ Task("Pack")
     packSettings.NoRestore = true;
     packSettings.MSBuildSettings = msBuildSettings;
 
-    DotNetPack("./source/MonoGame.Aseprite.sln", packSettings);
+    DotNetPack("./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", packSettings);
 });
 
 Task("PublishNuGet")

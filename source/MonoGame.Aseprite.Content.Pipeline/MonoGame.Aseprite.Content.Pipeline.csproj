@@ -6,6 +6,17 @@
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <Authors>Christopher Whitley</Authors>
+        <Company>Aristurtle</Company>
+        <Copyright>Copyright (c) 2018 - 2023 Christoipher Whitley</Copyright>
+        <PackageProjectUrl>https://monogameaseprite.net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryBranch>main</RepositoryBranch>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
