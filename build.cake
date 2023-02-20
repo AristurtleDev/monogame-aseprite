@@ -42,13 +42,12 @@ Task("Build")
 {
     DotNetMSBuildSettings msBuildSettings = new();
     msBuildSettings.WithProperty("Version", version);
-                //    .WithProperty("AssemblyVersion", version)
-                //    .WithProperty("FileVersion", version);
 
     DotNetBuildSettings buildSettings = new();
     buildSettings.Configuration = configuration;
     buildSettings.MSBuildSettings = msBuildSettings;
 
+    
     DotNetBuild("./source/MonoGame.Aseprite.sln", buildSettings);
     DotNetBuild("./tests/MonoGame.Aseprite.Tests.sln", buildSettings);
 });
