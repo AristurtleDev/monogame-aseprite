@@ -129,6 +129,7 @@ Task("Default")
 .IsDependentOn("Test");
 
 Task("Publish")
+.IsDependentOn("Default")
 .IsDependentOn("PublishNuGet")
 .IsDependentOn("PublishGitHub");
 
