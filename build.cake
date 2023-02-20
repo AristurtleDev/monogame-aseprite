@@ -1,5 +1,5 @@
 #tool "dotnet:?package=GitVersion.Tool&version=5.10.3"
-
+#nullable enable
 string target = Argument(nameof(target), "Default");
 string configuration = Argument(nameof(configuration), "Release");
 string version = string.Empty;
@@ -120,6 +120,131 @@ Task("PublishGitHub")
         
     }
 });
+
+Task("Docs")
+.IsDependentOn("Default")
+.Does(() =>
+{
+    DotNetToolSettings toolSettings = new();
+    toolSettings.ArgumentCustomization = builder =>
+    {
+        builder.Append("apireference");
+        builder.AppendSwitch("--configurationFilePath", "./mddocs.config.json");
+        builder.AppendSwitch("--assemblies", $"./source/MonoGame.Aseprite/bin/{configuration}/net6.0/MonoGame.Aseprite.dll");
+        builder.AppendSwitchQuoted("--outdir", "./.artifacts/documentation");
+        return builder;
+    };
+
+    DotNetTool("mddocs", toolSettings);
+
+    //  Fix links
+    string[] mdFiles = System.IO.Directory.GetFiles("./.artifacts/documentation", "*.md", SearchOption.AllDirectories);
+
+    foreach(string file in mdFiles)
+    {
+        string text = System.IO.File.ReadAllText(file);
+        text = text.Replace("index.md", string.Empty);
+        System.IO.File.WriteAllText(file, text);
+    }
+
+    //  Rename index.md files to [directoryName].md
+    string[] indexFiles = System.IO.Directory.GetFiles("./.artifacts/documentation", "index.md", SearchOption.AllDirectories);
+
+    foreach(string file in indexFiles)
+    {
+        FileInfo fileInfo = new(file);
+        if(fileInfo.Name == "index.md")
+        {
+            if(fileInfo.Directory is null)
+            {
+                throw new System.Exception($"Unable to get directory name for '{fileInfo.Name}'");
+            }
+
+            string newName = fileInfo.Directory.Name + ".md";
+
+            fileInfo.MoveTo(System.IO.Path.Combine(fileInfo.Directory.FullName, newName));
+        }
+    }
+
+    //  Inject front matter
+    string[] files = System.IO.Directory.GetFiles("./.artifacts/documentation", "*.md", SearchOption.AllDirectories);
+
+    foreach(string file in files)
+    {
+        string? newText = default;
+
+        using(FileStream readStream = System.IO.File.OpenRead(file))
+        {
+            using(StreamReader streamReader = new(readStream))
+            {
+                string? firstLine = streamReader.ReadLine();
+
+                if(firstLine is not null && firstLine.StartsWith("#"))
+                {
+                    firstLine = firstLine.Replace("#", string.Empty).Trim();
+                    string title = firstLine;
+
+                    string id = title.ToLower().Replace('.', '-').Replace(' ', '-');
+                    
+                    string? label = default;
+
+                    if(firstLine.Contains("Namespace"))
+                    {
+                        FileInfo fileInfo = new(file);
+                        label = fileInfo.Directory?.Name;
+                    }
+
+                    if(label is null)
+                    {
+                        label = title.Replace("Namespace", string.Empty)
+                                     .Replace("Class", string.Empty)
+                                     .Replace("Method", string.Empty)
+                                     .Replace("Property", string.Empty)
+                                     .Replace("Enum", string.Empty)
+                                     .Replace("Field", string.Empty)
+                                     .Replace("Event", string.Empty)
+                                     .Trim();
+                    }
+
+                    string yaml =
+                    $"""
+                    ---
+                    id: {id}
+                    title: {title}
+                    sidebar_label: {label}
+                    ---
+                    """;
+
+                    newText = yaml + streamReader.ReadToEnd();
+                }
+            }
+        }
+
+        if(newText is not null)
+        {
+            System.IO.File.WriteAllText(file, newText);
+        }
+    }
+});
+
+Setup((context) =>
+{
+    //  Turn on xml document generation for docs task
+    if(target is "Docs")
+    {
+        XmlPoke("./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", "//GenerateDocumentationFile", "True");
+    }
+});
+
+Teardown((context) =>
+{
+    //  Turn off xml document generation for docs task
+    if(target is "Docs")
+    {
+        XmlPoke("./source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", "//GenerateDocumentationFile", "False");
+    }
+});
+
 
 Task("Default")
 .IsDependentOn("Clean")
