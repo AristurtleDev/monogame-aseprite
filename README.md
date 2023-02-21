@@ -1,10 +1,10 @@
 <h1 align="center">
-<img src="https://raw.githubusercontent.com/AristurtleDev/AsepriteDotNet/stable/.github/images/banner.png" alt="MonoGame.Aseprite Logo">
+<img src="https://raw.githubusercontent.com/AristurtleDev/monogame-aseprite/main/.github/images/banner.png" alt="MonoGame.Aseprite Logo">
 <br/>
 A Cross Platform C# Library That Adds Support For Aseprite Files in MonoGame Projects.
 
-[![build and test](https://github.com/AristurtleDev/AsepriteDotNet/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/AristurtleDev/AsepriteDotNet/actions/workflows/build-and-test.yml)
-[![Nuget 0.2.2](https://img.shields.io/nuget/v/AsepriteDotNet?color=blue&style=flat-square)](https://www.nuget.org/packages/AsepriteDotNet/0.2.2)
+[![build-and-test](https://github.com/AristurtleDev/monogame-aseprite/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/AristurtleDev/AsepriteDotNet/actions/workflows/build-and-test.yml)
+[![Nuget 0.2.2](https://img.shields.io/nuget/v/MonoGame.Aseprite?color=blue&style=flat-square)](https://www.nuget.org/packages/MonoGame.Aseprite/4.0.0)
 [![License: MIT](https://img.shields.io/badge/📃%20license-MIT-blue?style=flat)](LICENSE)
 [![Twitter](https://img.shields.io/badge/%20-Share%20On%20Twitter-555?style=flat&logo=twitter)](https://twitter.com/intent/tweet?text=MonoGame.Aseprite%20by%20%40aristurtledev%0A%0AA%20cross-platform%20C%23%20library%20that%20adds%20support%20for%20Aseprite%20files%20in%20MonoGame%20projects.%20https%3A%2F%2Fgithub.com%2FAristurtleDev%2Fmonogame-aseprite%0A%0A%23monogame%20%23aseprite%20%23dotnet%20%23csharp%20%23oss%0A)
 
@@ -12,15 +12,26 @@ A Cross Platform C# Library That Adds Support For Aseprite Files in MonoGame Pro
 
 # MonoGame.Aseprite
 
-`MonoGame.Aseprite` is a free and open source library for the [MonoGame Framework](https://www.monogame.net) that assists in importing [Aseprite](https://www.aseprite.org) (\*.ase/\*.aseprite) files into your game project. No need to export a spritesheet from Aseprite and have to deal with a PNG + JSON file. With `MonoGame.Aseprite, you can use the Aseprite file directly.
+[MonoGame.Aseprite](https://monogameaseprite.net) is a free and open source library for the [MonoGame Framework](https://www.monogame.net) that assists in importing [Aseprite](https://www.aseprite.org) (.ase | .aseprite) files into your game project. No need to export a spritesheet from Aseprite and have to deal with a PNG + JSON file. With [MonoGame.Aseprite](https://monogameaseprite.net), you can use the Aseprite file directly.
 
-`MonoGame.Aseprite` supports importing the file **both with and without the MGCB Editor** (also known as the Content Pipeline Tool). Along with importing the file contents, several **processors** have been designed to transform the file contents into a more meaningful state to use within MonoGame.
+[MonoGame.Aseprite](https://monogameaseprite.net) supports importing the file **both with and without the MGCB Editor** (also known as the Content Pipeline Tool). Along with importing the file contents, several [**processors**](https://monogameaseprite.net/docs/processors/processors-overview) have been designed to transform the file contents into a more meaningful state to use within MonoGame.
 
-`MonoGame.Aseprite` also supports outputting the processed file content to disk in a binary format and reader classes to read the processed information back in. This adds support for pre-processing content using any build or content workflow the end user has as long as it can use the `MonoGame.Aseprite` library.
+[MonoGame.Aseprite](https://monogameaseprite.net) also supports outputting the processed file content to disk in a binary format and reader classes to read the processed information back in. This adds support for pre-processing content using any build or content workflow the end user has as long as it can use the [MonoGame.Aseprite](https://monogameaseprite.net) library.
 
 ## Getting Started
-To get started using `MonoGame.Aseprite` start with the [Installation document](https://monogameaseprite.net/docs/getting-started/installation).
+To get started using [MonoGame.Aseprite](https://monogameaseprite.net) start with the [Installation document](https://monogameaseprite.net/docs/getting-started/installation).
 
+## Features
+* Import your Aseprite file at runtime with and without the MGCB Editor (Content Pipeline Tool)
+* Multiple built-in [processors](https://monogameaseprite.net/docs/processors/processors-overview) that can be used to transform the data from your Aseprite file into any of the following: 
+    * [Sprite](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/Sprite/)
+    * [TextureAtlas](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/TextureAtlas/)
+    * [SpriteSheet](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/SpriteSheet/)
+    * [Tileset](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tileset/)
+    * [Tilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tilemap/)
+    * [AnimatedTilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/AnimatedTilemap/).
+* All blend modes in Aseprite supported 1:1.
+* Runtime writers and readers that can be used in custom content processing workflows to preprocess content outside of the game.
 
 ## What Next?
 
@@ -38,10 +49,10 @@ If you would like to support this project in any way, there are quite a few ways
 
 If you would prefer to send me a tip/donation, you can do so at my [Ko-fi page](https://ko-fi.com/aristurtledev).  This is always appreciated and all donations go towards funding projects of mine such as this one.
 
-[![](.github/images/kofi-bg-black.webp#gh-light-mode-only)
-![](.github/images/kofi-bg-white.webp#gh-dark-mode-only)](https://ko-fi.com/aristurtledev)
+[![](.github/images/kofi-bg-black.webp#gh-light-mode-only)](https://ko-fi.com/aristurtledev)
+[![](.github/images/kofi-bg-white.webp#gh-dark-mode-only)](https://ko-fi.com/aristurtledev)
 
-You can also support me through [GitHub Sponsors](https://github.com/sponsors/manbeardgames).  This and the Ko-Fi links can both be found in the sidebar to the right on this repository page.
+You can also support me through [GitHub Sponsors](https://github.com/sponsors/AristurtleDev).  This and the Ko-Fi links can both be found in the sidebar to the right on this repository page.
 
 
 ## License
