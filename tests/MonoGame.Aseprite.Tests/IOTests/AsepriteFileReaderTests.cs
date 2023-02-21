@@ -28,18 +28,7 @@ using MonoGame.Aseprite.Content.Readers;
 
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class AsepriteFileReaderFixture
-{
-    public AsepriteFile AsepriteFile { get; }
-
-    public AsepriteFileReaderFixture()
-    {
-        string path = FileUtils.GetLocalPath("aseprite-file-reader-test.aseprite");
-        AsepriteFile = AsepriteFileReader.ReadFile(path);
-    }
-}
-
-public sealed class AsepriteFileReaderTests : IClassFixture<AsepriteFileReaderFixture>
+public sealed class AsepriteFileReaderTests
 {
     private readonly Color _black = new Color(0, 0, 0, 255);
     private readonly Color _white = new Color(255, 255, 255, 255);
@@ -48,20 +37,16 @@ public sealed class AsepriteFileReaderTests : IClassFixture<AsepriteFileReaderFi
     private readonly Color _blue = new Color(0, 0, 255, 255);
     private readonly Color _transparent = new Color(0, 0, 0, 0);
 
-    private readonly AsepriteFileReaderFixture _fixture;
-
-    public AsepriteFileReaderTests(AsepriteFileReaderFixture fixture) => _fixture = fixture;
-
     [Fact]
-    public void Reads_Expected_Values()
+    public void Reads_Version_1_3_0_Expected_Values()
     {
-        string path = FileUtils.GetLocalPath("aseprite-file-reader-test.aseprite");
+        string path = FileUtils.GetLocalPath("aseprite-1.3.0-file-reader-test.aseprite");
         AsepriteFile aseFile = AsepriteFileReader.ReadFile(path);
 
         //  ************************************************************
         //  File properties
         //  ************************************************************
-        Assert.Equal("aseprite-file-reader-test", aseFile.Name);
+        Assert.Equal("aseprite-1.3.0-file-reader-test", aseFile.Name);
         Assert.Equal(2, aseFile.CanvasWidth);
         Assert.Equal(2, aseFile.CanvasHeight);
         AssertUserData(aseFile.UserData, "hello sprite", _blue);
@@ -202,6 +187,146 @@ public sealed class AsepriteFileReaderTests : IClassFixture<AsepriteFileReaderFi
         //  ************************************************************
         Assert.Equal(1, aseFile.Tilesets.Length);
         AssertTileset(aseFile.Tilesets[0], 0, "tileset", 5, 1, 1, 1, 5, new Color[] { _transparent, _white, _red, _green, _blue });
+    }
+
+    [Fact]
+    public void Reads_Version_1_2_9_Expected_Values()
+    {
+        string path = FileUtils.GetLocalPath("aseprite-1.2.9-file-reader-test.aseprite");
+        AsepriteFile aseFile = AsepriteFileReader.ReadFile(path);
+
+        //  ************************************************************
+        //  File properties
+        //  ************************************************************
+        Assert.Equal("aseprite-1.2.9-file-reader-test", aseFile.Name);
+        Assert.Equal(2, aseFile.CanvasWidth);
+        Assert.Equal(2, aseFile.CanvasHeight);
+        AssertUserData(aseFile.UserData, default, default);
+
+        //  ************************************************************
+        //  Layers
+        //  ************************************************************
+        Assert.Equal(8, aseFile.Layers.Length);
+        AssertLayer(aseFile.Layers[0], "background", true, true, false, AsepriteBlendMode.Normal, 255, null, null);
+        AssertLayer(aseFile.Layers[1], "hidden", false, false, false, AsepriteBlendMode.Normal, 255, null, null);
+        AssertLayer(aseFile.Layers[2], "100-opacity", true, false, false, AsepriteBlendMode.Normal, 100, null, null);
+        AssertLayer(aseFile.Layers[3], "userdata", true, false, false, AsepriteBlendMode.Normal, 255, "hello layer", _blue);
+        AssertLayer(aseFile.Layers[4], "group", true, false, false, AsepriteBlendMode.Normal, 0, null, null);
+        AssertLayer(aseFile.Layers[5], "child", true, false, false, AsepriteBlendMode.Normal, 255, null, null);
+        AssertLayer(aseFile.Layers[6], "eight-frames", true, false, false, AsepriteBlendMode.Normal, 255, null, null);
+        AssertLayer(aseFile.Layers[7], "blend-color-dodge", true, false, false, AsepriteBlendMode.ColorDodge, 255, null, null);
+
+
+        //  ************************************************************
+        //  Tags
+        //  ************************************************************
+        Assert.Equal(5, aseFile.Tags.Length);
+        AssertTag(aseFile.Tags[0], "forward", 0, 0, AsepriteLoopDirection.Forward, _black, null, null);
+        AssertTag(aseFile.Tags[1], "reversed", 1, 1, AsepriteLoopDirection.Reverse, _black, null, null);
+        AssertTag(aseFile.Tags[2], "pingpong", 2, 2, AsepriteLoopDirection.PingPong, _black, null, null);
+        AssertTag(aseFile.Tags[3], "frames-4-to-6", 3, 5, AsepriteLoopDirection.Forward, _black, null, null);
+        AssertTag(aseFile.Tags[4], "userdata", 6, 6, AsepriteLoopDirection.Forward, _green, null, null);
+
+        //  ************************************************************
+        //  Frames
+        //  ************************************************************
+        Assert.Equal(8, aseFile.Frames.Length);
+        AssertFrame(aseFile.Frames[0], 2, 2, 2, 100);
+        AssertFrame(aseFile.Frames[1], 2, 2, 2, 200);
+        AssertFrame(aseFile.Frames[2], 2, 2, 2, 300);
+        AssertFrame(aseFile.Frames[3], 2, 2, 2, 400);
+        AssertFrame(aseFile.Frames[4], 2, 2, 2, 500);
+        AssertFrame(aseFile.Frames[5], 2, 2, 2, 600);
+        AssertFrame(aseFile.Frames[6], 2, 2, 2, 700);
+        AssertFrame(aseFile.Frames[7], 2, 2, 2, 800);
+
+        //  ************************************************************
+        //  Cels
+        //  ************************************************************
+        //  Frame 0
+        Assert.Equal(2, aseFile.Frames[0].Cels.Length);
+        AssertCel(aseFile.Frames[0].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame0Cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[0].Cels[0]);
+        AssertImageCel(frame0Cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[0].Cels[1], "eight-frames", 0, 0, 255, null, null);
+        AsepriteImageCel frame0cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[0].Cels[1]);
+        AssertImageCel(frame0cel1, 1, 1, new Color[] { _red });
+
+        //  Frame 1
+        AssertCel(aseFile.Frames[1].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame1Cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[1].Cels[0]);
+        AssertImageCel(frame1Cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[1].Cels[1], "eight-frames", 1, 0, 255, null, null);
+        AsepriteImageCel frame1cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[1].Cels[1]);
+        AssertImageCel(frame1cel1, 1, 1, new Color[] { _red });
+
+        //  Frame 2
+        AssertCel(aseFile.Frames[2].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame2Cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[2].Cels[0]);
+        AssertImageCel(frame2Cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[2].Cels[1], "eight-frames", 0, 1, 255, null, null);
+        AsepriteImageCel frame2cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[2].Cels[1]);
+        AssertImageCel(frame2cel1, 1, 1, new Color[] { _red });
+
+        //  Frame 3
+        AssertCel(aseFile.Frames[3].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame3cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[3].Cels[0]);
+        AssertImageCel(frame3cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[3].Cels[1], "eight-frames", 1, 1, 255, null, null);
+        AsepriteImageCel frame3cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[3].Cels[1]);
+        AssertImageCel(frame3cel1, 1, 1, new Color[] { _red });
+
+        //  Frame 4
+        AssertCel(aseFile.Frames[4].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame4cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[4].Cels[0]);
+        AssertImageCel(frame4cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[4].Cels[1], "eight-frames", 0, 0, 255, null, null);
+        AsepriteImageCel frame4cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[4].Cels[1]);
+        AssertImageCel(frame4cel1, 2, 1, new Color[] { _red, _red });
+
+        //  Frame 5
+        AssertCel(aseFile.Frames[5].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame5cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[5].Cels[0]);
+        AssertImageCel(frame5cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[5].Cels[1], "eight-frames", 0, 1, 255, null, null);
+        AsepriteImageCel frame5cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[5].Cels[1]);
+        AssertImageCel(frame5cel1, 2, 1, new Color[] { _red, _red });
+
+        //  Frame 6
+        AssertCel(aseFile.Frames[6].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame6cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[6].Cels[0]);
+        AssertImageCel(frame6cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[6].Cels[1], "eight-frames", 0, 0, 255, null, null);
+        AsepriteImageCel frame6cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[6].Cels[1]);
+        AssertImageCel(frame6cel1, 2, 2, new Color[] { _red, _red, _red, _transparent });
+
+        //  Frame 7
+        AssertCel(aseFile.Frames[7].Cels[0], "background", 0, 0, 255, null, null);
+        AsepriteImageCel frame7cel0 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[7].Cels[0]);
+        AssertImageCel(frame7cel0, 2, 2, new Color[] { _black, _black, _black, _black });
+
+        AssertCel(aseFile.Frames[7].Cels[1], "eight-frames", 0, 0, 255, "hello cel", _red);
+        AsepriteImageCel frame7cel1 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[7].Cels[1]);
+        AssertImageCel(frame7cel1, 2, 2, new Color[] { _red, _red, _transparent, _red });
+
+        //  ************************************************************
+        //  Slices
+        //  ************************************************************
+        Assert.Equal(1, aseFile.Slices.Length);
+        AssertSlice(aseFile.Slices[0], "slice", 1, true, true, "hello slice", _green);
+        AssertSliceKey(aseFile.Slices[0].Keys[0], 0, new Rectangle(0, 0, 2, 2), new Rectangle(0, 0, 1, 2), new Point(1, 2));
+
+        //  ************************************************************
+        //  Tilesets
+        //  ************************************************************
+        Assert.Equal(0, aseFile.Tilesets.Length);
     }
 
     private void AssertLayer(AsepriteLayer layer, string name, bool isVisible, bool isBackground, bool isReference, AsepriteBlendMode blendMode, int opacity, string? userDataText, Color? userDataColor)
