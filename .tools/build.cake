@@ -151,7 +151,7 @@ Task("PublishGitHub")
 
         DotNetNuGetPushSettings pushSettings = new();
         pushSettings.ApiKey = context.EnvironmentVariable("GITHUB_TOKEN");
-        pushSettings.Source = "https://nuget.pkg.github.com/aristurtledev/index.json";
+        pushSettings.Source = "https://nuget.pkg.github.com/AristurtleDev/index.json";
 
         DotNetNuGetPush(nupkgPath, pushSettings);
         
@@ -164,7 +164,7 @@ Task("Docs")
 {
     // ---------------------------------------------------
     //  Use mddcos dotnet tool to create the initial
-    //  documentation files in the .artfacts directory
+    //  documentation files in the .artifacts directory
     // ---------------------------------------------------
     DotNetToolSettings toolSettings = new();
     toolSettings.ArgumentCustomization = builder =>
@@ -209,7 +209,7 @@ Task("Docs")
     //          - Replace the first line with generated yaml frontmatter
     //          - Fix links to index.md from the previous name change
     //          - Fix links to directories that names changed from the
-    //            lowercase to uppcase change prior
+    //            lowercase to uppercase change prior
     // ---------------------------------------------------
      //  Rename index.md files to [directoryName].md
     foreach(string file in (string[])System.IO.Directory.GetFiles("../.artifacts/documentation", "*.md", SearchOption.AllDirectories))
