@@ -1,0 +1,34 @@
+name: publish
+on:
+  push:
+    tags:
+      - 'release/*'
+
+
+env: 
+  DOTNET_VERSION: '6.0.400'
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with: 
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cake Target Publish
+        shell: bash
+        env: 
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cd ./.tools
+          dotnet tool restore
+          dotnet cake --target=Publish

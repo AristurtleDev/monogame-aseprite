@@ -1,0 +1,62 @@
+name: Bug Report
+description: Create a report about a bug you encountered
+labels: ["🆕 Status: New"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to submit this bug report. Please use the following template to help us gather the information we need to start processing.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please describe the problem as clearly as you can.
+      placeholder: Description
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Please include the steps we can take to reproduce the problem.  You can also include a link to a repo where you have uploaded an example that demonstrates the issues.  When possible, please include text as text rather than screenshots so it can be searchable.
+        placeholder: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: Provide a description of the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: Provide a description of the actual behavior observed.  Please include any error messages and/or stack traces if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Configuration
+      description: |
+        Please provide more information on your configuration:
+            * Which version of .NET are you using?
+            * Which version of MonoGame are you using?
+            * Which version of Aseprite are you using?
+            * What operating system and version, and what distro if applicable?
+            * What is the architecture (x64, x64)?
+      placeholder: Configuration
+    validations:
+      required: false
+  - type: textarea
+    id: other-info
+    attributes:
+      label: Other Information
+      description: |
+        Please provide any other information you think would be relaxant that would not be included in the above.
+      placeholder: Other Information
+    validations:
+      required: true

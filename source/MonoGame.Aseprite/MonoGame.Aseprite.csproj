@@ -1,30 +1,62 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>False</GenerateDocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup>
-        <Platforms>AnyCPU;x86</Platforms>
         <Authors>Christopher Whitley</Authors>
         <Company>Aristurtle</Company>
-        <Copyright>Copyright (c) 2022 Christoipher Whitley</Copyright>
-        <PackageProjectUrl>https://aristurtle.net/monogame-aseprite/</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite/</RepositoryUrl>
+        <Copyright>Copyright (c) 2018 - 2023 Christoipher Whitley</Copyright>
+        <PackageProjectUrl>https://monogameaseprite.net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>monogame content importer processor reader aseprite animations</PackageTags>
-        <AssemblyVersion>3.1.1.0</AssemblyVersion>
-        <FileVersion>3.1.1.0</FileVersion>
+        <RepositoryBranch>main</RepositoryBranch>
         <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
+    <!-- dotnet pack Nuget Config stuff -->
+    <PropertyGroup>
+        <PackageId>MonoGame.Aseprite</PackageId>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://monogameaseprite.net</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageTags>
+            MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb
+        </PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReleaseNotes>Version 4.0.0-prerelease</PackageReleaseNotes>
+        <Description>
+            MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
+            Aseprite (.asepirte/.ase) files.
+        </Description>
+    </PropertyGroup>
+
+    <!-- Includes for the dotnet pack NuGet package generation. -->
     <ItemGroup>
-        <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
-            <PrivateAssets>All</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
-            <PrivateAssets>All</PrivateAssets>
-        </PackageReference>
+        <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
+        <None Include="..\..\.nuget\README.md" Pack="true" PackagePath="" />
+        <None Include="..\MonoGame.Aseprite.Content.Pipeline\bin\$(Configuration)\net6.0\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
+        <!-- <None Include="..\..\Artifacts\$(Configuration)\Build\MonoGame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content"/> -->
     </ItemGroup>
 
+    <!-- Nuget Package References -->
+    <ItemGroup>
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+    </ItemGroup>
+
+    <!-- Allow the test project to use internal types for testing -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>MonoGame.Aseprite.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <!-- Warning Supressions -->
+    <PropertyGroup>
+        <!-- Supress warning about Pipeline dll not being in lib folder for NuGet -->
+        <NoWarn>NU5100</NoWarn>
+    </PropertyGroup>
 </Project>
