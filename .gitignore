@@ -1,6 +1,6 @@
 [Bb]in/
 [Oo]bj/
-[Aa]rtifacts/
+.artifacts/
 
 # Coverlet is a free, cross platform Code Coverage Tool
 coverage*.json

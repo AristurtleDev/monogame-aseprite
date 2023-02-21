@@ -1,5 +1,8 @@
-name: build-and-test
-on: [push]
+name: publish
+on:
+  push:
+    tags:
+      - 'release/*'
 
 
 env: 
@@ -22,7 +25,10 @@ jobs:
 
       - name: Cake Target Test
         shell: bash
+          env: 
+            NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+            GITHUB_TOKEN: ${{ github.token }}
         run: |
           cd ./.tools
           dotnet tool restore
-          dotnet cake --target=Test
+          dotnet cake --target=Publish

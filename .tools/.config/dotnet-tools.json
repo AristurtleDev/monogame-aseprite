@@ -8,12 +8,6 @@
         "dotnet-cake"
       ]
     },
-    "defaultdocumentation.console": {
-      "version": "0.8.2",
-      "commands": [
-        "defaultdocumentation"
-      ]
-    },
     "grynwald.mddocs": {
       "version": "0.5.180",
       "commands": [
