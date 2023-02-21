@@ -44,7 +44,6 @@ If you would like to support this project in any way, there are quite a few ways
 
 If you would prefer to send me a tip/donation, you can do so at my [Ko-fi page](https://ko-fi.com/aristurtledev).  This is always appreciated and all donations go towards funding projects of mine such as this one.
 
-[![](.github/images/kofi-bg-black.webp#gh-light-mode-only)](https://ko-fi.com/aristurtledev)
 [![](.github/images/kofi-bg-white.webp#gh-dark-mode-only)](https://ko-fi.com/aristurtledev)
 
 You can also support me through [GitHub Sponsors](https://github.com/sponsors/AristurtleDev).  This and the Ko-Fi links can both be found in the sidebar to the right on this repository page.
