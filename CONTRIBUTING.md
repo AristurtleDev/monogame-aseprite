@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="https://raw.githubusercontent.com/AristurtleDev/AsepriteDotNet/stable/.github/images/banner.png" alt="MonoGame.Aseprite Logo">
+<img src="https://raw.githubusercontent.com/AristurtleDev/monogame-aseprite/main/.github/images/banner.png" alt="MonoGame.Aseprite Logo">
 <br/>
 How To Contribute To MonoGame.Aseprite
 </h1>
