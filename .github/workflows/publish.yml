@@ -23,11 +23,11 @@ jobs:
         with: 
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Cake Target Test
+      - name: Cake Target Publish
         shell: bash
-          env: 
-            NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-            GITHUB_TOKEN: ${{ github.token }}
+        env: 
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           cd ./.tools
           dotnet tool restore
