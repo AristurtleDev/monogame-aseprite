@@ -2,7 +2,7 @@ name: publish
 on:
   push:
     tags:
-      - 'release/*'
+      - 'version/*'
 
 
 env: 
