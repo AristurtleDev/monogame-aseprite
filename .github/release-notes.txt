@@ -1,2 +1,3 @@
 ## Bug Fixes
 - Fixed XML docs not included in NuGet leading to no intellesense. (Closes #44)
+- Fixed RawTexture.Height property being internal by making it public (Closes #45)

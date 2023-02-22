@@ -4,6 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
+        <Version>4.0.2</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -35,7 +36,12 @@
         <RepositoryBranch>stable</RepositoryBranch>
         <PackageTags>
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
-        <PackageReleaseNotes>Version 4.0.1</PackageReleaseNotes>
+        <PackageReleaseNotes>
+            Version 4.0.2
+            The following bug fixes were implemented:
+                - Fixed XML docs not included in NuGet leading to no intellesense. (Closes #44)
+                - Fixed RawTexture.Height property being internal by making it public (Closes #45)
+        </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
             MGCB Editor for importing Aseprite (.ase | .aseprite) files to be used in a MonoGame project using the

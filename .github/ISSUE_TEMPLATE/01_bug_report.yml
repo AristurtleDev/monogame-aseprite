@@ -59,4 +59,4 @@ body:
         Please provide any other information you think would be relaxant that would not be included in the above.
       placeholder: Other Information
     validations:
-      required: true
+      required: false

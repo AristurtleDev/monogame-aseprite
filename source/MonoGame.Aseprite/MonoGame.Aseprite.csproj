@@ -4,6 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
+        <Version>4.0.2</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -27,7 +28,12 @@
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Version 4.0.1-hotfix</PackageReleaseNotes>
+        <PackageReleaseNotes>
+            Version 4.0.2
+            The following bug fixes were implemented:
+                - Fixed XML docs not included in NuGet leading to no intellesense. (Closes #44)
+                - Fixed RawTexture.Height property being internal by making it public (Closes #45)
+        </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
             Aseprite (.asepirte/.ase) files.
