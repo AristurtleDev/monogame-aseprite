@@ -51,7 +51,7 @@ public sealed class RawTexture : IEquatable<RawTexture>
     /// <summary>
     ///     Gets the height, in pixels of the texture.
     /// </summary>
-    internal int Height { get; }
+    public int Height { get; }
 
     internal RawTexture(string name, Color[] pixels, int width, int height) =>
         (Name, _pixels, Width, Height) = (name, pixels, width, height);
