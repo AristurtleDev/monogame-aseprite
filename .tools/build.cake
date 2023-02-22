@@ -1,4 +1,3 @@
-#tool "dotnet:?package=GitVersion.Tool&version=5.10.3"
 #nullable enable
 ///////////////////////////////////////////////////////////////////////////////
 /// Arguments
@@ -21,7 +20,9 @@ string version = string.Empty;
 
 Setup((context) =>
 {
-    //  Turn on xml document generation for docs task
+    version = XmlPeek("../source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", "//Version");
+    Information($"Version: {version}");
+
     if(target is "Docs" || generateDocs)
     {
         XmlPoke("../source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", "//GenerateDocumentationFile", "True");
@@ -44,6 +45,10 @@ Teardown((context) =>
 ///////////////////////////////////////////////////////////////////////////////
 /// Tasks
 ///////////////////////////////////////////////////////////////////////////////
+Task("Version")
+.Description("Displays the parsed version number used for builds and publish")
+.Does(() => Information($"Version: {version}"));
+
 Task("Clean")
 .WithCriteria(clean)
 .Does(() => 
@@ -64,19 +69,7 @@ Task("Restore")
     DotNetRestore("../tests/MonoGame.Aseprite.Tests/MonoGame.Aseprite.Tests.csproj");
 });
 
-Task("Version")
-.Does(() => 
-{
-    GitVersionSettings settings = new();
-    settings.UpdateAssemblyInfo = true;
-
-    GitVersion gitVersion = GitVersion(settings);
-    version = gitVersion.NuGetVersionV2;
-    Information($"Version: {version}");
-});
-
 Task("Build")
-.IsDependentOn("Version")
 .Does(() => 
 {
     DotNetMSBuildSettings msBuildSettings = new();
@@ -401,7 +394,6 @@ Task("Docs")
 Task("Default")
 .IsDependentOn("Clean")
 .IsDependentOn("Restore")
-.IsDependentOn("Version")
 .IsDependentOn("Build")
 .IsDependentOn("Test");
 
