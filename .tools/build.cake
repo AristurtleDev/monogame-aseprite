@@ -8,6 +8,7 @@ string configuration = Argument(nameof(configuration), "Release");
 bool restore = Argument(nameof(restore), true);
 bool clean = Argument(nameof(clean), true);
 bool test = Argument(nameof(test), true);
+bool generateDocs = Argument(nameof(generateDocs), false);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Variables
@@ -21,7 +22,7 @@ string version = string.Empty;
 Setup((context) =>
 {
     //  Turn on xml document generation for docs task
-    if(target is "Docs")
+    if(target is "Docs" || generateDocs)
     {
         XmlPoke("../source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", "//GenerateDocumentationFile", "True");
     }
@@ -34,7 +35,7 @@ Setup((context) =>
 Teardown((context) =>
 {
     //  Turn off xml document generation for docs task
-    if(target is "Docs")
+    if(target is "Docs" || generateDocs)
     {
         XmlPoke("../source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", "//GenerateDocumentationFile", "False");
     }

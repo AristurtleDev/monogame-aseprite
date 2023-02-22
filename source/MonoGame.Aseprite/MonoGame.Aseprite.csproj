@@ -38,8 +38,8 @@
     <ItemGroup>
         <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
         <None Include="..\..\.nuget\README.md" Pack="true" PackagePath="" />
+        <None Include="$(OutDir)Monogame.Aseprite.xml" Pack="true" PackagePath="lib\net6.0" />
         <None Include="..\MonoGame.Aseprite.Content.Pipeline\bin\$(Configuration)\net6.0\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
-        <!-- <None Include="..\..\Artifacts\$(Configuration)\Build\MonoGame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content"/> -->
     </ItemGroup>
 
     <!-- Nuget Package References -->
