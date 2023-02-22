@@ -27,7 +27,7 @@
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Version 4.0.0-prerelease</PackageReleaseNotes>
+        <PackageReleaseNotes>Version 4.0.1-hotfix</PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
             Aseprite (.asepirte/.ase) files.
