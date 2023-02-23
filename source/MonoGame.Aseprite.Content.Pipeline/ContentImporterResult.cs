@@ -25,8 +25,9 @@ SOFTWARE.
 /// <summary>
 ///     Defines the result of the content importer.
 /// </summary>
-public sealed class ContentImporterResult
+public sealed class ContentImporterResult<T>
 {
     internal string Path { get; }
-    internal ContentImporterResult(string path) => Path = path;
+    internal T Content { get; }
+    internal ContentImporterResult(string path, T content) => (Path, Content) = (path, content);
 }

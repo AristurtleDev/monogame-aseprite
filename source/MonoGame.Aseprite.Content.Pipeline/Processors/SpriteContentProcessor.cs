@@ -31,17 +31,24 @@ using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 using MonoGame.Aseprite.Content.Pipeline.Processors.Configuration;
 using MonoGame.Aseprite.Content.Processors;
 using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Content.Pipeline.Importers;
+
+using TInput = MonoGame.Aseprite.AsepriteFile;
+using TOutput = MonoGame.Aseprite.Content.Pipeline.ContentProcessorResult<MonoGame.Aseprite.Content.Pipeline.ContentTypes.SpriteContent>;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 /// <summary>
 ///     Defines a content processor that processes the contents of an aseprite file.
 /// </summary>
-[ContentProcessor(DisplayName = "Aseprite File Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, ContentProcessorResult<SpriteContent>>
+[ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
+internal sealed class SpriteContentProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, ContentProcessorResult<SpriteContent>>
 {
-    [DisplayName("Configuration Path")]
-    public string? ConfigurationPath { get; set; } = default;
+    [DisplayName("Frame Index")]
+    public int FrameIndex { get; set; } = 0;
+
+    [Browsable(false)]
+    public bool SingleFrame { get; set; } = false;
 
     /// <summary>
     ///     Processes an aseprite file.
@@ -56,29 +63,33 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, Co
     ///     A new <see cref="ContentProcessorResult{T}"/> containing the contents of the aseprite file created by this
     ///     method.
     /// </returns>
-    public override ContentProcessorResult<SpriteContent> Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override ContentProcessorResult<SpriteContent> Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
     {
-        SpriteContentProcessorConfiguration? config = default;
-
-        if (!string.IsNullOrEmpty(ConfigurationPath))
+        if (!SingleFrame)
         {
-            string json = File.ReadAllText(ConfigurationPath);
-            config = JsonSerializer.Deserialize<SpriteContentProcessorConfiguration>(json);
+            ExternalReference<AsepriteFile> externalReference = new(content.Path);
+            OpaqueDataDictionary dict = new();
+            dict.Add(nameof(FrameIndex), 1);
+            dict.Add(nameof(SingleFrame), true);
 
-            if (config is null)
-            {
-                throw new InvalidContentException($"The configuration file at that path '{ConfigurationPath}' could not be deserialized. Please ensure it is in the correct format");
-            }
+            context.BuildAsset<AsepriteFile, SpriteContent>
+            (
+                sourceAsset: externalReference,
+                processorName: nameof(SpriteContentProcessor),
+                processorParameters: dict,
+                importerName: nameof(AsepriteFileContentImporter),
+                assetName: content.Content.Frames[1].Name
+            );
         }
 
-        if (config is null)
-        {
-            config = SpriteContentProcessorConfiguration.Default;
-        }
 
-        RawSprite rawSprite = SpriteProcessor.ProcessRaw(aseFile, 0, config.OnlyVisibleLayers, config.IncludeBackgroundLayer, config.IncludeTilemapLayers);
-        
+        SpriteContentProcessorConfiguration? config = SpriteContentProcessorConfiguration.Default;
+
+
+        RawSprite rawSprite = SpriteProcessor.ProcessRaw(content.Content, FrameIndex, config.OnlyVisibleLayers, config.IncludeBackgroundLayer, config.IncludeTilemapLayers);
+
         Texture2DContent textureContent = CreateTextureContent(rawSprite.RawTexture, rawSprite.Name);
+        textureContent.GenerateMipmaps(false);
         SpriteContent spriteContent = new(rawSprite.Name, textureContent);
         return new(spriteContent);
     }
@@ -89,8 +100,9 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, Co
 
         for (int i = 0; i < raw.Pixels.Length; i++)
         {
-            int x = i / raw.Width;
-            int y = i % raw.Width;
+            int x = i % raw.Width;
+            int y = i / raw.Width;
+
             face.SetPixel(x, y, raw.Pixels[i]);
         }
 

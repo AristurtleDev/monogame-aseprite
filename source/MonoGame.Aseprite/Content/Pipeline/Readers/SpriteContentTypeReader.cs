@@ -22,32 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Sprites;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-/// <summary>
-///     Defines a content processor that processes the contents of an aseprite file.
-/// </summary>
-[ContentProcessor(DisplayName = "Aseprite File Processor - MonoGame.Aseprite")]
-internal sealed class AsepriteFileContentProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, ContentProcessorResult<byte[]>>
+internal sealed class SpriteContentTypeReader : ContentTypeReader<Sprite>
 {
-    /// <summary>
-    ///     Processes an aseprite file.
-    /// </summary>
-    /// <param name="content">
-    ///     The <see cref="ContentImporterResult"/> from the import process.
-    /// </param>
-    /// <param name="context">
-    ///     The content processor context that provides contextual information about the content being processed.
-    /// </param>
-    /// <returns>
-    ///     A new <see cref="ContentProcessorResult{T}"/> containing the contents of the aseprite file created by this
-    ///     method.
-    /// </returns>
-    public override ContentProcessorResult<byte[]> Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
+    protected override Sprite Read(ContentReader reader, Sprite? existingInstance)
     {
-        byte[] data = File.ReadAllBytes(content.Path);
-        return new(data);
+        if (existingInstance is not null)
+        {
+            return existingInstance;
+        }
+
+        string name = reader.ReadString();
+        Texture2D texture = reader.ReadObject<Texture2D>();
+        return new(name, texture);
     }
 }

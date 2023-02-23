@@ -33,10 +33,15 @@ internal sealed class SpriteContentTypeWriter : ContentTypeWriter<ContentProcess
 {
     protected override void Write(ContentWriter writer, ContentProcessorResult<SpriteContent> content)
     {
+
         writer.Write(content.Data.Name);
-        writer.Write(content.Data.TextureContent);
-        writer.Write(content.Data.Length);
-        writer.Write(content.Data);
+        writer.WriteObject(content.Data.TextureContent);
+    }
+
+    private void WriteInternal(ContentWriter writer, SpriteContent content)
+    {
+        writer.Write(content.Name);
+        writer.WriteObject(content.TextureContent);
     }
 
 
@@ -50,7 +55,7 @@ internal sealed class SpriteContentTypeWriter : ContentTypeWriter<ContentProcess
     ///     The assembly qualified name of the runtime type.
     /// </returns>
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.AsepriteFile, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Sprites.Sprite, MonoGame.Aseprite";
 
     /// <summary>
     ///     Gets the assembly qualified name of the runtime loader.
@@ -62,5 +67,5 @@ internal sealed class SpriteContentTypeWriter : ContentTypeWriter<ContentProcess
     ///     The assembly qualified name of the runtime loader.
     /// </returns>
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Readers.AsepriteFileContentTypeReader, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Content.Pipeline.Readers.SpriteContentTypeReader, MonoGame.Aseprite";
 }

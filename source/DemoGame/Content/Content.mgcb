@@ -1,0 +1,21 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:../../MonoGame.Aseprite.Content.Pipeline/bin/Debug/net6.0/MonoGame.Aseprite.Content.Pipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin adventurer.aseprite
+/importer:AsepriteFileContentImporter
+/processor:SpriteContentProcessor
+/build:adventurer.aseprite
+
