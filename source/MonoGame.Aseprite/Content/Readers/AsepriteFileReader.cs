@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.AsepriteTypes;
@@ -71,10 +72,38 @@ public static class AsepriteFileReader
             throw new FileNotFoundException($"Unable to locate a file at the path '{path}'");
         }
 
-        using Stream stream = TitleContainer.OpenStream(path);
+        using Stream stream = File.OpenRead(path);
         using BinaryReader reader = new(stream);
 
         string name = Path.GetFileNameWithoutExtension(path);
+        return Read(name, reader);
+    }
+
+    /// <summary>
+    ///     Reads the <see cref="AsepriteFile"/> using the provided <see cref="Stream"/>.
+    ///     <br />
+    ///     Use this method with <see cref="TitleContainer.OpenStream(string)"/> to load raw .aseprite files on Android 
+    ///     or other platforms.
+    /// </summary>
+    /// <param name="name">
+    ///     The name of the Aseprite file.
+    /// </param>
+    /// <param name="fileStream">
+    ///     A file stream, preferably instanciated from calling <see cref="TitleContainer.OpenStream(string)"/>.
+    /// </param>
+    /// <returns>
+    ///     The <see cref="AsepriteFile"/> created by this method.
+    /// </returns>
+    /// <exception cref="FileNotFoundException">
+    ///     Thrown if no file is located at the specified path.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown if an error occurs during the reading of the aseprite file.  The exception message will contain the
+    ///     cause of the exception.
+    /// </exception>
+    public static AsepriteFile ReadStream(string name, [NotNull] Stream fileStream)
+    {
+        using BinaryReader reader = new(fileStream);
         return Read(name, reader);
     }
 
