@@ -17,5 +17,23 @@
 #begin adventurer.aseprite
 /importer:AsepriteFileContentImporter
 /processor:SpriteContentProcessor
-/build:adventurer.aseprite
+/processorParam:FrameIndex=0
+/processorParam:OnlyVisibleLayers=True
+/processorParam:IncludeBackgroundLayer=False
+/processorParam:IncludeTilemapLayers=True
+/processorParam:GenerateMipmaps=False
+/build:adventurer.aseprite;frame_1
+
+
+#begin adventurer.aseprite
+/importer:AsepriteFileContentImporter
+/processor:SpriteContentProcessor
+/processorParam:FrameIndex=1
+/processorParam:OnlyVisibleLayers=True
+/processorParam:IncludeBackgroundLayer=False
+/processorParam:IncludeTilemapLayers=True
+/processorParam:GenerateMipmaps=False
+/build:adventurer.aseprite;frame_2
+
+
 

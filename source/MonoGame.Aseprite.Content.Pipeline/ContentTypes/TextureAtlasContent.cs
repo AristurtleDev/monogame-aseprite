@@ -23,35 +23,10 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using MonoGame.Aseprite.RawTypes;
 
-internal static class ContentWriterExtensions
-{
-    internal static void Write(this ContentWriter writer, Rectangle rectangle)
-    {
-        writer.Write(rectangle.X);
-        writer.Write(rectangle.Y);
-        writer.Write(rectangle.Width);
-        writer.Write(rectangle.Height);
-    }
+namespace MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 
-    internal static void Write(this ContentWriter writer, RawTextureRegion rawTextureRegion)
-    {
-        writer.Write(rawTextureRegion.Name);
-        writer.Write(rawTextureRegion.Bounds);
-        writer.Write(rawTextureRegion.Slices.Length);
-        for (int i = 0; i < rawTextureRegion.Slices.Length; i++)
-        {
-            writer.Write(rawTextureRegion.Slices[i]);
-        }
-    }
-
-    internal static void Write(this ContentWriter writer, RawSlice rawSlice)
-    {
-        writer.Write(rawSlice.Name);
-        writer.Write(rawSlice.Bounds);
-        writer.Write(rawSlice.Origin);
-        writer.Write(rawSlice.Color);
-    }
-}
+public record TextureAtlasContent(RawTextureAtlas RawTextureAtlas, Texture2DContent Texture2DContent);

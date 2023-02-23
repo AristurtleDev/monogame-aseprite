@@ -23,15 +23,9 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 
 namespace MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 
-public class SpriteContent
-{
-    public string Name { get; set; }
-    public Texture2DContent TextureContent { get; set; }
-
-    public SpriteContent(string name, Texture2DContent textureContent) =>
-        (Name, TextureContent) = (name, textureContent);
-}
+public record SpriteContent(string Name, Texture2DContent Texture2DContent);

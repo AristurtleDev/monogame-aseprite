@@ -23,35 +23,32 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.RawTypes;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.Sprites;
 
-internal static class ContentWriterExtensions
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
+
+internal sealed class TextureAtlasContentTypeReader : ContentTypeReader<TextureAtlas>
 {
-    internal static void Write(this ContentWriter writer, Rectangle rectangle)
+    protected override TextureAtlas Read(ContentReader reader, TextureAtlas? existingInstance)
     {
-        writer.Write(rectangle.X);
-        writer.Write(rectangle.Y);
-        writer.Write(rectangle.Width);
-        writer.Write(rectangle.Height);
-    }
-
-    internal static void Write(this ContentWriter writer, RawTextureRegion rawTextureRegion)
-    {
-        writer.Write(rawTextureRegion.Name);
-        writer.Write(rawTextureRegion.Bounds);
-        writer.Write(rawTextureRegion.Slices.Length);
-        for (int i = 0; i < rawTextureRegion.Slices.Length; i++)
+        if (existingInstance is not null)
         {
-            writer.Write(rawTextureRegion.Slices[i]);
+            return existingInstance;
         }
-    }
 
-    internal static void Write(this ContentWriter writer, RawSlice rawSlice)
-    {
-        writer.Write(rawSlice.Name);
-        writer.Write(rawSlice.Bounds);
-        writer.Write(rawSlice.Origin);
-        writer.Write(rawSlice.Color);
+        string name = reader.ReadString();
+        Texture2D texture = reader.ReadObject<Texture2D>();
+        TextureAtlas textureAtlas = new(name, texture);
+
+        int regionCount = reader.ReadInt32();
+        for (int i = 0; i < regionCount; i++)
+        {
+            string regionName = reader.ReadString();
+            Rectangle regionBounds = reader.ReadRectangle();
+            TextureRegion textureRegion = textureAtlas.CreateRegion(regionName, regionBounds);
+        }
     }
 }

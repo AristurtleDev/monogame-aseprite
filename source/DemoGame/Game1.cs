@@ -29,7 +29,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        _sprite = Content.Load<Sprite>("adventurer");
+        _sprite = Content.Load<Sprite>("frame_0");
 
         // TODO: use this.Content to load your game content here
     }

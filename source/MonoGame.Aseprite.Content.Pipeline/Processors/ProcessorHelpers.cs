@@ -23,35 +23,29 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using MonoGame.Aseprite.RawTypes;
 
-internal static class ContentWriterExtensions
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+
+internal static class ProcessorHelpers
 {
-    internal static void Write(this ContentWriter writer, Rectangle rectangle)
+    internal static Texture2DContent CreateTextureContent(RawTexture raw, string sourceFileName)
     {
-        writer.Write(rectangle.X);
-        writer.Write(rectangle.Y);
-        writer.Write(rectangle.Width);
-        writer.Write(rectangle.Height);
-    }
+        PixelBitmapContent<Color> face = new(raw.Width, raw.Height);
 
-    internal static void Write(this ContentWriter writer, RawTextureRegion rawTextureRegion)
-    {
-        writer.Write(rawTextureRegion.Name);
-        writer.Write(rawTextureRegion.Bounds);
-        writer.Write(rawTextureRegion.Slices.Length);
-        for (int i = 0; i < rawTextureRegion.Slices.Length; i++)
+        for (int i = 0; i < raw.Pixels.Length; i++)
         {
-            writer.Write(rawTextureRegion.Slices[i]);
-        }
-    }
+            int x = i % raw.Width;
+            int y = i / raw.Width;
 
-    internal static void Write(this ContentWriter writer, RawSlice rawSlice)
-    {
-        writer.Write(rawSlice.Name);
-        writer.Write(rawSlice.Bounds);
-        writer.Write(rawSlice.Origin);
-        writer.Write(rawSlice.Color);
+            face.SetPixel(x, y, raw.Pixels[i]);
+        }
+
+        Texture2DContent textureContent = new();
+        textureContent.Identity = new ContentIdentity(sourceFileName);
+        textureContent.Faces[0].Add(face);
+        return textureContent;
     }
 }

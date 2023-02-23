@@ -28,6 +28,6 @@ SOFTWARE.
 public sealed class ContentImporterResult<T>
 {
     internal string Path { get; }
-    internal T Content { get; }
-    internal ContentImporterResult(string path, T content) => (Path, Content) = (path, content);
+    internal T Data { get; }
+    internal ContentImporterResult(string path, T content) => (Path, Data) = (path, content);
 }

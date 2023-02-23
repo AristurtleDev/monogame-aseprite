@@ -35,15 +35,8 @@ internal sealed class SpriteContentTypeWriter : ContentTypeWriter<ContentProcess
     {
 
         writer.Write(content.Data.Name);
-        writer.WriteObject(content.Data.TextureContent);
+        writer.WriteObject(content.Data.Texture2DContent);
     }
-
-    private void WriteInternal(ContentWriter writer, SpriteContent content)
-    {
-        writer.Write(content.Name);
-        writer.WriteObject(content.TextureContent);
-    }
-
 
     /// <summary>
     ///     Gets the assembly qualified name of the runtime type.
