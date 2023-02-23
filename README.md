@@ -19,40 +19,51 @@ A Cross Platform C# Library That Adds Support For Aseprite Files in MonoGame Pro
 [MonoGame.Aseprite](https://monogameaseprite.net) also supports outputting the processed file content to disk in a binary format and reader classes to read the processed information back in. This adds support for pre-processing content using any build or content workflow the end user has as long as it can use the [MonoGame.Aseprite](https://monogameaseprite.net) library.
 
 ## Getting Started
+
 To get started using [MonoGame.Aseprite](https://monogameaseprite.net) start with the [Installation document](https://monogameaseprite.net/docs/getting-started/installation).
 
 ## Features
-* Import your Aseprite file at runtime with and without the MGCB Editor (Content Pipeline Tool)
-* Multiple built-in [processors](https://monogameaseprite.net/docs/processors/processors-overview) that can be used to transform the data from your Aseprite file into any of the following: 
-    * [Sprite](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/Sprite/)
-    * [TextureAtlas](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/TextureAtlas/)
-    * [SpriteSheet](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/SpriteSheet/)
-    * [Tileset](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tileset/)
-    * [Tilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tilemap/)
-    * [AnimatedTilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/AnimatedTilemap/).
-* All blend modes in Aseprite supported 1:1.
-* Runtime writers and readers that can be used in custom content processing workflows to preprocess content outside of the game.
+
+- Import your Aseprite file at runtime with and without the MGCB Editor (Content Pipeline Tool)
+- Multiple built-in [processors](https://monogameaseprite.net/docs/processors/processors-overview) that can be used to transform the data from your Aseprite file into any of the following:
+  - [Sprite](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/Sprite/)
+  - [TextureAtlas](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/TextureAtlas/)
+  - [SpriteSheet](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/SpriteSheet/)
+  - [Tileset](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tileset/)
+  - [Tilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tilemap/)
+  - [AnimatedTilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/AnimatedTilemap/).
+- All blend modes in Aseprite supported 1:1.
+- Runtime writers and readers that can be used in custom content processing workflows to preprocess content outside of the game.
 
 ## What Next?
 
 - Read the [documentation](https://monogameaseprite.net/).
 - Join the [Discord](https://discord.gg/8jFvHhuMJU) to ask questions or keep up to date.
 - Submit an [issue on GitHub](https://github.com/AristurtleDev/monogame-aseprite/issues).
-- Follow me on [Mastodon](https://mastodon.gamedev.place/@aristurtle) or [Twitter](https://www.twitter.com/aristurtledev).  
+- Follow me on [Mastodon](https://mastodon.gamedev.place/@aristurtle) or [Twitter](https://www.twitter.com/aristurtledev).
 
-##  Support
+## Support
+
 If you would like to support this project in any way, there are quite a few ways to do this no matter who you are.
-  * Tell others about this project.  
-  * Contribute to this project (Please ensure you read the [Contributing Guide](./CONTRIBUTING.md)).
-  * [Submit an Issue](https://github.com/AristurtleDev/monogame-aseprite/issues) if you find a problem
-  * [Star](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars) this project on Github.
 
-If you would prefer to send me a tip/donation, you can do so at my [Ko-fi page](https://ko-fi.com/aristurtledev).  This is always appreciated and all donations go towards funding projects of mine such as this one.
+- Tell others about this project.
+- Contribute to this project (Please ensure you read the [Contributing Guide](./CONTRIBUTING.md)).
+- [Submit an Issue](https://github.com/AristurtleDev/monogame-aseprite/issues) if you find a problem
+- [Star](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars) this project on Github.
+
+If you would prefer to send me a tip/donation, you can do so at my [Ko-fi page](https://ko-fi.com/aristurtledev). This is always appreciated and all donations go towards funding projects of mine such as this one.
 
 [![](.github/images/kofi-bg-white.webp)](https://ko-fi.com/aristurtledev)
 
-You can also support me through [GitHub Sponsors](https://github.com/sponsors/AristurtleDev).  This and the Ko-Fi links can both be found in the sidebar to the right on this repository page.
+You can also support me through [GitHub Sponsors](https://github.com/sponsors/AristurtleDev). This and the Ko-Fi links can both be found in the sidebar to the right on this repository page.
 
+The following is a list of amazing people that have donated to sponsor this project. If you have donated but weren't added to the list, please get in contact with me.
+
+
+* [fdrobidoux](https://github.com/fdrobidoux)
+* [Anticdope](https://twitter.com/anticdope) 
+
+---
 
 ## License
 
