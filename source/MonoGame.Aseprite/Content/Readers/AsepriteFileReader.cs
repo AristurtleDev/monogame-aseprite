@@ -71,7 +71,7 @@ public static class AsepriteFileReader
             throw new FileNotFoundException($"Unable to locate a file at the path '{path}'");
         }
 
-        using Stream stream = File.OpenRead(path);
+        using Stream stream = TitleContainer.OpenStream(path);
         using BinaryReader reader = new(stream);
 
         string name = Path.GetFileNameWithoutExtension(path);
