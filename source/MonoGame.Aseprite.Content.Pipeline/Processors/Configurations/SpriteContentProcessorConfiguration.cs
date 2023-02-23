@@ -22,26 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.Content.Readers;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors.Configuration;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
-
-internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
+internal record SpriteContentProcessorConfiguration(bool OnlyVisibleLayers,
+                                                    bool IncludeBackgroundLayer,
+                                                    bool IncludeTilemapLayers)
 {
-    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
-    {
-        
-        if (existingInstance is not null)
-        {
-            return existingInstance;
-        }
-
-        int len = reader.ReadInt32();
-        byte[] data = reader.ReadBytes(len);
-
-        using Stream stream = new MemoryStream(data);
-        using BinaryReader internalReader = new(stream);
-        return AsepriteFileReader.Read(reader.AssetName, internalReader);
-    }
+    internal static SpriteContentProcessorConfiguration Default => new(true, false, true);
 }
