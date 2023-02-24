@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "MonoGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Content.Pipeline", "MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame", "DemoGame\DemoGame.csproj", "{E959356E-89EE-4B26-A2BF-21C2108B1B4B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +24,5 @@ Global
 		{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37D0A33F-5E1A-47B7-91F8-627EAD7EC319}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E959356E-89EE-4B26-A2BF-21C2108B1B4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E959356E-89EE-4B26-A2BF-21C2108B1B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E959356E-89EE-4B26-A2BF-21C2108B1B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E959356E-89EE-4B26-A2BF-21C2108B1B4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

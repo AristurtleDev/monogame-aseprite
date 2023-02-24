@@ -25,7 +25,7 @@ SOFTWARE.
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Writers;
+namespace MonoGame.Aseprite.Content;
 
 internal static class BinaryWriterExtensions
 {
@@ -67,11 +67,15 @@ internal static class BinaryWriterExtensions
         writer.Write(value.Name);
         writer.Write(value.Width);
         writer.Write(value.Height);
-        writer.Write(value.Pixels.Length);
+        writer.Write(value.Pixels);
+    }
 
-        for (int i = 0; i < value.Pixels.Length; i++)
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<Color> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
         {
-            writer.Write(value.Pixels[i]);
+            writer.Write(value[i]);
         }
     }
 
@@ -97,19 +101,31 @@ internal static class BinaryWriterExtensions
     {
         writer.Write(value.Name);
         writer.Write(value.RawTexture);
-        writer.Write(value.RawTextureRegions.Length);
+        writer.Write(value.RawTextureRegions);
+    }
 
-        for (int i = 0; i < value.RawTextureRegions.Length; i++)
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTextureRegion> value)
+    {
+        writer.Write(value.Length);
+        for(int i = 0; i < value.Length; i++)
         {
-            RawTextureRegion rawTextureRegion = value.RawTextureRegions[i];
-            writer.Write(rawTextureRegion.Name);
-            writer.Write(rawTextureRegion.Bounds);
-            writer.Write(rawTextureRegion.Slices.Length);
+            writer.Write(value[i]);
+        }
+    }
 
-            for (int s = 0; s < rawTextureRegion.Slices.Length; s++)
-            {
-                writer.Write(rawTextureRegion.Slices[s]);
-            }
+    internal static void Write(this BinaryWriter writer, RawTextureRegion value)
+    {
+        writer.Write(value.Name);
+        writer.Write(value.Bounds);
+        writer.Write(value.Slices);
+    }
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawSlice> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
         }
     }
 
@@ -129,11 +145,16 @@ internal static class BinaryWriterExtensions
         writer.Write(value.Columns);
         writer.Write(value.Rows);
         writer.Write(value.Offset);
-        writer.Write(value.RawTilemapTiles.Length);
+        writer.Write(value.RawTilemapTiles);
+    }
 
-        for (int i = 0; i < value.RawTilemapTiles.Length; i++)
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTilemapTile> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
         {
-            writer.Write(value.RawTilemapTiles[i]);
+            writer.Write(value[i]);
         }
     }
 

@@ -89,7 +89,7 @@ public static class AsepriteFileReader
     ///     The name of the Aseprite file.
     /// </param>
     /// <param name="fileStream">
-    ///     A file stream, preferably instanciated from calling <see cref="TitleContainer.OpenStream(string)"/>.
+    ///     A file stream, preferably instantiated from calling <see cref="TitleContainer.OpenStream(string)"/>.
     /// </param>
     /// <returns>
     ///     The <see cref="AsepriteFile"/> created by this method.

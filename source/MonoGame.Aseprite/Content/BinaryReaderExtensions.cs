@@ -25,7 +25,7 @@ SOFTWARE.
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Readers;
+namespace MonoGame.Aseprite.Content;
 
 internal static class BinaryReaderExtensions
 {
@@ -83,16 +83,21 @@ internal static class BinaryReaderExtensions
         string name = reader.ReadString();
         int width = reader.ReadInt32();
         int height = reader.ReadInt32();
-        int pixelCount = reader.ReadInt32();
 
-        Color[] pixels = new Color[pixelCount];
-
-        for (int i = 0; i < pixelCount; i++)
-        {
-            pixels[i] = ReadColor(reader);
-        }
+        Color[] pixels = reader.ReadColors();
 
         return new(name, pixels, width, height);
+    }
+
+    internal static Color[] ReadColors(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        Color[] pixels = new Color[count];
+        for (int i = 0; i < count; i++)
+        {
+            pixels[i] = reader.ReadColor();
+        }
+        return pixels;
     }
 
     internal static RawSlice ReadRawSlice(this BinaryReader reader)
@@ -118,26 +123,42 @@ internal static class BinaryReaderExtensions
     {
         string name = reader.ReadString();
         RawTexture texture = reader.ReadRawTexture();
+        RawTextureRegion[] regions = reader.ReadRawTextureRegions();
+        return new(name, texture, regions);
+    }
 
-        int regionCount = reader.ReadInt32();
-        RawTextureRegion[] regions = new RawTextureRegion[regionCount];
+    internal static RawTextureRegion[] ReadRawTextureRegions(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawTextureRegion[] regions = new RawTextureRegion[count];
 
-        for (int i = 0; i < regionCount; i++)
+        for (int i = 0; i < count; i++)
         {
-            string regionName = reader.ReadString();
-            Rectangle regionBounds = reader.ReadRectangle();
-            int count = reader.ReadInt32();
-            RawSlice[] slices = new RawSlice[count];
-
-            for (int s = 0; s < count; s++)
-            {
-                slices[s] = reader.ReadRawSlice();
-            }
-
-            regions[i] = new(regionName, regionBounds, slices);
+            regions[i] = reader.ReadRawTextureRegion();
         }
 
-        return new(name, texture, regions);
+        return regions;
+    }
+
+    internal static RawTextureRegion ReadRawTextureRegion(this BinaryReader reader)
+    {
+        string name = reader.ReadString();
+        Rectangle bounds = reader.ReadRectangle();
+        RawSlice[] slices = reader.ReadRawSlices();
+        return new(name, bounds, slices);
+    }
+
+    internal static RawSlice[] ReadRawSlices(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawSlice[] slices = new RawSlice[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            slices[i] = reader.ReadRawSlice();
+        }
+
+        return slices;
     }
 
     internal static RawTileset ReadRawTileset(this BinaryReader reader)
@@ -158,16 +179,21 @@ internal static class BinaryReaderExtensions
         int columns = reader.ReadInt32();
         int rows = reader.ReadInt32();
         Point offset = reader.ReadPoint();
-        int tileCount = reader.ReadInt32();
+        RawTilemapTile[] tiles = reader.ReadRawTilemapTiles();
+        return new(name, tilesetID, columns, rows, tiles, offset);
+    }
 
-        RawTilemapTile[] tiles = new RawTilemapTile[tileCount];
+    internal static RawTilemapTile[] ReadRawTilemapTiles(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawTilemapTile[] rawTilemapTiles = new RawTilemapTile[count];
 
-        for (int i = 0; i < tileCount; i++)
+        for (int i = 0; i < count; i++)
         {
-            tiles[i] = reader.ReadRawTilemapTile();
+            rawTilemapTiles[i] = reader.ReadRawTilemapTile();
         }
 
-        return new(name, tilesetID, columns, rows, tiles, offset);
+        return rawTilemapTiles;
     }
 
     internal static RawTilemapTile ReadRawTilemapTile(this BinaryReader reader)
