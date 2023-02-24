@@ -4,3 +4,5 @@
 
 ## 4.1.0
 - Added `AsepriteFileReader.Read(Stream)` method to supported reading Aseprite file with `TitleContainer` stream. (PR #47) (Closes #49)
+- Added `SpriteContentProcessor`, `SpriteContentTypeWriter`, and `SpriteContentTypeReader`
+- Added `TextureAtlasContentProcessor`, `TextureAtlasContentTypeWriter` and `TextureAtlasContentTypeReader`
