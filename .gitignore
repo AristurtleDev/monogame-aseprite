@@ -15,4 +15,6 @@ Thumbs.db
 # Ignore packages dir for local package installs used by the example projects
 [Pp]ackages/
 
+# Visual Studio
+.vs/
 
