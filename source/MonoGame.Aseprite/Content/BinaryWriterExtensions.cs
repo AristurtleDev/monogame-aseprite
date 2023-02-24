@@ -171,6 +171,15 @@ internal static class BinaryWriterExtensions
         writer.Write(value.TileHeight);
     }
 
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTilemapLayer> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
+    }
+
     internal static void Write(this BinaryWriter writer, RawTilemapLayer value)
     {
         writer.Write(value.Name);

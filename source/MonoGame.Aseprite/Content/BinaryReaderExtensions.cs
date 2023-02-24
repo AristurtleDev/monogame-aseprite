@@ -210,6 +210,17 @@ internal static class BinaryReaderExtensions
         return new(id, name, texture, tileWidth, tileHeight);
     }
 
+    internal static RawTilemapLayer[] ReadRawTilemapLayers(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawTilemapLayer[] layers = new RawTilemapLayer[count];
+        for (int i = 0; i < count; i++)
+        {
+            layers[i] = reader.ReadRawTilemapLayer();
+        }
+        return layers;
+    }
+
     internal static RawTilemapLayer ReadRawTilemapLayer(this BinaryReader reader)
     {
         string name = reader.ReadString();
