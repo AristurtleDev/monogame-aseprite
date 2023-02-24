@@ -37,12 +37,29 @@ public sealed class AsepriteFileReaderTests
     private readonly Color _blue = new Color(0, 0, 255, 255);
     private readonly Color _transparent = new Color(0, 0, 0, 0);
 
+
+
+    [Fact]
+    public void ReadsStream_Version_1_3_0_Expected_Values()
+    {
+        string path = FileUtils.GetLocalPath("aseprite-1.3.0-file-reader-test.aseprite");
+        Stream fileStream = File.OpenRead(path);
+        AsepriteFile aseFile = AsepriteFileReader.ReadStream(Path.GetFileNameWithoutExtension(path), fileStream);
+
+        Reads_Version_1_3_0_Assertions(aseFile);
+    }
+
     [Fact]
     public void Reads_Version_1_3_0_Expected_Values()
     {
         string path = FileUtils.GetLocalPath("aseprite-1.3.0-file-reader-test.aseprite");
         AsepriteFile aseFile = AsepriteFileReader.ReadFile(path);
 
+        Reads_Version_1_3_0_Assertions(aseFile);
+    }
+
+    private void Reads_Version_1_3_0_Assertions(AsepriteFile aseFile)
+    {
         //  ************************************************************
         //  File properties
         //  ************************************************************
