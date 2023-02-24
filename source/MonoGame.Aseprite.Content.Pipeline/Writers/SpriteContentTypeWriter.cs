@@ -29,13 +29,12 @@ using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class SpriteContentTypeWriter : ContentTypeWriter<ContentProcessorResult<SpriteContent>>
+internal sealed class SpriteContentTypeWriter : ContentTypeWriter<SpriteContent>
 {
-    protected override void Write(ContentWriter writer, ContentProcessorResult<SpriteContent> content)
+    protected override void Write(ContentWriter writer, SpriteContent content)
     {
-
-        writer.Write(content.Data.Name);
-        writer.WriteObject(content.Data.Texture2DContent);
+        writer.Write(content.Name);
+        writer.WriteObject(content.Texture2DContent);
     }
 
     /// <summary>

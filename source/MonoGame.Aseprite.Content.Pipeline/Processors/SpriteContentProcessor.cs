@@ -26,14 +26,13 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
-using MonoGame.Aseprite.Content.Processors;
-using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<ContentImporterResult<AsepriteFile>, ContentProcessorResult<SpriteContent>>
+internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFrame[], SpriteContent>
 {
     [DisplayName("Frame Index")]
     public int FrameIndex { get; set; } = 0;
@@ -50,12 +49,23 @@ internal sealed class SpriteContentProcessor : ContentProcessor<ContentImporterR
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override ContentProcessorResult<SpriteContent> Process(ContentImporterResult<AsepriteFile> content, ContentProcessorContext context)
+    public override SpriteContent Process(AsepriteFrame[] frames, ContentProcessorContext context)
     {
-        RawSprite rawSprite = SpriteProcessor.ProcessRaw(content.Data, FrameIndex, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
-        Texture2DContent textureContent = ProcessorHelpers.CreateTextureContent(rawSprite.RawTexture, rawSprite.Name);
-        textureContent.GenerateMipmaps(GenerateMipmaps);
-        SpriteContent spriteContent = new(rawSprite.Name, textureContent);
-        return new(spriteContent);
+        if (FrameIndex < 0 || FrameIndex >= frames.Length)
+        {
+            throw new ProcessorParameterException($"The 'Frame Index' property cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
+        }
+
+        AsepriteFrame aseFrame = frames[FrameIndex];
+        Color[] pixels = aseFrame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
+        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(pixels, aseFrame.Width, aseFrame.Height);
+        texture2DContent.Identity = new ContentIdentity(aseFrame.Name);
+
+        if (GenerateMipmaps)
+        {
+            texture2DContent.GenerateMipmaps(true);
+        }
+
+        return new(aseFrame.Name, texture2DContent);
     }
 }
