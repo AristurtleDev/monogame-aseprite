@@ -107,7 +107,7 @@ internal static class BinaryWriterExtensions
     internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTextureRegion> value)
     {
         writer.Write(value.Length);
-        for(int i = 0; i < value.Length; i++)
+        for (int i = 0; i < value.Length; i++)
         {
             writer.Write(value[i]);
         }
@@ -127,6 +127,39 @@ internal static class BinaryWriterExtensions
         {
             writer.Write(value[i]);
         }
+    }
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawAnimationTag> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
+    }
+
+    internal static void Write(this BinaryWriter writer, RawAnimationTag value)
+    {
+        writer.Write(value.Name);
+        writer.Write(value.IsLooping);
+        writer.Write(value.IsReversed);
+        writer.Write(value.IsPingPong);
+        writer.Write(value.RawAnimationFrames);
+    }
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawAnimationFrame> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
+    }
+
+    internal static void Write(this BinaryWriter writer, RawAnimationFrame value)
+    {
+        writer.Write(value.FrameIndex);
+        writer.Write(value.DurationInMilliseconds);
     }
 
     internal static void Write(this BinaryWriter writer, RawTileset value)

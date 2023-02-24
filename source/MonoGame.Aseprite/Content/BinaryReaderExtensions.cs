@@ -116,7 +116,45 @@ internal static class BinaryReaderExtensions
         }
 
         return new RawSlice(name, bounds, origin, color);
+    }
 
+    internal static RawAnimationTag[] ReadRawAnimationTags(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawAnimationTag[] tags = new RawAnimationTag[count];
+        for (int i = 0; i < count; i++)
+        {
+            tags[i] = reader.ReadRawAnimationTag();
+        }
+        return tags;
+    }
+
+    internal static RawAnimationTag ReadRawAnimationTag(this BinaryReader reader)
+    {
+        string name = reader.ReadString();
+        bool isLooping = reader.ReadBoolean();
+        bool isReversed = reader.ReadBoolean();
+        bool isPingPong = reader.ReadBoolean();
+        RawAnimationFrame[] frames = reader.ReadRawAnimationFrames();
+        return new(name, frames, isLooping, isReversed, isPingPong);
+    }
+
+    internal static RawAnimationFrame[] ReadRawAnimationFrames(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawAnimationFrame[] frames = new RawAnimationFrame[count];
+        for (int i = 0; i < count; i++)
+        {
+            frames[i] = reader.ReadRawAnimationFrame();
+        }
+        return frames;
+    }
+
+    internal static RawAnimationFrame ReadRawAnimationFrame(this BinaryReader reader)
+    {
+        int index = reader.ReadInt32();
+        int duration = reader.ReadInt32();
+        return new(index, duration);
     }
 
     internal static RawTextureAtlas ReadRawTextureAtlas(this BinaryReader reader)
