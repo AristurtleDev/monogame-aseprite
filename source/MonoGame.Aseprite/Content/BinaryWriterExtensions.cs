@@ -207,4 +207,19 @@ internal static class BinaryWriterExtensions
         writer.Write(value.FlipVertically);
         writer.Write(value.Rotation);
     }
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTilemapFrame> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
+    }
+
+    internal static void Write(this BinaryWriter writer, RawTilemapFrame value)
+    {
+        writer.Write(value.DurationInMilliseconds);
+        writer.Write(value.RawTilemapLayers);
+    }
 }

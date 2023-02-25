@@ -32,7 +32,7 @@ using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFrame[], SpriteContent>
+internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, SpriteContent>
 {
     [DisplayName("Frame Index")]
     public int FrameIndex { get; set; } = 0;
@@ -49,14 +49,14 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFrame[],
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override SpriteContent Process(AsepriteFrame[] frames, ContentProcessorContext context)
+    public override SpriteContent Process(AsepriteFile aseFile, ContentProcessorContext context)
     {
-        if (FrameIndex < 0 || FrameIndex >= frames.Length)
+        if (FrameIndex < 0 || FrameIndex >= aseFile.FrameCount)
         {
-            throw new ProcessorParameterException($"The 'Frame Index' property cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
+            throw new ProcessorParameterException($"The 'Frame Index' parameter cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
         }
 
-        AsepriteFrame aseFrame = frames[FrameIndex];
+        AsepriteFrame aseFrame = aseFile.Frames[FrameIndex];
         Color[] pixels = aseFrame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
         Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(pixels, aseFrame.Width, aseFrame.Height);
         texture2DContent.Identity = new ContentIdentity(aseFrame.Name);

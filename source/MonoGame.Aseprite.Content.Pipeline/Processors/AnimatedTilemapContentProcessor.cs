@@ -31,24 +31,37 @@ using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-[ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
-internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, TilesetContent>
+[ContentProcessor(DisplayName = "Aseprite Animated Tilemap Processor - MonoGame.Aseprite")]
+internal sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, AnimatedTilemapContent>
 {
-    [DisplayName("Tileset Name")]
-    public string TilesetName { get; set; } = string.Empty;
+    [DisplayName("Only Visible Layers")]
+    public bool OnlyVisibleLayer { get; set; } = true;
 
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override TilesetContent Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override AnimatedTilemapContent Process(AsepriteFile aseFile, ContentProcessorContext context)
     {
-        RawTileset rawTileset = TilesetProcessor.ProcessRaw(aseFile, TilesetName);
-        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawTileset.RawTexture, rawTileset.Name);
-        if (GenerateMipmaps)
+        RawAnimatedTilemap rawAnimatedTilemap = AnimatedTilemapProcessor.ProcessRaw(aseFile, OnlyVisibleLayer);
+
+        Texture2DContent[] texture2DContents = ProcessTilesetTexture(rawAnimatedTilemap.RawTilesets);
+        return new(rawAnimatedTilemap, texture2DContents);
+    }
+
+    private Texture2DContent[] ProcessTilesetTexture(ReadOnlySpan<RawTileset> rawTilesets)
+    {
+        Texture2DContent[] texture2DContents = new Texture2DContent[rawTilesets.Length];
+
+        for (int i = 0; i < rawTilesets.Length; i++)
         {
-            texture2DContent.GenerateMipmaps(true);
+            Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawTilesets[i].RawTexture, rawTilesets[i].Name);
+            if (GenerateMipmaps)
+            {
+                texture2DContent.GenerateMipmaps(true);
+            }
+            texture2DContents[i] = texture2DContent;
         }
 
-        return new(rawTileset, texture2DContent);
+        return texture2DContents;
     }
 }

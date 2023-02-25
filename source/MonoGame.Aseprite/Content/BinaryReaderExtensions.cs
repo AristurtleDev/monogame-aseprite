@@ -254,4 +254,24 @@ internal static class BinaryReaderExtensions
 
         return new(tilesetTileID, flipHorizontally, flipVertically, rotation);
     }
+
+    internal static RawTilemapFrame[] ReadRawTilemapFrames(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawTilemapFrame[] rawTilemapFrames = new RawTilemapFrame[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            rawTilemapFrames[i] = reader.ReadRawTilemapFrame();
+        }
+
+        return rawTilemapFrames;
+    }
+
+    internal static RawTilemapFrame ReadRawTilemapFrame(this BinaryReader reader)
+    {
+        int duration = reader.ReadInt32();
+        RawTilemapLayer[] layers = reader.ReadRawTilemapLayers();
+        return new(duration, layers);
+    }
 }

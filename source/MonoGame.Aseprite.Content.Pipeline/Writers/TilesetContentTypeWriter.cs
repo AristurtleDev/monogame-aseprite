@@ -30,15 +30,15 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class TilesetContentTypeWriter : ContentTypeWriter<ContentProcessorResult<TilesetContent>>
+internal sealed class TilesetContentTypeWriter : ContentTypeWriter<TilesetContent>
 {
-    protected override void Write(ContentWriter writer, ContentProcessorResult<TilesetContent> content)
+    protected override void Write(ContentWriter writer, TilesetContent content)
     {
-        RawTileset rawTileset = content.Data.RawTileset;
+        RawTileset rawTileset = content.RawTileset;
         writer.Write(rawTileset.Name);
         writer.Write(rawTileset.TileWidth);
         writer.Write(rawTileset.TileHeight);
-        writer.WriteObject(content.Data.Texture2DContent);
+        writer.WriteObject(content.Texture2DContent);
     }
 
     /// <summary>

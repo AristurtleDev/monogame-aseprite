@@ -23,6 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 using MonoGame.Aseprite.RawTypes;
@@ -30,16 +31,29 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<SpriteSheetContent>
+internal sealed class AnimatedTilemapContentTypeWriter : ContentTypeWriter<AnimatedTilemapContent>
 {
-    protected override void Write(ContentWriter writer, SpriteSheetContent content)
+    protected override void Write(ContentWriter writer, AnimatedTilemapContent content)
     {
-        RawSpriteSheet rawSpriteSheet = content.RawSpriteSheet;
-        writer.Write(rawSpriteSheet.Name);
-        writer.Write(rawSpriteSheet.RawTextureAtlas.Name);
-        writer.WriteObject(content.Texture2DContent);
-        writer.Write(rawSpriteSheet.RawTextureAtlas.RawTextureRegions);
-        writer.Write(rawSpriteSheet.RawAnimationTags);
+        RawAnimatedTilemap rawAnimated = content.RawAnimatedTilemap;
+
+        writer.Write(rawAnimated.Name);
+        WriteTilesets(writer, rawAnimated.RawTilesets, content.Texture2DContents);
+        writer.Write(rawAnimated.RawTilemapFrames);
+    }
+
+    private void WriteTilesets(ContentWriter writer, ReadOnlySpan<RawTileset> rawTilesets, ReadOnlySpan<Texture2DContent> tilesetTextures)
+    {
+        writer.Write(rawTilesets.Length);
+
+        for (int i = 0; i < rawTilesets.Length; i++)
+        {
+            writer.Write(rawTilesets[i].Name);
+            writer.Write(rawTilesets[i].ID);
+            writer.Write(rawTilesets[i].TileWidth);
+            writer.Write(rawTilesets[i].TileHeight);
+            writer.WriteObject(tilesetTextures[i]);
+        }
     }
 
     /// <summary>
@@ -52,7 +66,7 @@ internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<SpriteShe
     ///     The assembly qualified name of the runtime type.
     /// </returns>
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Sprites.SpriteSheet, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Tilemaps.AnimatedTilemap, MonoGame.Aseprite";
 
     /// <summary>
     ///     Gets the assembly qualified name of the runtime loader.
@@ -64,5 +78,5 @@ internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<SpriteShe
     ///     The assembly qualified name of the runtime loader.
     /// </returns>
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Readers.SpriteSheetContentTypeReader, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Content.Pipeline.Readers.AnimatedTilemapContentTypeReader, MonoGame.Aseprite";
 }

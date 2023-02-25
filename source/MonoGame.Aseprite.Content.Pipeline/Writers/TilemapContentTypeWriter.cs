@@ -31,14 +31,14 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class TilemapContentTypeWriter : ContentTypeWriter<ContentProcessorResult<TilemapContent>>
+internal sealed class TilemapContentTypeWriter : ContentTypeWriter<TilemapContent>
 {
-    protected override void Write(ContentWriter writer, ContentProcessorResult<TilemapContent> content)
+    protected override void Write(ContentWriter writer, TilemapContent content)
     {
-        RawTilemap rawTilemap = content.Data.RawTilemap;
+        RawTilemap rawTilemap = content.RawTilemap;
 
         writer.Write(rawTilemap.Name);
-        WriteTilesets(writer, rawTilemap.RawTilesets, content.Data.Texture2DContents);
+        WriteTilesets(writer, rawTilemap.RawTilesets, content.Texture2DContents);
         writer.Write(rawTilemap.RawLayers);
     }
 

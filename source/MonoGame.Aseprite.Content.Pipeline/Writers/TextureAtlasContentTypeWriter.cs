@@ -30,13 +30,13 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<ContentProcessorResult<TextureAtlasContent>>
+internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<TextureAtlasContent>
 {
-    protected override void Write(ContentWriter writer, ContentProcessorResult<TextureAtlasContent> content)
+    protected override void Write(ContentWriter writer, TextureAtlasContent content)
     {
-        RawTextureAtlas rawTextureAtlas = content.Data.RawTextureAtlas;
+        RawTextureAtlas rawTextureAtlas = content.RawTextureAtlas;
         writer.Write(rawTextureAtlas.Name);
-        writer.WriteObject(content.Data.Texture2DContent);
+        writer.WriteObject(content.Texture2DContent);
         writer.Write(rawTextureAtlas.RawTextureRegions);
     }
 

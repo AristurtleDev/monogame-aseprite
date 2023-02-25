@@ -32,7 +32,7 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite TextureAtlas Processor - MonoGame.Aseprite")]
-internal sealed class TextureAtlasContentProcessor : ContentProcessor<TextureAtlasImportResult, TextureAtlasContent>
+internal sealed class TextureAtlasContentProcessor : ContentProcessor<AsepriteFile, TextureAtlasContent>
 {
     [DisplayName("Only Visible Layers")]
     public bool OnlyVisibleLayers { get; set; } = true;
@@ -58,9 +58,9 @@ internal sealed class TextureAtlasContentProcessor : ContentProcessor<TextureAtl
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override TextureAtlasContent Process(TextureAtlasImportResult content, ContentProcessorContext context)
+    public override TextureAtlasContent Process(AsepriteFile aseFile, ContentProcessorContext context)
     {
-        RawTextureAtlas rawTextureAtlas = TextureAtlasProcessor.ProcessRaw(content.AsepriteFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
+        RawTextureAtlas rawTextureAtlas = TextureAtlasProcessor.ProcessRaw(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
 
         Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawTextureAtlas.RawTexture, rawTextureAtlas.Name);
         if (GenerateMipmaps)
@@ -68,7 +68,6 @@ internal sealed class TextureAtlasContentProcessor : ContentProcessor<TextureAtl
             texture2DContent.GenerateMipmaps(true);
         }
 
-        TextureAtlasContent textureAtlasContent = new(rawTextureAtlas, texture2DContent);
-        return new(textureAtlasContent);
+        return new(rawTextureAtlas, texture2DContent);
     }
 }
