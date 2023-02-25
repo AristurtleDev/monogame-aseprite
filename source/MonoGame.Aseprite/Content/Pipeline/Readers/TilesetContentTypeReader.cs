@@ -22,46 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Sprites;
+using MonoGame.Aseprite.Tilemaps;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Processors;
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-internal static class ProcessorHelpers
+internal sealed class TilesetContentTypeReader : ContentTypeReader<Tileset>
 {
-    internal static Texture2DContent CreateTextureContent(Color[] pixels, int width, int height)
+    protected override Tileset Read(ContentReader reader, Tileset? existingInstance)
     {
-        PixelBitmapContent<Color> face = new(width, height);
-
-        for (int i = 0; i < pixels.Length; i++)
+        if (existingInstance is not null)
         {
-            int x = i % width;
-            int y = i / width;
-            face.SetPixel(x, y, pixels[i]);
+            return existingInstance;
         }
 
-        Texture2DContent texture2DContent = new();
-        texture2DContent.Faces[0].Add(face);
-        return texture2DContent;
-    }
-
-    internal static Texture2DContent CreateTextureContent(RawTexture raw, string sourceFileName)
-    {
-        PixelBitmapContent<Color> face = new(raw.Width, raw.Height);
-
-        for (int i = 0; i < raw.Pixels.Length; i++)
-        {
-            int x = i % raw.Width;
-            int y = i / raw.Width;
-
-            face.SetPixel(x, y, raw.Pixels[i]);
-        }
-
-        Texture2DContent textureContent = new();
-        textureContent.Identity = new ContentIdentity(sourceFileName);
-        textureContent.Faces[0].Add(face);
-        return textureContent;
+        string name = reader.ReadString();
+        int tileWidth = reader.ReadInt32();
+        int tileHeight = reader.ReadInt32();
+        Texture2D texture = reader.ReadObject<Texture2D>();
+        return new(name, texture, tileWidth, tileHeight);
     }
 }

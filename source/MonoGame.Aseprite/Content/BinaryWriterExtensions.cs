@@ -107,7 +107,7 @@ internal static class BinaryWriterExtensions
     internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTextureRegion> value)
     {
         writer.Write(value.Length);
-        for(int i = 0; i < value.Length; i++)
+        for (int i = 0; i < value.Length; i++)
         {
             writer.Write(value[i]);
         }
@@ -129,6 +129,39 @@ internal static class BinaryWriterExtensions
         }
     }
 
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawAnimationTag> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
+    }
+
+    internal static void Write(this BinaryWriter writer, RawAnimationTag value)
+    {
+        writer.Write(value.Name);
+        writer.Write(value.IsLooping);
+        writer.Write(value.IsReversed);
+        writer.Write(value.IsPingPong);
+        writer.Write(value.RawAnimationFrames);
+    }
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawAnimationFrame> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
+    }
+
+    internal static void Write(this BinaryWriter writer, RawAnimationFrame value)
+    {
+        writer.Write(value.FrameIndex);
+        writer.Write(value.DurationInMilliseconds);
+    }
+
     internal static void Write(this BinaryWriter writer, RawTileset value)
     {
         writer.Write(value.ID);
@@ -136,6 +169,15 @@ internal static class BinaryWriterExtensions
         writer.Write(value.RawTexture);
         writer.Write(value.TileWidth);
         writer.Write(value.TileHeight);
+    }
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTilemapLayer> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
     }
 
     internal static void Write(this BinaryWriter writer, RawTilemapLayer value)
@@ -164,5 +206,20 @@ internal static class BinaryWriterExtensions
         writer.Write(value.FlipHorizontally);
         writer.Write(value.FlipVertically);
         writer.Write(value.Rotation);
+    }
+
+    internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTilemapFrame> value)
+    {
+        writer.Write(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            writer.Write(value[i]);
+        }
+    }
+
+    internal static void Write(this BinaryWriter writer, RawTilemapFrame value)
+    {
+        writer.Write(value.DurationInMilliseconds);
+        writer.Write(value.RawTilemapLayers);
     }
 }

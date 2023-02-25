@@ -23,49 +23,32 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.Content.Processors;
+using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-[ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, SpriteContent>
+[ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
+internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, TilesetContent>
 {
-    [DisplayName("Frame Index")]
-    public int FrameIndex { get; set; } = 0;
-
-    [DisplayName("Only Visible Layers")]
-    public bool OnlyVisibleLayers { get; set; } = true;
-
-    [DisplayName("Include Background Layer")]
-    public bool IncludeBackgroundLayer { get; set; } = false;
-
-    [DisplayName("Include Tilemap Layers")]
-    public bool IncludeTilemapLayers { get; set; } = true;
+    [DisplayName("Tileset Name")]
+    public string TilesetName { get; set; } = string.Empty;
 
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override SpriteContent Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override TilesetContent Process(AsepriteFile aseFile, ContentProcessorContext context)
     {
-        if (FrameIndex < 0 || FrameIndex >= aseFile.FrameCount)
-        {
-            throw new ProcessorParameterException($"The 'Frame Index' parameter cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
-        }
-
-        AsepriteFrame aseFrame = aseFile.Frames[FrameIndex];
-        Color[] pixels = aseFrame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
-        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(pixels, aseFrame.Width, aseFrame.Height);
-        texture2DContent.Identity = new ContentIdentity(aseFrame.Name);
-
+        RawTileset rawTileset = TilesetProcessor.ProcessRaw(aseFile, TilesetName);
+        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawTileset.RawTexture, rawTileset.Name);
         if (GenerateMipmaps)
         {
             texture2DContent.GenerateMipmaps(true);
         }
 
-        return new(aseFrame.Name, texture2DContent);
+        return new(rawTileset, texture2DContent);
     }
 }

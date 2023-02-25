@@ -23,49 +23,45 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.Content.Processors;
+using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-[ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, SpriteContent>
+[ContentProcessor(DisplayName = "Aseprite Animated Tilemap Processor - MonoGame.Aseprite")]
+internal sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, AnimatedTilemapContent>
 {
-    [DisplayName("Frame Index")]
-    public int FrameIndex { get; set; } = 0;
-
     [DisplayName("Only Visible Layers")]
-    public bool OnlyVisibleLayers { get; set; } = true;
-
-    [DisplayName("Include Background Layer")]
-    public bool IncludeBackgroundLayer { get; set; } = false;
-
-    [DisplayName("Include Tilemap Layers")]
-    public bool IncludeTilemapLayers { get; set; } = true;
+    public bool OnlyVisibleLayer { get; set; } = true;
 
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override SpriteContent Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override AnimatedTilemapContent Process(AsepriteFile aseFile, ContentProcessorContext context)
     {
-        if (FrameIndex < 0 || FrameIndex >= aseFile.FrameCount)
+        RawAnimatedTilemap rawAnimatedTilemap = AnimatedTilemapProcessor.ProcessRaw(aseFile, OnlyVisibleLayer);
+
+        Texture2DContent[] texture2DContents = ProcessTilesetTexture(rawAnimatedTilemap.RawTilesets);
+        return new(rawAnimatedTilemap, texture2DContents);
+    }
+
+    private Texture2DContent[] ProcessTilesetTexture(ReadOnlySpan<RawTileset> rawTilesets)
+    {
+        Texture2DContent[] texture2DContents = new Texture2DContent[rawTilesets.Length];
+
+        for (int i = 0; i < rawTilesets.Length; i++)
         {
-            throw new ProcessorParameterException($"The 'Frame Index' parameter cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
+            Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawTilesets[i].RawTexture, rawTilesets[i].Name);
+            if (GenerateMipmaps)
+            {
+                texture2DContent.GenerateMipmaps(true);
+            }
+            texture2DContents[i] = texture2DContent;
         }
 
-        AsepriteFrame aseFrame = aseFile.Frames[FrameIndex];
-        Color[] pixels = aseFrame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
-        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(pixels, aseFrame.Width, aseFrame.Height);
-        texture2DContent.Identity = new ContentIdentity(aseFrame.Name);
-
-        if (GenerateMipmaps)
-        {
-            texture2DContent.GenerateMipmaps(true);
-        }
-
-        return new(aseFrame.Name, texture2DContent);
+        return texture2DContents;
     }
 }

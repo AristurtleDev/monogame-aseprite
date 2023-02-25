@@ -23,16 +23,16 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.Content.Processors;
+using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-[ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
-internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, SpriteContent>
+[ContentProcessor(DisplayName = "Aseprite SpriteSheet Processor - MonoGame.Aseprite")]
+internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFile, SpriteSheetContent>
 {
     [DisplayName("Frame Index")]
     public int FrameIndex { get; set; } = 0;
@@ -46,26 +46,31 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFile, Sp
     [DisplayName("Include Tilemap Layers")]
     public bool IncludeTilemapLayers { get; set; } = true;
 
+    [DisplayName("Merge Duplicate Frames")]
+    public bool MergeDuplicateFrames { get; set; } = true;
+
+    [DisplayName("Border Padding")]
+    public int BorderPadding { get; set; } = 0;
+
+    [DisplayName("Spacing")]
+    public int Spacing { get; set; } = 0;
+
+    [DisplayName("Inner Padding")]
+    public int InnerPadding { get; set; } = 0;
+
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override SpriteContent Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override SpriteSheetContent Process(AsepriteFile aseFile, ContentProcessorContext context)
     {
-        if (FrameIndex < 0 || FrameIndex >= aseFile.FrameCount)
-        {
-            throw new ProcessorParameterException($"The 'Frame Index' parameter cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
-        }
-
-        AsepriteFrame aseFrame = aseFile.Frames[FrameIndex];
-        Color[] pixels = aseFrame.FlattenFrame(OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers);
-        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(pixels, aseFrame.Width, aseFrame.Height);
-        texture2DContent.Identity = new ContentIdentity(aseFrame.Name);
+        RawSpriteSheet rawSpriteSheet = SpriteSheetProcessor.ProcessRaw(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
+        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawSpriteSheet.RawTextureAtlas.RawTexture, rawSpriteSheet.Name);
 
         if (GenerateMipmaps)
         {
             texture2DContent.GenerateMipmaps(true);
         }
 
-        return new(aseFrame.Name, texture2DContent);
+        return new(rawSpriteSheet, texture2DContent);
     }
 }

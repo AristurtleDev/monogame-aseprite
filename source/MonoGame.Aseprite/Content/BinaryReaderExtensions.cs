@@ -116,7 +116,45 @@ internal static class BinaryReaderExtensions
         }
 
         return new RawSlice(name, bounds, origin, color);
+    }
 
+    internal static RawAnimationTag[] ReadRawAnimationTags(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawAnimationTag[] tags = new RawAnimationTag[count];
+        for (int i = 0; i < count; i++)
+        {
+            tags[i] = reader.ReadRawAnimationTag();
+        }
+        return tags;
+    }
+
+    internal static RawAnimationTag ReadRawAnimationTag(this BinaryReader reader)
+    {
+        string name = reader.ReadString();
+        bool isLooping = reader.ReadBoolean();
+        bool isReversed = reader.ReadBoolean();
+        bool isPingPong = reader.ReadBoolean();
+        RawAnimationFrame[] frames = reader.ReadRawAnimationFrames();
+        return new(name, frames, isLooping, isReversed, isPingPong);
+    }
+
+    internal static RawAnimationFrame[] ReadRawAnimationFrames(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawAnimationFrame[] frames = new RawAnimationFrame[count];
+        for (int i = 0; i < count; i++)
+        {
+            frames[i] = reader.ReadRawAnimationFrame();
+        }
+        return frames;
+    }
+
+    internal static RawAnimationFrame ReadRawAnimationFrame(this BinaryReader reader)
+    {
+        int index = reader.ReadInt32();
+        int duration = reader.ReadInt32();
+        return new(index, duration);
     }
 
     internal static RawTextureAtlas ReadRawTextureAtlas(this BinaryReader reader)
@@ -172,6 +210,17 @@ internal static class BinaryReaderExtensions
         return new(id, name, texture, tileWidth, tileHeight);
     }
 
+    internal static RawTilemapLayer[] ReadRawTilemapLayers(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawTilemapLayer[] layers = new RawTilemapLayer[count];
+        for (int i = 0; i < count; i++)
+        {
+            layers[i] = reader.ReadRawTilemapLayer();
+        }
+        return layers;
+    }
+
     internal static RawTilemapLayer ReadRawTilemapLayer(this BinaryReader reader)
     {
         string name = reader.ReadString();
@@ -204,5 +253,25 @@ internal static class BinaryReaderExtensions
         float rotation = reader.ReadSingle();
 
         return new(tilesetTileID, flipHorizontally, flipVertically, rotation);
+    }
+
+    internal static RawTilemapFrame[] ReadRawTilemapFrames(this BinaryReader reader)
+    {
+        int count = reader.ReadInt32();
+        RawTilemapFrame[] rawTilemapFrames = new RawTilemapFrame[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            rawTilemapFrames[i] = reader.ReadRawTilemapFrame();
+        }
+
+        return rawTilemapFrames;
+    }
+
+    internal static RawTilemapFrame ReadRawTilemapFrame(this BinaryReader reader)
+    {
+        int duration = reader.ReadInt32();
+        RawTilemapLayer[] layers = reader.ReadRawTilemapLayers();
+        return new(duration, layers);
     }
 }
