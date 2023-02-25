@@ -23,7 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 namespace MonoGame.Aseprite.Content.Pipeline;
 
-public sealed class ContentImportException : Exception
+internal sealed class ContentImportException : Exception
 {
     public string? ContentPath { get; set; } = default;
     public ContentImportException() { }

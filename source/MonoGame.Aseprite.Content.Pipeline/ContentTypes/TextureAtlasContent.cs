@@ -22,11 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 
-public record TextureAtlasContent(RawTextureAtlas RawTextureAtlas, Texture2DContent Texture2DContent);
+internal record TextureAtlasContent(RawTextureAtlas RawTextureAtlas, Texture2DContent Texture2DContent);

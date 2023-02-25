@@ -55,28 +55,9 @@ internal sealed class TilemapContentTypeWriter : ContentTypeWriter<TilemapConten
             writer.WriteObject(tilesetTextures[i]);
         }
     }
-
-    /// <summary>
-    ///     Gets the assembly qualified name of the runtime type.
-    /// </summary>
-    /// <param name="targetPlatform">
-    ///     The target platform.
-    /// </param>
-    /// <returns>
-    ///     The assembly qualified name of the runtime type.
-    /// </returns>
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
         "MonoGame.Aseprite.Tilemaps.Tilemap, MonoGame.Aseprite";
 
-    /// <summary>
-    ///     Gets the assembly qualified name of the runtime loader.
-    /// </summary>
-    /// <param name="targetPlatform">
-    ///     The target platform type.
-    /// </param>
-    /// <returns>
-    ///     The assembly qualified name of the runtime loader.
-    /// </returns>
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
         "MonoGame.Aseprite.Content.Pipeline.Readers.TilemapContentTypeReader, MonoGame.Aseprite";
 }

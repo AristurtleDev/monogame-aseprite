@@ -27,4 +27,4 @@ using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 
-public record AnimatedTilemapContent(RawAnimatedTilemap RawAnimatedTilemap, Texture2DContent[] Texture2DContents);
+internal record AnimatedTilemapContent(RawAnimatedTilemap RawAnimatedTilemap, Texture2DContent[] Texture2DContents);

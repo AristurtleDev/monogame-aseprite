@@ -32,7 +32,7 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite SpriteSheet Processor - MonoGame.Aseprite")]
-internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFile, SpriteSheetContent>
+internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFileImportResult, SpriteSheetContent>
 {
     [DisplayName("Frame Index")]
     public int FrameIndex { get; set; } = 0;
@@ -61,10 +61,12 @@ internal sealed class SpriteSheetContentProcessor : ContentProcessor<AsepriteFil
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override SpriteSheetContent Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override SpriteSheetContent Process(AsepriteFileImportResult content, ContentProcessorContext context)
     {
-        RawSpriteSheet rawSpriteSheet = SpriteSheetProcessor.ProcessRaw(aseFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
-        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawSpriteSheet.RawTextureAtlas.RawTexture, rawSpriteSheet.Name);
+        RawSpriteSheet rawSpriteSheet = SpriteSheetProcessor.ProcessRaw(content.AsepriteFile, OnlyVisibleLayers, IncludeBackgroundLayer, IncludeTilemapLayers, MergeDuplicateFrames, BorderPadding, Spacing, InnerPadding);
+        RawTexture rawTexture = rawSpriteSheet.RawTextureAtlas.RawTexture;
+
+        Texture2DContent texture2DContent = ProcessorHelpers.CreateTexture2DContent(rawTexture.Pixels, rawTexture.Width, rawTexture.Height);
 
         if (GenerateMipmaps)
         {
