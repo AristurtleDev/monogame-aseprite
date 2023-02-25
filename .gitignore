@@ -18,7 +18,6 @@ Thumbs.db
 # Visual Studio
 .vs/
 
-
 # Ignore the demo game I create when developing
 [Dd]emoGame/
 

@@ -22,10 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.Content.Readers;
+using MonoGame.Aseprite.RawTypes;
 using MonoGame.Aseprite.Sprites;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
@@ -43,12 +42,27 @@ internal sealed class TextureAtlasContentTypeReader : ContentTypeReader<TextureA
         Texture2D texture = reader.ReadObject<Texture2D>();
         TextureAtlas textureAtlas = new(name, texture);
 
-        int regionCount = reader.ReadInt32();
-        for (int i = 0; i < regionCount; i++)
+        RawTextureRegion[] rawTextureRegions = reader.ReadRawTextureRegions();
+
+        for (int i = 0; i < rawTextureRegions.Length; i++)
         {
-            string regionName = reader.ReadString();
-            Rectangle regionBounds = reader.ReadRectangle();
-            TextureRegion textureRegion = textureAtlas.CreateRegion(regionName, regionBounds);
+            RawTextureRegion rawTextureRegion = rawTextureRegions[i];
+
+            TextureRegion textureRegion = textureAtlas.CreateRegion(rawTextureRegion.Name, rawTextureRegion.Bounds);
+
+            foreach (RawSlice rawSlice in rawTextureRegion.Slices)
+            {
+                if (rawSlice is RawNinePatchSlice rawNinePatchSlice)
+                {
+                    textureRegion.CreateNinePatchSlice(rawNinePatchSlice.Name, rawNinePatchSlice.Bounds, rawNinePatchSlice.CenterBounds, rawNinePatchSlice.Origin, rawNinePatchSlice.Color);
+                }
+                else
+                {
+                    textureRegion.CreateSlice(rawSlice.Name, rawSlice.Bounds, rawSlice.Origin, rawSlice.Color);
+                }
+            }
         }
+
+        return textureAtlas;
     }
 }

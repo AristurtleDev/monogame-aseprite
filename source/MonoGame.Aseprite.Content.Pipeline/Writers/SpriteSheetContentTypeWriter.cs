@@ -30,14 +30,16 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<TextureAtlasContent>
+internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<SpriteSheetContent>
 {
-    protected override void Write(ContentWriter writer, TextureAtlasContent content)
+    protected override void Write(ContentWriter writer, SpriteSheetContent content)
     {
-        RawTextureAtlas rawTextureAtlas = content.RawTextureAtlas;
-        writer.Write(rawTextureAtlas.Name);
+        RawSpriteSheet rawSpriteSheet = content.RawSpriteSheet;
+        writer.Write(rawSpriteSheet.Name);
+        writer.Write(rawSpriteSheet.RawTextureAtlas.Name);
         writer.WriteObject(content.Texture2DContent);
-        writer.Write(rawTextureAtlas.RawTextureRegions);
+        writer.Write(rawSpriteSheet.RawTextureAtlas.RawTextureRegions);
+        writer.Write(rawSpriteSheet.RawAnimationTags);
     }
 
     /// <summary>
@@ -50,7 +52,7 @@ internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<TextureA
     ///     The assembly qualified name of the runtime type.
     /// </returns>
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Sprites.TextureAtlas, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Sprites.SpriteSheet, MonoGame.Aseprite";
 
     /// <summary>
     ///     Gets the assembly qualified name of the runtime loader.
@@ -62,5 +64,5 @@ internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<TextureA
     ///     The assembly qualified name of the runtime loader.
     /// </returns>
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Readers.TextureAtlasContentTypeReader, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Content.Pipeline.Readers.SpriteSheetContentTypeReader, MonoGame.Aseprite";
 }
