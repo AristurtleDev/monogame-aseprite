@@ -32,7 +32,7 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
-internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, TilesetContent>
+internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFileImportResult, TilesetContent>
 {
     [DisplayName("Tileset Name")]
     public string TilesetName { get; set; } = string.Empty;
@@ -40,10 +40,13 @@ internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFile, T
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override TilesetContent Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override TilesetContent Process(AsepriteFileImportResult content, ContentProcessorContext context)
     {
-        RawTileset rawTileset = TilesetProcessor.ProcessRaw(aseFile, TilesetName);
-        Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawTileset.RawTexture, rawTileset.Name);
+        RawTileset rawTileset = TilesetProcessor.ProcessRaw(content.AsepriteFile, TilesetName);
+        RawTexture rawTexture = rawTileset.RawTexture;
+
+        Texture2DContent texture2DContent = ProcessorHelpers.CreateTexture2DContent(rawTexture.Pixels, rawTexture.Width, rawTexture.Height);
+        
         if (GenerateMipmaps)
         {
             texture2DContent.GenerateMipmaps(true);

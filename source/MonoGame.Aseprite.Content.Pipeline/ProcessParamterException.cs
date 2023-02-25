@@ -23,7 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 namespace MonoGame.Aseprite.Content.Pipeline;
 
-public sealed class ProcessorParameterException : Exception
+internal sealed class ProcessorParameterException : Exception
 {
     public string? ProcessorName { get; set; } = default;
     public string? ParameterName { get; set; } = default;

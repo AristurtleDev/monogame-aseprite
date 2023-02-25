@@ -22,10 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 
 namespace MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 
-public record SpriteContent(string Name, Texture2DContent Texture2DContent);
+internal record SpriteContent(string Name, Texture2DContent Texture2DContent);
