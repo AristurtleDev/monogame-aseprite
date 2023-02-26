@@ -576,7 +576,7 @@ public class TextureAtlas : IEnumerable<TextureRegion>
 
             for (int s = 0; s < rawTextureRegion.Slices.Length; s++)
             {
-                RawSlice slice = rawTextureRegion.Slices[i];
+                RawSlice slice = rawTextureRegion.Slices[s];
 
                 if (slice is RawNinePatchSlice ninePatch)
                 {

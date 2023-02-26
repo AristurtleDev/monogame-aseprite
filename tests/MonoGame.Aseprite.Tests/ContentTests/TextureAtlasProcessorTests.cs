@@ -76,7 +76,27 @@ public sealed class TextureAtlasProcessorTestFixture
         };
 
         AsepriteTag[] tags = Array.Empty<AsepriteTag>();
-        AsepriteSlice[] slices = Array.Empty<AsepriteSlice>();
+
+        //  Add slices when testing so we don't have an issue like what happened 
+        //  in Issue #52
+        // https://github.com/AristurtleDev/monogame-aseprite/issues/52
+        AsepriteSliceKey[] slice1Keys = new AsepriteSliceKey[]
+        {
+            new(0, new Rectangle(0, 0, 1, 1), default, default),
+        };
+
+        AsepriteSliceKey[] slice2Keys = new AsepriteSliceKey[]
+        {
+            new(1, new Rectangle(0, 0, 3, 3), new Rectangle(1, 1, 1, 1), new Point(0, 0)),
+        };
+
+        AsepriteSlice slice1 = new("slice-1", false, false, slice1Keys);
+        slice1.UserData.Color = Color.Red;
+        AsepriteSlice slice2 = new("slice-2", true, true, slice2Keys);
+        slice2.UserData.Color = Color.Green;
+
+
+        AsepriteSlice[] slices = new AsepriteSlice[] { slice1, slice2 };
         AsepriteUserData userData = new();
         AsepriteFile = new(Name, width, height, palette, frames, layers, tags, slices, tilesets, userData);
     }
@@ -266,5 +286,32 @@ public sealed class TextureAtlasProcessorTests : IClassFixture<TextureAtlasProce
         Assert.Equal(new Rectangle(7, 2, 2, 2), atlas.RawTextureRegions[1].Bounds);
         Assert.Equal(new Rectangle(2, 7, 2, 2), atlas.RawTextureRegions[2].Bounds);
         Assert.Equal(new Rectangle(2, 2, 2, 2), atlas.RawTextureRegions[3].Bounds);
+    }
+
+    [Fact]
+    public void ProcessRaw_Slices_Processed_Correctly()
+    {
+        RawTextureAtlas atlas = TextureAtlasProcessor.ProcessRaw(_fixture.AsepriteFile);
+        //  Frame/Region 0 should only contain slice 1  because it was the only one of the two in the fixture to
+        //  begin on the first frame.  The remainder frame/regions should contain both slices.
+        Assert.Equal(1, atlas.RawTextureRegions[0].Slices.Length);
+        Assert.Equal(2, atlas.RawTextureRegions[1].Slices.Length);
+        Assert.Equal(2, atlas.RawTextureRegions[2].Slices.Length);
+        Assert.Equal(2, atlas.RawTextureRegions[3].Slices.Length);
+
+        RawSlice slice1 = new("slice-1", new Rectangle(0, 0, 1, 1), Vector2.Zero, Color.Red);
+        RawNinePatchSlice slice2 = new("slice-2", new Rectangle(0, 0, 3, 3), new Rectangle(1, 1, 1, 1), Vector2.Zero, Color.Green);
+
+        Assert.Equal(slice1, atlas.RawTextureRegions[0].Slices[0]);
+
+        Assert.Equal(slice1, atlas.RawTextureRegions[1].Slices[0]);
+        Assert.Equal(slice2, atlas.RawTextureRegions[1].Slices[1]);
+
+        Assert.Equal(slice1, atlas.RawTextureRegions[2].Slices[0]);
+        Assert.Equal(slice2, atlas.RawTextureRegions[2].Slices[1]);
+
+        Assert.Equal(slice1, atlas.RawTextureRegions[3].Slices[0]);
+        Assert.Equal(slice2, atlas.RawTextureRegions[3].Slices[1]);
+
     }
 }

@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.2</Version>
+        <Version>4.0.3</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -21,9 +21,9 @@
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
-        <Version>4.0.0</Version>
-        <AssemblyVersion>4.0.0</AssemblyVersion>
-        <FileVersion>4.0.0</FileVersion>
+        <Version>4.0.3</Version>
+        <AssemblyVersion>4.0.3</AssemblyVersion>
+        <FileVersion>4.0.3</FileVersion>
         <Authors>Christopher Whitley</Authors>
         <Company>Aristurtle</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -37,10 +37,9 @@
         <PackageTags>
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
         <PackageReleaseNotes>
-            Version 4.0.2
+            Version 4.0.3
             The following bug fixes were implemented:
-                - Fixed XML docs not included in NuGet leading to no intellesense. (Closes #44)
-                - Fixed RawTexture.Height property being internal by making it public (Closes #45)
+                - Fixed crash in `TextureAtlas.FromRaw` where loop for slices used incorrect iterator. (Closes #52)
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
