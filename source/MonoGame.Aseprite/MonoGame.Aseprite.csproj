@@ -31,8 +31,7 @@
         <PackageReleaseNotes>
             Version 4.0.3
             The following bug fixes were implemented:
-                - Fixed XML docs not included in NuGet leading to no intellesense. (Closes #44)
-                - Fixed RawTexture.Height property being internal by making it public (Closes #45)
+                - Fixed crash in `TextureAtlas.FromRaw` where loop for slices used incorrect iterator. (Closes #52)
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
