@@ -1,3 +1,7 @@
-## Bug Fixes
+## 4.0.2 Hotfix
 - Fixed XML docs not included in NuGet leading to no intellesense. (Closes #44)
 - Fixed RawTexture.Height property being internal by making it public (Closes #45)
+
+## 4.0.3 Hotfix
+- Fixed crash in `TextureAtlas.FromRaw` where loop for slices used incorrect iterator. (Closes #52)
+
