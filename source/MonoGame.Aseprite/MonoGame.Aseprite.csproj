@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.2</Version>
+        <Version>4.0.3</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,7 +29,7 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 4.0.2
+            Version 4.0.3
             The following bug fixes were implemented:
                 - Fixed XML docs not included in NuGet leading to no intellesense. (Closes #44)
                 - Fixed RawTexture.Height property being internal by making it public (Closes #45)
