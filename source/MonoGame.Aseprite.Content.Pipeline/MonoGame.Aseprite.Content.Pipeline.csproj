@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.4</Version>
+        <Version>4.0.5</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -21,9 +21,9 @@
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
-        <Version>4.0.4</Version>
-        <AssemblyVersion>4.0.4</AssemblyVersion>
-        <FileVersion>4.0.4</FileVersion>
+        <Version>4.0.5</Version>
+        <AssemblyVersion>4.0.5</AssemblyVersion>
+        <FileVersion>4.0.5</FileVersion>
         <Authors>Christopher Whitley</Authors>
         <Company>Aristurtle</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

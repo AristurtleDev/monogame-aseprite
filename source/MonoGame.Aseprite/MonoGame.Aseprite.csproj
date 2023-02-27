@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.4</Version>
+        <Version>4.0.5</Version>
     </PropertyGroup>
 
     <PropertyGroup>
