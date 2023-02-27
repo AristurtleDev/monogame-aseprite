@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.3</Version>
+        <Version>4.0.4</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -21,9 +21,9 @@
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
-        <Version>4.0.3</Version>
-        <AssemblyVersion>4.0.3</AssemblyVersion>
-        <FileVersion>4.0.3</FileVersion>
+        <Version>4.0.4</Version>
+        <AssemblyVersion>4.0.4</AssemblyVersion>
+        <FileVersion>4.0.4</FileVersion>
         <Authors>Christopher Whitley</Authors>
         <Company>Aristurtle</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -37,7 +37,7 @@
         <PackageTags>
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
         <PackageReleaseNotes>
-            Version 4.0.3
+            Version 4.0.4
             The following bug fixes were implemented:
                 - Fixed crash in `TextureAtlas.FromRaw` where loop for slices used incorrect iterator. (Closes #52)
         </PackageReleaseNotes>

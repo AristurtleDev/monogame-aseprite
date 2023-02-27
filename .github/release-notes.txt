@@ -5,3 +5,8 @@
 ## 4.0.3 Hotfix
 - Fixed crash in `TextureAtlas.FromRaw` where loop for slices used incorrect iterator. (Closes #52)
 
+## 4.0.4 Hotfix
+- `AnimatedSprite.Update(float)` changed to `AnimatedSprite.Update(double)` (Closes #51)
+- `AnimatedTilemap.Update(float)` changed to `AnimatedTilemap.Update(double)` (Closes #51)
+- `AnimatedSprite.Update(double)` and `AnimatedTilemap.Update(double)` now expect the value being passed to be a representation of elapsed seconds and not elapsed milliseconds.  This is in-line with the common use case of delta time being representative of seconds elapsed and not milliseconds elapsed. (Closes #61)
+
