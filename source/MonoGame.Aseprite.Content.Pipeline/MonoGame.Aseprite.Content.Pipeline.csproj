@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.4</Version>
+        <Version>4.0.5</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -21,9 +21,9 @@
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
-        <Version>4.0.4</Version>
-        <AssemblyVersion>4.0.4</AssemblyVersion>
-        <FileVersion>4.0.4</FileVersion>
+        <Version>4.0.5</Version>
+        <AssemblyVersion>4.0.5</AssemblyVersion>
+        <FileVersion>4.0.5</FileVersion>
         <Authors>Christopher Whitley</Authors>
         <Company>Aristurtle</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -37,11 +37,9 @@
         <PackageTags>
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
         <PackageReleaseNotes>
-            Version 4.0.4
+            Version 4.0.5
             The following bug fixes were implemented:
-                - `AnimatedSprite.Update(float)` changed to `AnimatedSprite.Update(double)` (Closes #51)
-                - `AnimatedTilemap.Update(float)` changed to `AnimatedTilemap.Update(double)` (Closes #51)
-                - `AnimatedSprite.Update(double)` and `AnimatedTilemap.Update(double)` now expect the value being passed to be a representation of elapsed seconds and not elapsed milliseconds.  This is in-line with the common use case of delta time being representative of seconds elapsed and not milliseconds elapsed. (Closes #61)
+                - `Slice.Origin` value is not set property in constructor. (Closes #64)
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
