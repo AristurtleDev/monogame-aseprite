@@ -55,5 +55,5 @@ public class Slice
     public Color Color { get; }
 
     internal Slice(string name, Rectangle bounds, Vector2 origin, Color color) =>
-        (Name, Bounds, Color) = (name, bounds, color);
+        (Name, Bounds, Origin, Color) = (name, bounds, origin, color);
 }
