@@ -39,7 +39,9 @@
         <PackageReleaseNotes>
             Version 4.0.4
             The following bug fixes were implemented:
-                - Fixed crash in `TextureAtlas.FromRaw` where loop for slices used incorrect iterator. (Closes #52)
+                - `AnimatedSprite.Update(float)` changed to `AnimatedSprite.Update(double)` (Closes #51)
+                - `AnimatedTilemap.Update(float)` changed to `AnimatedTilemap.Update(double)` (Closes #51)
+                - `AnimatedSprite.Update(double)` and `AnimatedTilemap.Update(double)` now expect the value being passed to be a representation of elapsed seconds and not elapsed milliseconds.  This is in-line with the common use case of delta time being representative of seconds elapsed and not milliseconds elapsed. (Closes #61)
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
