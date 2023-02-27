@@ -179,13 +179,13 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// <remarks>
     ///     This should only be called once per game update cycle.
     /// </remarks>
-    /// <param name="deltaTimeInMilliseconds">
-    ///     The amount of time, in milliseconds, that have elapsed since the last update cycle in the game.
+    /// <param name="deltaTimeInSeconds">
+    ///     The amount of time, in seconds, that have elapsed since the last update cycle in the game.
     /// </param>
-    public void Update(float deltaTimeInMilliseconds)
+    public void Update(double deltaTimeInSeconds)
     {
         GameTime fakeGameTime = new();
-        fakeGameTime.ElapsedGameTime = TimeSpan.FromMilliseconds(deltaTimeInMilliseconds);
+        fakeGameTime.ElapsedGameTime = TimeSpan.FromSeconds(deltaTimeInSeconds);
         Update(fakeGameTime);
     }
 
