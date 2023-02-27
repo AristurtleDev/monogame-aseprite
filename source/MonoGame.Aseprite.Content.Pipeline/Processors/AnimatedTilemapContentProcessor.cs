@@ -32,7 +32,7 @@ using MonoGame.Aseprite.RawTypes;
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 [ContentProcessor(DisplayName = "Aseprite Animated Tilemap Processor - MonoGame.Aseprite")]
-internal sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFile, AnimatedTilemapContent>
+internal sealed class AnimatedTilemapContentProcessor : ContentProcessor<AsepriteFileImportResult, AnimatedTilemapContent>
 {
     [DisplayName("Only Visible Layers")]
     public bool OnlyVisibleLayer { get; set; } = true;
@@ -40,9 +40,9 @@ internal sealed class AnimatedTilemapContentProcessor : ContentProcessor<Aseprit
     [DisplayName("Generate Mipmaps")]
     public bool GenerateMipmaps { get; set; } = false;
 
-    public override AnimatedTilemapContent Process(AsepriteFile aseFile, ContentProcessorContext context)
+    public override AnimatedTilemapContent Process(AsepriteFileImportResult content, ContentProcessorContext context)
     {
-        RawAnimatedTilemap rawAnimatedTilemap = AnimatedTilemapProcessor.ProcessRaw(aseFile, OnlyVisibleLayer);
+        RawAnimatedTilemap rawAnimatedTilemap = AnimatedTilemapProcessor.ProcessRaw(content.AsepriteFile, OnlyVisibleLayer);
 
         Texture2DContent[] texture2DContents = ProcessTilesetTexture(rawAnimatedTilemap.RawTilesets);
         return new(rawAnimatedTilemap, texture2DContents);
@@ -54,7 +54,10 @@ internal sealed class AnimatedTilemapContentProcessor : ContentProcessor<Aseprit
 
         for (int i = 0; i < rawTilesets.Length; i++)
         {
-            Texture2DContent texture2DContent = ProcessorHelpers.CreateTextureContent(rawTilesets[i].RawTexture, rawTilesets[i].Name);
+            RawTexture rawTexture = rawTilesets[i].RawTexture;
+
+            Texture2DContent texture2DContent = ProcessorHelpers.CreateTexture2DContent(rawTexture.Pixels, rawTexture.Width, rawTexture.Height);
+
             if (GenerateMipmaps)
             {
                 texture2DContent.GenerateMipmaps(true);

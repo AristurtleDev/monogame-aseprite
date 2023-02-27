@@ -24,40 +24,22 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class AsepriteFileContentTypeWRiter : ContentTypeWriter<ContentProcessorResult<byte[]>>
+internal sealed class AsepriteFileContentTypeWriter : ContentTypeWriter<AsepriteFileImportResult>
 {
-    protected override void Write(ContentWriter writer, ContentProcessorResult<byte[]> content)
+    protected override void Write(ContentWriter writer, AsepriteFileImportResult content)
     {
         writer.Write(content.Data.Length);
         writer.Write(content.Data);
     }
-
-
-    /// <summary>
-    ///     Gets the assembly qualified name of the runtime type.
-    /// </summary>
-    /// <param name="targetPlatform">
-    ///     The target platform.
-    /// </param>
-    /// <returns>
-    ///     The assembly qualified name of the runtime type.
-    /// </returns>
+    
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
         "MonoGame.Aseprite.AsepriteFile, MonoGame.Aseprite";
 
-    /// <summary>
-    ///     Gets the assembly qualified name of the runtime loader.
-    /// </summary>
-    /// <param name="targetPlatform">
-    ///     The target platform type.
-    /// </param>
-    /// <returns>
-    ///     The assembly qualified name of the runtime loader.
-    /// </returns>
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
         "MonoGame.Aseprite.Content.Pipeline.Readers.AsepriteFileContentTypeReader, MonoGame.Aseprite";
 }

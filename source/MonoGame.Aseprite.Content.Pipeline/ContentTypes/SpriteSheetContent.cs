@@ -27,4 +27,4 @@ using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.ContentTypes;
 
-public record SpriteSheetContent(RawSpriteSheet RawSpriteSheet, Texture2DContent Texture2DContent);
+internal record SpriteSheetContent(RawSpriteSheet RawSpriteSheet, Texture2DContent Texture2DContent);
