@@ -29,11 +29,9 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 4.0.4
+            Version 4.0.5
             The following bug fixes were implemented:
-                - `AnimatedSprite.Update(float)` changed to `AnimatedSprite.Update(double)` (Closes #51)
-                - `AnimatedTilemap.Update(float)` changed to `AnimatedTilemap.Update(double)` (Closes #51)
-                - `AnimatedSprite.Update(double)` and `AnimatedTilemap.Update(double)` now expect the value being passed to be a representation of elapsed seconds and not elapsed milliseconds.  This is in-line with the common use case of delta time being representative of seconds elapsed and not milliseconds elapsed. (Closes #61)
+                - `Slice.Origin` value is not set property in constructor. (Closes #64)
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
