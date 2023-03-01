@@ -49,7 +49,9 @@
 
     <!-- Nuget Package References -->
     <ItemGroup>
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
+            <PrivateAssets>All</PrivateAssets>
+        </PackageReference>
     </ItemGroup>
 
     <!-- Allow the test project to use internal types for testing -->
