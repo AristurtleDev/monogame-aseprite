@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.5</Version>
+        <Version>4.0.6</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,9 +29,9 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 4.0.5
+            Version 4.0.6
             The following bug fixes were implemented:
-                - `Slice.Origin` value is not set property in constructor. (Closes #64)
+                - Removed package dependency on DesktopGL (Closes #66)
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
