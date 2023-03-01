@@ -26,28 +26,12 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-/// <summary>
-///     Defines a content processor that processes the contents of an aseprite file.
-/// </summary>
 [ContentProcessor(DisplayName = "Aseprite File Processor - MonoGame.Aseprite")]
-internal sealed class AsepriteFileContentProcessor : ContentProcessor<ContentImporterResult, ContentProcessorResult<byte[]>>
+internal sealed class AsepriteFileContentProcessor : ContentProcessor<AsepriteFileImportResult, AsepriteFileImportResult>
 {
-    /// <summary>
-    ///     Processes an aseprite file.
-    /// </summary>
-    /// <param name="content">
-    ///     The <see cref="ContentImporterResult"/> from the import process.
-    /// </param>
-    /// <param name="context">
-    ///     The content processor context that provides contextual information about the content being processed.
-    /// </param>
-    /// <returns>
-    ///     A new <see cref="ContentProcessorResult{T}"/> containing the contents of the aseprite file created by this
-    ///     method.
-    /// </returns>
-    public override ContentProcessorResult<byte[]> Process(ContentImporterResult content, ContentProcessorContext context)
+    public override AsepriteFileImportResult Process(AsepriteFileImportResult content, ContentProcessorContext context)
     {
-        byte[] data = File.ReadAllBytes(content.Path);
-        return new(data);
+        //  No processing needed since this is just for importing the file content itself.
+        return content;
     }
 }

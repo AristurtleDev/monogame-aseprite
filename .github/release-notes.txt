@@ -13,5 +13,15 @@
 ## 4.0.5 Hotfix
 - `Slice.Origin` value is not set property in constructor. (Closes #64)
 
+
 ## 4.0.6 Hotfix
 - Removed package dependency on DesktopGL (Closes #66)
+
+## 4.1.0
+- Added `AsepriteFileReader.Read(Stream)` method to supported reading Aseprite file with `TitleContainer` stream. (PR #47) (Closes #49)
+- Added  `SpriteContentProcessor`, `SpriteContentTypeWriter`, and `SpriteContentTypeReader` (PR #50)
+- Added `TextureAtlasContentProcessor`, `TextureAtlasContentTypeWriter` and `TextureAtlasContentTypeReader` (PR #50)
+- Added `SpriteSheetContentProcessor`, `SpriteSheetContentTypeWriter` and `SpriteSheetContentTypeReader` (PR #50)
+- Added `TilesetContentProcessor`, `TilesetContentTypeWriter` and `TilesetContentContentTypeReader` (PR #50)
+- Added `TilemapContentProcessor`, `TilemapContentTypeWriter` and `TilemapContentContentTypeReader` (PR #50)
+- added `AnimatedTilemapContentProcessor`, `AnimatedTilemapContentTypeWriter` and `AnimatedTilemapContentTypeReader` (PR #50)

@@ -21,28 +21,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
+namespace MonoGame.Aseprite.Content.Pipeline;
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.Content.Readers;
-
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
-
-internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
+internal sealed class ContentImportException : Exception
 {
-    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
-    {
-
-        if (existingInstance is not null)
-        {
-            return existingInstance;
-        }
-
-        int len = reader.ReadInt32();
-        byte[] data = reader.ReadBytes(len);
-
-        using MemoryStream stream = new(data);
-        return AsepriteFileReader.ReadStream(reader.AssetName, stream);
-    }
+    public string? ContentPath { get; set; } = default;
+    public ContentImportException() { }
+    public ContentImportException(string message) : base(message) { }
+    public ContentImportException(string message, string contentPath) : base(message) => ContentPath = contentPath;
+    public ContentImportException(string message, string contentPath, Exception? innerException) : base(message, innerException) => ContentPath = contentPath;
 }

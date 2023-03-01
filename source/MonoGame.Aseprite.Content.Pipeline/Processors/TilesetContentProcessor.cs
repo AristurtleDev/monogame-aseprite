@@ -22,27 +22,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.Content.Readers;
+using System.ComponentModel;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.Content.Processors;
+using MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
+namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
-internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
+[ContentProcessor(DisplayName = "Aseprite Tileset Processor - MonoGame.Aseprite")]
+internal sealed class TilesetContentProcessor : ContentProcessor<AsepriteFileImportResult, TilesetContent>
 {
-    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
-    {
+    [DisplayName("Tileset Name")]
+    public string TilesetName { get; set; } = string.Empty;
 
-        if (existingInstance is not null)
+    [DisplayName("Generate Mipmaps")]
+    public bool GenerateMipmaps { get; set; } = false;
+
+    public override TilesetContent Process(AsepriteFileImportResult content, ContentProcessorContext context)
+    {
+        RawTileset rawTileset = TilesetProcessor.ProcessRaw(content.AsepriteFile, TilesetName);
+        RawTexture rawTexture = rawTileset.RawTexture;
+
+        Texture2DContent texture2DContent = ProcessorHelpers.CreateTexture2DContent(rawTexture.Pixels, rawTexture.Width, rawTexture.Height);
+        
+        if (GenerateMipmaps)
         {
-            return existingInstance;
+            texture2DContent.GenerateMipmaps(true);
         }
 
-        int len = reader.ReadInt32();
-        byte[] data = reader.ReadBytes(len);
-
-        using MemoryStream stream = new(data);
-        return AsepriteFileReader.ReadStream(reader.AssetName, stream);
+        return new(rawTileset, texture2DContent);
     }
 }

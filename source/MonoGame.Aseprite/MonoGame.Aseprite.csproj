@@ -61,6 +61,13 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <!-- Allow the content pipeline project to use internal types for testing -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>MonoGame.Aseprite.Content.Pipeline</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
     <!-- Warning Supressions -->
     <PropertyGroup>
         <!-- Supress warning about Pipeline dll not being in lib folder for NuGet -->

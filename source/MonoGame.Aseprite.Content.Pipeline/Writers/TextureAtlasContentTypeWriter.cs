@@ -22,27 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.Content.Readers;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
+namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
-internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
+[ContentTypeWriter]
+internal sealed class TextureAtlasContentTypeWriter : ContentTypeWriter<TextureAtlasContent>
 {
-    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
+    protected override void Write(ContentWriter writer, TextureAtlasContent content)
     {
-
-        if (existingInstance is not null)
-        {
-            return existingInstance;
-        }
-
-        int len = reader.ReadInt32();
-        byte[] data = reader.ReadBytes(len);
-
-        using MemoryStream stream = new(data);
-        return AsepriteFileReader.ReadStream(reader.AssetName, stream);
+        RawTextureAtlas rawTextureAtlas = content.RawTextureAtlas;
+        writer.Write(rawTextureAtlas.Name);
+        writer.WriteObject(content.Texture2DContent);
+        writer.Write(rawTextureAtlas.RawTextureRegions);
     }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Sprites.TextureAtlas, MonoGame.Aseprite";
+
+    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Content.Pipeline.Readers.TextureAtlasContentTypeReader, MonoGame.Aseprite";
 }

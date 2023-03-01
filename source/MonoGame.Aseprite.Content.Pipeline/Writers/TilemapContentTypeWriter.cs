@@ -23,23 +23,41 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class AsepriteFileContentTypeWriter : ContentTypeWriter<AsepriteFileImportResult>
+internal sealed class TilemapContentTypeWriter : ContentTypeWriter<TilemapContent>
 {
-    protected override void Write(ContentWriter writer, AsepriteFileImportResult content)
+    protected override void Write(ContentWriter writer, TilemapContent content)
     {
-        writer.Write(content.Data.Length);
-        writer.Write(content.Data);
+        RawTilemap rawTilemap = content.RawTilemap;
+
+        writer.Write(rawTilemap.Name);
+        WriteTilesets(writer, rawTilemap.RawTilesets, content.Texture2DContents);
+        writer.Write(rawTilemap.RawLayers);
     }
-    
+
+    private void WriteTilesets(ContentWriter writer, ReadOnlySpan<RawTileset> rawTilesets, ReadOnlySpan<Texture2DContent> tilesetTextures)
+    {
+        writer.Write(rawTilesets.Length);
+
+        for (int i = 0; i < rawTilesets.Length; i++)
+        {
+            writer.Write(rawTilesets[i].Name);
+            writer.Write(rawTilesets[i].ID);
+            writer.Write(rawTilesets[i].TileWidth);
+            writer.Write(rawTilesets[i].TileHeight);
+            writer.WriteObject(tilesetTextures[i]);
+        }
+    }
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.AsepriteFile, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Tilemaps.Tilemap, MonoGame.Aseprite";
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Readers.AsepriteFileContentTypeReader, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Content.Pipeline.Readers.TilemapContentTypeReader, MonoGame.Aseprite";
 }

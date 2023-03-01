@@ -22,11 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-/// <summary>
-///     Defines the result of the content importer.
-/// </summary>
-public sealed class ContentImporterResult
-{
-    internal string Path { get; }
-    internal ContentImporterResult(string path) => Path = path;
-}
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using MonoGame.Aseprite.RawTypes;
+
+namespace MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+
+internal record SpriteSheetContent(RawSpriteSheet RawSpriteSheet, Texture2DContent Texture2DContent);
