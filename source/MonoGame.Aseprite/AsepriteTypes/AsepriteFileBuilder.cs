@@ -209,6 +209,13 @@ internal class AsepriteFileBuilder
         _spriteUserData.Color = color;
     }
 
+    internal void SetTilesetUserData(string? text, Color? color)
+    {
+        AsepriteTileset tileset = _tilesets[_tilesets.Count - 1];
+        tileset.UserData.Text = text;
+        tileset.UserData.Color = color;
+    }
+
     internal AsepriteFile Build() =>
         new(_name, _frameWidth, _frameHeight, _palette, _frames.ToArray(), _layers.ToArray(), _tags.ToArray(), _slices.ToArray(), _tilesets.ToArray(), _spriteUserData);
 

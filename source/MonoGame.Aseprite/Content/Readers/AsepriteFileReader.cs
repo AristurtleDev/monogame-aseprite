@@ -536,6 +536,12 @@ public static class AsepriteFileReader
                 //  detected, then that is user data for the "sprite" itself
                 builder.SetSpriteUserData(text, color);
                 break;
+            case CHUNK_TYPE_TILESET:
+                //  Starting in Aseprite 1.3-rc1, Tilesets can have user data, though it appears it's not settable in
+                //  the Aseprite UI, and only settable through the LUA Scripting API within Aseprite. Regardless,
+                //  we have to handle it
+                builder.SetTilesetUserData(text, color);
+                break;
             default:
                 throw new InvalidOperationException($"Invalid chunk type (0x{lastChunkType:X4}) for user data");
         }
