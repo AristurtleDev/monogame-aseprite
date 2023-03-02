@@ -89,11 +89,11 @@ public sealed class AsepriteFileReaderTests
         //  Tags
         //  ************************************************************
         Assert.Equal(5, aseFile.Tags.Length);
-        AssertTag(aseFile.Tags[0], "forward", 0, 0, AsepriteLoopDirection.Forward, _black, null, _black);
-        AssertTag(aseFile.Tags[1], "reversed", 1, 1, AsepriteLoopDirection.Reverse, _black, null, _black);
-        AssertTag(aseFile.Tags[2], "pingpong", 2, 2, AsepriteLoopDirection.PingPong, _black, null, _black);
-        AssertTag(aseFile.Tags[3], "frames-4-to-6", 3, 5, AsepriteLoopDirection.Forward, _black, null, _black);
-        AssertTag(aseFile.Tags[4], "userdata", 6, 6, AsepriteLoopDirection.Forward, _green, "hello tag", _green);
+        AssertTag(aseFile.Tags[0], "forward", 0, 0, AsepriteLoopDirection.Forward, 0, _black, null, _black);
+        AssertTag(aseFile.Tags[1], "reversed", 1, 1, AsepriteLoopDirection.Reverse, 0, _black, null, _black);
+        AssertTag(aseFile.Tags[2], "pingpong", 2, 2, AsepriteLoopDirection.PingPong, 0, _black, null, _black);
+        AssertTag(aseFile.Tags[3], "frames-4-to-6", 3, 5, AsepriteLoopDirection.Forward, 0, _black, null, _black);
+        AssertTag(aseFile.Tags[4], "userdata", 6, 6, AsepriteLoopDirection.Forward, 0, _green, "hello tag", _green);
 
         //  ************************************************************
         //  Frames
@@ -238,11 +238,11 @@ public sealed class AsepriteFileReaderTests
         //  Tags
         //  ************************************************************
         Assert.Equal(5, aseFile.Tags.Length);
-        AssertTag(aseFile.Tags[0], "forward", 0, 0, AsepriteLoopDirection.Forward, _black, null, null);
-        AssertTag(aseFile.Tags[1], "reversed", 1, 1, AsepriteLoopDirection.Reverse, _black, null, null);
-        AssertTag(aseFile.Tags[2], "pingpong", 2, 2, AsepriteLoopDirection.PingPong, _black, null, null);
-        AssertTag(aseFile.Tags[3], "frames-4-to-6", 3, 5, AsepriteLoopDirection.Forward, _black, null, null);
-        AssertTag(aseFile.Tags[4], "userdata", 6, 6, AsepriteLoopDirection.Forward, _green, null, null);
+        AssertTag(aseFile.Tags[0], "forward", 0, 0, AsepriteLoopDirection.Forward, 0, _black, null, null);
+        AssertTag(aseFile.Tags[1], "reversed", 1, 1, AsepriteLoopDirection.Reverse, 0, _black, null, null);
+        AssertTag(aseFile.Tags[2], "pingpong", 2, 2, AsepriteLoopDirection.PingPong, 0, _black, null, null);
+        AssertTag(aseFile.Tags[3], "frames-4-to-6", 3, 5, AsepriteLoopDirection.Forward, 0, _black, null, null);
+        AssertTag(aseFile.Tags[4], "userdata", 6, 6, AsepriteLoopDirection.Forward, 0, _green, null, null);
 
         //  ************************************************************
         //  Frames
@@ -362,11 +362,12 @@ public sealed class AsepriteFileReaderTests
         Assert.Equal(tilesetName, tilemapLayer.Tileset.Name);
     }
 
-    private void AssertTag(AsepriteTag tag, string name, int from, int to, AsepriteLoopDirection direction, Color color, string? userDataText, Color? userDataColor)
+    private void AssertTag(AsepriteTag tag, string name, int from, int to, AsepriteLoopDirection direction, int repeat, Color color, string? userDataText, Color? userDataColor)
     {
         Assert.Equal(name, tag.Name);
         Assert.Equal(from, tag.From);
         Assert.Equal(to, tag.To);
+        Assert.Equal(repeat, tag.Repeat);
         Assert.Equal(direction, tag.Direction);
         Assert.Equal(color, tag.Color);
         AssertUserData(tag.UserData, userDataText, userDataColor);
