@@ -379,12 +379,13 @@ public static class AsepriteFileReader
             ushort from = ReadWord(reader);
             ushort to = ReadWord(reader);
             byte direction = ReadByte(reader);
-            IgnoreBytes(reader, 8);
+            ushort repeat = ReadWord(reader);
+            IgnoreBytes(reader, 6);
             ReadOnlySpan<byte> rgb = ReadBytes(reader, 3);
             IgnoreByte(reader);
             string name = ReadString(reader);
 
-            builder.AddTag(from, to, direction, rgb, name);
+            builder.AddTag(from, to, direction, repeat, rgb, name);
         }
     }
 
