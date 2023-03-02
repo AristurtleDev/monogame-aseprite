@@ -51,6 +51,35 @@ public sealed class AsepriteTag
     public AsepriteLoopDirection Direction { get; }
 
     /// <summary>
+    ///     Gets the repeat count of the animation defined by this <see cref="AsepriteTag"/>
+    /// </summary>
+    /// <remarks>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Value</term>
+    ///             <description>Meaning</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>0</term>
+    ///             <description>Infinite</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>1</term>
+    ///             <description>Plays once (for ping-pong, it plays just in one direction)</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>2</term>
+    ///             <description>Plays twice (for ping-pong, it plays once in one direction, and once in reverse)</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>N</term>
+    ///             <description>Plays N times</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
+    public int Repeat { get; }
+
+    /// <summary>
     ///     Gets the name assigned to this <see cref="AsepriteTag"/>.
     /// </summary>
     public string Name { get; }
@@ -65,6 +94,6 @@ public sealed class AsepriteTag
     /// </summary>
     public Color Color => UserData.Color ?? _tagColor;
 
-    internal AsepriteTag(ushort from, ushort to, AsepriteLoopDirection direction, Color color, string name) =>
-        (From, To, Direction, _tagColor, Name) = (from, to, direction, color, name);
+    internal AsepriteTag(ushort from, ushort to, AsepriteLoopDirection direction, ushort repeat, Color color, string name) =>
+        (From, To, Direction, Repeat, _tagColor, Name) = (from, to, direction, repeat, color, name);
 }
