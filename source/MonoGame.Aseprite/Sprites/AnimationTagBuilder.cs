@@ -32,7 +32,7 @@ public sealed class AnimationTagBuilder
     private string _name;
     private List<AnimationFrame> _frames = new();
     private SpriteSheet _spriteSheet;
-    private bool _isLooping = true;
+    private int _loopCount = 0;
     private bool _isReversed = false;
     private bool _isPingPong = false;
 
@@ -95,17 +95,26 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    ///     Sets whether the animation should loop.
+    ///     Sets the total number of loops/cycles of the animation that should play.
     /// </summary>
-    /// <param name="isLooping">
-    ///     A value that indicates whether the animation should loop.
+    /// <remarks>
+    ///     <para>
+    ///         <c>0</c> = infinite looping
+    ///     </para>
+    ///     <para>
+    ///         If <see cref="AnimationTag.IsPingPong"/> is equal to <see langword="true"/>, each direction of the
+    ///         ping-pong will count as a loop.  
+    ///     </para>
+    /// </remarks>
+    /// <param name="count">
+    ///     A value that indicates the total number of loops/cycles of the animation that should play.
     /// </param>
     /// <returns>
     ///     This instance of the <see cref="AnimationTagBuilder"/> class.
     /// </returns>
-    public AnimationTagBuilder IsLooping(bool isLooping)
+    public AnimationTagBuilder LoopCount(int count)
     {
-        _isLooping = isLooping;
+        _loopCount = count;
         return this;
     }
 
@@ -141,7 +150,7 @@ public sealed class AnimationTagBuilder
 
     internal AnimationTag Build()
     {
-        AnimationTag tag = new(_name, _frames.ToArray(), _isLooping, _isReversed, _isPingPong);
+        AnimationTag tag = new(_name, _frames.ToArray(), _loopCount, _isReversed, _isPingPong);
         return tag;
     }
 }

@@ -33,11 +33,10 @@ public sealed class AnimatedSprite : Sprite
 {
     private int _currentIndex;
     private int _direction;
-
-    /// <summary>
-    ///     Gets the source <see cref="AnimationTag"/> that defines the animation.
-    /// </summary>
-    public AnimationTag AnimationTag { get; }
+    private int _loopCount;
+    private int _loopsRemaining;
+    private bool _hasBegun = false;
+    private AnimationTag _animationTag;
 
     /// <summary>
     ///     Gets a value that indicates if this <see cref="AnimatedSprite"/> is currently paused.
@@ -50,10 +49,40 @@ public sealed class AnimatedSprite : Sprite
     public bool IsAnimating { get; private set; }
 
     /// <summary>
+    ///     Gets or Sets a value that indicates if this <see cref="AnimatedSprite"/> plays it's frames in reverse order.
+    /// </summary>
+    public bool IsReversed
+    {
+        get => _direction == -1;
+        set => _direction = value ? -1 : 1;
+    }
+
+    /// <summary>
+    ///     Gets or Sets a value that indicates if this <see cref="AnimatedSprite"/> should ping-pong once reaching the
+    ///     last frame of animation.
+    /// </summary>
+    public bool IsPingPong { get; set; }
+
+    /// <summary>
+    ///     Gets a value that indicates the total number of loops/cycles of the animation that should play for
+    ///     this <see cref="AnimatedSprite"/>.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         <c>0</c> = infinite looping
+    ///     </para>
+    ///     <para>
+    ///         If <see cref="AnimationTag.IsPingPong"/> is equal to <see langword="true"/>, each direction of the
+    ///         ping-pong will count as a loop.  
+    ///     </para>
+    /// </remarks>
+    public int LoopCount => _loopCount;
+
+    /// <summary>
     ///     Gets the source <see cref="AnimationFrame"/> of the current frame of animation for this 
     ///     <see cref="AnimatedSprite"/>.
     /// </summary>
-    public AnimationFrame CurrentFrame => AnimationTag.Frames[_currentIndex];
+    public AnimationFrame CurrentFrame => _animationTag.Frames[_currentIndex];
 
     /// <summary>
     ///     Gets or Sets an <see cref="Action"/> method to invoke at the start of each frame of animation.
@@ -99,8 +128,23 @@ public sealed class AnimatedSprite : Sprite
     internal AnimatedSprite(AnimationTag tag)
         : base(tag.Name, tag.Frames[0].TextureRegion)
     {
-        AnimationTag = tag;
-        Reset();
+        _animationTag = tag;
+        IsReversed = tag.IsReversed;
+        IsPingPong = tag.IsPingPong;
+        _loopCount = tag.LoopCount;
+        _loopsRemaining = _loopCount;
+
+        IsAnimating = false;
+        IsPaused = true;
+
+        _currentIndex = 0;
+
+        if (IsReversed)
+        {
+            _currentIndex = _animationTag.Frames.Length;
+        }
+
+        TextureRegion = CurrentFrame.TextureRegion;
     }
 
     /// <summary>
@@ -135,6 +179,12 @@ public sealed class AnimatedSprite : Sprite
             return;
         }
 
+        if (!_hasBegun)
+        {
+            _hasBegun = true;
+            OnAnimationBegin?.Invoke(this);
+        }
+
         if (CurrentFrameTimeRemaining == CurrentFrame.Duration)
         {
             OnFrameBegin?.Invoke(this);
@@ -152,23 +202,49 @@ public sealed class AnimatedSprite : Sprite
     {
         OnFrameEnd?.Invoke(this);
 
+
         _currentIndex += _direction;
 
-        switch (AnimationTag.IsReversed, AnimationTag.IsPingPong)
+        if (_currentIndex >= _animationTag.FrameCount || _currentIndex < 0)
         {
-            case (true, true):
-                ReversePingPongLoopCheck();
-                break;
-            case (true, false):
-                ReverseLoopCheck();
-                break;
-            case (false, true):
-                PingPongLoopCheck();
-                break;
-            case (false, false):
-                LoopCheck();
-                break;
+            bool shouldLoop = _loopCount == 0 || _loopsRemaining > 1;
+
+            if (shouldLoop)
+            {
+                ReduceLoopsRemaining();
+
+                if (IsPingPong)
+                {
+                    _direction = -_direction;
+                }
+
+                _currentIndex = IsReversed ? _animationTag.FrameCount - 1 : 0;
+                OnAnimationLoop?.Invoke(this);
+            }
+            else
+            {
+                _currentIndex += -_direction;
+                Stop();
+            }
         }
+
+        // bool shouldLoop = _loopCount == 0 || _loopsRemaining > 0;
+
+        // switch (IsReversed, IsPingPong)
+        // {
+        //     case (true, true):
+        //         ReversePingPongLoopCheck();
+        //         break;
+        //     case (true, false):
+        //         ReverseLoopCheck();
+        //         break;
+        //     case (false, true):
+        //         PingPongLoopCheck();
+        //         break;
+        //     case (false, false):
+        //         LoopCheck();
+        //         break;
+        // }
 
         TextureRegion = CurrentFrame.TextureRegion;
         CurrentFrameTimeRemaining = CurrentFrame.Duration;
@@ -176,16 +252,17 @@ public sealed class AnimatedSprite : Sprite
 
     private void LoopCheck()
     {
-        if (_currentIndex >= AnimationTag.Frames.Length)
+        if (_currentIndex >= _animationTag.Frames.Length)
         {
-            if (AnimationTag.IsLooping)
+            if (_loopCount == 0 || _loopsRemaining > 0)
             {
+                ReduceLoopsRemaining();
                 _currentIndex = 0;
                 OnAnimationLoop?.Invoke(this);
             }
             else
             {
-                _currentIndex = AnimationTag.Frames.Length - 1;
+                _currentIndex = _animationTag.Frames.Length - 1;
                 Stop();
             }
         }
@@ -195,9 +272,10 @@ public sealed class AnimatedSprite : Sprite
     {
         if (_currentIndex < 0)
         {
-            if (AnimationTag.IsLooping)
+            if (_loopCount == 0 || _loopsRemaining > 0)
             {
-                _currentIndex = AnimationTag.Frames.Length - 1;
+                ReduceLoopsRemaining();
+                _currentIndex = _animationTag.Frames.Length - 1;
                 OnAnimationLoop?.Invoke(this);
             }
             else
@@ -210,17 +288,22 @@ public sealed class AnimatedSprite : Sprite
 
     private void PingPongLoopCheck()
     {
-        if (_currentIndex < 0 || _currentIndex >= AnimationTag.Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= _animationTag.Frames.Length)
+        {
+            ReduceLoopsRemaining();
+        }
+
+        if (_currentIndex < 0 || _currentIndex >= _animationTag.Frames.Length)
         {
             _direction = -_direction;
 
             if (_direction == -1)
             {
-                _currentIndex = AnimationTag.Frames.Length - 2;
+                _currentIndex = _animationTag.Frames.Length - 2;
             }
             else
             {
-                if (AnimationTag.IsLooping)
+                if (_loopCount == 0 || _loopsRemaining-- > 0)
                 {
                     _currentIndex = 1;
                     OnAnimationLoop?.Invoke(this);
@@ -236,7 +319,7 @@ public sealed class AnimatedSprite : Sprite
 
     private void ReversePingPongLoopCheck()
     {
-        if (_currentIndex < 0 || _currentIndex >= AnimationTag.Frames.Length)
+        if (_currentIndex < 0 || _currentIndex >= _animationTag.Frames.Length)
         {
             _direction = -_direction;
 
@@ -246,19 +329,57 @@ public sealed class AnimatedSprite : Sprite
             }
             else
             {
-                if (AnimationTag.IsLooping)
+                if (_loopCount == 0 || _loopsRemaining-- > 0)
                 {
-                    _currentIndex = AnimationTag.Frames.Length - 2;
+                    _currentIndex = _animationTag.Frames.Length - 2;
                     OnAnimationLoop?.Invoke(this);
                 }
                 else
                 {
-                    _currentIndex = AnimationTag.Frames.Length - 1;
+                    _currentIndex = _animationTag.Frames.Length - 1;
                     Stop();
                 }
             }
         }
     }
+
+    private void ReduceLoopsRemaining()
+    {
+        _loopsRemaining = Math.Max(--_loopsRemaining, 0);
+    }
+
+    public bool Play(int? loopCount = default)
+    {
+        //  Cannot play something that's already playing
+        if (IsAnimating)
+        {
+            return false;
+        }
+
+        if (loopCount is null)
+        {
+            loopCount = _animationTag.LoopCount;
+        }
+
+        _loopCount = loopCount.Value;
+        _loopsRemaining = _loopCount;
+
+        IsAnimating = true;
+        IsPaused = false;
+
+        _currentIndex = 0;
+
+        if (IsReversed)
+        {
+            _currentIndex = _animationTag.Frames.Length - 1;
+        }
+
+        TextureRegion = CurrentFrame.TextureRegion;
+        _hasBegun = false;
+
+        return true;
+    }
+
 
     /// <summary>
     ///     Paused this <see cref="AnimatedSprite"/> and prevents it from being updated until it is unpaused.
@@ -350,29 +471,29 @@ public sealed class AnimatedSprite : Sprite
         return true;
     }
 
-    /// <summary>
-    ///     Resets this <see cref="AnimatedSprite"/> back to its first frame of animation.
-    /// </summary>
-    /// <param name="paused">
-    ///     A value that indicates whether this <see cref="AnimatedSprite"/> should be paused after it is reset.
-    /// </param>
-    public void Reset(bool paused = false)
-    {
-        IsAnimating = true;
-        IsPaused = paused;
+    // /// <summary>
+    // ///     Resets this <see cref="AnimatedSprite"/> back to its first frame of animation.
+    // /// </summary>
+    // /// <param name="paused">
+    // ///     A value that indicates whether this <see cref="AnimatedSprite"/> should be paused after it is reset.
+    // /// </param>
+    // public void Reset(bool paused = false)
+    // {
+    //     IsAnimating = true;
+    //     IsPaused = paused;
 
-        if (AnimationTag.IsReversed)
-        {
-            _direction = -1;
-            _currentIndex = AnimationTag.Frames.Length;
-        }
-        else
-        {
-            _direction = 1;
-            _currentIndex = 0;
-        }
+    //     if (IsReversed)
+    //     {
+    //         _direction = -1;
+    //         _currentIndex = _animationTag.Frames.Length;
+    //     }
+    //     else
+    //     {
+    //         _direction = 1;
+    //         _currentIndex = 0;
+    //     }
 
-        TextureRegion = CurrentFrame.TextureRegion;
-        OnAnimationBegin?.Invoke(this);
-    }
+    //     TextureRegion = CurrentFrame.TextureRegion;
+    //     OnAnimationBegin?.Invoke(this);
+    // }
 }

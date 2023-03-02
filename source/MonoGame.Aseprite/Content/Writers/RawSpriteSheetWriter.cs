@@ -58,7 +58,7 @@ public static class RawSpriteSheetWriter
             RawAnimationTag rawAnimationTag = rawSpriteSheet.RawAnimationTags[i];
 
             writer.Write(rawAnimationTag.Name);
-            writer.Write(rawAnimationTag.IsLooping);
+            writer.Write(rawAnimationTag.LoopCount);
             writer.Write(rawAnimationTag.IsReversed);
             writer.Write(rawAnimationTag.IsPingPong);
             writer.Write(rawAnimationTag.RawAnimationFrames.Length);

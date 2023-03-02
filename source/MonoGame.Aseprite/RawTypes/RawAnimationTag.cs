@@ -43,9 +43,18 @@ public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
     public ReadOnlySpan<RawAnimationFrame> RawAnimationFrames => _rawAnimationFrames;
 
     /// <summary>
-    ///     Gets a value that indicates whether the animation defined by the animation tag should loop.
+    ///     Gets a value that indicates the total number of loops/cycles of this animation that should play.
     /// </summary>
-    public bool IsLooping { get; }
+    /// <remarks>
+    ///     <para>
+    ///         <c>0</c> = infinite looping
+    ///     </para>
+    ///     <para>
+    ///         If <see cref="AnimationTag.IsPingPong"/> is equal to <see langword="true"/>, each direction of the
+    ///         ping-pong will count as a loop.  
+    ///     </para>
+    /// </remarks>
+    public int LoopCount { get; }
 
     /// <summary>
     ///     ets a value that indicates whether the animation defined by the animation tag should play in reverse.
@@ -58,8 +67,8 @@ public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
     /// </summary>
     public bool IsPingPong { get; }
 
-    internal RawAnimationTag(string name, RawAnimationFrame[] rawAnimationFrames, bool isLooping, bool isReversed, bool isPingPong) =>
-        (Name, _rawAnimationFrames, IsLooping, IsReversed, IsPingPong) = (name, rawAnimationFrames, isLooping, isReversed, isPingPong);
+    internal RawAnimationTag(string name, RawAnimationFrame[] rawAnimationFrames, int loopCount, bool isReversed, bool isPingPong) =>
+        (Name, _rawAnimationFrames, LoopCount, IsReversed, IsPingPong) = (name, rawAnimationFrames, loopCount, isReversed, isPingPong);
 
     /// <summary>
     ///     Returns a value that indicates if the given <see cref="RawAnimationTag"/> is equal to this
@@ -75,7 +84,7 @@ public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
     public bool Equals(RawAnimationTag? other) => other is not null
                                                   && Name == other.Name
                                                   && RawAnimationFrames.SequenceEqual(other.RawAnimationFrames)
-                                                  && IsLooping == other.IsLooping
+                                                  && LoopCount == other.LoopCount
                                                   && IsReversed == other.IsReversed
                                                   && IsPingPong == other.IsPingPong;
 }
