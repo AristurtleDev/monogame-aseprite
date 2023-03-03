@@ -79,6 +79,14 @@ public sealed class AnimatedSprite : Sprite
     public int LoopCount => _loopCount;
 
     /// <summary>
+    ///     Sets the rate at which the animation is played.
+    /// </summary>
+    /// <remarks>
+    ///     Default (normal) speed is <c>1.0d</c>
+    /// </remarks>
+    public double Speed { get; set; } = 1.0d;
+
+    /// <summary>
     ///     Gets the source <see cref="AnimationFrame"/> of the current frame of animation for this 
     ///     <see cref="AnimatedSprite"/>.
     /// </summary>
@@ -129,22 +137,7 @@ public sealed class AnimatedSprite : Sprite
         : base(tag.Name, tag.Frames[0].TextureRegion)
     {
         _animationTag = tag;
-        IsReversed = tag.IsReversed;
-        IsPingPong = tag.IsPingPong;
-        _loopCount = tag.LoopCount;
-        _loopsRemaining = _loopCount;
-
-        IsAnimating = false;
-        IsPaused = true;
-
-        _currentIndex = 0;
-
-        if (IsReversed)
-        {
-            _currentIndex = _animationTag.Frames.Length;
-        }
-
-        TextureRegion = CurrentFrame.TextureRegion;
+        Reset();
     }
 
     /// <summary>
@@ -190,7 +183,7 @@ public sealed class AnimatedSprite : Sprite
             OnFrameBegin?.Invoke(this);
         }
 
-        CurrentFrameTimeRemaining -= gameTime.ElapsedGameTime;
+        CurrentFrameTimeRemaining -= gameTime.ElapsedGameTime * Speed;
 
         if (CurrentFrameTimeRemaining <= TimeSpan.Zero)
         {
@@ -201,7 +194,6 @@ public sealed class AnimatedSprite : Sprite
     private void AdvanceFrame()
     {
         OnFrameEnd?.Invoke(this);
-
 
         _currentIndex += _direction;
 
@@ -216,9 +208,16 @@ public sealed class AnimatedSprite : Sprite
                 if (IsPingPong)
                 {
                     _direction = -_direction;
-                }
 
-                _currentIndex = IsReversed ? _animationTag.FrameCount - 1 : 0;
+                    //  Adjust the current index again after ping ponging so we don't repeat the 
+                    //  same frame twice in a row
+                    _currentIndex += _direction * 2;
+
+                }
+                else
+                {
+                    _currentIndex = IsReversed ? _animationTag.FrameCount - 1 : 0;
+                }
                 OnAnimationLoop?.Invoke(this);
             }
             else
@@ -228,119 +227,8 @@ public sealed class AnimatedSprite : Sprite
             }
         }
 
-        // bool shouldLoop = _loopCount == 0 || _loopsRemaining > 0;
-
-        // switch (IsReversed, IsPingPong)
-        // {
-        //     case (true, true):
-        //         ReversePingPongLoopCheck();
-        //         break;
-        //     case (true, false):
-        //         ReverseLoopCheck();
-        //         break;
-        //     case (false, true):
-        //         PingPongLoopCheck();
-        //         break;
-        //     case (false, false):
-        //         LoopCheck();
-        //         break;
-        // }
-
         TextureRegion = CurrentFrame.TextureRegion;
         CurrentFrameTimeRemaining = CurrentFrame.Duration;
-    }
-
-    private void LoopCheck()
-    {
-        if (_currentIndex >= _animationTag.Frames.Length)
-        {
-            if (_loopCount == 0 || _loopsRemaining > 0)
-            {
-                ReduceLoopsRemaining();
-                _currentIndex = 0;
-                OnAnimationLoop?.Invoke(this);
-            }
-            else
-            {
-                _currentIndex = _animationTag.Frames.Length - 1;
-                Stop();
-            }
-        }
-    }
-
-    private void ReverseLoopCheck()
-    {
-        if (_currentIndex < 0)
-        {
-            if (_loopCount == 0 || _loopsRemaining > 0)
-            {
-                ReduceLoopsRemaining();
-                _currentIndex = _animationTag.Frames.Length - 1;
-                OnAnimationLoop?.Invoke(this);
-            }
-            else
-            {
-                _currentIndex = 0;
-                Stop();
-            }
-        }
-    }
-
-    private void PingPongLoopCheck()
-    {
-        if (_currentIndex < 0 || _currentIndex >= _animationTag.Frames.Length)
-        {
-            ReduceLoopsRemaining();
-        }
-
-        if (_currentIndex < 0 || _currentIndex >= _animationTag.Frames.Length)
-        {
-            _direction = -_direction;
-
-            if (_direction == -1)
-            {
-                _currentIndex = _animationTag.Frames.Length - 2;
-            }
-            else
-            {
-                if (_loopCount == 0 || _loopsRemaining-- > 0)
-                {
-                    _currentIndex = 1;
-                    OnAnimationLoop?.Invoke(this);
-                }
-                else
-                {
-                    _currentIndex = 0;
-                    Stop();
-                }
-            }
-        }
-    }
-
-    private void ReversePingPongLoopCheck()
-    {
-        if (_currentIndex < 0 || _currentIndex >= _animationTag.Frames.Length)
-        {
-            _direction = -_direction;
-
-            if (_direction == 1)
-            {
-                _currentIndex = 1;
-            }
-            else
-            {
-                if (_loopCount == 0 || _loopsRemaining-- > 0)
-                {
-                    _currentIndex = _animationTag.Frames.Length - 2;
-                    OnAnimationLoop?.Invoke(this);
-                }
-                else
-                {
-                    _currentIndex = _animationTag.Frames.Length - 1;
-                    Stop();
-                }
-            }
-        }
     }
 
     private void ReduceLoopsRemaining()
@@ -348,6 +236,31 @@ public sealed class AnimatedSprite : Sprite
         _loopsRemaining = Math.Max(--_loopsRemaining, 0);
     }
 
+    /// <summary>
+    ///     Starts the animation for this <see cref="AnimatedSprite"/>
+    /// </summary>
+    /// <param name="loopCount">
+    ///     <para>
+    ///         When a value is provided, specifies the total number of loop/cycles to perform before stopping the
+    ///         animation. 
+    ///     </para>
+    ///     <para>
+    ///         When <see langword="null"/> is provided, loop count will default to the value defined in the
+    ///         <see cref="AnimationTag"/> used to create this <see cref="AnimatedSprite"/>
+    ///     </para>
+    ///     <para>
+    ///         <c>0</c> = infinite looping
+    ///     </para>
+    ///     <para>
+    ///         If <see cref="AnimationTag.IsPingPong"/> is equal to <see langword="true"/>, each direction of the
+    ///         ping-pong will count as a loop.  
+    ///     </para>
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if animation play was successfully started for this <see cref="AnimatedSprite"/>;
+    ///     otherwise, <see langword="false"/>.  This method returns <see langword="false"/> if the animation is already
+    ///     playing (when <see cref="AnimatedSprite.IsAnimating"/> equals <see langword="true"/>).
+    /// </returns>
     public bool Play(int? loopCount = default)
     {
         //  Cannot play something that's already playing
@@ -467,33 +380,46 @@ public sealed class AnimatedSprite : Sprite
         }
 
         IsAnimating = false;
+        IsPaused = true;
         OnAnimationEnd?.Invoke(this);
         return true;
     }
 
-    // /// <summary>
-    // ///     Resets this <see cref="AnimatedSprite"/> back to its first frame of animation.
-    // /// </summary>
-    // /// <param name="paused">
-    // ///     A value that indicates whether this <see cref="AnimatedSprite"/> should be paused after it is reset.
-    // /// </param>
-    // public void Reset(bool paused = false)
-    // {
-    //     IsAnimating = true;
-    //     IsPaused = paused;
+    /// <summary>
+    ///     Resets this <see cref="AnimatedSprite"/> back to its initial state as defined by the 
+    ///     <see cref="AnimationTag"/> used to create it.  You will need to call <see cref="AnimatedSprite.Play(int?)"/>
+    ///     after resetting to start the playback of the animation.s
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         This is useful if you've adjusted the <see cref="AnimatedSprite.IsReversed"/> or 
+    ///         <see cref="AnimatedSprite.IsPingPong"/> properties, or specified a override to the loop count when
+    ///         initially playing the animation.
+    ///     </para>
+    ///     <para>
+    ///         This also resets the <see cref="AnimatedSprite.Speed"/> to <c>1.0d</c>.
+    ///     </para>
+    /// </remarks>
+    public void Reset()
+    {
+        IsReversed = _animationTag.IsReversed;
+        IsPingPong = _animationTag.IsPingPong;
+        _loopCount = _animationTag.LoopCount;
+        _loopsRemaining = _loopCount;
 
-    //     if (IsReversed)
-    //     {
-    //         _direction = -1;
-    //         _currentIndex = _animationTag.Frames.Length;
-    //     }
-    //     else
-    //     {
-    //         _direction = 1;
-    //         _currentIndex = 0;
-    //     }
+        IsAnimating = false;
+        IsPaused = true;
 
-    //     TextureRegion = CurrentFrame.TextureRegion;
-    //     OnAnimationBegin?.Invoke(this);
-    // }
+        Speed = 1.0d;
+
+        _currentIndex = 0;
+        if(IsReversed)
+        {
+            _currentIndex = _animationTag.Frames.Length - 1;
+        }
+
+        TextureRegion = CurrentFrame.TextureRegion;
+        CurrentFrameTimeRemaining = CurrentFrame.Duration;
+        _hasBegun = false;
+    }
 }
