@@ -320,7 +320,7 @@ public sealed class SpriteSheet
 
             spriteSheet.CreateAnimationTag(tag.Name, builder =>
             {
-                builder.IsLooping(tag.IsLooping)
+                builder.LoopCount(tag.LoopCount)
                        .IsReversed(tag.IsReversed)
                        .IsPingPong(tag.IsPingPong);
 
