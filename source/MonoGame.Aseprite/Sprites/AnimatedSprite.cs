@@ -36,6 +36,7 @@ public sealed class AnimatedSprite : Sprite
     private int _loopCount;
     private int _loopsRemaining;
     private bool _hasBegun = false;
+    private double _speed = 1.0f;
     private AnimationTag _animationTag;
 
     /// <summary>
@@ -82,9 +83,19 @@ public sealed class AnimatedSprite : Sprite
     ///     Sets the rate at which the animation is played.
     /// </summary>
     /// <remarks>
+    ///     This value is clamped between <c>0.0d</c> and <see cref="double.MaxValue"/>
+    /// </remarks>
+    /// <remarks>
     ///     Default (normal) speed is <c>1.0d</c>
     /// </remarks>
-    public double Speed { get; set; } = 1.0d;
+    public double Speed 
+    {
+        get => _speed;
+        set
+        {
+            _speed = Math.Clamp(value, 0, double.MaxValue);
+        }
+    }
 
     /// <summary>
     ///     Gets the source <see cref="AnimationFrame"/> of the current frame of animation for this 
