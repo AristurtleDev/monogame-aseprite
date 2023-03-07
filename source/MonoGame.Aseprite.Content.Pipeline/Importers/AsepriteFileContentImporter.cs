@@ -23,28 +23,29 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Pipeline.Processors;
+using MonoGame.Aseprite.Content.Readers;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 
-/// <summary>
-///     Defines a content pipeline importer for importing the contents of an aseprite file.
-/// </summary>
 [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = nameof(AsepriteFileContentProcessor))]
-public class AsepriteFileContentImporter : ContentImporter<ContentImporterResult>
+internal class AsepriteFileContentImporter : ContentImporter<AsepriteFileImportResult>
 {
-    /// <summary>
-    ///     Imports the contents of the aseprite file at the specified path.
-    /// </summary>
-    /// <param name="path">
-    ///     The path and name of the aseprite file to import.
-    /// </param>
-    /// <param name="context">
-    ///     The content importer context that provides contextual information about the importer.
-    /// </param>
-    /// <returns>
-    ///     A new <see cref="ContentImporterResult"/> containing the result of the import.
-    /// </returns>
-    public override ContentImporterResult Import(string path, ContentImporterContext context) =>
-        new(path);
+    public override AsepriteFileImportResult Import(string path, ContentImporterContext context)
+    {
+        byte[] data = File.ReadAllBytes(path);
+        AsepriteFile aseFile;
+
+        try
+        {
+            aseFile = AsepriteFile.Load(path);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new ContentImportException(ex.Message, path);
+        }
+
+        return new(data, aseFile);
+    }
 }

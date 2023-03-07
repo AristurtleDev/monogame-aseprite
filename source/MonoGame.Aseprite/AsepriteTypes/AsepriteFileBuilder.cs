@@ -138,10 +138,10 @@ internal class AsepriteFileBuilder
         _nextFrameCels.Add(cel);
     }
 
-    internal void AddTag(ushort from, ushort to, byte direction, ReadOnlySpan<byte> rgb, string name)
+    internal void AddTag(ushort from, ushort to, byte direction, ushort repeat, ReadOnlySpan<byte> rgb, string name)
     {
         Color color = Color.FromNonPremultiplied(rgb[0], rgb[1], rgb[2], (byte)255);
-        AsepriteTag tag = new(from, to, (AsepriteLoopDirection)direction, color, name);
+        AsepriteTag tag = new(from, to, (AsepriteLoopDirection)direction, repeat, color, name);
         _tags.Add(tag);
     }
 
@@ -207,6 +207,13 @@ internal class AsepriteFileBuilder
     {
         _spriteUserData.Text = text;
         _spriteUserData.Color = color;
+    }
+
+    internal void SetTilesetUserData(string? text, Color? color)
+    {
+        AsepriteTileset tileset = _tilesets[_tilesets.Count - 1];
+        tileset.UserData.Text = text;
+        tileset.UserData.Color = color;
     }
 
     internal AsepriteFile Build() =>

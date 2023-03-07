@@ -45,5 +45,11 @@ public enum AsepriteLoopDirection : byte
     ///     Defines that the animation for the <see cref="AsepriteTag"/> ping-pongs by first going from the first frame
     ///     of animation to the last then playing in reverse from the last frame of animation to the first.
     /// </summary>
-    PingPong = 2
+    PingPong = 2,
+
+    /// <summary>
+    ///     Defines that the animation for the <see cref="AsepriteTag"/> ping-pongs by first going in reverse from the 
+    ///     last frame of animation to the first then playing forward from the first frame of animation to the last.
+    /// </summary>
+    PingPongReverse = 3
 }

@@ -22,16 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-namespace MonoGame.Aseprite.Content.Pipeline;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.Sprites;
 
-/// <summary>
-///     Defines the result of a content processor.
-/// </summary>
-/// <typeparam name="T">
-///     The type of the result of the process.
-/// </typeparam>
-public sealed class ContentProcessorResult<T>
+namespace MonoGame.Aseprite.Content.Pipeline.Readers;
+
+internal sealed class SpriteContentTypeReader : ContentTypeReader<Sprite>
 {
-    internal T Data { get; }
-    internal ContentProcessorResult(T data) => Data = data;
+    protected override Sprite Read(ContentReader reader, Sprite? existingInstance)
+    {
+        if (existingInstance is not null)
+        {
+            return existingInstance;
+        }
+
+        string name = reader.ReadString();
+        Texture2D texture = reader.ReadObject<Texture2D>();
+        return new(name, texture);
+    }
 }

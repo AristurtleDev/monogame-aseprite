@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>4.0.6</Version>
+        <Version>5.0.0</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,9 +29,27 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 4.0.6
-            The following bug fixes were implemented:
-                - Removed package dependency on DesktopGL (Closes #66)
+            Version 5.0.0
+            The following changes were implemented:
+                - Resolved issue where reversing an `AnimatedSprite` would cause an exception.
+                - Added `AsepriteFileReader.Read(Stream)` method to support reading Aseprite file with `TitleContainer` stream (Closes #49)
+                - Added new processors for the mgcb-editor when pre-processing content using the mgcb-editor. These include: 
+                    - Sprite Processor
+                    - SpriteSheet Processor
+                    - TextureAtlas Processor
+                    - Tileset Processor
+                    - Tilemap Processor
+                    - AnimatedTileMap Processor
+                - Support for Aseprite 1.3-rc1
+                    - Support for User Data for Tiles added
+                        - Tile User Data can only be set in Aseprite through the LUA Scripting API at this time.
+                    - Support for new tag "Repeat" field added.
+                    - Support for new `PingPongReverse` loop direction added.
+                    - `Animatedsprite` instances are no longer coupled to the `AnimationTag` used to create them.  The `AnimationTag` now is only used to create the `AnimatedSprite` and after creation, properties such as `AnimatedSprite.IsReversed` affect only that instance.
+                    - `AnimatedSprite.Speed` property added to control rate of animation speed
+                    - `AnimatedSprite.Play()` added.
+                        - `AnimatedSprite` will need to be explicitly told to play using the `AnimatedSprite.Play` method.
+                        - Parameter for method provided to override the loop count
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
@@ -58,6 +76,13 @@
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>MonoGame.Aseprite.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <!-- Allow the content pipeline project to use internal types for testing -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>MonoGame.Aseprite.Content.Pipeline</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 

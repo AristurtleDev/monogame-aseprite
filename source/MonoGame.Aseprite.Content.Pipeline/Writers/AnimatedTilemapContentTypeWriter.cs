@@ -23,23 +23,42 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.AsepriteTypes;
+using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class AsepriteFileContentTypeWriter : ContentTypeWriter<AsepriteFileImportResult>
+internal sealed class AnimatedTilemapContentTypeWriter : ContentTypeWriter<AnimatedTilemapContent>
 {
-    protected override void Write(ContentWriter writer, AsepriteFileImportResult content)
+    protected override void Write(ContentWriter writer, AnimatedTilemapContent content)
     {
-        writer.Write(content.Data.Length);
-        writer.Write(content.Data);
-    }
-    
-    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.AsepriteFile, MonoGame.Aseprite";
+        RawAnimatedTilemap rawAnimated = content.RawAnimatedTilemap;
 
+        writer.Write(rawAnimated.Name);
+        WriteTilesets(writer, rawAnimated.RawTilesets, content.Texture2DContents);
+        writer.Write(rawAnimated.RawTilemapFrames);
+    }
+
+    private void WriteTilesets(ContentWriter writer, ReadOnlySpan<RawTileset> rawTilesets, ReadOnlySpan<Texture2DContent> tilesetTextures)
+    {
+        writer.Write(rawTilesets.Length);
+
+        for (int i = 0; i < rawTilesets.Length; i++)
+        {
+            writer.Write(rawTilesets[i].Name);
+            writer.Write(rawTilesets[i].ID);
+            writer.Write(rawTilesets[i].TileWidth);
+            writer.Write(rawTilesets[i].TileHeight);
+            writer.WriteObject(tilesetTextures[i]);
+        }
+    }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Tilemaps.AnimatedTilemap, MonoGame.Aseprite";
+        
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
-        "MonoGame.Aseprite.Content.Pipeline.Readers.AsepriteFileContentTypeReader, MonoGame.Aseprite";
+        "MonoGame.Aseprite.Content.Pipeline.Readers.AnimatedTilemapContentTypeReader, MonoGame.Aseprite";
 }

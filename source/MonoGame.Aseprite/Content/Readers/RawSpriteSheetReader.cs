@@ -59,7 +59,7 @@ public static class RawSpriteSheetReader
         for (int i = 0; i < tagCount; i++)
         {
             string tagName = reader.ReadString();
-            bool isLooping = reader.ReadBoolean();
+            int loopCount = reader.ReadInt32();
             bool isReversed = reader.ReadBoolean();
             bool isPingPong = reader.ReadBoolean();
             int frameCount = reader.ReadInt32();
@@ -73,7 +73,7 @@ public static class RawSpriteSheetReader
                 frames[j] = new(index, duration);
             }
 
-            tags[i] = new(tagName, frames, isLooping, isReversed, isPingPong);
+            tags[i] = new(tagName, frames, loopCount, isReversed, isPingPong);
         }
 
         return new(name, atlas, tags);

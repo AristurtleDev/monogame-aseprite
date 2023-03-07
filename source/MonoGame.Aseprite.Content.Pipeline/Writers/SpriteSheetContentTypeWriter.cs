@@ -22,27 +22,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.Content.Readers;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
+namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
-internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
+[ContentTypeWriter]
+internal sealed class SpriteSheetContentTypeWriter : ContentTypeWriter<SpriteSheetContent>
 {
-    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
+    protected override void Write(ContentWriter writer, SpriteSheetContent content)
     {
-
-        if (existingInstance is not null)
-        {
-            return existingInstance;
-        }
-
-        int len = reader.ReadInt32();
-        byte[] data = reader.ReadBytes(len);
-
-        using MemoryStream stream = new(data);
-        return AsepriteFileReader.ReadStream(reader.AssetName, stream);
+        RawSpriteSheet rawSpriteSheet = content.RawSpriteSheet;
+        writer.Write(rawSpriteSheet.Name);
+        writer.Write(rawSpriteSheet.RawTextureAtlas.Name);
+        writer.WriteObject(content.Texture2DContent);
+        writer.Write(rawSpriteSheet.RawTextureAtlas.RawTextureRegions);
+        writer.Write(rawSpriteSheet.RawAnimationTags);
     }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Sprites.SpriteSheet, MonoGame.Aseprite";
+
+    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Content.Pipeline.Readers.SpriteSheetContentTypeReader, MonoGame.Aseprite";
 }

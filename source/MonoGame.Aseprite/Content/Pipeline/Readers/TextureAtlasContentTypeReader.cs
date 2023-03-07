@@ -22,27 +22,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.Content.Readers;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Sprites;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
-internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
+internal sealed class TextureAtlasContentTypeReader : ContentTypeReader<TextureAtlas>
 {
-    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
+    protected override TextureAtlas Read(ContentReader reader, TextureAtlas? existingInstance)
     {
-
         if (existingInstance is not null)
         {
             return existingInstance;
         }
 
-        int len = reader.ReadInt32();
-        byte[] data = reader.ReadBytes(len);
+        string name = reader.ReadString();
+        Texture2D texture = reader.ReadObject<Texture2D>();
+        TextureAtlas textureAtlas = new(name, texture);
 
-        using MemoryStream stream = new(data);
-        return AsepriteFileReader.ReadStream(reader.AssetName, stream);
+        RawTextureRegion[] rawTextureRegions = reader.ReadRawTextureRegions();
+
+        for (int i = 0; i < rawTextureRegions.Length; i++)
+        {
+            RawTextureRegion rawTextureRegion = rawTextureRegions[i];
+
+            TextureRegion textureRegion = textureAtlas.CreateRegion(rawTextureRegion.Name, rawTextureRegion.Bounds);
+
+            foreach (RawSlice rawSlice in rawTextureRegion.Slices)
+            {
+                if (rawSlice is RawNinePatchSlice rawNinePatchSlice)
+                {
+                    textureRegion.CreateNinePatchSlice(rawNinePatchSlice.Name, rawNinePatchSlice.Bounds, rawNinePatchSlice.CenterBounds, rawNinePatchSlice.Origin, rawNinePatchSlice.Color);
+                }
+                else
+                {
+                    textureRegion.CreateSlice(rawSlice.Name, rawSlice.Bounds, rawSlice.Origin, rawSlice.Color);
+                }
+            }
+        }
+
+        return textureAtlas;
     }
 }

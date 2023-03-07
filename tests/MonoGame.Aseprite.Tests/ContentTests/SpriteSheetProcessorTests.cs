@@ -78,9 +78,9 @@ public sealed class SpriteSheetProcessorTestFixture
 
         AsepriteTag[] tags = new AsepriteTag[]
         {
-            new(0, 0, AsepriteLoopDirection.Forward, Color.Red, "tag-0"),
-            new(0, 1, AsepriteLoopDirection.Forward, Color.Green, "tag-1"),
-            new(1, 2, AsepriteLoopDirection.PingPong, Color.Blue, "tag-2")
+            new(0, 0, AsepriteLoopDirection.Forward, 0, Color.Red, "tag-0"),
+            new(0, 1, AsepriteLoopDirection.Forward, 0, Color.Green, "tag-1"),
+            new(1, 2, AsepriteLoopDirection.PingPong, 0, Color.Blue, "tag-2")
         };
 
         AsepriteSlice[] slices = Array.Empty<AsepriteSlice>();
@@ -136,9 +136,9 @@ public sealed class SpriteSheetProcessorTests : IClassFixture<SpriteSheetProcess
     {
         AsepriteTag[] tags = new AsepriteTag[]
         {
-            new(0, 0, AsepriteLoopDirection.Forward, Color.Red, "tag-0"),
-            new(0, 1, AsepriteLoopDirection.Forward, Color.Green, "tag-1"),
-            new(1, 2, AsepriteLoopDirection.PingPong, Color.Blue, "tag-0")
+            new(0, 0, AsepriteLoopDirection.Forward, 0,  Color.Red, "tag-0"),
+            new(0, 1, AsepriteLoopDirection.Forward, 0, Color.Green, "tag-1"),
+            new(1, 2, AsepriteLoopDirection.PingPong, 0, Color.Blue, "tag-0")
         };
 
         //  Reuse the fixture, but use the tags array from above with duplicate tag names

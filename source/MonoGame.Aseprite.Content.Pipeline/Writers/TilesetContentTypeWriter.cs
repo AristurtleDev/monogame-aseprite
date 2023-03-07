@@ -22,27 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.AsepriteTypes;
-using MonoGame.Aseprite.Content.Readers;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using MonoGame.Aseprite.Content.Pipeline.ContentTypes;
+using MonoGame.Aseprite.RawTypes;
 
-namespace MonoGame.Aseprite.Content.Pipeline.Readers;
+namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
-internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<AsepriteFile>
+[ContentTypeWriter]
+internal sealed class TilesetContentTypeWriter : ContentTypeWriter<TilesetContent>
 {
-    protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
+    protected override void Write(ContentWriter writer, TilesetContent content)
     {
-
-        if (existingInstance is not null)
-        {
-            return existingInstance;
-        }
-
-        int len = reader.ReadInt32();
-        byte[] data = reader.ReadBytes(len);
-
-        using MemoryStream stream = new(data);
-        return AsepriteFileReader.ReadStream(reader.AssetName, stream);
+        RawTileset rawTileset = content.RawTileset;
+        writer.Write(rawTileset.Name);
+        writer.Write(rawTileset.TileWidth);
+        writer.Write(rawTileset.TileHeight);
+        writer.WriteObject(content.Texture2DContent);
     }
+
+    public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Tilemaps.Tileset, MonoGame.Aseprite";
+
+    public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
+        "MonoGame.Aseprite.Content.Pipeline.Readers.TilesetContentTypeReader, MonoGame.Aseprite";
 }
