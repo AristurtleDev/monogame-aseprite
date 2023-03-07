@@ -157,11 +157,11 @@ public static class SpriteSheetProcessor
         }
 
         // In aseprite, all tags are looping
-        bool isLooping = true;
-        bool isReversed = aseTag.Direction == AsepriteLoopDirection.Reverse;
-        bool isPingPong = aseTag.Direction == AsepriteLoopDirection.PingPong;
+        int loopCount = aseTag.Repeat;
+        bool isReversed = aseTag.Direction == AsepriteLoopDirection.Reverse || aseTag.Direction == AsepriteLoopDirection.PingPongReverse;
+        bool isPingPong = aseTag.Direction == AsepriteLoopDirection.PingPong || aseTag.Direction == AsepriteLoopDirection.PingPongReverse;
 
-        return new(aseTag.Name, rawAnimationFrames, isLooping, isReversed, isPingPong);
+        return new(aseTag.Name, rawAnimationFrames, loopCount, isReversed, isPingPong);
     }
 }
 

@@ -63,9 +63,9 @@ public sealed class AnimationTag
     public AnimationFrame this[int index] => GetFrame(index);
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether the animation should loop.
+    ///     Gets a value that indicates whether the animation should loop.
     /// </summary>
-    public bool IsLooping { get; set; }
+    public bool IsLooping => LoopCount == 0;
 
     /// <summary>
     ///     Gets or Sets a value that indicates whether the animation should play in reverse.
@@ -78,8 +78,22 @@ public sealed class AnimationTag
     /// </summary>
     public bool IsPingPong { get; set; }
 
-    internal AnimationTag(string name, AnimationFrame[] frames, bool isLooping, bool isReversed, bool isPingPong) =>
-        (Name, _frames, IsLooping, IsReversed, IsPingPong) = (name, frames, isLooping, isReversed, isPingPong);
+    /// <summary>
+    ///     Gets or Sets a value that indicates the total number of loops/cycles of this animation that should play.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         <c>0</c> = infinite looping
+    ///     </para>
+    ///     <para>
+    ///         If <see cref="AnimationTag.IsPingPong"/> is equal to <see langword="true"/>, each direction of the
+    ///         ping-pong will count as a loop.  
+    ///     </para>
+    /// </remarks>
+    public int LoopCount { get; set; }
+
+    internal AnimationTag(string name, AnimationFrame[] frames, int loopCount, bool isReversed, bool isPingPong) =>
+        (Name, _frames, LoopCount, IsReversed, IsPingPong) = (name, frames, loopCount, isReversed, isPingPong);
 
     /// <summary>
     ///     Gets the <see cref="AnimationFrame"/> element at the specified index from this <see cref="AnimationTag"/>.

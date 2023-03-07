@@ -132,11 +132,11 @@ internal static class BinaryReaderExtensions
     internal static RawAnimationTag ReadRawAnimationTag(this BinaryReader reader)
     {
         string name = reader.ReadString();
-        bool isLooping = reader.ReadBoolean();
+        int loopCount = reader.ReadInt32();
         bool isReversed = reader.ReadBoolean();
         bool isPingPong = reader.ReadBoolean();
         RawAnimationFrame[] frames = reader.ReadRawAnimationFrames();
-        return new(name, frames, isLooping, isReversed, isPingPong);
+        return new(name, frames, loopCount, isReversed, isPingPong);
     }
 
     internal static RawAnimationFrame[] ReadRawAnimationFrames(this BinaryReader reader)

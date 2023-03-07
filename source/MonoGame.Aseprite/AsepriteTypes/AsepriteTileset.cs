@@ -75,6 +75,15 @@ public sealed class AsepriteTileset
     public int Height { get; }
 
     /// <summary>
+    ///     Gets the <see cref="AsepriteUserData"/> set for this <see cref="AsepriteSlice"/> in aseprite.
+    /// </summary>
+    /// <remarks>
+    ///     User Data for tilesets was added in Aseprite 1.3-rc1.  It currently doesn't appear that you can set user
+    ///     data for a tileset within the Aseprite UI itself, but can set it through the LUA Scripting API.
+    /// </remarks>
+    public AsepriteUserData UserData { get; } = new();
+
+    /// <summary>
     ///     Gets a read-only span of the color values that represent the pixel data for a the tile at the specified 
     ///     index in this <see cref="AsepriteTileset"/>.  Pixel order is from top-to-bottom, read left-to-right.
     /// </summary>

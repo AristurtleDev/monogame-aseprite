@@ -379,12 +379,13 @@ public static class AsepriteFileReader
             ushort from = ReadWord(reader);
             ushort to = ReadWord(reader);
             byte direction = ReadByte(reader);
-            IgnoreBytes(reader, 8);
+            ushort repeat = ReadWord(reader);
+            IgnoreBytes(reader, 6);
             ReadOnlySpan<byte> rgb = ReadBytes(reader, 3);
             IgnoreByte(reader);
             string name = ReadString(reader);
 
-            builder.AddTag(from, to, direction, rgb, name);
+            builder.AddTag(from, to, direction, repeat, rgb, name);
         }
     }
 
@@ -534,6 +535,12 @@ public static class AsepriteFileReader
                 //  Starting in Aseprite 1.3-beta21, after the first palette chunk in the first frame, if user data is
                 //  detected, then that is user data for the "sprite" itself
                 builder.SetSpriteUserData(text, color);
+                break;
+            case CHUNK_TYPE_TILESET:
+                //  Starting in Aseprite 1.3-rc1, Tilesets can have user data, though it appears it's not settable in
+                //  the Aseprite UI, and only settable through the LUA Scripting API within Aseprite. Regardless,
+                //  we have to handle it
+                builder.SetTilesetUserData(text, color);
                 break;
             default:
                 throw new InvalidOperationException($"Invalid chunk type (0x{lastChunkType:X4}) for user data");

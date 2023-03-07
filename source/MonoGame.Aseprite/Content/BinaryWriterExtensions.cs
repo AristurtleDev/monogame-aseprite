@@ -141,7 +141,7 @@ internal static class BinaryWriterExtensions
     internal static void Write(this BinaryWriter writer, RawAnimationTag value)
     {
         writer.Write(value.Name);
-        writer.Write(value.IsLooping);
+        writer.Write(value.LoopCount);
         writer.Write(value.IsReversed);
         writer.Write(value.IsPingPong);
         writer.Write(value.RawAnimationFrames);

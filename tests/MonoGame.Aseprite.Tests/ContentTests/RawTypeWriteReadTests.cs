@@ -97,10 +97,10 @@ public sealed class RawTypeWriteReadTests
         };
         RawAnimationTag[] tags = new RawAnimationTag[]
         {
-            new(nameof(RawAnimationTag), frames, true, true, true),
-            new(nameof(RawAnimationTag), frames, false, false, false),
-            new(nameof(RawAnimationTag), frames, true, false, true),
-            new(nameof(RawAnimationTag), frames, false, true, false),
+            new(nameof(RawAnimationTag), frames, 0, true, true),
+            new(nameof(RawAnimationTag), frames, 1, false, false),
+            new(nameof(RawAnimationTag), frames, 0, false, true),
+            new(nameof(RawAnimationTag), frames, 1, true, false),
         };
         RawSpriteSheet sheet = new(nameof(RawSpriteSheet), atlas, tags);
 
