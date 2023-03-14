@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -169,6 +170,8 @@ public class TextureRegion
         throw SliceNameNotFoundException(name);
     }
 
+    public bool TryGetSlice(string name, out Slice? slice) => _objects.TryGetValue(name, out slice);
+
     /// <summary>
     ///     Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/> as the
     ///     type specified.
@@ -191,6 +194,20 @@ public class TextureRegion
         }
 
         throw SliceNameNotFoundException(name);
+    }
+
+    public bool TryGetSlice<T>(string name, out T? slice) where T : Slice
+    {
+        slice = null;
+
+        var result = _objects.TryGetValue(name, out var objSlice);
+
+        if (result && objSlice != null)
+        {
+            slice = (T)objSlice;
+        }
+
+        return result;
     }
 
     /// <summary>
