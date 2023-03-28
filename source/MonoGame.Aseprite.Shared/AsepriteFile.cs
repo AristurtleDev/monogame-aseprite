@@ -679,5 +679,4 @@ public sealed class AsepriteFile
     ///     contain the cause of the exception.
     /// </exception>
     public static AsepriteFile Load(string path) => AsepriteFileReader.ReadFile(path);
-
 }
