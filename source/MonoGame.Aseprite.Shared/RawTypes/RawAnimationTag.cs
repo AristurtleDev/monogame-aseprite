@@ -56,7 +56,7 @@ public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
     public int LoopCount { get; }
 
     /// <summary>
-    ///     ets a value that indicates whether the animation defined by the animation tag should play in reverse.
+    ///     Gets a value that indicates whether the animation defined by the animation tag should play in reverse.
     /// </summary>
     public bool IsReversed { get; }
 
