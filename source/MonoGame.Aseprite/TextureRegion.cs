@@ -170,6 +170,21 @@ public class TextureRegion
         throw SliceNameNotFoundException(name);
     }
 
+    /// <summary>
+    ///     Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/>.
+    /// </summary>
+    /// <param name="name">
+    ///     The name of the <see cref="Slice"/> element to locate.
+    /// </param>
+    /// <param name="slice">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="Slice"/> located; otherwise,
+    ///     <see langword="null"/>
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="Slice"/> was located; otherwise, <see langword="false"/>.
+    ///     This method returns <see langword="false"/> if this <see cref="TextureRegion"/> does not contain
+    ///     a <see cref="Slice"/> element with the specified name.
+    /// </returns>
     public bool TryGetSlice(string name, out Slice? slice) => _objects.TryGetValue(name, out slice);
 
     /// <summary>
@@ -196,6 +211,26 @@ public class TextureRegion
         throw SliceNameNotFoundException(name);
     }
 
+    /// <summary>
+    ///     Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/> as the
+    ///     type specified.
+    /// </summary>
+    /// <typeparam name="T">
+    ///     The type to return the located <see cref="Slice"/> element as.  Must derived from the base type 
+    ///     <see cref="Slice"/>.
+    /// </typeparam>
+    /// <param name="name">
+    ///     The name of the <see cref="Slice"/> element to locate.
+    /// </param>
+    /// <param name="slice">
+    ///     When this method returns <see langword="true"/>, contains the <see cref="Slice"/> located; otherwise,
+    ///     <see langword="null"/>
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="Slice"/> was located; otherwise, <see langword="false"/>.
+    ///     This method returns <see langword="false"/> if this <see cref="TextureRegion"/> does not contain
+    ///     a <see cref="Slice"/> element with the specified name.
+    /// </returns>
     public bool TryGetSlice<T>(string name, out T? slice) where T : Slice
     {
         slice = null;
