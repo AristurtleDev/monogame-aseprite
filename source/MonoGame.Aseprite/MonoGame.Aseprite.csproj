@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>5.0.0</Version>
+        <Version>5.0.1</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,7 +29,7 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 5.0.0
+            Version 5.0.1
             The following changes were implemented:
                 - Resolved issue where reversing an `AnimatedSprite` would cause an exception.
                 - Added `AsepriteFileReader.Read(Stream)` method to support reading Aseprite file with `TitleContainer` stream (Closes #49)
@@ -91,4 +91,9 @@
         <!-- Supress warning about Pipeline dll not being in lib folder for NuGet -->
         <NoWarn>NU5100</NoWarn>
     </PropertyGroup>
+
+    <!-- Compile include code files from shared directory -->
+    <ItemGroup>
+        <Compile Include="../MonoGame.Aseprite.Shared/**/*.cs" />
+    </ItemGroup>
 </Project>
