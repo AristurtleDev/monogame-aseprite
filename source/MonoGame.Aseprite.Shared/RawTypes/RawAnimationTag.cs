@@ -50,8 +50,7 @@ public sealed class RawAnimationTag : IEquatable<RawAnimationTag>
     ///         <c>0</c> = infinite looping
     ///     </para>
     ///     <para>
-    ///         If <see cref="AnimationTag.IsPingPong"/> is equal to <see langword="true"/>, each direction of the
-    ///         ping-pong will count as a loop.  
+    ///         If the animation is ping-pong, each direction of the ping-pong will count as a loop.
     ///     </para>
     /// </remarks>
     public int LoopCount { get; }

@@ -29,10 +29,7 @@ using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Processors;
 
-/// <summary>
-///     Defines a processor that processes a <see cref="TextureAtlas"/> from an aseprite file.
-/// </summary>
-/// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
+/// <inheritdoc/>
 public static partial class TextureAtlasProcessor
 {
     /// <summary>

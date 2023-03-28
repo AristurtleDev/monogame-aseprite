@@ -29,10 +29,7 @@ using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Processors;
 
-/// <summary>
-/// Defines a processor that processes a <see cref="Tilemap"/> from an <see cref="AsepriteFile"/>.
-/// </summary>
-/// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
+/// <inheritdoc/>
 public static partial class TilemapProcessor
 {
     /// <summary>
