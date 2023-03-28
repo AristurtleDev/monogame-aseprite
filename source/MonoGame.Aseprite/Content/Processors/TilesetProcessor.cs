@@ -33,7 +33,7 @@ namespace MonoGame.Aseprite.Content.Processors;
 /// Defines a processor that processes a <see cref="Tileset"/> from an <see cref="AsepriteFile"/>.
 /// </summary>
 /// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
-public static class TilesetProcessor
+public static partial class TilesetProcessor
 {
     /// <summary>
     ///     Processes a <see cref="Tileset"/> from the <see cref="AsepriteTile"/> element at the specified index in the
@@ -110,66 +110,5 @@ public static class TilesetProcessor
     {
         RawTileset rawTileset = ProcessRaw(aseTileset);
         return Tileset.FromRaw(device, rawTileset);
-    }
-
-    /// <summary>
-    ///     Processes a <see cref="RawTileset"/> from the <see cref="AsepriteTileset"/> at the specified index in the
-    ///     given <see cref="AsepriteFile"/>.
-    /// </summary>
-    /// <param name="aseFile">
-    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteTileset"/> to process.
-    /// </param>
-    /// <param name="tilesetIndex">
-    ///     The index of the <see cref="AsepriteTileset"/> in the <see cref="AsepriteFile"/> to process.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="RawTileset"/> created by this method.
-    /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the <see cref="AsepriteTileset"/> index specified is less than zero or is greater than or equal to
-    ///     the total number of <see cref="AsepriteTileset"/> elements in the given <see cref="AsepriteFile"/>.
-    /// </exception>
-    public static RawTileset ProcessRaw(AsepriteFile aseFile, int tilesetIndex)
-    {
-        AsepriteTileset aseTileset = aseFile.GetTileset(tilesetIndex);
-        return ProcessRaw(aseTileset);
-    }
-
-    /// <summary>
-    ///     Processes a <see cref="RawTileset"/> from the <see cref="AsepriteTileset"/> with the specified name in the 
-    ///     given <see cref="AsepriteFile"/>.
-    /// </summary>
-    /// <param name="aseFile">
-    ///     The <see cref="AsepriteFile"/> that contains the <see cref="AsepriteTileset"/> to process.
-    /// </param>
-    /// <param name="tilesetName">
-    ///     The name of the <see cref="AsepriteTileset"/> in the <see cref="AsepriteFile"/> to process.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="RawTileset"/> created by this method.
-    /// </returns>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown if the given <see cref="AsepriteFile"/> does not contain an <see cref="AsepriteTileset"/> element 
-    ///     with the specified name.
-    /// </exception>
-    public static RawTileset ProcessRaw(AsepriteFile aseFile, string tilesetName)
-    {
-        AsepriteTileset aseTileset = aseFile.GetTileset(tilesetName);
-        return ProcessRaw(aseTileset);
-    }
-
-    /// <summary>
-    ///     Processes a <see cref="RawTileset"/> from the given <see cref="AsepriteTileset"/>.
-    /// </summary>
-    /// <param name="aseTileset">
-    ///     The <see cref="AsepriteTileset"/> to process.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="RawTileset"/> created by this method.
-    /// </returns>
-    public static RawTileset ProcessRaw(AsepriteTileset aseTileset)
-    {
-        RawTexture texture = new(aseTileset.Name, aseTileset.Pixels.ToArray(), aseTileset.Width, aseTileset.Height);
-        return new(aseTileset.ID, aseTileset.Name, texture, aseTileset.TileWidth, aseTileset.TileHeight);
     }
 }
