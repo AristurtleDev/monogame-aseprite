@@ -23,16 +23,12 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Processors;
 
-/// <summary>
-///     Defines a processor that processes an <see cref="AnimatedTilemap"/> from an <see cref="AsepriteFile"/>.
-/// </summary>
-/// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
+/// <inheritdoc/>
 public static partial class AnimatedTilemapProcessor
 {
     /// <summary>

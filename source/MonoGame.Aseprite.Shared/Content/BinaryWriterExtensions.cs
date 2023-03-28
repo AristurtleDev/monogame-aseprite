@@ -190,7 +190,6 @@ internal static class BinaryWriterExtensions
         writer.Write(value.RawTilemapTiles);
     }
 
-
     internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTilemapTile> value)
     {
         writer.Write(value.Length);

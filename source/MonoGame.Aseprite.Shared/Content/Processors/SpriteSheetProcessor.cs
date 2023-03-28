@@ -22,16 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Processors;
 
-/// <summary>
-///     Defines a processor that processes a <see cref="SpriteSheet"/> from an <see cref="AsepriteFile"/>.
-/// </summary>
-/// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
+/// <inheritdoc/>
 public static partial class SpriteSheetProcessor
 {
     /// <summary>

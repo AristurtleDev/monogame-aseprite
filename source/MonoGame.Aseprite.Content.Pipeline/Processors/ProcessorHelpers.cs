@@ -23,48 +23,12 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 
 internal static class ProcessorHelpers
 {
-    // internal static Texture2DContent CreateTextureContent(Color[] pixels, int width, int height)
-    // {
-    //     PixelBitmapContent<Color> face = new(width, height);
-
-    //     for (int i = 0; i < pixels.Length; i++)
-    //     {
-    //         int x = i % width;
-    //         int y = i / width;
-    //         face.SetPixel(x, y, pixels[i]);
-    //     }
-
-    //     Texture2DContent texture2DContent = new();
-    //     texture2DContent.Faces[0].Add(face);
-    //     return texture2DContent;
-    // }
-
-    // internal static Texture2DContent CreateTextureContent(RawTexture raw, string sourceFileName)
-    // {
-    //     PixelBitmapContent<Color> face = new(raw.Width, raw.Height);
-
-    //     for (int i = 0; i < raw.Pixels.Length; i++)
-    //     {
-    //         int x = i % raw.Width;
-    //         int y = i / raw.Width;
-
-    //         face.SetPixel(x, y, raw.Pixels[i]);
-    //     }
-
-    //     Texture2DContent textureContent = new();
-    //     textureContent.Identity = new ContentIdentity(sourceFileName);
-    //     textureContent.Faces[0].Add(face);
-    //     return textureContent;
-    // }
-
     internal static Texture2DContent CreateTexture2DContent(ReadOnlySpan<Color> pixels, int width, int height)
     {
         PixelBitmapContent<Color> face = new(width, height);

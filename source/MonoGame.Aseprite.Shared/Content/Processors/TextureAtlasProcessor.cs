@@ -23,16 +23,12 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Processors;
 
-/// <summary>
-///     Defines a processor that processes a <see cref="TextureAtlas"/> from an aseprite file.
-/// </summary>
-/// <seealso cref="MonoGame.Aseprite.Content.Processors"/>
+/// <inheritdoc/>
 public static partial class TextureAtlasProcessor
 {
     /// <summary>
@@ -145,16 +141,7 @@ public static partial class TextureAtlasProcessor
             for (int p = 0; p < frame.Length; p++)
             {
                 int px = (p % frameWidth) + x;
-                // + (column * frameWidth)
-                // + borderPadding
-                // + (spacing * column)
-                // + (innerPadding * (column + column + 1));
-
                 int py = (p / frameWidth) + y;
-                // + (row * frameHeight)
-                // + borderPadding
-                // + (spacing * row)
-                // + (innerPadding * (row + row + 1));
 
                 int index = py * imageWidth + px;
                 imagePixels[index] = frame[p];
