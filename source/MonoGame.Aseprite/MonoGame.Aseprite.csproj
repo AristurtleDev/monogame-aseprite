@@ -91,4 +91,9 @@
         <!-- Supress warning about Pipeline dll not being in lib folder for NuGet -->
         <NoWarn>NU5100</NoWarn>
     </PropertyGroup>
+
+    <!-- Compile include code files from shared directory -->
+    <ItemGroup>
+        <Compile Include="../MonoGame.Aseprite.Shared/**/*.cs" />
+    </ItemGroup>
 </Project>

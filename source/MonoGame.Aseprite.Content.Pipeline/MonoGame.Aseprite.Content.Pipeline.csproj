@@ -83,8 +83,8 @@
         </PackageReference>
     </ItemGroup>
 
-    <!-- Local Project References -->
+    <!-- Compile include code files from shared directory -->
     <ItemGroup>
-        <ProjectReference Include="..\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
+        <Compile Include="../MonoGame.Aseprite.Shared/**/*.cs" />
     </ItemGroup>
 </Project>
