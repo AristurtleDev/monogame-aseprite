@@ -141,16 +141,7 @@ public static partial class TextureAtlasProcessor
             for (int p = 0; p < frame.Length; p++)
             {
                 int px = (p % frameWidth) + x;
-                // + (column * frameWidth)
-                // + borderPadding
-                // + (spacing * column)
-                // + (innerPadding * (column + column + 1));
-
                 int py = (p / frameWidth) + y;
-                // + (row * frameHeight)
-                // + borderPadding
-                // + (spacing * row)
-                // + (innerPadding * (row + row + 1));
 
                 int index = py * imageWidth + px;
                 imagePixels[index] = frame[p];
