@@ -24,7 +24,6 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 

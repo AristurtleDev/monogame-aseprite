@@ -23,9 +23,7 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using MonoGame.Aseprite.RawTypes;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 

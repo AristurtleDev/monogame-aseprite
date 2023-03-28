@@ -23,7 +23,6 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.RawTypes;
 

@@ -22,9 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.AsepriteTypes;
 using MonoGame.Aseprite.Content.Readers;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
