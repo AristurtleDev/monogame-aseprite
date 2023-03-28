@@ -37,4 +37,8 @@
     - `AnimatedSprite.Play()` added.
         - `AnimatedSprite` will need to be explicitly told to play using the `AnimatedSprite.Play` method.
         - Parameter for method provided to override the loop count
+## 5.0.1
+- Resolved issue where MonoGame.Aseprite.dll assembly reference was required for the MonoGame.Aseprite.Content.Pipeline.dll assembly in the mgcb-editor (Closes #76)
+- `TextureRegion.TryGetSlice` and `TextureRegion.TryGetSlice&lt;T&gt;` methods added (credit: @fdrobidoux)
+
     
