@@ -690,5 +690,4 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
 
         return animatedTilemap;
     }
-
 }
