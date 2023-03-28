@@ -68,7 +68,6 @@ public static class RawSpriteSheetWriter
                 writer.Write(rawAnimationTag.RawAnimationFrames[j].FrameIndex);
                 writer.Write(rawAnimationTag.RawAnimationFrames[j].DurationInMilliseconds);
             }
-
         }
     }
 }
