@@ -40,17 +40,17 @@ public abstract class AsepriteCel
     ///     Gets the x- and y-coordinate location of this <see cref="AsepriteCel"/> relative to the bounds of the 
     ///     <see cref="AsepriteFrame"/> it is in.
     /// </summary>
-    internal Point Position { get; }
+    public Point Position { get; }
 
     /// <summary>
     ///     Gets the opacity level of this <see cref="AsepriteCel"/>.
     /// </summary>
-    internal int Opacity { get; }
+    public int Opacity { get; }
 
     /// <summary>
     ///     Gets the custom <see cref="AsepriteUserData"/> that was set for this <see cref="AsepriteCel"/> in aseprite.
     /// </summary>
-    internal AsepriteUserData UserData { get; } = new();
+    public AsepriteUserData UserData { get; } = new();
 
     internal AsepriteCel(AsepriteLayer layer, Point position, int opacity) =>
         (Layer, Position, Opacity) = (layer, position, opacity);
