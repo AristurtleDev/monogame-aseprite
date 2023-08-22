@@ -98,6 +98,11 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
+    ///     Gets the total number of frames in this <see cref="AnimatedSprite"/>
+    /// </summary>
+    public int FrameCount => _animationTag.FrameCount;
+
+    /// <summary>
     ///     Gets the source <see cref="AnimationFrame"/> of the current frame of animation for this 
     ///     <see cref="AnimatedSprite"/>.
     /// </summary>
@@ -202,6 +207,29 @@ public sealed class AnimatedSprite : Sprite
         }
     }
 
+    /// <summary>
+    ///     Sets the current frame of animation for this <see cref="AnimatedSprite"/>.
+    /// </summary>
+    /// <param name="frameIndex">
+    ///     The index of the frame to set. Value must be greater than zero and less than the total count of frames. You 
+    ///     can use <see cref="AnimatedSprite.FrameCount"/> to determine the total number of frames.
+    /// </param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the <paramref name="frameIndex"/> value provided is less than zero or is greater than or equal to
+    ///     the total number of frames in this <see cref="AnimatedSprite"/>.
+    /// </exception>
+    public void SetFrame(int frameIndex)
+    {
+        if(frameIndex < 0 || frameIndex >= FrameCount)
+        {
+            throw new ArgumentOutOfRangeException(nameof(frameIndex), $"{nameof(frameIndex)} must be greater than zero and less than the total number of frames in this AnimatedSprite");
+        }
+
+        _currentIndex = frameIndex;
+        TextureRegion = CurrentFrame.TextureRegion;
+        CurrentFrameTimeRemaining = CurrentFrame.Duration;
+    }
+
     private void AdvanceFrame()
     {
         OnFrameEnd?.Invoke(this);
@@ -267,13 +295,30 @@ public sealed class AnimatedSprite : Sprite
     ///         ping-pong will count as a loop.  
     ///     </para>
     /// </param>
+    /// <param name="startingFrame">
+    ///     <para>
+    ///         When this value is provided, specifies the frame to start the animation at
+    ///     </para>
+    ///     <para>
+    ///         When <see langword="null"/> is provided, play will start at frame 0 of the animation.
+    ///     </para>
+    /// </param>
     /// <returns>
     ///     <see langword="true"/> if animation play was successfully started for this <see cref="AnimatedSprite"/>;
     ///     otherwise, <see langword="false"/>.  This method returns <see langword="false"/> if the animation is already
     ///     playing (when <see cref="AnimatedSprite.IsAnimating"/> equals <see langword="true"/>).
     /// </returns>
-    public bool Play(int? loopCount = default)
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the <paramref name="startingFrame"/> value provided is less than zero or is greater than or equal to
+    ///     the total number of frames in this <see cref="AnimatedSprite"/>.
+    /// </exception>
+    public bool Play(int? loopCount = default, int? startingFrame = 0)
     {
+        if(startingFrame < 0 || startingFrame >= FrameCount)
+        {
+            throw new ArgumentOutOfRangeException(nameof(startingFrame), $"{nameof(startingFrame)} must be greater than zero and less than the total number of frames in this AnimatedSprite");
+        }
+
         //  Cannot play something that's already playing
         if (IsAnimating)
         {
@@ -291,7 +336,7 @@ public sealed class AnimatedSprite : Sprite
         IsAnimating = true;
         IsPaused = false;
 
-        _currentIndex = 0;
+        _currentIndex = startingFrame ?? 0;
 
         if (IsReversed)
         {
@@ -299,6 +344,7 @@ public sealed class AnimatedSprite : Sprite
         }
 
         TextureRegion = CurrentFrame.TextureRegion;
+        CurrentFrameTimeRemaining = CurrentFrame.Duration;
         _hasBegun = false;
 
         return true;
@@ -398,8 +444,8 @@ public sealed class AnimatedSprite : Sprite
 
     /// <summary>
     ///     Resets this <see cref="AnimatedSprite"/> back to its initial state as defined by the 
-    ///     <see cref="AnimationTag"/> used to create it.  You will need to call <see cref="AnimatedSprite.Play(int?)"/>
-    ///     after resetting to start the playback of the animation.s
+    ///     <see cref="AnimationTag"/> used to create it.  You will need to call <see cref="AnimatedSprite.Play(int?, int?)"/>
+    ///     after resetting to start the playback of the animation.
     /// </summary>
     /// <remarks>
     ///     <para>
