@@ -41,4 +41,8 @@
 - Resolved issue where MonoGame.Aseprite.dll assembly reference was required for the MonoGame.Aseprite.Content.Pipeline.dll assembly in the mgcb-editor (Closes #76)
 - `TextureRegion.TryGetSlice` and `TextureRegion.TryGetSlice&lt;T&gt;` methods added (credit: @fdrobidoux)
 
+ ## 5.1.0
+- `AsepriteCel` properties were made public (thanks @SephDB)
+- `AnimatedSprite` now supports setting frame both on initial play and during playback.
+
     

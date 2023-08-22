@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>5.0.1</Version>
+        <Version>5.1.0</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,10 +29,10 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 5.0.1
+            Version 5.1.0
             The following changes were implemented:
-                - Resolved issue where MonoGame.Aseprite.dll assembly reference was required for the MonoGame.Aseprite.Content.Pipeline.dll assembly in the mgcb-editor (Closes #76)
-                - `TextureRegion.TryGetSlice` and `TextureRegion.TryGetSlice&lt;T&gt;` methods added (credit: @fdrobidoux)
+                - `AsepriteCel` properties were made public (thanks @SephDB)
+                - `AnimatedSprite` now supports setting frame both on initial play and during playback.
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
