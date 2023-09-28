@@ -45,4 +45,7 @@
 - `AsepriteCel` properties were made public (thanks @SephDB)
 - `AnimatedSprite` now supports setting frame both on initial play and during playback.
 
+## 5.1.1
+- Resolved issue where using Linked Cels can cause an out of bounds exception.
+
     
