@@ -101,7 +101,10 @@ internal class AsepriteFileBuilder
     internal void AddLinkedCel(ushort frameIndex)
     {
         AsepriteFrame frame = _frames[frameIndex];
-        AsepriteCel linkedCel = frame.Cels[_nextFrameCels.Count];
+        //  If the first cel is a linked cel, then we haven't added cels yet
+        //  so the " - 1" will result in -1.  So we only do so when the count is
+        //  greater than 0
+        AsepriteCel linkedCel = frame.Cels[_nextFrameCels.Count > 0 ? _nextFrameCels.Count - 1 : 0];
         _nextFrameCels.Add(linkedCel);
     }
 
