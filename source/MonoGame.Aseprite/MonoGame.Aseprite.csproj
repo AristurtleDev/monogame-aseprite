@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>5.1.0</Version>
+        <Version>5.1.1</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,10 +29,9 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 5.1.0
+            Version 5.1.1
             The following changes were implemented:
-                - `AsepriteCel` properties were made public (thanks @SephDB)
-                - `AnimatedSprite` now supports setting frame both on initial play and during playback.
+                - Resolved issue where using Linked Cels can cause an out of bounds exception.
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite is a cross-platofrm C# library that adds support to MonoGame projects for
