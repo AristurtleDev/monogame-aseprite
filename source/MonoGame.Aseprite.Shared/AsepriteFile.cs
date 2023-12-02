@@ -532,7 +532,7 @@ public sealed class AsepriteFile
 
         for (int i = 0; i < _slices.Length; i++)
         {
-            if (_tags[i].Name == sliceName)
+            if (_slices[i].Name == sliceName)
             {
                 located = _slices[i];
                 break;

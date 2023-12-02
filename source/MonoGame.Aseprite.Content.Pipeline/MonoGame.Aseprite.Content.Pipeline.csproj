@@ -3,8 +3,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <GenerateDocumentationFile>False</GenerateDocumentationFile>
-        <Version>5.1.1</Version>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <Version>5.1.2</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -21,9 +21,9 @@
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
-        <Version>5.1.1</Version>
-        <AssemblyVersion>5.1.1</AssemblyVersion>
-        <FileVersion>5.1.1</FileVersion>
+        <Version>5.1.2</Version>
+        <AssemblyVersion>5.1.2</AssemblyVersion>
+        <FileVersion>5.1.2</FileVersion>
         <Authors>Christopher Whitley</Authors>
         <Company>Aristurtle</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -38,9 +38,9 @@
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb
         </PackageTags>
         <PackageReleaseNotes>
-            Version 5.1.1
+            Version 5.1.2
             The following changes were implemented:
-                - Resolved issue where using Linked Cels can cause an out of bounds exception.
+                - Resolves issue where AsepriteFile.TryGetSlice always returned false even when slice exists
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame

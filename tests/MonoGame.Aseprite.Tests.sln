@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Tests", "MonoGame.Aseprite.Tests\MonoGame.Aseprite.Tests.csproj", "{CA70FF5A-3331-4C7D-90C5-491D35F33825}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "..\source\MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{943BBD8C-B128-4C0C-B028-177805E4C277}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{CA70FF5A-3331-4C7D-90C5-491D35F33825}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA70FF5A-3331-4C7D-90C5-491D35F33825}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA70FF5A-3331-4C7D-90C5-491D35F33825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{943BBD8C-B128-4C0C-B028-177805E4C277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{943BBD8C-B128-4C0C-B028-177805E4C277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{943BBD8C-B128-4C0C-B028-177805E4C277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{943BBD8C-B128-4C0C-B028-177805E4C277}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
