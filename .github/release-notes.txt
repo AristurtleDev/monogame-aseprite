@@ -48,4 +48,7 @@
 ## 5.1.1
 - Resolved issue where using Linked Cels can cause an out of bounds exception.
 
+## 5.1.2
+- Resolves issue where AsepriteFile.TryGetSlice always returned false even when slice exists
+
     

@@ -40,7 +40,7 @@
         <PackageReleaseNotes>
             Version 5.1.2
             The following changes were implemented:
-                - Resolved issue where using Linked Cels can cause an out of bounds exception.
+                - Resolves issue where AsepriteFile.TryGetSlice always returned false even when slice exists
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
