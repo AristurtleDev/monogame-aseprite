@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <Version>5.1.1</Version>
+        <Version>5.1.2</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,7 +29,7 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 5.1.1
+            Version 5.1.2
             The following changes were implemented:
                 - Resolved issue where using Linked Cels can cause an out of bounds exception.
         </PackageReleaseNotes>
