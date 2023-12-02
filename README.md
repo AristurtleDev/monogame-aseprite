@@ -42,6 +42,14 @@ To get started using [MonoGame.Aseprite](https://monogameaseprite.net) start wit
 - Submit an [issue on GitHub](https://github.com/AristurtleDev/monogame-aseprite/issues).
 - Follow me on [Mastodon](https://mastodon.gamedev.place/@aristurtle) or [Twitter](https://www.twitter.com/aristurtledev).
 
+## Games Made With MonoGame.Aseprite
+The following are games that have been made using MonoGame.Aseprite as part of the content workflow in MonoGame
+
+| Game | Developer Links |
+|--- |---|
+| <h3 align="center">Superstar Strategy</h3> <img src="https://cdn.akamai.steamstatic.com/steam/apps/1756730/header.jpg?t=1696817764"> | <ul><li>Steam: <a href="https://store.steampowered.com/app/1756730/Superstar_Strategy/">https://store.steampowered.com/app/1756730/Superstar_Strategy/</a></li><li>Twitter: <a href="https://x.com/TalberonGames">https://x.com/TalberonGames</a></li></ul>
+| <h3 align="center">Unnamed</h3> <img src="https://img.itch.zone/aW1nLzEzNjQ1MTM5LnBuZw==/original/yOAqCD.png"/> | <ul><li>Itch.io: <a href="https://fypur.itch.io/unnamed">https://fypur.itch.io/unnamed</a></li><li>Youtube: <a href="https://youtube.com/c/fypur">https://youtube.com/c/fypur</a></li></ul> |
+
 ## Support
 
 If you would like to support this project in any way, there are quite a few ways to do this no matter who you are.

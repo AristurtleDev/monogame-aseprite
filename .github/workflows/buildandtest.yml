@@ -1,10 +1,9 @@
 name: build-and-test
 on: 
   push:
+    tags: [v*]
   pull_request:
-    branches:
-      - 'release'
-      - 'main'
+    branches: ['main']
 
 
 env: 
@@ -12,22 +11,50 @@ env:
 
 
 jobs:
-  build:
+  build-test-pack-job:
+    name: "Build-Test-Pack"
     runs-on: ubuntu-latest
     steps:
-      - name: Clone Repository
+      - name: "Clone Repository"
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
       
-      - name: Setup .NET
+      - name: "Setup .NET"
         uses: actions/setup-dotnet@v3
         with: 
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Cake Target Test
-        shell: bash
-        run: |
-          cd ./.tools
-          dotnet tool restore
-          dotnet cake --target=Test
+      - name: "CAKE (Build -> Test -> Package)"
+        run: dotnet run --project ./.build/Build.csproj -- --target=Default
+      
+      - name: "Upload Artifacts For Deploy"
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@main
+        with:
+          name: MonoGame.Aseprite
+          path: ./artifacts/*
+
+  deploy-job:
+    name: "Deploy NuGets"
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+    needs: [build-test-pack-job]
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: "Clone Repository"
+        uses: actions/checkout@v4
+
+      - name: "Download Artifacts For Deploy"
+        uses: actions/download-artifact@v3
+        with:
+          name: MonoGame.Aseprite
+          path: artifacts
+      
+      - name: "Push Packages"
+        run: dotnet run --project ./.build/Build.csproj -- --target=Deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_ACCESS_TOKEN: ${{ secrets.NUGET_ACCESS_TOKEN }}
