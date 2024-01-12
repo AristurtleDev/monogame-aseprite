@@ -34,6 +34,9 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 [ContentProcessor(DisplayName = "Aseprite Sprite Processor - MonoGame.Aseprite")]
 internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFileImportResult, SpriteContent>
 {
+    [DisplayName("Zero Indexed Frames")]
+    public bool ZeroIndexedFrames {get; set;} = true;
+
     [DisplayName("Frame Index")]
     public int FrameIndex { get; set; } = 0;
 
@@ -51,9 +54,21 @@ internal sealed class SpriteContentProcessor : ContentProcessor<AsepriteFileImpo
 
     public override SpriteContent Process(AsepriteFileImportResult content, ContentProcessorContext context)
     {
+        FrameIndex = ZeroIndexedFrames ? FrameIndex : FrameIndex - 1;
+
         if (FrameIndex < 0 || FrameIndex >= content.AsepriteFile.FrameCount)
         {
-            throw new ProcessorParameterException($"The 'Frame Index' parameter cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
+            ProcessorParameterException ex;
+            if(ZeroIndexedFrames)
+            {
+                ex = new ($"The 'Frame Index' parameter cannot be less than zero or greater than or equal to the total number of frames in the Aseprite file", nameof(SpriteContentProcessor), nameof(FrameIndex));
+            }
+            else
+            {
+                ex = new ($"The 'Frame Index' parameter cannot be less than one or greater than the total number of frames in the Aseprite file when {nameof(ZeroIndexedFrames)} is 'false'.", nameof(SpriteContentProcessor), nameof(FrameIndex));
+            }
+
+            throw ex;
         }
 
         AsepriteFrame aseFrame = content.AsepriteFile.Frames[FrameIndex];
