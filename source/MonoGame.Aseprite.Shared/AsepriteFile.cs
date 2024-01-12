@@ -42,6 +42,12 @@ public sealed class AsepriteFile
     private AsepriteTileset[] _tilesets;
 
     /// <summary>
+    ///     <see langword="true"/> if, when referencing frames by index, the first frame is index 0; otherwise
+    ///     <see langword="false"/> if the first frame is index 1.
+    /// </summary>
+    public bool ZeroIndexedFrames = true;
+
+    /// <summary>
     ///     Gets a read-only span of all <see cref="AsepriteFrame"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
     /// <remarks>
@@ -158,25 +164,25 @@ public sealed class AsepriteFile
     /// </exception>
     public AsepriteFrame GetFrame(int frameIndex)
     {
-        int index = Configuration.ZeroIndexedFrames ? frameIndex : -1;
+        int index = ZeroIndexedFrames ? frameIndex : frameIndex - 1;
 
         if (index < 0 || index >= _frames.Length)
         {
             ArgumentOutOfRangeException ex;
-            if (Configuration.ZeroIndexedFrames)
+            if (ZeroIndexedFrames)
             {
                 ex = new(nameof(frameIndex), $"{nameof(frameIndex)} cannot be less than zero or greater than or equal to the total number of frames in this aseprite file.");
             }
             else
             {
-                ex = new(nameof(frameIndex), $"{nameof(frameIndex)} cannot be less than one or greater than the total number of frames in this aseprite file when '{nameof(Configuration.ZeroIndexedFrames)}' is 'false'.");
+                ex = new(nameof(frameIndex), $"{nameof(frameIndex)} cannot be less than one or greater than the total number of frames in this aseprite file when '{nameof(ZeroIndexedFrames)}' is 'false'.");
             }
             ex.Data.Add("TotalFrames", _frames.Length);
-            ex.Data.Add("ZeroIndexed", Configuration.ZeroIndexedFrames);
+            ex.Data.Add("ZeroIndexed", ZeroIndexedFrames);
             throw ex;
         }
 
-        return _frames[frameIndex];
+        return _frames[index];
     }
 
     /// <summary>
@@ -197,7 +203,7 @@ public sealed class AsepriteFile
     /// </returns>
     public bool TryGetFrame(int frameIndex, [NotNullWhen(true)] out AsepriteFrame? located)
     {
-        int index = Configuration.ZeroIndexedFrames ? frameIndex : -1;
+        int index = ZeroIndexedFrames ? frameIndex : frameIndex - 1;
         located = default;
 
         if (index < 0 || index >= _frames.Length)

@@ -48,7 +48,7 @@ internal sealed class TilemapContentProcessor : ContentProcessor<AsepriteFileImp
 
     public override TilemapContent Process(AsepriteFileImportResult content, ContentProcessorContext context)
     {
-        MonoGame.Aseprite.Configuration.ZeroIndexedFrames = ZeroIndexedFrames;
+        content.AsepriteFile.ZeroIndexedFrames = ZeroIndexedFrames;
         RawTilemap rawTilemap = TilemapProcessor.ProcessRaw(content.AsepriteFile, FrameIndex, OnlyVisibleLayer);
         Texture2DContent[] texture2DContents = ProcessTilesetTexture(rawTilemap.RawTilesets);
         return new(rawTilemap, texture2DContents);

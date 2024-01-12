@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <Version>5.1.3-beta-1</Version>
+        <Version>5.1.3-beta-2</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -35,10 +35,11 @@
             MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb
         </PackageTags>
         <PackageReleaseNotes>
-            Version 5.1.3-beta-1
+            Version 5.1.3-beta-2
             The following changes were implemented:
-                - Added `MonoGame.Aseprite.Configuration`
-                    -   When set to `false` this will assume frame index gets from the `AsepriteFile` start at index 1 and not 0.
+                - Removed `MonoGame.Aserpite.Configuration`
+                - Moved `ZeroIndexedFrames` to be property of `AsepriteFile`
+                - Added unit testing for `AsepriteFile.ZeroIndexedFrames` functionality
         </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
