@@ -14,24 +14,24 @@ A Cross Platform C# Library That Adds Support For Aseprite Files in MonoGame Pro
 
 [MonoGame.Aseprite](https://monogameaseprite.net) is a free and open source library for the [MonoGame Framework](https://www.monogame.net) that assists in importing [Aseprite](https://www.aseprite.org) (.ase | .aseprite) files into your game project. No need to export a spritesheet from Aseprite and have to deal with a PNG + JSON file. With [MonoGame.Aseprite](https://monogameaseprite.net), you can use the Aseprite file directly.
 
-[MonoGame.Aseprite](https://monogameaseprite.net) supports importing the file **both with and without the MGCB Editor** (also known as the Content Pipeline Tool). Along with importing the file contents, several [**processors**](https://monogameaseprite.net/docs/processors/processors-overview) have been designed to transform the file contents into a more meaningful state to use within MonoGame.
+[MonoGame.Aseprite](https://monogameaseprite.net) supports importing the file **both with and without the MGCB Editor** (also known as the Content Pipeline Tool). Along with importing the file contents, several [**processors**](https://monogameaseprite.net/guides/processors/processors-overview.html) have been designed to transform the file contents into a more meaningful state to use within MonoGame.
 
 [MonoGame.Aseprite](https://monogameaseprite.net) also supports outputting the processed file content to disk in a binary format and reader classes to read the processed information back in. This adds support for pre-processing content using any build or content workflow the end user has as long as it can use the [MonoGame.Aseprite](https://monogameaseprite.net) library.
 
 ## Getting Started
 
-To get started using [MonoGame.Aseprite](https://monogameaseprite.net) start with the [Installation document](https://monogameaseprite.net/docs/getting-started/installation).
+To get started using [MonoGame.Aseprite](https://monogameaseprite.net) start with the [Installation document](https://monogameaseprite.net/guides/getting-started/installation.html).
 
 ## Features
 
 - Import your Aseprite file at runtime with and without the MGCB Editor (Content Pipeline Tool)
-- Multiple built-in [processors](https://monogameaseprite.net/docs/processors/processors-overview) that can be used to transform the data from your Aseprite file into any of the following:
-  - [Sprite](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/Sprite/)
-  - [TextureAtlas](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/TextureAtlas/)
-  - [SpriteSheet](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Sprites/SpriteSheet/)
-  - [Tileset](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tileset/)
-  - [Tilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/Tilemap/)
-  - [AnimatedTilemap](https://monogameaseprite.net/docs/api/MonoGame.Aseprite/Tilemaps/AnimatedTilemap/).
+- Multiple built-in [processors](https://monogameaseprite.net/guides/processors/processors-overview.html) that can be used to transform the data from your Aseprite file into any of the following:
+  - [Sprite](https://monogameaseprite.net/guides/processors/sprite-processor.html)
+  - [TextureAtlas](https://monogameaseprite.net/guides/processors/texture-atlas-processor.html)
+  - [SpriteSheet](https://monogameaseprite.net/guides/processors/sprite-sheet-processor.html)
+  - [Tileset](https://monogameaseprite.net/guides/processors/tileset-processor.html)
+  - [Tilemap](https://monogameaseprite.net/guides/processors/tilemap-processor.html)
+  - [AnimatedTilemap](https://monogameaseprite.net/guides/processors/animated-tilemap-processor.html).
 - All blend modes in Aseprite supported 1:1.
 - Runtime writers and readers that can be used in custom content processing workflows to preprocess content outside of the game.
 
