@@ -51,6 +51,7 @@
 ## 5.1.2
 - Resolves issue where AsepriteFile.TryGetSlice always returned false even when slice exists
 
+
 ## 5.1.3-beta-1
 - Added `MonoGame.Aseprite.Configuration`
     -   When set to `false` this will assume frame index gets from the `AsepriteFile` start at index 1 and not 0.
