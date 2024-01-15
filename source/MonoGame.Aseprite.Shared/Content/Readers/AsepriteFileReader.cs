@@ -361,12 +361,12 @@ public static class AsepriteFileReader
         uint idBitmask = ReadDword(reader);
         uint xFlipBitmask = ReadDword(reader);
         uint yFlipBitmask = ReadDword(reader);
-        uint rotationBitmask = ReadDword(reader);
+        uint dFlipBitmask = ReadDword(reader);
         IgnoreBytes(reader, 10);
 
         int len = (int)(chunkEnd - reader.BaseStream.Position);
         byte[] compressedData = ReadBytes(reader, len);
-        builder.AddCompressedTilemapCel(x, y, columns, rows, layerIndex, opacity, compressedData, bitsPerTile, idBitmask, xFlipBitmask, yFlipBitmask, rotationBitmask);
+        builder.AddCompressedTilemapCel(x, y, columns, rows, layerIndex, opacity, compressedData, bitsPerTile, idBitmask, xFlipBitmask, yFlipBitmask, dFlipBitmask);
     }
 
     private static void ReadTagsChunk(BinaryReader reader, AsepriteFileBuilder builder)
