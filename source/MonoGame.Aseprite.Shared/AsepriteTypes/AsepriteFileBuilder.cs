@@ -130,8 +130,8 @@ internal class AsepriteFileBuilder
             uint id = (value & idBitmask) >> 0;
             uint xFlip = (value & xFlipBitmask);
             uint yFlip = (value & yFlipBitmask);
-            uint rotation = (value & dFlipBitmask);
-            AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
+            uint dFlip = (value & dFlipBitmask);
+            AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)dFlip);
             tiles[i] = tile;
         }
 
