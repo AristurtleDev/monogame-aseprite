@@ -38,28 +38,16 @@ public sealed class AsepriteTile : IEquatable<AsepriteTile>
     /// <summary>
     ///     Gets the x-flip value for this <see cref="AsepriteTile"/>..
     /// </summary>
-    /// <remarks>
-    ///     As of the current Aseprite 1.3-beta-21, tile x-flip has not been implemented.  As such, this value will 
-    ///     always be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
-    /// </remarks>
     public int XFlip { get; }
 
     /// <summary>
     ///     Gets the y-flip value for this <see cref="AsepriteTile"/>..
     /// </summary>
-    /// <remarks>
-    ///     As of the current Aseprite 1.3-beta-21, tile y-flip has not been implemented.  As such, this value will 
-    ///     always be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
-    /// </remarks>
     public int YFlip { get; }
 
     /// <summary>
     ///     Gets the diagonal-flip value for this <see cref="AsepriteTile"/>
     /// </summary>
-    /// <remarks>
-    ///     As of the current Aseprite 1.3-beta-21, tile rotation has not been implemented.  As such, this value will 
-    ///     always be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
-    /// </remarks>
     public int DFlip { get; }
 
     internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int dFlip) =>
