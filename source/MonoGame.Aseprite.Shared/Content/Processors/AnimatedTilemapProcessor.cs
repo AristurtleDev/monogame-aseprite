@@ -100,7 +100,7 @@ public static partial class AnimatedTilemapProcessor
                     bool flipHorizontally = aseTile.XFlip != 0;
                     bool flipVertically = aseTile.YFlip != 0;
 
-                    tiles[t] = new(aseTile.TilesetTileID, flipHorizontally, flipVertically, aseTile.Rotation);
+                    tiles[t] = new(aseTile.TilesetTileID, flipHorizontally, flipVertically, aseTile.DFlip);
                 }
 
                 int columns = tilemapCel.Columns;

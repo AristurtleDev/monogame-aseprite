@@ -54,16 +54,16 @@ public sealed class AsepriteTile : IEquatable<AsepriteTile>
     public int YFlip { get; }
 
     /// <summary>
-    ///     Gets the 90deg clockwise rotation value for this <see cref="AsepriteTile"/>..
+    ///     Gets the diagonal-flip value for this <see cref="AsepriteTile"/>
     /// </summary>
     /// <remarks>
     ///     As of the current Aseprite 1.3-beta-21, tile rotation has not been implemented.  As such, this value will 
     ///     always be 0. <see href="https://github.com/aseprite/aseprite/issues/3603"/>
     /// </remarks>
-    public int Rotation { get; }
+    public int DFlip { get; }
 
-    internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int rotation) =>
-        (TilesetTileID, XFlip, YFlip, Rotation) = (tilesetTileId, xFlip, yFlip, rotation);
+    internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int dFlip) =>
+        (TilesetTileID, XFlip, YFlip, DFlip) = (tilesetTileId, xFlip, yFlip, dFlip);
 
     /// <summary>
     ///     Returns a value that indicates whether the specified <see cref="AsepriteTile"/>. is equal to this 
@@ -79,6 +79,6 @@ public sealed class AsepriteTile : IEquatable<AsepriteTile>
     public bool Equals(AsepriteTile? other) => other is not null &&
                                                XFlip == other.XFlip &&
                                                YFlip == other.YFlip &&
-                                               Rotation == other.Rotation &&
+                                               DFlip == other.DFlip &&
                                                TilesetTileID == other.TilesetTileID;
 }
