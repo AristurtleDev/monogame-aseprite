@@ -442,15 +442,50 @@ public static class SpriteBatchExtensions
                 tPosition.Y = position.Y + (row * layer.Tileset.TileHeight * scale.Y);
                 Color renderColor = color * layer.Transparency;
 
-                SpriteEffects flipEffects = SpriteEffects.None |
-                                            (tile.FlipVertically ? SpriteEffects.FlipVertically : 0) |
-                                            (tile.FlipHorizontally ? SpriteEffects.FlipHorizontally : 0);
+                SpriteEffects flipEffects = DetermineFlipEffectForTile(tile.FlipHorizontally, tile.FlipVertically, tile.FlipDiagonally);
+                float rotation = tile.FlipDiagonally ? MathHelper.ToRadians(90.0f) : 0.0f;
+
+                // float rotation = tile.FlipDiagonally ? MathHelper.ToRadians(180.0f) : 0.0f;
+                //  Since Aseprite allows tile rotation now, tile are rotated in Aseprite based on
+                //  center origin. So we need an origin point, as well as to offset the position
+                //  draw due to the origin point.
+                Vector2 origin = new Vector2(layer.Tileset.TileWidth, layer.Tileset.TileHeight) * 0.5f;
+                tPosition += origin;
 
                 TextureRegion textureRegion = layer.Tileset[tile.TilesetTileID];
 
-                Draw(spriteBatch, textureRegion, tPosition, renderColor, tile.Rotation, Vector2.Zero, scale, flipEffects, layerDepth);
+                Draw(spriteBatch, textureRegion, tPosition, renderColor, rotation, origin, scale, flipEffects, layerDepth);
             }
         }
+    }
+
+    private static SpriteEffects DetermineFlipEffectForTile(bool flipHorizontally, bool flipVertically, bool flipDiagonally)
+    {
+        SpriteEffects effects = SpriteEffects.None;
+        if(!flipDiagonally)
+        {
+            if(flipHorizontally)
+            {
+                effects |= SpriteEffects.FlipHorizontally;
+            }
+
+            if(flipVertically)
+            {
+                effects |= SpriteEffects.FlipVertically;
+            }
+        }
+        else
+        {
+            effects = (flipHorizontally, flipVertically) switch
+            {
+                (true, true) => SpriteEffects.FlipHorizontally,
+                (false, true) => SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically,
+                (true, false) => SpriteEffects.None,
+                (false, false) => SpriteEffects.FlipVertically
+            };
+        }
+
+        return effects;
     }
 
     #endregion Tilemap Layer

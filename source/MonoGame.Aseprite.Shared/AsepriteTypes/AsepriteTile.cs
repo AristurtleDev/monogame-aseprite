@@ -36,21 +36,24 @@ public sealed class AsepriteTile : IEquatable<AsepriteTile>
     public int TilesetTileID { get; }
 
     /// <summary>
-    ///     Gets the x-flip value for this <see cref="AsepriteTile"/>..
+    ///     Gets a value that indicates if this <see cref="AsepriteTile"/> is 
+    ///     flipped on the x-axis.
     /// </summary>
-    public int XFlip { get; }
+    public bool XFlip { get; }
 
     /// <summary>
-    ///     Gets the y-flip value for this <see cref="AsepriteTile"/>..
+    ///     Gets a value that indicates if this <see cref="AsepriteTile"/> is 
+    ///     flipped on the y-axis.
     /// </summary>
-    public int YFlip { get; }
+    public bool YFlip { get; }
 
     /// <summary>
-    ///     Gets the diagonal-flip value for this <see cref="AsepriteTile"/>
+    ///     Gets a value that indicates if this <see cref="AsepriteTile"/> is 
+    ///     flipped on its diagonal-axis.
     /// </summary>
-    public int DFlip { get; }
+    public bool DFlip { get; }
 
-    internal AsepriteTile(int tilesetTileId, int xFlip, int yFlip, int dFlip) =>
+    internal AsepriteTile(int tilesetTileId, bool xFlip, bool yFlip, bool dFlip) =>
         (TilesetTileID, XFlip, YFlip, DFlip) = (tilesetTileId, xFlip, yFlip, dFlip);
 
     /// <summary>

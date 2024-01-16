@@ -128,10 +128,10 @@ internal class AsepriteFileBuilder
             ReadOnlySpan<byte> dword = decompressedData.Slice(b, bytesPerTile);
             uint value = BitConverter.ToUInt32(dword);
             uint id = (value & idBitmask) >> 0;
-            uint xFlip = (value & xFlipBitmask);
-            uint yFlip = (value & yFlipBitmask);
-            uint dFlip = (value & dFlipBitmask);
-            AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)dFlip);
+            bool xFlip = (value & xFlipBitmask) == xFlipBitmask;
+            bool yFlip = (value & yFlipBitmask) == yFlipBitmask;
+            bool dFlip = (value & dFlipBitmask) == dFlipBitmask;
+            AsepriteTile tile = new((int)id, xFlip, yFlip, dFlip);
             tiles[i] = tile;
         }
 

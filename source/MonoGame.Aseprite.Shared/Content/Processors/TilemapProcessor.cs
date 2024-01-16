@@ -102,10 +102,7 @@ public static partial class TilemapProcessor
             for (int t = 0; t < tilemapCel.Tiles.Length; t++)
             {
                 AsepriteTile aseTile = tilemapCel.Tiles[t];
-                bool flipHorizontally = aseTile.XFlip != 0;
-                bool flipVertically = aseTile.YFlip != 0;
-
-                tiles[t] = new(aseTile.TilesetTileID, flipHorizontally, flipVertically, aseTile.DFlip);
+                tiles[t] = new RawTilemapTile(aseTile.TilesetTileID, aseTile.YFlip, aseTile.XFlip, aseTile.DFlip);
             }
 
             int columns = tilemapCel.Columns;

@@ -45,12 +45,12 @@ public sealed class RawTilemapTile : IEquatable<RawTilemapTile>
     public bool FlipVertically { get; }
 
     /// <summary>
-    ///     Gets the rotation, in radians, of the tilemap tile.
+    ///     Gets a value that indicates if the tilemap tile should be flipped diagonally.
     /// </summary>
-    public float Rotation { get; }
+    public bool FlipDiagonally  { get; }
 
-    internal RawTilemapTile(int tilesetTileID, bool flipHorizontally, bool flipVertically, float rotation) =>
-        (TilesetTileID, FlipHorizontally, FlipVertically, Rotation) = (tilesetTileID, flipHorizontally, flipVertically, rotation);
+    internal RawTilemapTile(int tilesetTileID, bool flipHorizontally, bool flipVertically, bool flipDiagonally) =>
+        (TilesetTileID, FlipHorizontally, FlipVertically, FlipDiagonally) = (tilesetTileID, flipHorizontally, flipVertically, flipDiagonally);
 
     /// <summary>
     ///     Returns a value that indicates if the given <see cref="RawTilemapTile"/> is equal to this

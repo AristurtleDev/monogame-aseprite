@@ -683,7 +683,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
                 {
                     RawTilemapTile rawTile = rawLayer.RawTilemapTiles[t];
 
-                    layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.Rotation);
+                    layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.FlipDiagonally);
                 }
             }
         }
