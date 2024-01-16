@@ -60,4 +60,7 @@
 - Removed `MonoGame.Aserpite.Configuration`
 - Moved `ZeroIndexedFrames` to be property of `AsepriteFile`
 - Added unit testing for `AsepriteFile.ZeroIndexedFrames` functionality
+
+## 5.1.3-beta-3
+- Added proper support for new tile rotation introduced in Aseprite 1.3
     
