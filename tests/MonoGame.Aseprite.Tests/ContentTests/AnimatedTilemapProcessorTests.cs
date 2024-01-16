@@ -58,16 +58,16 @@ public sealed class AnimatedTilemapProcessorTestFixture
 
         AsepriteTile[] frame0Cel0Tiles = new AsepriteTile[]
         {
-            new(0, 0, 0, 0),
-            new(1, 0, 0, 0),
-            new(2, 0, 0, 0),
-            new(3, 0, 0, 0)
+            new AsepriteTile(0, false, false, false),
+            new AsepriteTile(1, false, false, false),
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(3, false, false, false)
         };
 
         AsepriteTile[] frame0Cel1Tiles = new AsepriteTile[]
         {
-            new(2, 0, 0, 0),
-            new(3, 0, 0, 0)
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(3, false, false, false)
         };
 
         AsepriteCel[] frame0Cels = new AsepriteCel[]
@@ -78,16 +78,16 @@ public sealed class AnimatedTilemapProcessorTestFixture
 
         AsepriteTile[] frame1Cel0Tiles = new AsepriteTile[]
         {
-            new(3, 0, 0, 0),
-            new(2, 0, 0, 0),
-            new(1, 0, 0, 0),
-            new(0, 0, 0, 0)
+            new AsepriteTile(3, false, false, false),
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(1, false, false, false),
+            new AsepriteTile(0, false, false, false)
         };
 
         AsepriteTile[] frame1Cel1Tiles = new AsepriteTile[]
         {
-            new(3, 0, 0, 0),
-            new(2, 0, 0, 0)
+            new AsepriteTile(3, false, false, false),
+            new AsepriteTile(2, false, false, false)
         };
 
         AsepriteCel[] frame1Cels = new AsepriteCel[]
@@ -210,10 +210,10 @@ public sealed class AnimatedTilemapProcessorTests : IClassFixture<AnimatedTilema
 
         AsepriteTile[] tiles = new AsepriteTile[]
         {
-            new(0, 0, 0, 0),
-            new(1, 0, 0, 0),
-            new(2, 0, 0, 0),
-            new(3, 0, 0, 0)
+            new AsepriteTile(0, false, false, false),
+            new AsepriteTile(1, false, false, false),
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(3, false, false, false)
         };
 
         AsepriteCel[] cels = new AsepriteCel[]
@@ -257,13 +257,9 @@ public sealed class AnimatedTilemapProcessorTests : IClassFixture<AnimatedTilema
             RawTilemapTile tilemapTile = tilemapLayer.RawTilemapTiles[i];
 
             Assert.Equal(aseTile.TilesetTileID, tilemapTile.TilesetTileID);
-
-            bool xFlip = aseTile.XFlip != 0;
-            Assert.Equal(xFlip, tilemapTile.FlipHorizontally);
-
-            bool yFlip = aseTile.YFlip != 0;
-            Assert.Equal(yFlip, tilemapTile.FlipVertically);
-            Assert.Equal(aseTile.Rotation, tilemapTile.Rotation);
+            Assert.Equal(aseTile.XFlip, tilemapTile.FlipHorizontally);
+            Assert.Equal(aseTile.YFlip, tilemapTile.FlipVertically);
+            Assert.Equal(aseTile.DFlip, tilemapTile.FlipDiagonally);
         }
     }
 }

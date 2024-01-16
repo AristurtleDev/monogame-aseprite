@@ -57,16 +57,16 @@ public sealed class TilemapProcessorTestFixture
 
         AsepriteTile[] cel0Tiles = new AsepriteTile[]
         {
-            new(0, 0, 0, 0),
-            new(1, 0, 0, 0),
-            new(2, 0, 0, 0),
-            new(3, 0, 0, 0)
+            new AsepriteTile(0, false, false, false),
+            new AsepriteTile(1, false, false, false),
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(3, false, false, false)
         };
 
         AsepriteTile[] cel1Tiles = new AsepriteTile[]
         {
-            new(2, 0, 0, 0),
-            new(3, 0, 0, 0)
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(3, false, false, false)
         };
 
         AsepriteCel[] cels = new AsepriteCel[]
@@ -152,10 +152,10 @@ public sealed class TilemapProcessorTests : IClassFixture<TilemapProcessorTestFi
 
         AsepriteTile[] tiles = new AsepriteTile[]
         {
-            new(0, 0, 0, 0),
-            new(1, 0, 0, 0),
-            new(2, 0, 0, 0),
-            new(3, 0, 0, 0)
+            new AsepriteTile(0, false, false, false),
+            new AsepriteTile(1, false, false, false),
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(3, false, false, false)
         };
 
         AsepriteCel[] cels = new AsepriteCel[]
@@ -196,13 +196,9 @@ public sealed class TilemapProcessorTests : IClassFixture<TilemapProcessorTestFi
         for (int i = 0; i < tiles.Length; i++)
         {
             Assert.Equal(tiles[i].TilesetTileID, layer.RawTilemapTiles[i].TilesetTileID);
-
-            bool xFlip = tiles[i].XFlip != 0;
-            Assert.Equal(xFlip, layer.RawTilemapTiles[i].FlipHorizontally);
-
-            bool yFlip = tiles[i].YFlip != 0;
-            Assert.Equal(yFlip, layer.RawTilemapTiles[i].FlipVertically);
-            Assert.Equal(tiles[i].Rotation, layer.RawTilemapTiles[i].Rotation);
+            Assert.Equal(tiles[i].XFlip, layer.RawTilemapTiles[i].FlipHorizontally);
+            Assert.Equal(tiles[i].YFlip, layer.RawTilemapTiles[i].FlipVertically);
+            Assert.Equal(tiles[i].DFlip, layer.RawTilemapTiles[i].FlipDiagonally);
         }
     }
 }

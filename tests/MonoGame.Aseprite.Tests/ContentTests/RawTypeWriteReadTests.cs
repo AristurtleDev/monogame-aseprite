@@ -178,10 +178,10 @@ public sealed class RawTypeWriteReadTests
 
         RawTilemapTile[] tiles = new RawTilemapTile[]
         {
-            new(0, true, true, 0.0f),
-            new(1, true, false, 1.0f),
-            new(2, false, true, 2.0f),
-            new(3, false, false, 3.0f)
+            new RawTilemapTile(0, true, true, false),
+            new RawTilemapTile(1, true, false, true),
+            new RawTilemapTile(2, false, true, false),
+            new RawTilemapTile(3, false, false, true)
         };
 
         RawTilemapLayer[] layers = new RawTilemapLayer[]
@@ -209,10 +209,10 @@ public sealed class RawTypeWriteReadTests
 
         RawTilemapTile[] tiles = new RawTilemapTile[]
         {
-            new(0, true, true, 0.0f),
-            new(1, true, false, 1.0f),
-            new(2, false, true, 2.0f),
-            new(3, false, false, 3.0f)
+            new RawTilemapTile(0, true, true, false),
+            new RawTilemapTile(1, true, false, true),
+            new RawTilemapTile(2, false, true, false),
+            new RawTilemapTile(3, false, false, true)
         };
 
         RawTilemapLayer[] layers = new RawTilemapLayer[]
