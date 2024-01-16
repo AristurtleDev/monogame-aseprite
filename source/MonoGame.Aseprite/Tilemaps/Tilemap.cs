@@ -413,7 +413,7 @@ public sealed class Tilemap : IEnumerable<TilemapLayer>
             {
                 RawTilemapTile rawTile = rawLayer.RawTilemapTiles[t];
 
-                layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.Rotation);
+                layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.FlipDiagonally);
             }
         }
 

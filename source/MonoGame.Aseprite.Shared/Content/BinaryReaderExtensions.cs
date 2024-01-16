@@ -250,9 +250,9 @@ internal static class BinaryReaderExtensions
         int tilesetTileID = reader.ReadInt32();
         bool flipHorizontally = reader.ReadBoolean();
         bool flipVertically = reader.ReadBoolean();
-        float rotation = reader.ReadSingle();
+        bool flipDiagonally = reader.ReadBoolean();
 
-        return new(tilesetTileID, flipHorizontally, flipVertically, rotation);
+        return new RawTilemapTile(tilesetTileID, flipHorizontally, flipVertically, flipDiagonally);
     }
 
     internal static RawTilemapFrame[] ReadRawTilemapFrames(this BinaryReader reader)

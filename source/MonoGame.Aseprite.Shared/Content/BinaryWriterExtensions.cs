@@ -204,7 +204,7 @@ internal static class BinaryWriterExtensions
         writer.Write(value.TilesetTileID);
         writer.Write(value.FlipHorizontally);
         writer.Write(value.FlipVertically);
-        writer.Write(value.Rotation);
+        writer.Write(value.FlipDiagonally);
     }
 
     internal static void Write(this BinaryWriter writer, ReadOnlySpan<RawTilemapFrame> value)

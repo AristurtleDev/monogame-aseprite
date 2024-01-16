@@ -51,9 +51,9 @@ public struct Tile
     public bool FlipVertically = false;
 
     /// <summary>
-    ///     The amount of rotation, in radians, to apply when rendering this <see cref="Tile"/>.
+    ///     Indicates whether this <see cref="Tile"/> should be flipped diagonally when rendered.
     /// </summary>
-    public float Rotation = 0.0f;
+    public bool FlipDiagonally = false;
 
     /// <summary>
     ///     Gets a value that indicates if this is an empty <see cref="Tile"/>. 
@@ -90,9 +90,9 @@ public struct Tile
     /// <param name="flipVertically">
     ///     Indicates whether the <see cref="Tile"/> should be flipped vertically when rendered.
     /// </param>
-    /// <param name="rotation">
-    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/>.
+    /// <param name="flipDiagonally">
+    ///     Indicates whether the <see cref="Tile"/> should be flipped diagonally when rendered.
     /// </param>
-    public Tile(int tilesetTileID, bool flipHorizontally, bool flipVertically, float rotation) =>
-        (TilesetTileID, FlipHorizontally, FlipVertically, Rotation) = (tilesetTileID, flipHorizontally, flipVertically, rotation);
+    public Tile(int tilesetTileID, bool flipHorizontally, bool flipVertically, bool flipDiagonally) =>
+        (TilesetTileID, FlipHorizontally, FlipVertically, FlipDiagonally) = (tilesetTileID, flipHorizontally, flipVertically, flipDiagonally);
 }

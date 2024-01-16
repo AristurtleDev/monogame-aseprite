@@ -53,7 +53,7 @@ internal sealed class TilemapContentTypeReader : ContentTypeReader<Tilemap>
             for (int j = 0; j < rawLayer.RawTilemapTiles.Length; j++)
             {
                 RawTilemapTile rawTile = rawLayer.RawTilemapTiles[j];
-                layer.SetTile(j, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.Rotation);
+                layer.SetTile(j, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.FlipDiagonally);
             }
         }
 
