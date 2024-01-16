@@ -445,7 +445,6 @@ public static class SpriteBatchExtensions
                 SpriteEffects flipEffects = DetermineFlipEffectForTile(tile.FlipHorizontally, tile.FlipVertically, tile.FlipDiagonally);
                 float rotation = tile.FlipDiagonally ? MathHelper.ToRadians(90.0f) : 0.0f;
 
-                // float rotation = tile.FlipDiagonally ? MathHelper.ToRadians(180.0f) : 0.0f;
                 //  Since Aseprite allows tile rotation now, tile are rotated in Aseprite based on
                 //  center origin. So we need an origin point, as well as to offset the position
                 //  draw due to the origin point.
