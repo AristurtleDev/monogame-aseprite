@@ -184,9 +184,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// </param>
     public void Update(double deltaTimeInSeconds)
     {
-        GameTime fakeGameTime = new();
-        fakeGameTime.ElapsedGameTime = TimeSpan.FromSeconds(deltaTimeInSeconds);
-        Update(fakeGameTime);
+        Update(TimeSpan.FromSeconds(deltaTimeInSeconds));
     }
 
     /// <summary>
@@ -199,6 +197,20 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     ///     A snapshot of the game timing values for the current update cycle.
     /// </param>
     public void Update(GameTime gameTime)
+    {
+        Update(gameTime.ElapsedGameTime);
+    }
+
+    /// <summary>
+    ///     Updates this <see cref="AnimatedTilemap"/>.
+    /// </summary>
+    /// <remarks>
+    ///     This should only be called once per game update cycle.
+    /// </remarks>
+    /// <param name="elapsedTime">
+    ///     The amount of time, that have elapsed since the last update cycle in the game.
+    /// </param>
+    public void Update(in TimeSpan elapsedTime)
     {
         if (!IsAnimating || IsPaused)
         {
@@ -216,7 +228,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
             OnFrameBegin?.Invoke(this);
         }
 
-        CurrentFrameTimeRemaining -= gameTime.ElapsedGameTime;
+        CurrentFrameTimeRemaining -= elapsedTime;
 
         if (CurrentFrameTimeRemaining <= TimeSpan.Zero)
         {
