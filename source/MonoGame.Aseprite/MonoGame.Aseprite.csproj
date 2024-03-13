@@ -29,7 +29,7 @@
         </PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>
-            Version 5.1.3
+           Version 5.1.3
                 - Added `MonoGame.Aseprite.Configuration`
                     -   When set to `false` this will assume frame index gets from the `AsepriteFile` start at index 1 and not 0.
                 - Removed `MonoGame.Aserpite.Configuration`

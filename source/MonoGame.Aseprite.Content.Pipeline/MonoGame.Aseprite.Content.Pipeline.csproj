@@ -20,7 +20,10 @@
 
     <!-- dotnet pack Nuget Config stuff -->
     <PropertyGroup>
-        <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>       
+        <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
+        <Version>5.1.2</Version>
+        <AssemblyVersion>5.1.2</AssemblyVersion>
+        <FileVersion>5.1.2</FileVersion>
         <Authors>Christopher Whitley</Authors>
         <Company>Aristurtle</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
