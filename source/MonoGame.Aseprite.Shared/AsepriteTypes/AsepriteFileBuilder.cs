@@ -115,7 +115,7 @@ internal class AsepriteFileBuilder
         AddRawImageCel(x, y, width, height, layerIndex, opacity, decompressedData);
     }
 
-    internal void AddCompressedTilemapCel(short x, short y, ushort columns, ushort rows, ushort layerIndex, byte opacity, byte[] compressedData, ushort bitsPerTile, uint idBitmask, uint xFlipBitmask, uint yFlipBitmask, uint rotationBitmask)
+    internal void AddCompressedTilemapCel(short x, short y, ushort columns, ushort rows, ushort layerIndex, byte opacity, byte[] compressedData, ushort bitsPerTile, uint idBitmask, uint xFlipBitmask, uint yFlipBitmask, uint dFlipBitmask)
     {
         Span<byte> decompressedData = Decompress(compressedData);
 
@@ -128,10 +128,10 @@ internal class AsepriteFileBuilder
             ReadOnlySpan<byte> dword = decompressedData.Slice(b, bytesPerTile);
             uint value = BitConverter.ToUInt32(dword);
             uint id = (value & idBitmask) >> 0;
-            uint xFlip = (value & xFlipBitmask);
-            uint yFlip = (value & yFlipBitmask);
-            uint rotation = (value & rotationBitmask);
-            AsepriteTile tile = new((int)id, (int)xFlip, (int)yFlip, (int)rotation);
+            bool xFlip = (value & xFlipBitmask) == xFlipBitmask;
+            bool yFlip = (value & yFlipBitmask) == yFlipBitmask;
+            bool dFlip = (value & dFlipBitmask) == dFlipBitmask;
+            AsepriteTile tile = new((int)id, xFlip, yFlip, dFlip);
             tiles[i] = tile;
         }
 

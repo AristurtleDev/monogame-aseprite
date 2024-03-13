@@ -34,6 +34,9 @@ namespace MonoGame.Aseprite.Content.Pipeline.Processors;
 [ContentProcessor(DisplayName = "Aseprite Tilemap Processor - MonoGame.Aseprite")]
 internal sealed class TilemapContentProcessor : ContentProcessor<AsepriteFileImportResult, TilemapContent>
 {
+    [DisplayName("Zero Indexed Frames")]
+    public bool ZeroIndexedFrames { get; set; } = true;
+
     [DisplayName("Frame Index")]
     public int FrameIndex { get; set; } = 0;
 
@@ -45,6 +48,7 @@ internal sealed class TilemapContentProcessor : ContentProcessor<AsepriteFileImp
 
     public override TilemapContent Process(AsepriteFileImportResult content, ContentProcessorContext context)
     {
+        content.AsepriteFile.ZeroIndexedFrames = ZeroIndexedFrames;
         RawTilemap rawTilemap = TilemapProcessor.ProcessRaw(content.AsepriteFile, FrameIndex, OnlyVisibleLayer);
         Texture2DContent[] texture2DContents = ProcessTilesetTexture(rawTilemap.RawTilesets);
         return new(rawTilemap, texture2DContents);

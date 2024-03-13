@@ -27,7 +27,7 @@ using MonoGame.Aseprite.AsepriteTypes;
 
 namespace MonoGame.Aseprite.Tests;
 
-public sealed class AsepriteFileTests 
+public sealed class AsepriteFileTests
 {
     // https://github.com/AristurtleDev/monogame-aseprite/issues/93
     [Fact]
@@ -50,5 +50,31 @@ public sealed class AsepriteFileTests
         AsepriteFile aseFile = new AsepriteFile("Test", 1, 1, palette, frames, layers, tags, slices, tilesets, userData);
 
         Assert.True(aseFile.TryGetSlice(expectedSliceName, out AsepriteSlice? slice));
+    }
+
+    [Fact]
+    public void Get_Frame_When_ZeroIndexed_False()
+    {
+        Color[] palette = Array.Empty<Color>();
+        AsepriteFrame frame = new AsepriteFrame("Frame0", 1, 1, 1, Array.Empty<AsepriteCel>());
+        AsepriteFrame[] frames = new AsepriteFrame[]
+        {
+            new AsepriteFrame("Frame0", 1, 1, 1, Array.Empty<AsepriteCel>()),
+            new AsepriteFrame("Frame1", 1, 1, 1, Array.Empty<AsepriteCel>())
+        };
+
+        AsepriteLayer[] layers = Array.Empty<AsepriteLayer>();
+        AsepriteTag[] tags = Array.Empty<AsepriteTag>();
+        AsepriteTileset[] tilesets = Array.Empty<AsepriteTileset>();
+        AsepriteUserData userData = new AsepriteUserData();
+
+        AsepriteSlice[] slices = Array.Empty<AsepriteSlice>();
+        AsepriteFile aseFile = new AsepriteFile("Test", 1, 1, palette, frames, layers, tags, slices, tilesets, userData);
+
+        aseFile.ZeroIndexedFrames = false;
+
+        AsepriteFrame expected = frames[0];
+        AsepriteFrame actual = aseFile.GetFrame(1);
+        Assert.Equal(expected, actual);
     }
 }

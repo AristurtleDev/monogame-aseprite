@@ -42,8 +42,17 @@ public sealed class AsepriteFile
     private AsepriteTileset[] _tilesets;
 
     /// <summary>
+    ///     <see langword="true"/> if, when referencing frames by index, the first frame is index 0; otherwise
+    ///     <see langword="false"/> if the first frame is index 1.
+    /// </summary>
+    public bool ZeroIndexedFrames = true;
+
+    /// <summary>
     ///     Gets a read-only span of all <see cref="AsepriteFrame"/> elements in this <see cref="AsepriteFile"/>.
     /// </summary>
+    /// <remarks>
+    ///     The ordering of elements is not affected by <see cref="MonoGame.Aseprite.Configuration.ZeroIndexedFrames"/>.
+    /// </remarks>
     public ReadOnlySpan<AsepriteFrame> Frames => _frames;
 
     /// <summary>
@@ -142,6 +151,10 @@ public sealed class AsepriteFile
     /// <param name="frameIndex">
     ///     The index of the <see cref="AsepriteFrame"/> to locate.
     /// </param>
+    /// <remarks>
+    ///     You can specify non-zero indexed frames using 
+    ///     <see cref="MonoGame.Aseprite.Configuration.ZeroIndexedFrames"/>
+    /// </remarks>
     /// <returns>
     ///     The <see cref="AsepriteFrame"/> located.
     /// </returns>
@@ -151,14 +164,25 @@ public sealed class AsepriteFile
     /// </exception>
     public AsepriteFrame GetFrame(int frameIndex)
     {
-        if (frameIndex < 0 || frameIndex >= _frames.Length)
+        int index = ZeroIndexedFrames ? frameIndex : frameIndex - 1;
+
+        if (index < 0 || index >= _frames.Length)
         {
-            ArgumentOutOfRangeException ex = new(nameof(frameIndex), $"{nameof(frameIndex)} cannot be less than zero or greater than or equal to the total number of frames in this aseprite file.");
+            ArgumentOutOfRangeException ex;
+            if (ZeroIndexedFrames)
+            {
+                ex = new(nameof(frameIndex), $"{nameof(frameIndex)} cannot be less than zero or greater than or equal to the total number of frames in this aseprite file.");
+            }
+            else
+            {
+                ex = new(nameof(frameIndex), $"{nameof(frameIndex)} cannot be less than one or greater than the total number of frames in this aseprite file when '{nameof(ZeroIndexedFrames)}' is 'false'.");
+            }
             ex.Data.Add("TotalFrames", _frames.Length);
+            ex.Data.Add("ZeroIndexed", ZeroIndexedFrames);
             throw ex;
         }
 
-        return _frames[frameIndex];
+        return _frames[index];
     }
 
     /// <summary>
@@ -179,14 +203,15 @@ public sealed class AsepriteFile
     /// </returns>
     public bool TryGetFrame(int frameIndex, [NotNullWhen(true)] out AsepriteFrame? located)
     {
+        int index = ZeroIndexedFrames ? frameIndex : frameIndex - 1;
         located = default;
 
-        if (frameIndex < 0 || frameIndex >= _frames.Length)
+        if (index < 0 || index >= _frames.Length)
         {
             return false;
         }
 
-        located = _frames[frameIndex];
+        located = _frames[index];
         return located is not null;
     }
 

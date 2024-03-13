@@ -51,10 +51,10 @@ public sealed class AsepriteFrameTestsFixture
 
         AsepriteTile[] tiles = new AsepriteTile[]
         {
-            new(1, 0, 0, 0),
-            new(2, 0, 0, 0),
-            new(3, 0, 0, 0),
-            new(0, 0, 0, 0)
+            new AsepriteTile(1, false, false, false),
+            new AsepriteTile(2, false, false, false),
+            new AsepriteTile(3, false, false, false),
+            new AsepriteTile(0, false, false, false)
         };
 
         AsepriteCel[] cels = new AsepriteCel[]

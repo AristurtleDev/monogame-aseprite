@@ -120,10 +120,10 @@ public sealed class AsepriteFileReaderTests
         AssertCel(aseFile.Frames[0].Cels[1], "tilemap", 0, 0, 255, null, null);
         AsepriteTilemapCel frame0cel1 = Assert.IsType<AsepriteTilemapCel>(aseFile.Frames[0].Cels[1]);
         AssertTilemapCel(frame0cel1, 2, 2, 4, "tileset");
-        AssertTile(frame0cel1.Tiles[0], 1, 0, 0, 0);
-        AssertTile(frame0cel1.Tiles[1], 2, 0, 0, 0);
-        AssertTile(frame0cel1.Tiles[2], 3, 0, 0, 0);
-        AssertTile(frame0cel1.Tiles[3], 4, 0, 0, 0);
+        AssertTile(frame0cel1.Tiles[0], 1, false, false, false);
+        AssertTile(frame0cel1.Tiles[1], 2, false, false, false);
+        AssertTile(frame0cel1.Tiles[2], 3, false, false, false);
+        AssertTile(frame0cel1.Tiles[3], 4, false, false, false);
 
         AssertCel(aseFile.Frames[0].Cels[2], "eight-frames", 0, 0, 255, null, null);
         AsepriteImageCel frame0cel2 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[0].Cels[2]);
@@ -289,10 +289,10 @@ public sealed class AsepriteFileReaderTests
         AssertCel(aseFile.Frames[0].Cels[1], "tilemap", 0, 0, 255, null, null);
         AsepriteTilemapCel frame0cel1 = Assert.IsType<AsepriteTilemapCel>(aseFile.Frames[0].Cels[1]);
         AssertTilemapCel(frame0cel1, 2, 2, 4, "tileset");
-        AssertTile(frame0cel1.Tiles[0], 1, 0, 0, 0);
-        AssertTile(frame0cel1.Tiles[1], 2, 0, 0, 0);
-        AssertTile(frame0cel1.Tiles[2], 3, 0, 0, 0);
-        AssertTile(frame0cel1.Tiles[3], 4, 0, 0, 0);
+        AssertTile(frame0cel1.Tiles[0], 1, false, false, false);
+        AssertTile(frame0cel1.Tiles[1], 2, false, false, false);
+        AssertTile(frame0cel1.Tiles[2], 3, false, false, false);
+        AssertTile(frame0cel1.Tiles[3], 4, false, false, false);
 
         AssertCel(aseFile.Frames[0].Cels[2], "eight-frames", 0, 0, 255, null, null);
         AsepriteImageCel frame0cel2 = Assert.IsType<AsepriteImageCel>(aseFile.Frames[0].Cels[2]);
@@ -575,12 +575,12 @@ public sealed class AsepriteFileReaderTests
         Assert.Equal(tilesetName, tilemapCel.Tileset.Name);
     }
 
-    private void AssertTile(AsepriteTile tile, int tilesetTileID, int xFlip, int yFlip, int rotation)
+    private void AssertTile(AsepriteTile tile, int tilesetTileID, bool xFlip, bool yFlip, bool dFlip)
     {
         Assert.Equal(tilesetTileID, tile.TilesetTileID);
         Assert.Equal(xFlip, tile.XFlip);
         Assert.Equal(yFlip, tile.YFlip);
-        Assert.Equal(rotation, tile.Rotation);
+        Assert.Equal(dFlip, tile.DFlip);
     }
 
     private void AssertSlice(AsepriteSlice slice, string name, int keyCount, bool isNine, bool hasPivot, string? userDataText, Color? userDataColor)

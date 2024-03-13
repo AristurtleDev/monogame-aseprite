@@ -270,20 +270,20 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     /// <param name="flipVertically">
     ///     Indicates if the <see cref="Tile"/> element being set should be flipped vertically when rendered.
     /// </param>
-    /// <param name="rotation">
-    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/> element being set.
+    /// <param name="flipDiagonally">
+    ///     Indicates if the <see cref="Tile"/> element being set should be flipped diagonally when rendered.
     /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if the index specified is less than zero or is greater than or equal to the total number of 
     ///     <see cref="Tile"/> elements in this <see cref="TilemapLayer"/>.
     /// </exception>
-    public void SetTile(int index, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, float rotation = 0.0f)
+    public void SetTile(int index, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, bool flipDiagonally = false)
     {
         Tile tile;
         tile.TilesetTileID = tilesetTileID;
         tile.FlipHorizontally = flipHorizontally;
         tile.FlipVertically = flipVertically;
-        tile.Rotation = rotation;
+        tile.FlipDiagonally = flipDiagonally;
         SetTile(index, tile);
     }
 
@@ -307,20 +307,20 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     /// <param name="flipVertically">
     ///     Indicates if the <see cref="Tile"/> element being set should be flipped vertically when rendered.
     /// </param>
-    /// <param name="rotation">
-    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/> element being set.
+    /// <param name="flipDiagonally">
+    ///     Indicates if the <see cref="Tile"/> element being set should be flipped diagonally when rendered.
     /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if either the column or row  specified is less than zero or are greater than or equal to the total 
     ///     number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
-    public void SetTile(int column, int row, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, float rotation = 0.0f)
+    public void SetTile(int column, int row, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, bool flipDiagonally = false)
     {
         Tile tile;
         tile.TilesetTileID = tilesetTileID;
         tile.FlipHorizontally = flipHorizontally;
         tile.FlipVertically = flipVertically;
-        tile.Rotation = rotation;
+        tile.FlipDiagonally = flipDiagonally;
         SetTile(column, row, tile);
     }
 
@@ -341,20 +341,20 @@ public sealed class TilemapLayer : IEnumerable<Tile>
     /// <param name="flipVertically">
     ///     Indicates if the <see cref="Tile"/> element being set should be flipped vertically when rendered.
     /// </param>
-    /// <param name="rotation">
-    ///     The amount of rotation, in radians, to apply when rendering the <see cref="Tile"/> element being set.
+    /// <param name="flipDiagonally">
+    ///     Indicates if the <see cref="Tile"/> element being set should be flipped diagonally when rendered.
     /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
     ///     Thrown if either the column or row in the specified location is less than zero or are greater than or equal 
     ///     to the total number of columns or rows in this <see cref="TilemapLayer"/>.
     /// </exception>
-    public void SetTile(Point location, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, float rotation = 0.0f)
+    public void SetTile(Point location, int tilesetTileID, bool flipHorizontally = false, bool flipVertically = false, bool flipDiagonally = false)
     {
         Tile tile;
         tile.TilesetTileID = tilesetTileID;
         tile.FlipHorizontally = flipHorizontally;
         tile.FlipVertically = flipVertically;
-        tile.Rotation = rotation;
+        tile.FlipDiagonally = flipDiagonally;
         SetTile(location, tile);
     }
 

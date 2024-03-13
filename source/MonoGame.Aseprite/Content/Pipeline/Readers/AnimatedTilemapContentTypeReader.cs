@@ -57,7 +57,7 @@ internal sealed class AnimatedTilemapContentTypeReader : ContentTypeReader<Anima
                 for (int t = 0; t < rawLayer.RawTilemapTiles.Length; t++)
                 {
                     RawTilemapTile rawTile = rawLayer.RawTilemapTiles[t];
-                    tilemapLayer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.Rotation);
+                    tilemapLayer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.FlipDiagonally);
                 }
             }
         }
