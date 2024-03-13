@@ -233,6 +233,8 @@ public static class AsepriteFileReader
                 ReadUserDataChunk(reader, builder, lastChunkType, tagIterator);
                 break;
             case CHUNK_TYPE_OLD_PALETTE_1:
+                ReadOldPalette1Chunk(reader, builder);
+                break;
             case CHUNK_TYPE_OLD_PALETTE_2:
             case CHUNK_TYPE_CEL_EXTRA:
             case CHUNK_TYPE_COLOR_PROFILE:
@@ -386,6 +388,37 @@ public static class AsepriteFileReader
             string name = ReadString(reader);
 
             builder.AddTag(from, to, direction, repeat, rgb, name);
+        }
+    }
+
+    private static void ReadOldPalette1Chunk(BinaryReader reader, AsepriteFileBuilder builder)
+    {
+        ushort packets = ReadWord(reader);
+        int skip = 0;
+        int size = 0;
+        Span<byte> rgb = stackalloc byte[4];
+
+        for(int i = 0; i < packets; i++)
+        {
+            skip += ReadByte(reader);
+            size = ReadByte(reader);
+
+            if(size == 0)
+            {
+                size = 256;
+            }
+
+            builder.ResizePalette((uint)size);
+
+            for(int c = skip; c < skip + size; c++)
+            {
+                rgb.Clear();
+                rgb[0] = ReadByte(reader);
+                rgb[1] = ReadByte(reader);
+                rgb[2] = ReadByte(reader);
+                rgb[3] = 255;
+                builder.AddPaletteEntry((uint)c, rgb);
+            }
         }
     }
 
