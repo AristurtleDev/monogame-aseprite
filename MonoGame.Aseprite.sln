@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{CF520A36-B1B8-4CFA-9835-C3345A65D57B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite", "source\MonoGame.Aseprite\MonoGame.Aseprite.csproj", "{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Content.Pipeline", "source\MonoGame.Aseprite.Content.Pipeline\MonoGame.Aseprite.Content.Pipeline.csproj", "{49903681-88CC-4B14-AD02-C475E78D4CE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FFCB306E-00AB-4CCF-A88A-4FE52D1E9778}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Tests", "tests\MonoGame.Aseprite.Tests\MonoGame.Aseprite.Tests.csproj", "{133DE9C3-4D1A-4FF1-8994-1174424B2223}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{78ECB0CA-72B0-4E08-BAB1-8BF2B98829D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Aseprite.Build", "build\MonoGame.Aseprite.Build.csproj", "{4E3BCA48-A076-4ECE-A80A-F254DAE2D18E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{780173B6-AA4D-40B8-ADA6-D99531857B64}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		.gitignore = .gitignore
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{133DE9C3-4D1A-4FF1-8994-1174424B2223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{133DE9C3-4D1A-4FF1-8994-1174424B2223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{133DE9C3-4D1A-4FF1-8994-1174424B2223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{133DE9C3-4D1A-4FF1-8994-1174424B2223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E3BCA48-A076-4ECE-A80A-F254DAE2D18E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E3BCA48-A076-4ECE-A80A-F254DAE2D18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E3BCA48-A076-4ECE-A80A-F254DAE2D18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E3BCA48-A076-4ECE-A80A-F254DAE2D18E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8} = {CF520A36-B1B8-4CFA-9835-C3345A65D57B}
+		{49903681-88CC-4B14-AD02-C475E78D4CE2} = {CF520A36-B1B8-4CFA-9835-C3345A65D57B}
+		{133DE9C3-4D1A-4FF1-8994-1174424B2223} = {FFCB306E-00AB-4CCF-A88A-4FE52D1E9778}
+		{4E3BCA48-A076-4ECE-A80A-F254DAE2D18E} = {78ECB0CA-72B0-4E08-BAB1-8BF2B98829D9}
+	EndGlobalSection
+EndGlobal
