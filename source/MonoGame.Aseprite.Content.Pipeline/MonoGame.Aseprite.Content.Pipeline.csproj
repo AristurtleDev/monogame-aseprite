@@ -1,58 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <!-- Project level compilation properties -->
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <Version>5.1.3</Version>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <Authors>Christopher Whitley</Authors>
-        <Company>Aristurtle</Company>
-        <Copyright>Copyright (c) 2018 - 2023 Christoipher Whitley</Copyright>
-        <PackageProjectUrl>https://monogameaseprite.net</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryBranch>main</RepositoryBranch>
-        <NeutralLanguage>en</NeutralLanguage>
-    </PropertyGroup>
-
-    <!-- dotnet pack Nuget Config stuff -->
+    <!-- Project level package properties -->
     <PropertyGroup>
         <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
-        <Version>5.1.2</Version>
-        <AssemblyVersion>5.1.2</AssemblyVersion>
-        <FileVersion>5.1.2</FileVersion>
-        <Authors>Christopher Whitley</Authors>
-        <Company>Aristurtle</Company>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>Copyright (c) 2018 - 2023 Christoipher Whitley</Copyright>
-        <PackageProjectUrl>https://monogameaseprite.net</PackageProjectUrl>
-        <PackageIcon>icon.png</PackageIcon>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryBranch>stable</RepositoryBranch>
-        <PackageTags>
-            MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb
-        </PackageTags>
-        <PackageReleaseNotes>
-            Version 5.1.3
-                - Added `MonoGame.Aseprite.Configuration`
-                    -   When set to `false` this will assume frame index gets from the `AsepriteFile` start at index 1 and not 0.
-                - Removed `MonoGame.Aserpite.Configuration`
-                - Moved `ZeroIndexedFrames` to be property of `AsepriteFile`
-                - Added unit testing for `AsepriteFile.ZeroIndexedFrames` functionality    
-                - Added proper support for new tile rotation introduced in Aseprite 1.3
-                - Read Old Palette Chunk for Indexed mode due to Aseprite 1.3.5 file spec change
-        </PackageReleaseNotes>
         <Description>
             MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
             MGCB Editor for importing Aseprite (.ase | .aseprite) files to be used in a MonoGame project using the
             MonoGame.Aseprite library.
         </Description>
-        <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
     <!-- Includes for the icons and README.md that are in the <PackageIcon> and <PackageReadMeFile> tags above -->
@@ -61,14 +21,15 @@
         <None Include="..\..\.\.nuget\README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
-    <!-- Nuget Package References -->
+    <!-- NuGet Package References -->
     <ItemGroup>
-        <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
-            <PrivateAssets>All</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
-            <PrivateAssets>All</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="MonoGame.Framework.Content.Pipeline" 
+                          Version="3.8.1.303"
+                          PrivateAssets="All" />
+        
+        <PackageReference Include="MonoGame.Framework.DesktopGL" 
+                          Version="3.8.1.303"
+                          PrivateAssets="All" />
     </ItemGroup>
 
     <!-- Compile include code files from shared directory -->
