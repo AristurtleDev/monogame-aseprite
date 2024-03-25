@@ -33,9 +33,8 @@
 
     <!-- NuGet Package References -->
     <ItemGroup>
-        <PackageReference Include="MonoGame.Framework.DesktopGL"
-                          Version="3.8.1.303"
-                          PrivateAssets="All" />
+        <PackageReference Include="AsepriteDotNet" Version="1.1.0.14" />
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" PrivateAssets="All" />
     </ItemGroup>
 
     <!-- Allow Test project to access internals -->
@@ -54,9 +53,4 @@
         <!-- Suppress warning about Pipeline dll not being in lib folder for NuGet -->
         <NoWarn>NU5100</NoWarn>
     </PropertyGroup>
-
-    <!-- Compile include code files from shared directory -->
-    <ItemGroup>
-        <Compile Include="../MonoGame.Aseprite.Shared/**/*.cs" />
-    </ItemGroup>
 </Project>
