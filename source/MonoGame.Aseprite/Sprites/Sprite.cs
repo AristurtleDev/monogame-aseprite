@@ -24,7 +24,7 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Utils;
 
 namespace MonoGame.Aseprite.Sprites;
 
@@ -309,42 +309,35 @@ public class Sprite
     /// </param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position) => spriteBatch.Draw(this, position);
 
-    /// <summary>
-    ///     Creates a new instance of the <see cref="Sprite"/> class from the given <see cref="RawSprite"/>.
-    /// </summary>
-    /// <param name="device">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
-    /// </param>
-    /// <param name="rawSprite">
-    ///     The <see cref="RawSprite"/> to create the <see cref="Sprite"/> from.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Sprite"/> created by this method.
-    /// </returns>
-    public static Sprite FromRaw(GraphicsDevice device, RawSprite rawSprite)
+    public static Sprite FromFile(GraphicsDevice device, AseFile file, int frameNumber, AseProcessorOptions options)
     {
-        RawTexture rawTexture = rawSprite.RawTexture;
+        options ??= AseProcessorOptions.Default;
+        AseSprite aseSprite = AseSpriteProcessor.Process(file, frameNumber, options);
+        Texture2D texture = aseSprite.Texture.ToTexture2D(device);
+        texture.Name = aseSprite.Name;
+        texture.SetData(aseSprite.Texture.Pixels.ToArray());
 
-        Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
-        texture.Name = rawTexture.Name;
-        texture.SetData<Color>(rawTexture.Pixels.ToArray());
-
-        TextureRegion textureRegion = new(texture.Name, texture, texture.Bounds);
-
-        for (int i = 0; i < rawSprite.Slices.Length; i++)
+        TextureRegion textureRegion = new TextureRegion(texture.Name, texture, texture.Bounds);
+        for(int i = 0; i < aseSprite.Slices.Length; i++)
         {
-            RawSlice slice = rawSprite.Slices[i];
-
-            if (slice is RawNinePatchSlice ninePatch)
+            AseSlice aseSlice = aseSprite.Slices[i];
+            if (aseSlice is AseNinepatchSlice aseNinePatchSlice)
             {
-                _ = textureRegion.CreateNinePatchSlice(ninePatch.Name, ninePatch.Bounds, ninePatch.CenterBounds, ninePatch.Origin, ninePatch.Color);
+                textureRegion.CreateNinePatchSlice(aseNinePatchSlice.Name,
+                                                   aseNinePatchSlice.Bounds.ToXnaRectangle(),
+                                                   aseNinePatchSlice.CenterBounds.ToXnaRectangle(),
+                                                   aseNinePatchSlice.Origin.ToXnaVector2(),
+                                                   aseNinePatchSlice.Color.ToXnaColor());
             }
             else
             {
-                _ = textureRegion.CreateSlice(slice.Name, slice.Bounds, slice.Origin, slice.Color);
+                textureRegion.CreateSlice(aseSlice.Name,
+                                          aseSlice.Bounds.ToXnaRectangle(),
+                                          aseSlice.Origin.ToXnaVector2(),
+                                          aseSlice.Color.ToXnaColor());
             }
         }
 
-        return new(rawSprite.Name, textureRegion);
+        return new Sprite(aseSprite.Name, textureRegion);
     }
 }

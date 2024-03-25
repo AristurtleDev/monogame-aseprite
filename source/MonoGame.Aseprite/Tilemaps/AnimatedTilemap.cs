@@ -25,7 +25,8 @@ SOFTWARE.
 using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Utils;
+
 
 namespace MonoGame.Aseprite.Tilemaps;
 
@@ -652,50 +653,43 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    /// <summary>
-    ///     Creates a new instance of the <see cref="AnimatedTilemap"/> class from the given 
-    ///     <see cref="RawAnimatedTilemap"/>.
-    /// </summary>
-    /// <param name="device">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
-    /// </param>
-    /// <param name="rawTilemap">
-    ///     The <see cref="RawAnimatedTilemap"/> to create the <see cref="AnimatedTilemap"/> from.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="AnimatedTilemap"/> created by this method.
-    /// </returns>
-    public static AnimatedTilemap FromRaw(GraphicsDevice device, RawAnimatedTilemap rawTilemap)
+    public static AnimatedTilemap FromFile(GraphicsDevice device, AseFile file, AseProcessorOptions options)
     {
-        AnimatedTilemap animatedTilemap = new(rawTilemap.Name);
+        options ??= AseProcessorOptions.Default;
+        AseAnimatedTilemap aseAnimatedTilemap = AseAnimatedTilemapProcessor.Process(file, options);
+        AnimatedTilemap animatedTilemap = new AnimatedTilemap(aseAnimatedTilemap.Name);
 
-        Dictionary<int, Tileset> tilesetLookup = new();
-
-        for (int i = 0; i < rawTilemap.RawTilesets.Length; i++)
+        Dictionary<int, Tileset> tilesetLookup = new Dictionary<int, Tileset>();
+        for (int i = 0; i < aseAnimatedTilemap.Tilesets.Length; i++)
         {
-            RawTileset rawTileset = rawTilemap.RawTilesets[i];
-            Tileset tileset = Tileset.FromRaw(device, rawTileset);
-            tilesetLookup.Add(rawTileset.ID, tileset);
+            AseTileset aseTileset = aseAnimatedTilemap.Tilesets[i];
+            Texture2D texture = aseTileset.Texture.ToTexture2D(device);
+            Tileset tileset = new Tileset(aseTileset.Name, texture, aseTileset.TileSize.Width, aseTileset.TileSize.Height);
+            tilesetLookup.Add(aseTileset.ID, tileset);
         }
 
-        for (int f = 0; f < rawTilemap.RawTilemapFrames.Length; f++)
+        for(int f = 0; f < aseAnimatedTilemap.Frames.Length; f++)
         {
-            RawTilemapFrame rawFrame = rawTilemap.RawTilemapFrames[f];
+            AseTilemapFrame aseTilemapFrame = aseAnimatedTilemap.Frames[f];
+            AnimatedTilemapFrame animatedTilemapFrame = animatedTilemap.CreateFrame(aseTilemapFrame.Duration);
 
-            TimeSpan duration = TimeSpan.FromMilliseconds(rawFrame.DurationInMilliseconds);
-            AnimatedTilemapFrame animatedTilemapFrame = animatedTilemap.CreateFrame(duration);
-
-            for (int l = 0; l < rawFrame.RawTilemapLayers.Length; l++)
+            for(int l = 0; l < aseTilemapFrame.Layers.Length; l++)
             {
-                RawTilemapLayer rawLayer = rawFrame.RawTilemapLayers[l];
+                AseTilemapLayer aseTilemapLayer = aseTilemapFrame.Layers[l];
+                TilemapLayer tilemapLayer = animatedTilemapFrame.CreateLayer(aseTilemapLayer.Name,
+                                                                             tilesetLookup[aseTilemapLayer.TilesetID],
+                                                                             aseTilemapLayer.Columns,
+                                                                             aseTilemapLayer.Rows,
+                                                                             aseTilemapLayer.Offset.ToXnaVector2());
 
-                TilemapLayer layer = animatedTilemapFrame.CreateLayer(rawLayer.Name, tilesetLookup[rawLayer.TilesetID], rawLayer.Columns, rawLayer.Rows, rawLayer.Offset.ToVector2());
-
-                for (int t = 0; t < rawLayer.RawTilemapTiles.Length; t++)
+                for (int t = 0; t < aseTilemapLayer.Tiles.Length; t++)
                 {
-                    RawTilemapTile rawTile = rawLayer.RawTilemapTiles[t];
-
-                    layer.SetTile(t, rawTile.TilesetTileID, rawTile.FlipVertically, rawTile.FlipHorizontally, rawTile.FlipDiagonally);
+                    AseTilemapTile aseTilemapTile = aseTilemapLayer.Tiles[t];
+                    tilemapLayer.SetTile(t,
+                                         aseTilemapTile.TilesetTileID,
+                                         aseTilemapTile.FlipVertically,
+                                         aseTilemapTile.FlipHorizontally,
+                                         aseTilemapTile.FlipDiagonally);
                 }
             }
         }

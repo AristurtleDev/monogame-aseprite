@@ -23,10 +23,12 @@ SOFTWARE.
 ---------------------------------------------------------------------------- */
 
 using System.Collections;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Utils;
+
 
 namespace MonoGame.Aseprite.Sprites;
 
@@ -545,46 +547,36 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    /// <summary>
-    ///     Creates a new instance of the <see cref="TextureAtlas"/> class from the given <see cref="RawTextureAtlas"/>.
-    /// </summary>
-    /// <param name="device">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
-    /// </param>
-    /// <param name="rawTextureAtlas">
-    ///     The <see cref="RawTextureAtlas"/> to create the <see cref="TextureAtlas"/> from.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="TextureAtlas"/> created by this method.
-    /// </returns>
-    public static TextureAtlas FromRaw(GraphicsDevice device, RawTextureAtlas rawTextureAtlas)
+    public static TextureAtlas FromFile(GraphicsDevice device, AseFile file, AseProcessorOptions options)
     {
-        RawTexture rawTexture = rawTextureAtlas.RawTexture;
+        options ??= AseProcessorOptions.Default;
+        AseTextureAtlas aseTextureAtlas = AseTextureAtlasProcessor.Process(file, options);
+        Texture2D texture = aseTextureAtlas.Texture.ToTexture2D(device);
+        TextureAtlas atlas = new TextureAtlas(texture.Name, texture);
 
-        Texture2D texture = new(device, rawTexture.Width, rawTexture.Height, mipmap: false, SurfaceFormat.Color);
-        texture.SetData<Color>(rawTexture.Pixels.ToArray());
-        texture.Name = rawTexture.Name;
-
-        TextureAtlas atlas = new(rawTextureAtlas.Name, texture);
-
-        ReadOnlySpan<RawTextureRegion> rawTextureRegions = rawTextureAtlas.RawTextureRegions;
-
-        for (int i = 0; i < rawTextureRegions.Length; i++)
+        for(int i = 0; i < aseTextureAtlas.Regions.Length; i++)
         {
-            RawTextureRegion rawTextureRegion = rawTextureRegions[i];
-            TextureRegion textureRegion = atlas.CreateRegion(rawTextureRegion.Name, rawTextureRegion.Bounds);
+            AseTextureRegion aseTextureRegion = aseTextureAtlas.Regions[i];
+            TextureRegion textureRegion = atlas.CreateRegion(aseTextureRegion.Name, aseTextureRegion.Bounds.ToXnaRectangle());
 
-            for (int s = 0; s < rawTextureRegion.Slices.Length; s++)
+            for(int s = 0; s < aseTextureRegion.Slices.Length; s++)
             {
-                RawSlice slice = rawTextureRegion.Slices[s];
+                AseSlice aseSlice = aseTextureRegion.Slices[i];
 
-                if (slice is RawNinePatchSlice ninePatch)
+                if(aseSlice is AseNinepatchSlice aseNinePatchSlice)
                 {
-                    _ = textureRegion.CreateNinePatchSlice(ninePatch.Name, ninePatch.Bounds, ninePatch.CenterBounds, ninePatch.Origin, ninePatch.Color);
+                    textureRegion.CreateNinePatchSlice(aseNinePatchSlice.Name,
+                                                       aseNinePatchSlice.Bounds.ToXnaRectangle(),
+                                                       aseNinePatchSlice.CenterBounds.ToXnaRectangle(),
+                                                       aseNinePatchSlice.Origin.ToXnaVector2(),
+                                                       aseNinePatchSlice.Color.ToXnaColor());
                 }
                 else
                 {
-                    _ = textureRegion.CreateSlice(slice.Name, slice.Bounds, slice.Origin, slice.Color);
+                    textureRegion.CreateSlice(aseSlice.Name,
+                                              aseSlice.Bounds.ToXnaRectangle(),
+                                              aseSlice.Origin.ToXnaVector2(),
+                                              aseSlice.Color.ToXnaColor());
                 }
             }
         }

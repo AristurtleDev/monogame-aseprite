@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Utils;
 
 namespace MonoGame.Aseprite.Sprites;
 
@@ -297,38 +297,57 @@ public sealed class SpriteSheet
 
     #endregion Animations
 
-    /// <summary>
-    ///     Creates a new instance of the <see cref="Sprite"/> class from the given <see cref="RawSprite"/>.
-    /// </summary>
-    /// <param name="device">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
-    /// </param>
-    /// <param name="rawSpriteSheet">
-    ///     The <see cref="RawSpriteSheet"/> to create the <see cref="SpriteSheet"/> from.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="SpriteSheet"/> created by this method.
-    /// </returns>
-    public static SpriteSheet FromRaw(GraphicsDevice device, RawSpriteSheet rawSpriteSheet)
+    public static SpriteSheet FromFile(GraphicsDevice device, AseFile file, AseProcessorOptions options)
     {
-        TextureAtlas atlas = TextureAtlas.FromRaw(device, rawSpriteSheet.RawTextureAtlas);
-        SpriteSheet spriteSheet = new(rawSpriteSheet.Name, atlas);
+        options ??= AseProcessorOptions.Default;
+        AseSpriteSheet aseSpriteSheet = AseSpriteSheetProcessor.Process(file, options);
+        Texture2D texture = aseSpriteSheet.TextureAtlas.Texture.ToTexture2D(device);
+        TextureAtlas atlas = new TextureAtlas(texture.Name, texture);
 
-        for (int i = 0; i < rawSpriteSheet.RawAnimationTags.Length; i++)
+        for (int i = 0; i < aseSpriteSheet.TextureAtlas.Regions.Length; i++)
         {
-            RawAnimationTag tag = rawSpriteSheet.RawAnimationTags[i];
+            AseTextureRegion aseTextureRegion = aseSpriteSheet.TextureAtlas.Regions[i];
+            TextureRegion textureRegion = atlas.CreateRegion(aseTextureRegion.Name, aseTextureRegion.Bounds.ToXnaRectangle());
 
-            spriteSheet.CreateAnimationTag(tag.Name, builder =>
+            for (int s = 0; s < aseTextureRegion.Slices.Length; s++)
             {
-                builder.LoopCount(tag.LoopCount)
-                       .IsReversed(tag.IsReversed)
-                       .IsPingPong(tag.IsPingPong);
+                AseSlice aseSlice = aseTextureRegion.Slices[i];
 
-                for (int j = 0; j < tag.RawAnimationFrames.Length; j++)
+                if (aseSlice is AseNinepatchSlice aseNinePatchSlice)
                 {
-                    RawAnimationFrame rawAnimationFrame = tag.RawAnimationFrames[j];
-                    TimeSpan duration = TimeSpan.FromMilliseconds(rawAnimationFrame.DurationInMilliseconds);
-                    builder.AddFrame(rawAnimationFrame.FrameIndex, duration);
+                    textureRegion.CreateNinePatchSlice(aseNinePatchSlice.Name,
+                                                       aseNinePatchSlice.Bounds.ToXnaRectangle(),
+                                                       aseNinePatchSlice.CenterBounds.ToXnaRectangle(),
+                                                       aseNinePatchSlice.Origin.ToXnaVector2(),
+                                                       aseNinePatchSlice.Color.ToXnaColor());
+                }
+                else
+                {
+                    textureRegion.CreateSlice(aseSlice.Name,
+                                              aseSlice.Bounds.ToXnaRectangle(),
+                                              aseSlice.Origin.ToXnaVector2(),
+                                              aseSlice.Color.ToXnaColor());
+                }
+            }
+        }
+
+        SpriteSheet spriteSheet = new SpriteSheet(atlas.Name, atlas);
+
+
+        for (int i = 0; i < aseSpriteSheet.Tags.Length; i++)
+        {
+            AseTag aseTag = aseSpriteSheet.Tags[i];
+
+            spriteSheet.CreateAnimationTag(aseTag.Name, builder =>
+            {
+                builder.LoopCount(aseTag.LoopCount)
+                       .IsReversed(aseTag.IsReversed)
+                       .IsPingPong(aseTag.IsPingPong);
+
+                for (int j = 0; j < aseTag.Frames.Length; j++)
+                {
+                    AseAnimationFrame aseAnimationFrame = aseTag.Frames[j];
+                    builder.AddFrame(aseAnimationFrame.FrameIndex, aseAnimationFrame.Duration);
                 }
             });
         }

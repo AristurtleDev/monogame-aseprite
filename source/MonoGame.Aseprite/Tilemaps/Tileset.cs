@@ -25,7 +25,8 @@ SOFTWARE.
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.RawTypes;
+using MonoGame.Aseprite.Utils;
+
 
 namespace MonoGame.Aseprite.Tilemaps;
 
@@ -348,23 +349,21 @@ public sealed class Tileset
         return TryGetTile(index, out tile);
     }
 
-    /// <summary>
-    ///     Creates a new instance of the <see cref="Tileset"/> class from the given <see cref="RawTileset"/>.
-    /// </summary>
-    /// <param name="device">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used to create graphical resources.
-    /// </param>
-    /// <param name="rawTileset">
-    ///     The <see cref="RawTileset"/> to create the <see cref="Tileset"/> from.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Tileset"/> created by this method.
-    /// </returns>
-    public static Tileset FromRaw(GraphicsDevice device, RawTileset rawTileset)
+    public static Tileset FromFile(GraphicsDevice device, AseFile file, int index)
     {
-        Texture2D texture = new(device, rawTileset.RawTexture.Width, rawTileset.RawTexture.Height, mipmap: false, SurfaceFormat.Color);
-        texture.SetData<Color>(rawTileset.RawTexture.Pixels.ToArray());
-        texture.Name = rawTileset.RawTexture.Name;
-        return new(rawTileset.Name, texture, rawTileset.TileWidth, rawTileset.TileHeight);
+        AseTileset aseTileset = AseTilesetProcessor.Process(file, index);
+        return FromAseTileset(device, aseTileset);
+    }
+
+    public static Tileset FromFile(GraphicsDevice device, AseFile file, string name)
+    {
+        AseTileset aseTileset = AseTilesetProcessor.Process(file, name);
+        return FromAseTileset(device, aseTileset);
+    }
+
+    private static Tileset FromAseTileset(GraphicsDevice device, AseTileset aseTileset)
+    {
+        Texture2D texture = aseTileset.Texture.ToTexture2D(device);
+        return new Tileset(aseTileset.Name, texture, aseTileset.TileSize.Width, aseTileset.TileSize.Height);
     }
 }
