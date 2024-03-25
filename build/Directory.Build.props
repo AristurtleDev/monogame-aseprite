@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+    <!-- Set the project category used by the root Directory.Build.props -->
+    <PropertyGroup>
+        <ProjectCategory>build</ProjectCategory>
+    </PropertyGroup>
+
+    <!-- Import the root prop last -->
+    <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
+</Project>
