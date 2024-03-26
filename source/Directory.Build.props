@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+    <!-- Set the project category used by the root Directory.Build.props -->
+    <PropertyGroup>
+        <ProjectCategory>source</ProjectCategory>
+    </PropertyGroup>
+
+    <!-- We're a library, always generate a documentation file -->
+    <!-- (suck it prime) -->
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <!-- Common NuGet Package Settings -->
+    <PropertyGroup>
+        <Copyright>Copyright © 2024 Christopher Whitley</Copyright>
+        <Authors>Christopher Whitley and contributors</Authors>
+        <Company>Aristurtle</Company>
+        <PackageProjectUrl>https://github.com/AristurtleDev/monogame-aseprite</PackageProjectUrl>
+        <PackageIcon>nuget-icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReleaseNotes>
+            Version 5.1.3
+            - Added `MonoGame.Aseprite.Configuration`
+            -   When set to `false` this will assume frame index gets from the `AsepriteFile` start at index 1 and not 0.
+            - Removed `MonoGame.Aserpite.Configuration`
+            - Moved `ZeroIndexedFrames` to be property of `AsepriteFile`
+            - Added unit testing for `AsepriteFile.ZeroIndexedFrames` functionality
+            - Added proper support for new tile rotation introduced in Aseprite 1.3
+            - Read Old Palette Chunk for Indexed mode due to Aseprite 1.3.5 file spec change
+        </PackageReleaseNotes>
+        <PackageTags>MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryBranch>main</RepositoryBranch>
+        <RepositoryUrl>https://github.com/AristurtleDev/monogame-aseprite</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <!-- Import the root prop last -->
+    <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
+</Project>

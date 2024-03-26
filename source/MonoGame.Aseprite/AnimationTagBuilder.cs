@@ -1,0 +1,120 @@
+// Copyright (c) Christopher Whitley. All rights reserved.
+// Licensed under the MIT license.
+// See LICENSE file in the project root for full license information.
+
+namespace MonoGame.Aseprite;
+
+/// <summary>
+/// Defines a builder building an <see cref="AnimationTag"/> for a <see cref="SpriteSheet"/>.
+/// </summary>
+public sealed class AnimationTagBuilder
+{
+    private string _name;
+    private List<AnimationFrame> _frames = new();
+    private SpriteSheet _spriteSheet;
+    private int _loopCount = 0;
+    private bool _isReversed = false;
+    private bool _isPingPong = false;
+
+    internal AnimationTagBuilder(string name, SpriteSheet spriteSheet) =>
+        (_name, _spriteSheet) = (name, spriteSheet);
+
+    /// <summary>
+    /// Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/>
+    /// located at the specified index in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with 
+    /// the specified duration.
+    /// </summary>
+    /// <param name="regionIndex">
+    /// The index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    /// <see cref="SpriteSheet"/>.
+    /// </param>
+    /// <param name="duration">The duration of the frame of animation.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Throw if the specified index is less than zero or is greater than or equal to the total number of regions in
+    /// the <see cref="TextureAtlas"/>.
+    /// </exception>
+    public AnimationTagBuilder AddFrame(int regionIndex, TimeSpan duration)
+    {
+        TextureRegion region = _spriteSheet.TextureAtlas.GetRegion(regionIndex);
+        AnimationFrame frame = new(regionIndex, region, duration);
+        _frames.Add(frame);
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/> with
+    /// the specified name in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with the specified
+    /// duration.
+    /// </summary>
+    /// <param name="regionName">
+    /// The name of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    /// <see cref="SpriteSheet"/>.
+    /// </param>
+    /// <param name="duration">The duration of the frame of animation.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Thrown if the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> does not contain a 
+    /// <see cref="TextureRegion"/> with the specified name.
+    /// </exception>
+    public AnimationTagBuilder AddFrame(string regionName, TimeSpan duration)
+    {
+        TextureRegion region = _spriteSheet.TextureAtlas.GetRegion(regionName);
+        int index = _spriteSheet.TextureAtlas.GetIndexOfRegion(regionName);
+        AnimationFrame frame = new(index, region, duration);
+        _frames.Add(frame);
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the total number of loops/cycles of the animation that should play.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         <c>0</c> = infinite looping
+    ///     </para>
+    ///     <para>
+    ///         If <see cref="AnimationTag.IsPingPong"/> is equal to <see langword="true"/>, each direction of the
+    ///         ping-pong will count as a loop.  
+    ///     </para>
+    /// </remarks>
+    /// <param name="count">
+    ///     A value that indicates the total number of loops/cycles of the animation that should play.
+    /// </param>
+    /// <returns>
+    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
+    /// </returns>
+    public AnimationTagBuilder LoopCount(int count)
+    {
+        _loopCount = count;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets whether the animation should play in reverse.
+    /// </summary>
+    /// <param name="isReversed">A value that indicates whether the animation should play in reverse</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    public AnimationTagBuilder IsReversed(bool isReversed)
+    {
+        _isReversed = isReversed;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets whether the animation should ping-pong once reaching the last frame of animation.
+    /// </summary>
+    /// <param name="isPingPong">A value that indicates whether the animation should ping-pong.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
+    public AnimationTagBuilder IsPingPong(bool isPingPong)
+    {
+        _isPingPong = isPingPong;
+        return this;
+    }
+
+    internal AnimationTag Build()
+    {
+        AnimationTag tag = new(_name, _frames.ToArray(), _loopCount, _isReversed, _isPingPong);
+        return tag;
+    }
+}
