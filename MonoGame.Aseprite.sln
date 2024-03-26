@@ -47,6 +47,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilemapExample", "examples\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesetExample", "examples\TilesetExample\TilesetExample.csproj", "{385D0648-538D-4A90-A1EA-FEF44C9F9517}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{9F695AEE-9518-4019-B1DE-9C3254FB0D2C}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main.yml = .github\workflows\main.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +113,7 @@ Global
 		{55C32452-39B1-4FD0-92D2-1037909B0571} = {C177CFCE-9FD8-4EFA-9046-B5ECC55401CE}
 		{813FAB91-CDF4-4F50-8C1A-B4987E84E45A} = {C177CFCE-9FD8-4EFA-9046-B5ECC55401CE}
 		{385D0648-538D-4A90-A1EA-FEF44C9F9517} = {C177CFCE-9FD8-4EFA-9046-B5ECC55401CE}
+		{9F695AEE-9518-4019-B1DE-9C3254FB0D2C} = {780173B6-AA4D-40B8-ADA6-D99531857B64}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {185C72A8-896C-42E7-93F4-99FCD65E0961}
