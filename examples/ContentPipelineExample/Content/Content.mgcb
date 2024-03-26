@@ -1,0 +1,22 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\..\..\.artifacts\bin\source\MonoGame.Aseprite.Content.Pipeline\Debug\net6.0\MonoGame.Aseprite.Content.Pipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin character_robot.aseprite
+/importer:AsepriteFileContentImporter
+/processor:AsepriteFileContentProcessor
+/processorParam:PremultiplyAlpha=True
+/build:character_robot.aseprite
+

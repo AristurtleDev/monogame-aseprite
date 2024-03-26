@@ -443,15 +443,9 @@ public static class SpriteBatchExtensions
                 SpriteEffects flipEffects = DetermineFlipEffectForTile(tile.FlipHorizontally, tile.FlipVertically, tile.FlipDiagonally);
                 float rotation = tile.FlipDiagonally ? MathHelper.ToRadians(90.0f) : 0.0f;
 
-                //  Since Aseprite allows tile rotation now, tile are rotated in Aseprite based on
-                //  center origin. So we need an origin point, as well as to offset the position
-                //  draw due to the origin point.
-                Vector2 origin = new Vector2(layer.Tileset.TileWidth, layer.Tileset.TileHeight) * 0.5f;
-                tPosition += origin;
-
                 TextureRegion textureRegion = layer.Tileset[tile.TilesetTileID];
 
-                Draw(spriteBatch, textureRegion, tPosition, renderColor, rotation, origin, scale, flipEffects, layerDepth);
+                Draw(spriteBatch, textureRegion, tPosition, renderColor, rotation, Vector2.Zero, scale, flipEffects, layerDepth);
             }
         }
     }

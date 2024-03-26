@@ -33,6 +33,7 @@ internal sealed class AsepriteFileContentTypeWriter : ContentTypeWriter<Aseprite
     protected override void Write(ContentWriter writer, AsepriteFileProcessResult content)
     {
         writer.Write(content.Name);
+        writer.Write(content.PremultiplyAlpha);
         writer.Write(content.Data.Length);
         writer.Write(content.Data);
     }

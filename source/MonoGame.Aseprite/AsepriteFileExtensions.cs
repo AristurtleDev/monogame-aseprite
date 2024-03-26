@@ -44,7 +44,7 @@ public static class AsepriteFileExtensions
     /// Thrown if <paramref name="frameIndex"/> is less than zero or greater than or equal to the total number of
     /// frames in the aseprite file.
     /// </exception>
-    public static Sprite CreateSprite(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ProcessorOptions options)
+    public static Sprite CreateSprite(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
@@ -54,10 +54,10 @@ public static class AsepriteFileExtensions
         Texture2D texture = aseSprite.Texture.ToTexture2D(device);
         TextureRegion region = new TextureRegion(texture.Name, texture, texture.Bounds);
 
-        Parallel.For(0, aseSprite.Slices.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
+        for (int i = 0; i < aseSprite.Slices.Length; i++)
         {
             AddSliceToRegion(region, aseSprite.Slices[i]);
-        });
+        }
 
         return new Sprite(aseSprite.Name, region);
     }
@@ -76,7 +76,7 @@ public static class AsepriteFileExtensions
     /// 
     /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
     /// </exception>
-    public static TextureAtlas CreateTextureAtlas(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions options)
+    public static TextureAtlas CreateTextureAtlas(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
@@ -103,7 +103,7 @@ public static class AsepriteFileExtensions
     /// 
     /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
     /// </exception>
-    public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions options)
+    public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options =  null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
@@ -115,7 +115,7 @@ public static class AsepriteFileExtensions
         GenerateRegions(atlas, aseSheet.TextureAtlas);
         SpriteSheet sheet = new SpriteSheet(atlas.Name, atlas);
 
-        Parallel.For(0, aseSheet.Tags.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
+        for (int i = 0; i < aseSheet.Tags.Length; i++)
         {
             AseTag aseTag = aseSheet.Tags[i];
             sheet.CreateAnimationTag(aseTag.Name, builder =>
@@ -124,13 +124,14 @@ public static class AsepriteFileExtensions
                        .IsReversed(aseTag.IsReversed)
                        .IsPingPong(aseTag.IsPingPong);
 
-                Parallel.For(0, aseTag.Frames.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
+                for (int j = 0; j < aseTag.Frames.Length; j++)
                 {
                     AseAnimationFrame aseAnimationFrame = aseTag.Frames[j];
                     builder.AddFrame(aseAnimationFrame.FrameIndex, aseAnimationFrame.Duration);
-                });
+                }
             });
-        });
+        }
+
 
         return sheet;
     }
@@ -229,7 +230,7 @@ public static class AsepriteFileExtensions
     /// 
     /// throw if <paramref name="device"/> is <see langword="null"/>.
     /// </exception>
-    public static Tilemap CreateTilemap(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ProcessorOptions options)
+    public static Tilemap CreateTilemap(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
@@ -239,7 +240,7 @@ public static class AsepriteFileExtensions
         Tilemap tilemap = new Tilemap(aseTilemap.Name);
         Dictionary<int, Tileset> tilesets = GenereateTilesets(device, aseTilemap);
 
-        Parallel.For(0, aseTilemap.Layers.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
+        for (int i = 0; i < aseTilemap.Layers.Length; i++)
         {
             AseTilemapLayer aseTilemapLayer = aseTilemap.Layers[i];
             Tileset tileset = tilesets[aseTilemapLayer.TilesetID];
@@ -249,7 +250,7 @@ public static class AsepriteFileExtensions
                                                             aseTilemapLayer.Rows,
                                                             aseTilemapLayer.Offset.ToXnaVector2());
 
-            Parallel.For(0, aseTilemapLayer.Tiles.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, t =>
+            for (int t = 0; t < aseTilemapLayer.Tiles.Length; t++)
             {
                 AseTilemapTile aseTilemapTile = aseTilemapLayer.Tiles[t];
                 tilemapLayer.SetTile(t,
@@ -257,8 +258,8 @@ public static class AsepriteFileExtensions
                                      aseTilemapTile.FlipHorizontally,
                                      aseTilemapTile.FlipVertically,
                                      aseTilemapTile.FlipDiagonally);
-            });
-        });
+            }
+        }
 
         return tilemap;
     }
@@ -277,7 +278,7 @@ public static class AsepriteFileExtensions
     /// 
     /// throw if <paramref name="device"/> is <see langword="null"/>.
     /// </exception>
-    public static AnimatedTilemap CreateAnimatedTilemap(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions options)
+    public static AnimatedTilemap CreateAnimatedTilemap(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
@@ -288,7 +289,7 @@ public static class AsepriteFileExtensions
         Dictionary<int, Tileset> tilesets = new Dictionary<int, Tileset>();
 
         ParallelOptions parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
-        Parallel.For(0, aseAnimatedTilemap.Tilesets.Length, parallelOptions, i =>
+        for (int i = 0; i < aseAnimatedTilemap.Tilesets.Length; i++)
         {
             AseTileset aseTileset = aseAnimatedTilemap.Tilesets[i];
             Texture2D texture = aseTileset.Texture.ToTexture2D(device);
@@ -297,14 +298,14 @@ public static class AsepriteFileExtensions
                                           aseTileset.TileSize.Width,
                                           aseTileset.TileSize.Height);
             tilesets.Add(aseTileset.ID, tileset);
-        });
+        }
 
-        Parallel.For(0, aseAnimatedTilemap.Frames.Length, parallelOptions, i =>
+        for (int i = 0; i < aseAnimatedTilemap.Frames.Length; i++)
         {
             AseTilemapFrame aseTilemapFrame = aseAnimatedTilemap.Frames[i];
             AnimatedTilemapFrame animatedTilemapFrame = animatedTilemap.CreateFrame(aseTilemapFrame.Duration);
 
-            Parallel.For(0, aseTilemapFrame.Layers.Length, parallelOptions, l =>
+            for (int l = 0; l < aseTilemapFrame.Layers.Length; l++)
             {
                 AseTilemapLayer aseTilemapLayer = aseTilemapFrame.Layers[l];
                 TilemapLayer tilemapLayer = animatedTilemapFrame.CreateLayer(aseTilemapLayer.Name,
@@ -313,7 +314,7 @@ public static class AsepriteFileExtensions
                                                                              aseTilemapLayer.Rows,
                                                                              aseTilemapLayer.Offset.ToXnaVector2());
 
-                Parallel.For(0, aseTilemapLayer.Tiles.Length, parallelOptions, t =>
+                for (int t = 0; t < aseTilemapLayer.Tiles.Length; t++)
                 {
                     AseTilemapTile aseTilemapTile = aseTilemapLayer.Tiles[t];
                     tilemapLayer.SetTile(t,
@@ -321,9 +322,10 @@ public static class AsepriteFileExtensions
                                          aseTilemapTile.FlipHorizontally,
                                          aseTilemapTile.FlipVertically,
                                          aseTilemapTile.FlipDiagonally);
-                });
-            });
-        });
+                }
+            }
+        }
+
 
         return animatedTilemap;
     }
@@ -331,18 +333,17 @@ public static class AsepriteFileExtensions
 
     private static void GenerateRegions(TextureAtlas atlas, AseTextureAtlas aseAtlas)
     {
-        ParallelOptions options = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
-
-        Parallel.For(0, aseAtlas.Regions.Length, options, i =>
+        for (int i = 0; i < aseAtlas.Regions.Length; i++)
         {
             AseTextureRegion aseRegion = aseAtlas.Regions[i];
             TextureRegion region = atlas.CreateRegion(aseRegion.Name, aseRegion.Bounds.ToXnaRectangle());
 
-            Parallel.For(0, aseRegion.Slices.Length, options, i =>
+            for (int j = 0; j < aseRegion.Slices.Length; j++)
             {
-                AddSliceToRegion(region, aseRegion.Slices[i]);
-            });
-        });
+                AddSliceToRegion(region, aseRegion.Slices[j]);
+            }
+        }
+
     }
 
     private static void AddSliceToRegion(TextureRegion region, AseSlice aseSlice)
@@ -367,7 +368,7 @@ public static class AsepriteFileExtensions
     private static Dictionary<int, Tileset> GenereateTilesets(GraphicsDevice device, AseTilemap aseTilemap)
     {
         Dictionary<int, Tileset> result = new Dictionary<int, Tileset>();
-        Parallel.For(0, aseTilemap.Tilesets.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
+        for (int i = 0; i < aseTilemap.Tilesets.Length; i++)
         {
             AseTileset aseTileset = aseTilemap.Tilesets[i];
             Texture2D texture = aseTileset.Texture.ToTexture2D(device);
@@ -376,7 +377,8 @@ public static class AsepriteFileExtensions
                                           aseTileset.TileSize.Width,
                                           aseTileset.TileSize.Height);
             result.Add(aseTileset.ID, tileset);
-        });
+        }
+
         return result;
     }
 }

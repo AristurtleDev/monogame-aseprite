@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ProjectCategory>examples</ProjectCategory>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <IsPackable>false</IsPackable>
+        <Copyright>Copyright © 2024 Christopher Whitley</Copyright>
+        <Authors>Christopher Whitley and contributors</Authors>
+        <Company>Aristurtle</Company>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\source\MonoGame.Aseprite\MonoGame.Aseprite.csproj" />
+    </ItemGroup>
+
+    <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
+
+    <PropertyGroup>
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+</Project>

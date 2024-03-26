@@ -39,10 +39,11 @@ internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<Aseprite
         }
 
         string name = reader.ReadString();
+        bool premultiplyAlpha = reader.ReadBoolean();
         int len = reader.ReadInt32();
         byte[] data = reader.ReadBytes(len);
 
         using MemoryStream stream = new(data);
-        return AsepriteFileLoader.FromStream(name, stream);
+        return AsepriteFileLoader.FromStream(name, stream, premultiplyAlpha);
     }
 }

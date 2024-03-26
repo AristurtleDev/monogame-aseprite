@@ -24,4 +24,4 @@ SOFTWARE.
 
 namespace MonoGame.Aseprite.Content.Pipeline;
 
-internal record AsepriteFileProcessResult(string Name, byte[] Data);
+internal record AsepriteFileProcessResult(string Name, bool PremultiplyAlpha, byte[] Data);
