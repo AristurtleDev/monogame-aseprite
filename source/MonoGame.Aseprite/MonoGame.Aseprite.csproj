@@ -17,10 +17,10 @@
 
     <!-- Includes for NuGets -->
     <ItemGroup>
-        <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
-        <None Include="..\..\.nuget\README.md" Pack="true" PackagePath="" />
+        <None Include="..\..\.images\\nuget-icon.png" Pack="true" PackagePath="" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="" />
         <None Include="$(OutDir)Monogame.Aseprite.xml" Pack="true" PackagePath="lib\net6.0" />
-        <None Include="..\MonoGame.Aseprite.Content.Pipeline\bin\$(Configuration)\net6.0\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
+        <None Include="..\..\.artifacts\bin\source\MonoGame.Aseprite.Content.Pipeline\$(Configuration)\net6.0\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
     </ItemGroup>
 
     <!-- NuGet Package References -->

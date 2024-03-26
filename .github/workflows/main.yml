@@ -1,60 +1,89 @@
-name: build-and-test
-on: 
-  push:
-    tags: [v*]
+name: Build AsepriteDotNet
+
+on:
   pull_request:
-    branches: ['main']
-
-
-env: 
-  DOTNET_VERSION: '6.0.400'
-
+    branches: [ develop, main ]
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
 
 jobs:
-  build-test-pack-job:
-    name: "Build-Test-Pack"
+  build:
+    name: Build
     runs-on: ubuntu-latest
+
     steps:
-      - name: "Clone Repository"
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      
-      - name: "Setup .NET"
-        uses: actions/setup-dotnet@v3
-        with: 
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
 
-      - name: "CAKE (Build -> Test -> Package)"
-        run: dotnet run --project ./.build/Build.csproj -- --target=Default
-      
-      - name: "Upload Artifacts For Deploy"
-        if: github.event_name != 'pull_request'
-        uses: actions/upload-artifact@main
-        with:
-          name: MonoGame.Aseprite
-          path: ./artifacts/*
+      - name: Clone Repository
+        uses: actions/checkout@v4
 
-  deploy-job:
-    name: "Deploy NuGets"
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build
+        run: dotnet run --project build/MonoGame.Aseprite.Build.csproj -- --target=Default
+
+      - name: Upload Artifacts
+        run: dotnet run --project build/MonoGame.Aseprite.Build.csproj -- --target=UploadArtifacts
+        env:
+          ACTIONS_RUNTIME_TOKEN: ${{ env.ACTIONS_RUNTIME_TOKEN }}
+          ACTIONS_RUNTIME_URL: "${{ env.ACTIONS_RUNTIME_URL }}"
+
+  deploy-to-github:
+    name: Deploy To GitHub
+    needs: [ build ]
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     permissions:
       packages: write
       contents: write
-    needs: [build-test-pack-job]
-    if: ${{ github.event_name == 'push' }}
     steps:
-      - name: "Clone Repository"
+    - name: Expose GitHub Runtime
+      uses: crazy-max/ghaction-github-runtime@v3  
+      
+    - name: Clone Repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Push GitHub NuGets
+      run: dotnet run --project build/MonoGame.Aseprite.Build.csproj -- --target=DeployNuGetsToGitHub
+      env:
+        ACTIONS_RUNTIME_TOKEN: ${{ env.ACTIONS_RUNTIME_TOKEN }}
+        ACTIONS_RUNTIME_URL: "${{ env.ACTIONS_RUNTIME_URL }}"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-to-nuget:
+    name: Deploy To NuGet
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    permissions:
+      packages: write
+      contents: write
+    steps:
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+        
+      - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: "Download Artifacts For Deploy"
-        uses: actions/download-artifact@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          name: MonoGame.Aseprite
-          path: artifacts
-      
-      - name: "Push Packages"
-        run: dotnet run --project ./.build/Build.csproj -- --target=Deploy
+          dotnet-version: '8.0.x'
+
+      - name: Push NuGets
+        run: dotnet run --project build/MonoGame.Aseprite.Build.csproj -- --target=DeployNuGets
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NUGET_ACCESS_TOKEN: ${{ secrets.NUGET_ACCESS_TOKEN }}
+          ACTIONS_RUNTIME_TOKEN: ${{ env.ACTIONS_RUNTIME_TOKEN }}
+          ACTIONS_RUNTIME_URL: "${{ env.ACTIONS_RUNTIME_URL }}"
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

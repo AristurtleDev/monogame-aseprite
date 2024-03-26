@@ -1,48 +1,108 @@
-using System.IO;
+using System.Net.Mime;
 using Cake.Common;
 using Cake.Common.Build;
+using Cake.Common.Build.GitHubActions.Data;
+using Cake.Common.IO;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Build;
+using Cake.Common.Tools.DotNet.MSBuild;
+using Cake.Common.Tools.DotNet.Pack;
+using Cake.Common.Tools.DotNet.Publish;
+using Cake.Common.Tools.MSBuild;
 using Cake.Common.Xml;
 using Cake.Core;
+using Cake.Core.Diagnostics;
+using Cake.Core.IO;
 using Cake.Frosting;
 
-namespace BuildScripts;
+namespace MonoGame.Aseprite.Build;
 
 public sealed class BuildContext : FrostingContext
 {
-    public readonly string ArtifactsDirectory;
-    public readonly string Version;
-    public readonly string? RepositoryOwner;
-    public readonly string? RepositoryUrl;
-    public readonly bool IsTag;
-    public readonly bool IsRunningOnGitHubActions;
-    public readonly string? GitHubToken;
-    public readonly string? NuGetAccessToken;
-    public readonly string MonoGameAsepritePath;
-    public readonly string MonoGameAsepriteContentPipelinePath;
-    public readonly string MonoGameAsepriteTestsPath;
+    private const string DefaultRepositoryUrl = "https://github.com/AristurtleDev/monogame-aseprite";
+    private const string DefaultBuildConfiguration = "Release";
+
+
+    public string Version { get; }
+    public string BuildOutput { get; }
+    public string RepositoryUrl { get; }
+    public string BuildConfiguration { get; }
+    public bool IsPreRelease { get; }
+
+    public DirectoryPath NuGetsDirectory { get; }
+    public DotNetMSBuildSettings DotNetMSBuildSettings { get; }
+    public DotNetPublishSettings DotNetPublishSettings { get; }
+    public MSBuildSettings MSBuildSettings { get; }
+    public MSBuildSettings MSPackSettings { get; }
 
     public BuildContext(ICakeContext context) : base(context)
     {
-        ArtifactsDirectory = context.Argument(nameof(ArtifactsDirectory), ".artifacts");
-        MonoGameAsepritePath = context.Argument(nameof(MonoGameAsepritePath), "source/MonoGame.Aseprite/MonoGame.Aseprite.csproj");
-        MonoGameAsepriteContentPipelinePath = context.Argument(nameof(MonoGameAsepriteContentPipelinePath), "source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj");
-        MonoGameAsepriteTestsPath = context.Argument(nameof(MonoGameAsepriteTestsPath), "tests/MonoGame.Aseprite.Tests/MonoGame.Aseprite.Tests.csproj");
-        Version = context.XmlPeek("source/MonoGame.Aseprite/MonoGame.Aseprite.csproj", "/Project/PropertyGroup/Version");
+        RepositoryUrl = context.Argument(nameof(RepositoryUrl), DefaultRepositoryUrl);
+        BuildConfiguration = context.Argument(nameof(BuildConfiguration), DefaultBuildConfiguration);
+        BuildOutput = context.Argument(nameof(BuildOutput), ".artifacts");
+        NuGetsDirectory = $"{BuildOutput}/NuGet/";
+        IsPreRelease = context.Argument(nameof(IsPreRelease), false);
 
-        IsRunningOnGitHubActions = context.BuildSystem().IsRunningOnGitHubActions;
-        if (IsRunningOnGitHubActions)
+        Version = context.XmlPeek("Directory.Build.props", "/Project/PropertyGroup/Version");
+        if (context.BuildSystem().IsRunningOnGitHubActions)
         {
-            RepositoryOwner = context.EnvironmentVariable("GITHUB_REPOSITORY_OWNER");
-            RepositoryUrl = $"https://github.com/{context.EnvironmentVariable("GITHUB_REPOSITORY")}";
-            GitHubToken = context.EnvironmentVariable("GITHUB_TOKEN");
-            IsTag = context.EnvironmentVariable("GITHUB_REF_TYPE") == "tag";
+            GitHubActionsWorkflowInfo workflow = context.BuildSystem().GitHubActions.Environment.Workflow;
+            RepositoryUrl = $"https://github.com/{workflow.Repository}";
 
-            if (IsTag)
+            if (!RepositoryUrl.Equals(DefaultRepositoryUrl, StringComparison.OrdinalIgnoreCase))
             {
-                NuGetAccessToken = context.EnvironmentVariable("NUGET_ACCESS_TOKEN");
+                Version = $"{Version}-{workflow.RepositoryOwner}";
+            }
+            else if (workflow.RefType == GitHubActionsRefType.Branch && !workflow.RefName.Equals("refs/head/main", StringComparison.OrdinalIgnoreCase))
+            {
+                Version = $"{Version}-develop";
+            }
+            else if (IsPreRelease)
+            {
+                Version = $"{Version}-prerelease";
+            }
+            else
+            {
+                Version = $"{Version}";
             }
         }
-    }
 
+        DotNetMSBuildSettings = new DotNetMSBuildSettings();
+        DotNetMSBuildSettings.WithProperty(nameof(Version), Version);
+        DotNetMSBuildSettings.WithProperty(nameof(RepositoryUrl), RepositoryUrl);
+
+        MSBuildSettings = new MSBuildSettings
+        {
+            Verbosity = Verbosity.Minimal,
+            Configuration = BuildConfiguration
+        };
+        MSBuildSettings.WithProperty(nameof(Version), Version);
+        MSBuildSettings.WithProperty(nameof(RepositoryUrl), RepositoryUrl);
+
+        MSPackSettings = new MSBuildSettings()
+        {
+            Verbosity = Verbosity.Minimal,
+            Configuration = BuildConfiguration,
+            Restore = true
+        };
+        MSPackSettings.WithProperty(nameof(Version), Version);
+        MSPackSettings.WithProperty(nameof(RepositoryUrl), RepositoryUrl);
+        MSPackSettings.WithProperty("OutputDirectory", NuGetsDirectory.FullPath);
+        MSPackSettings.WithTarget("Pack");
+
+        DotNetPublishSettings = new DotNetPublishSettings()
+        {
+            MSBuildSettings = DotNetMSBuildSettings,
+            Verbosity = DotNetVerbosity.Minimal,
+            Configuration = BuildConfiguration,
+            SelfContained = false
+        };
+
+        Console.WriteLine($"{nameof(Version)}: {Version}");
+        Console.WriteLine($"{nameof(RepositoryUrl)}: {RepositoryUrl}");
+        Console.WriteLine($"{nameof(BuildConfiguration)}: {BuildConfiguration}");
+
+        context.CreateDirectory(BuildOutput);
+    }
 
 }
