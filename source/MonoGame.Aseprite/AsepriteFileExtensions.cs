@@ -1,4 +1,8 @@
-﻿using AsepriteDotNet.Aseprite;
+﻿// Copyright (c) Christopher Whitley. All rights reserved.
+// Licensed under the MIT license.
+// See LICENSE file in the project root for full license information.
+
+using AsepriteDotNet.Aseprite;
 using AsepriteDotNet.Processors;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Utils;
@@ -103,7 +107,7 @@ public static class AsepriteFileExtensions
     /// 
     /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
     /// </exception>
-    public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options =  null)
+    public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
