@@ -8,90 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     <para>
-///         Defines a named sprite
-///     </para>
-///     <para>
-///         The <see cref="Sprite"/> class is a general purpose wrapper around a 
-///         <see cref="Aseprite.TextureRegion"/> with properties to control how it is rendered.  When creating
-///         a <see cref="Sprite"/> from an <see cref="AsepriteFile"/>, it represents the image of the frame used to
-///         create it.
-///     </para>
-///     <para>
-///         The most common methods for creating a <see cref="Sprite"/> will be either by using the 
-///         <see cref="Content.Processors.SpriteProcessor"/> to create an instance from a frame in
-///         your Aseprite File, or by using a <see cref="TextureAtlas"/> to create a <see cref="Sprite"/> from one of
-///         the regions in the atlas.  An instance can also be created manually using the constructor for a more general
-///         purpose use.
-///     </para>
+/// Defines a named sprite
 /// </summary>
-/// <remarks>
-///     <para>
-///         The <see cref="Color"/>, <see cref="Origin"/>, <see cref="Rotation"/>,
-///         <see cref="Scale"/>, and <see cref="LayerDepth"/> are passed automatically to the
-///         <see cref="SpriteBatch"/> when rendering this sprite. For one-off rendering
-///         where you can override the parameter values passed to the
-///         <see cref="SpriteBatch"/>, you can render the
-///         <see cref="TextureRegion"/> instead.  
-///     </para>  
-///     
-///     ### Performance Considerations  
-///     
-///     <para>
-///         If you plan to create multiple <see cref="Sprite"/> instances from various frames in your Aseprite file,
-///         consider first creating a <see cref="TextureAtlas"/>, then creating each <see cref="Sprite"/> instance
-///         using the <see cref="TextureAtlas"/>.  By doing this, you will be generating a single source
-///         <see cref="Texture2D"/> for the <see cref="TextureAtlas"/>.  Each
-///         <see cref="Sprite"/> that is then created from the <see cref="TextureAtlas"/> will be references the single
-///         source <see cref="Texture2D"/> instead of separate <see cref="Texture2D"/> instances per
-///         <see cref="Sprite"/>.
-///     </para>
-///     <para>
-///         This is beneficial because it reduces the amount of texture swapping done on the
-///         <see cref="SpriteBatch"/> when rendering the <see cref="Sprite"/>
-///         instances.
-///     </para>
-/// </remarks>
-/// <example>
-///     <para>
-///         The following examples demonstrate various ways to create a <see cref="Sprite"/>:
-///     </para>
-///     <code language="cs {5} title='Create Sprite using SpriteProcessor' showLineNumbers">
-///         //  Load an Aseprite file
-///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file");
-///           
-///         //  Use the SpriteProcessor to create a Sprite
-///         Sprite sprite = SpriteProcessor.Process(GraphicsDevice, aseFile, frameIndex: 0);
-///     </code>
-///     
-///     <code language="cs {8} title='Create Sprite using TextureAtlas' showLineNumbers">
-///         //  Load an Aseprite File
-///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
-///           
-///         //  Create a TextureAtlas from the AsepriteFile using the TextureAtlasProcessor
-///         TextureAtlas atlas = TextureAtlasProcessor.Process(GraphicsDevice, aseFile);
-///           
-///         //  Create a Sprite from region 0 in the TextureAtlas
-///         Sprite sprite = atlas.CreateSprite(regionIndex: 0);
-///     </code>
-///     
-///     <code language="cs {8} title='Create Sprite using SpriteSheet' showLineNumbers">
-///         //  Load an Aseprite File
-///         AsepriteFile aseFile = AsepriteFile.Load("path-to-file")
-///           
-///         //  Create a SpriteSheet from the AsepriteFile using the SpriteSheetProcessor
-///         SpriteSheet spriteSheet = SpriteSheetProcessor.Process(GraphicsDevice, aseFile);
-///           
-///         //  Create a Sprite from region 0 in the SpriteSheet
-///         Sprite sprite = spriteSheet.CreateSprite(regionIndex: 0);
-///     </code>
-/// </example>
-/// <seealso cref="Content.Processors.SpriteProcessor"/>
-/// <seealso cref="SpriteSheet"/>
-/// <seealso cref="TextureAtlas"/>
-/// <seealso cref="TextureRegion"/>
-/// <seealso href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html"/>
-/// <seealso href="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>
 public class Sprite
 {
     private TextureRegion _textureRegion;
@@ -101,12 +19,12 @@ public class Sprite
     private float _transparency;
 
     /// <summary>
-    ///     Gets the name assigned to this <see cref="Sprite"/>.
+    /// Gets the name assigned to this <see cref="Sprite"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the source <see cref="TextureRegion"/> of this <see cref="Sprite"/>.
+    /// Gets the source <see cref="TextureRegion"/> of this <see cref="Sprite"/>.
     /// </summary>
     public TextureRegion TextureRegion
     {
@@ -115,32 +33,23 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets the width, in pixels, of this <see cref="Sprite"/>
+    /// Gets the width, in pixels, of this <see cref="Sprite"/>
     /// </summary>
-    /// <value>
-    ///     The width, in pixels, of this <see cref="Sprite"/>.
-    /// </value>
     public int Width => _textureRegion.Bounds.Width;
 
     /// <summary>
-    ///     Gets the height, in pixels, of this <see cref="Sprite"/>
+    /// Gets the height, in pixels, of this <see cref="Sprite"/>
     /// </summary>
-    /// <value>
-    ///     The height, in pixels, of this <see cref="Sprite"/>.
-    /// </value>
     public int Height => _textureRegion.Bounds.Height;
 
     /// <summary>
-    ///     Gets or Sets the color mask to apply when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the color mask to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
-    /// <value>
-    ///     The color mask to apply when rendering this <see cref="Sprite"/>.
-    /// </value>
     public Color Color { get; set; }
 
     /// <summary>
-    ///     Gets or Sets the level of transparency, between 0.0f, and 1.0f, to apply when rendering this
-    ///     <see cref="Sprite"/>.
+    /// Gets or Sets the level of transparency, between 0.0f, and 1.0f, to apply when rendering this
+    /// <see cref="Sprite"/>.
     /// </summary>
     public float Transparency
     {
@@ -149,12 +58,12 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the rotation, in radians, to apply when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the rotation, in radians, to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float Rotation { get; set; }
 
     /// <summary>
-    ///     Gets or Sets the x- and y-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the x- and y-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public Vector2 Origin
     {
@@ -163,7 +72,7 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the x-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the x-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float OriginX
     {
@@ -172,7 +81,7 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the y-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the y-coordinate point of origin to apply when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float OriginY
     {
@@ -181,7 +90,7 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the x- and y-axis scale factor to use when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the x- and y-axis scale factor to use when rendering this <see cref="Sprite"/>.
     /// </summary>
     public Vector2 Scale
     {
@@ -190,7 +99,7 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the x-axis scale factor to use when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the x-axis scale factor to use when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float ScaleX
     {
@@ -199,7 +108,7 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the y-axis scale factor to use when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the y-axis scale factor to use when rendering this <see cref="Sprite"/>.
     /// </summary>
     public float ScaleY
     {
@@ -208,13 +117,13 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for vertical and
-    ///     horizontal flipping when rendering this <see cref="Sprite"/>.
+    /// Gets or Sets the <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for vertical and
+    /// horizontal flipping when rendering this <see cref="Sprite"/>.
     /// </summary>
     public SpriteEffects SpriteEffects { get; set; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether to flip this <see cref="Sprite"/> horizontally when rendering.
+    /// Gets or Sets a value that indicates whether to flip this <see cref="Sprite"/> horizontally when rendering.
     /// </summary>
     public bool FlipHorizontally
     {
@@ -223,7 +132,7 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates whether to flip this <see cref="Sprite"/> vertically when rendering.
+    /// Gets or Sets a value that indicates whether to flip this <see cref="Sprite"/> vertically when rendering.
     /// </summary>
     public bool FlipVertically
     {
@@ -232,23 +141,21 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Gets or Sets the layer depth to render this <see cref="Sprite"/> at.
+    /// Gets or Sets the layer depth to render this <see cref="Sprite"/> at.
     /// </summary>
     public float LayerDepth { get; set; }
 
     /// <summary>
-    ///     Gets or Sets a value that indicates if this <see cref="Sprite"/> is visible and can be rendered.
+    /// Gets or Sets a value that indicates if this <see cref="Sprite"/> is visible and can be rendered.
     /// </summary>
     public bool IsVisible { get; set; }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Sprite"/> class.
+    /// Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
-    /// <param name="name" cref="string">
-    ///     The name to assign the <see cref="Sprite"/>.
-    /// </param>
+    /// <param name="name" cref="string">The name to assign the <see cref="Sprite"/>.</param>
     /// <param name="textureRegion" cref="TextureRegion">
-    ///     The source <see cref="TextureRegion"/> to assign the <see cref="Sprite"/>.
+    /// The source <see cref="TextureRegion"/> to assign the <see cref="Sprite"/>.
     /// </param>
     public Sprite(string name, TextureRegion textureRegion)
     {
@@ -265,26 +172,17 @@ public class Sprite
     }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Sprite"/> class.
+    /// Initializes a new instance of the <see cref="Sprite"/> class.
     /// </summary>
-    /// <param name="name">
-    ///     The name to assign the <see cref="Sprite"/>.
-    /// </param>
-    /// <param name="texture">
-    ///     The source image for the <see cref="Sprite"/>.
-    /// </param>
+    /// <param name="name">The name to assign the <see cref="Sprite"/>.</param>
+    /// <param name="texture">The source image for the <see cref="Sprite"/>.</param>
     public Sprite(string name, Texture2D texture)
         : this(name, new TextureRegion(name, texture, texture.Bounds)) { }
 
     /// <summary>
-    ///     Renders this <see cref="Sprite"/>.
+    /// Renders this <see cref="Sprite"/>.
     /// </summary>
-    /// <param name="spriteBatch">
-    ///     The <see cref="SpriteBatch"/> to use for rendering this
-    ///     <see cref="Sprite"/>.
-    /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate location to render this <see cref="Sprite"/> at.
-    /// </param>
+    /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for rendering this<see cref="Sprite"/>.</param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="Sprite"/> at.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position) => spriteBatch.Draw(this, position);
 }

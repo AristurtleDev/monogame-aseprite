@@ -5,7 +5,7 @@
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a builder building an <see cref="AnimationTag"/> for a <see cref="SpriteSheet"/>.
+/// Defines a builder building an <see cref="AnimationTag"/> for a <see cref="SpriteSheet"/>.
 /// </summary>
 public sealed class AnimationTagBuilder
 {
@@ -20,23 +20,19 @@ public sealed class AnimationTagBuilder
         (_name, _spriteSheet) = (name, spriteSheet);
 
     /// <summary>
-    ///     Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/>
-    ///     located at the specified index in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with 
-    ///     the specified duration.
+    /// Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/>
+    /// located at the specified index in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with 
+    /// the specified duration.
     /// </summary>
     /// <param name="regionIndex">
-    ///     The index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
-    ///     <see cref="SpriteSheet"/>.
+    /// The index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    /// <see cref="SpriteSheet"/>.
     /// </param>
-    /// <param name="duration">
-    ///     The duration of the frame of animation.
-    /// </param>
-    /// <returns>
-    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
-    /// </returns>
+    /// <param name="duration">The duration of the frame of animation.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Throw if the specified index is less than zero or is greater than or equal to the total number of regions in
-    ///     the <see cref="TextureAtlas"/>.
+    /// Throw if the specified index is less than zero or is greater than or equal to the total number of regions in
+    /// the <see cref="TextureAtlas"/>.
     /// </exception>
     public AnimationTagBuilder AddFrame(int regionIndex, TimeSpan duration)
     {
@@ -47,23 +43,19 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    ///     Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/> with
-    ///     the specified name in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with the specified
-    ///     duration.
+    /// Adds a new frame of animation to the <see cref="AnimationTag"/> using the <see cref="TextureRegion"/> with
+    /// the specified name in the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> and with the specified
+    /// duration.
     /// </summary>
     /// <param name="regionName">
-    ///     The name of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
-    ///     <see cref="SpriteSheet"/>.
+    /// The name of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    /// <see cref="SpriteSheet"/>.
     /// </param>
-    /// <param name="duration">
-    ///     The duration of the frame of animation.
-    /// </param>
-    /// <returns>
-    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
-    /// </returns>
+    /// <param name="duration">The duration of the frame of animation.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> does not contain a 
-    ///     <see cref="TextureRegion"/> with the specified name.
+    /// Thrown if the <see cref="TextureAtlas"/> of the <see cref="SpriteSheet"/> does not contain a 
+    /// <see cref="TextureRegion"/> with the specified name.
     /// </exception>
     public AnimationTagBuilder AddFrame(string regionName, TimeSpan duration)
     {
@@ -75,7 +67,7 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    ///     Sets the total number of loops/cycles of the animation that should play.
+    /// Sets the total number of loops/cycles of the animation that should play.
     /// </summary>
     /// <remarks>
     ///     <para>
@@ -99,14 +91,10 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    ///     Sets whether the animation should play in reverse.
+    /// Sets whether the animation should play in reverse.
     /// </summary>
-    /// <param name="isReversed">
-    ///     A value that indicates whether the animation should play in reverse
-    /// </param>
-    /// <returns>
-    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
-    /// </returns>
+    /// <param name="isReversed">A value that indicates whether the animation should play in reverse</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     public AnimationTagBuilder IsReversed(bool isReversed)
     {
         _isReversed = isReversed;
@@ -114,14 +102,10 @@ public sealed class AnimationTagBuilder
     }
 
     /// <summary>
-    ///     Sets whether the animation should ping-pong once reaching the last frame of animation.
+    /// Sets whether the animation should ping-pong once reaching the last frame of animation.
     /// </summary>
-    /// <param name="isPingPong">
-    ///     A value that indicates whether the animation should ping-pong.
-    /// </param>
-    /// <returns>
-    ///     This instance of the <see cref="AnimationTagBuilder"/> class.
-    /// </returns>
+    /// <param name="isPingPong">A value that indicates whether the animation should ping-pong.</param>
+    /// <returns>This instance of the <see cref="AnimationTagBuilder"/> class.</returns>
     public AnimationTagBuilder IsPingPong(bool isPingPong)
     {
         _isPingPong = isPingPong;

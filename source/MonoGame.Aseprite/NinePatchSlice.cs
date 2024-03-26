@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a <see cref="Slice"/> with center bounds.
+/// Defines a <see cref="Slice"/> with center bounds.
 /// </summary>
 public sealed class NinePatchSlice : Slice
 {
     /// <summary>
-    ///     Gets the rectangular bounds of the center rectangle for this <see cref="NinePatchSlice"/>,
-    ///     relative to it's bounds.
+    /// Gets the rectangular bounds of the center rectangle for this <see cref="NinePatchSlice"/>,
+    /// relative to it's bounds.
     /// </summary>
     public Rectangle CenterBounds { get; }
 

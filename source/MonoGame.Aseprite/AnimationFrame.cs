@@ -5,24 +5,24 @@
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines the source <see cref="TextureRegion"/> and duration of a single frame of animation in an
-///     <see cref="AnimationTag"/>.
+/// Defines the source <see cref="TextureRegion"/> and duration of a single frame of animation in an 
+/// <see cref="AnimationTag"/>.
 /// </summary>
 public sealed class AnimationFrame
 {
     /// <summary>
-    ///     Gets the index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
-    ///     <see cref="SpriteSheet"/>.
+    /// Gets the index of the source <see cref="TextureRegion"/> in the <see cref="TextureAtlas"/> of the 
+    /// <see cref="SpriteSheet"/>.
     /// </summary>
     public int FrameIndex { get; }
 
     /// <summary>
-    ///     Gets the source <see cref="TextureRegion"/> for this <see cref="AnimationFrame"/>.
+    /// Gets the source <see cref="TextureRegion"/> for this <see cref="AnimationFrame"/>.
     /// </summary>
     public TextureRegion TextureRegion { get; }
 
     /// <summary>
-    ///     Gets the duration of this <see cref="AnimationFrame"/>.
+    /// Gets the duration of this <see cref="AnimationFrame"/>.
     /// </summary>
     public TimeSpan Duration { get; }
 

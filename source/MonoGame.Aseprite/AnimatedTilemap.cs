@@ -6,7 +6,6 @@ using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-
 namespace MonoGame.Aseprite;
 
 /// <summary>
@@ -20,7 +19,7 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     private List<AnimatedTilemapFrame> _frames = new();
 
     /// <summary>
-    ///     Gets the name assigned to this <see cref="AnimatedTilemap"/>.
+    /// Gets the name assigned to this <see cref="AnimatedTilemap"/>.
     /// </summary>
     public string Name { get; }
 
@@ -30,55 +29,55 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     public int frameCount => _frames.Count;
 
     /// <summary>
-    ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </summary>
     /// <param name="frameIndex">
-    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
+    /// The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
     /// </param>
     /// <returns>
-    ///     The <see cref="AnimatedTilemapFrame"/> element that was located at the specified index in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// The <see cref="AnimatedTilemapFrame"/> element that was located at the specified index in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of 
-    ///     <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
+    /// Thrown if the specified index is less than zero or is greater than or equal to the total number of 
+    /// <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
     /// </exception>
     public AnimatedTilemapFrame this[int frameIndex] => GetFrame(frameIndex);
 
     /// <summary>
-    ///     Gets a value that indicates if this <see cref="AnimatedTilemap"/> is currently paused.
+    /// Gets a value that indicates if this <see cref="AnimatedTilemap"/> is currently paused.
     /// </summary>
     public bool IsPaused { get; private set; }
 
     /// <summary>
-    ///     Gets a value that indicates if this <see cref="AnimatedTilemap"/> is currently animating.
+    /// Gets a value that indicates if this <see cref="AnimatedTilemap"/> is currently animating.
     /// </summary>
     public bool IsAnimating { get; private set; }
 
     /// <summary>
-    ///     Gets a value that indicates whether the animation this <see cref="AnimatedTilemap"/> should loop.
+    /// Gets a value that indicates whether the animation this <see cref="AnimatedTilemap"/> should loop.
     /// </summary>
     public bool IsLooping { get; }
 
     /// <summary>
-    ///     Gets a value that indicates whether the animation this <see cref="AnimatedTilemap"/> should play frames 
-    ///     in reverse order.
+    /// Gets a value that indicates whether the animation this <see cref="AnimatedTilemap"/> should play frames in 
+    /// reverse order.
     /// </summary>
     public bool IsReversed { get; }
 
     /// <summary>
-    ///     Gets a value that indicates whether the animation for this <see cref="AnimatedTilemap"/> should ping-pong 
-    ///     once reaching the last frame of animation.
+    /// Gets a value that indicates whether the animation for this <see cref="AnimatedTilemap"/> should ping-pong once
+    /// reaching the last frame of animation.
     /// </summary>
     public bool IsPingPong { get; }
 
     /// <summary>
-    ///     Gets the source <see cref="AnimatedTilemapFrame"/> element for the current animation frame.
+    /// Gets the source <see cref="AnimatedTilemapFrame"/> element for the current animation frame.
     /// </summary>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if no <see cref="AnimatedTilemapFrame"/> elements have been added to this 
-    ///     <see cref="AnimatedTilemap"/> prior to accessing this property.
+    /// Thrown if no <see cref="AnimatedTilemapFrame"/> elements have been added to this 
+    /// <see cref="AnimatedTilemap"/> prior to accessing this property.
     /// </exception>
     public AnimatedTilemapFrame CurrentFrame
     {
@@ -94,55 +93,55 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Gets or Sets an <see cref="Action"/> method to invoke at the start of each animation frame.
+    /// Gets or Sets an <see cref="Action"/> method to invoke at the start of each animation frame.
     /// </summary>
     public Action<AnimatedTilemap>? OnFrameBegin { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an <see cref="Action"/> method to invoke at the end of each animation frame.
+    /// Gets or Sets an <see cref="Action"/> method to invoke at the end of each animation frame.
     /// </summary>
     public Action<AnimatedTilemap>? OnFrameEnd { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an <see cref="Action"/> method to invoke at the start of the animation.  This will trigger only
-    ///     once when the animation starts before the first frame's <see cref="OnFrameBegin"/> triggers.
+    /// Gets or Sets an <see cref="Action"/> method to invoke at the start of the animation.  This will trigger only
+    /// once when the animation starts before the first frame's <see cref="OnFrameBegin"/> triggers.
     /// </summary>
     public Action<AnimatedTilemap>? OnAnimationBegin { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an <see cref="Action"/> method to invoke each time the animation loops.  This will trigger each
-    ///     time the animation loops after the last frame's <see cref="OnFrameEnd"/> triggers.
+    /// Gets or Sets an <see cref="Action"/> method to invoke each time the animation loops.  This will trigger each
+    /// time the animation loops after the last frame's <see cref="OnFrameEnd"/> triggers.
     /// </summary>
     public Action<AnimatedTilemap>? OnAnimationLoop { get; set; } = default;
 
     /// <summary>
-    ///     Gets or Sets an <see cref="Action"/> method to invoke when the animation ends.  This will only trigger when 
-    ///     the animation ends in a non-looping animation, or if a looping animation is stopped by calling the 
-    ///     <see cref="Stop"/> method manually.
+    /// Gets or Sets an <see cref="Action"/> method to invoke when the animation ends.  This will only trigger when 
+    /// the animation ends in a non-looping animation, or if a looping animation is stopped by calling the 
+    /// <see cref="Stop"/> method manually.
     /// </summary>
     public Action<AnimatedTilemap>? OnAnimationEnd { get; set; } = default;
 
     /// <summary>
-    ///     Gets the amount of time remaining for the <see cref="CurrentFrame"/> before moving to the next frame.
+    /// Gets the amount of time remaining for the <see cref="CurrentFrame"/> before moving to the next frame.
     /// </summary>
     public TimeSpan CurrentFrameTimeRemaining { get; private set; }
 
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="AnimatedTilemap"/> class.
+    /// Initializes a new instance of the <see cref="AnimatedTilemap"/> class.
     /// </summary>
     /// <param name="name">
-    ///     The name to assign the <see cref="AnimatedTilemap"/>.
+    /// The name to assign the <see cref="AnimatedTilemap"/>.
     /// </param>
     /// <param name="isLooping">
-    ///     Indicates whether the animation for the <see cref="AnimatedTilemap"/> should loop
+    /// Indicates whether the animation for the <see cref="AnimatedTilemap"/> should loop
     /// </param>
     /// <param name="isReversed">
-    ///     Indicates whether the frames for the <see cref="AnimatedTilemap"/> should play in reverse order.
+    /// Indicates whether the frames for the <see cref="AnimatedTilemap"/> should play in reverse order.
     /// </param>
     /// <param name="isPingPong">
-    ///     Indicates whether the animation for this <see cref="AnimatedTilemap"/> should ping-pong once reaching the 
-    ///     last frame of animation
+    /// Indicates whether the animation for this <see cref="AnimatedTilemap"/> should ping-pong once reaching the 
+    /// last frame of animation
     /// </param>
     public AnimatedTilemap(string name, bool isLooping = true, bool isReversed = false, bool isPingPong = false)
     {
@@ -154,13 +153,13 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Updates this <see cref="AnimatedTilemap"/>.
+    /// Updates this <see cref="AnimatedTilemap"/>.
     /// </summary>
     /// <remarks>
-    ///     This should only be called once per game update cycle.
+    /// This should only be called once per game update cycle.
     /// </remarks>
     /// <param name="deltaTimeInSeconds">
-    ///     The amount of time, in seconds, that have elapsed since the last update cycle in the game.
+    /// The amount of time, in seconds, that have elapsed since the last update cycle in the game.
     /// </param>
     public void Update(double deltaTimeInSeconds)
     {
@@ -168,28 +167,24 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Updates this <see cref="AnimatedTilemap"/>.
+    /// Updates this <see cref="AnimatedTilemap"/>.
     /// </summary>
     /// <remarks>
-    ///     This should only be called once per game update cycle.
+    /// This should only be called once per game update cycle.
     /// </remarks>
-    /// <param name="gameTime">
-    ///     A snapshot of the game timing values for the current update cycle.
-    /// </param>
+    /// <param name="gameTime">A snapshot of the game timing values for the current update cycle.</param>
     public void Update(GameTime gameTime)
     {
         Update(gameTime.ElapsedGameTime);
     }
 
     /// <summary>
-    ///     Updates this <see cref="AnimatedTilemap"/>.
+    /// Updates this <see cref="AnimatedTilemap"/>.
     /// </summary>
     /// <remarks>
-    ///     This should only be called once per game update cycle.
+    /// This should only be called once per game update cycle.
     /// </remarks>
-    /// <param name="elapsedTime">
-    ///     The amount of time, that have elapsed since the last update cycle in the game.
-    /// </param>
+    /// <param name="elapsedTime">The amount of time, that have elapsed since the last update cycle in the game.</param>
     public void Update(in TimeSpan elapsedTime)
     {
         if (!IsAnimating || IsPaused)
@@ -328,17 +323,17 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Pauses this <see cref="AnimatedTilemap"/> and prevents it from being updated until it is unpaused.
+    /// Pauses this <see cref="AnimatedTilemap"/> and prevents it from being updated until it is unpaused.
     /// </summary>
     /// <param name="resetFrameDuration">
-    ///     A value that indicates whether the the duration of the <see cref="CurrentFrame"/> should be reset.  When 
-    ///     this method returns <see langword="false"/>, the duration will not be reset even if this is specified as
-    ///     <see langword="true"/>.
+    /// A value that indicates whether the the duration of the <see cref="CurrentFrame"/> should be reset.  When 
+    /// this method returns <see langword="false"/>, the duration will not be reset even if this is specified as
+    /// <see langword="true"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> this <see cref="AnimatedTilemap"/> was successfully paused; otherwise, 
-    ///     <see langword="false"/>.  This method returns <see langword="false"/> this <see cref="AnimatedTilemap"/> 
-    ///     is not currently animating or if it is already paused.
+    /// <see langword="true"/> this <see cref="AnimatedTilemap"/> was successfully paused; otherwise, 
+    /// <see langword="false"/>.  This method returns <see langword="false"/> this <see cref="AnimatedTilemap"/> 
+    /// is not currently animating or if it is already paused.
     /// </returns>
     public bool Pause(bool resetFrameDuration = false)
     {
@@ -360,17 +355,17 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Unpauses this <see cref="AnimatedTilemap"/>.
+    /// Unpauses this <see cref="AnimatedTilemap"/>.
     /// </summary>
     /// <param name="advanceToNextFrame">
-    ///     A value that indicates whether this <see cref="AnimatedTilemap"/> should immediately be advanced to the next
-    ///     frame after unpausing.  When this method returns <see langword="false"/>, this <see cref="AnimatedTilemap"/>
-    ///     will -not- be advanced to the next frame, even if this was specified as <see langword="true"/>.
+    /// A value that indicates whether this <see cref="AnimatedTilemap"/> should immediately be advanced to the next
+    /// frame after unpausing.  When this method returns <see langword="false"/>, this <see cref="AnimatedTilemap"/>
+    /// will -not- be advanced to the next frame, even if this was specified as <see langword="true"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if this <see cref="AnimatedTilemap"/> was successfully unpaused; otherwise, 
-    ///     <see langword="false"/>.  This method return <see langword="false"/> this <see cref="AnimatedTilemap"/> is 
-    ///     not currently animating or if it has not already been paused.
+    /// <see langword="true"/> if this <see cref="AnimatedTilemap"/> was successfully unpaused; otherwise, 
+    /// <see langword="false"/>.  This method return <see langword="false"/> this <see cref="AnimatedTilemap"/> is 
+    /// not currently animating or if it has not already been paused.
     /// </returns>
     public bool Unpause(bool advanceToNextFrame = false)
     {
@@ -392,14 +387,14 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Stops this <see cref="AnimatedTilemap"/> on the <see cref="CurrentFrame"/>.  This will trigger the 
-    ///     <see cref="OnAnimationEnd"/> if one was set.
+    /// Stops this <see cref="AnimatedTilemap"/> on the <see cref="CurrentFrame"/>.  This will trigger the 
+    /// <see cref="OnAnimationEnd"/> if one was set.
     /// </summary>
     /// <returns>
-    ///     <see langword="true"/> this <see cref="AnimatedTilemap"/> was successfully stopped; otherwise, 
-    ///     <see langword="false"/>.  This method returns <see langword="false"/> this <see cref="AnimatedTilemap"/> is 
-    ///     not currently animating.  If this method returns <see langword="false"/>, this indicates that the 
-    ///     <see cref="OnAnimationEnd"/> action method was not invoked.
+    /// <see langword="true"/> this <see cref="AnimatedTilemap"/> was successfully stopped; otherwise, 
+    /// <see langword="false"/>.  This method returns <see langword="false"/> this <see cref="AnimatedTilemap"/> is 
+    /// not currently animating.  If this method returns <see langword="false"/>, this indicates that the 
+    /// <see cref="OnAnimationEnd"/> action method was not invoked.
     /// </returns>
     public bool Stop()
     {
@@ -416,10 +411,10 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Resets this <see cref="AnimatedTilemap"/> back to its first frame of animation.
+    /// Resets this <see cref="AnimatedTilemap"/> back to its first frame of animation.
     /// </summary>
     /// <param name="paused">
-    ///     A value that indicates whether his <see cref="AnimatedTilemap"/> should be paused after it is reset.
+    /// A value that indicates whether his <see cref="AnimatedTilemap"/> should be paused after it is reset.
     /// </param>
     public void Reset(bool paused = false)
     {
@@ -441,14 +436,12 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Creates and adds a new <see cref="AnimatedTilemapFrame"/> element as the next frame of animation in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// Creates and adds a new <see cref="AnimatedTilemapFrame"/> element as the next frame of animation in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="duration">
-    ///     The duration to assign the <see cref="AnimatedTilemapFrame"/> created.
-    /// </param>
+    /// <param name="duration">The duration to assign the <see cref="AnimatedTilemapFrame"/> created.</param>
     /// <returns>
-    ///     The <see cref="AnimatedTilemapFrame"/> created.
+    /// The <see cref="AnimatedTilemapFrame"/> created.
     /// </returns>
     public AnimatedTilemapFrame CreateFrame(TimeSpan duration)
     {
@@ -458,27 +451,23 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Adds the given <see cref="AnimatedTilemapFrame"/> as the next frame of animation in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// Adds the given <see cref="AnimatedTilemapFrame"/> as the next frame of animation in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="frame">
-    ///     The <see cref="AnimatedTilemapFrame"/> to add
-    /// </param>
+    /// <param name="frame">The <see cref="AnimatedTilemapFrame"/> to add</param>
     public void AddFrame(AnimatedTilemapFrame frame) => _frames.Add(frame);
 
     /// <summary>
-    ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="frameIndex">
-    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
-    /// </param>
+    /// <param name="frameIndex">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
     /// <returns>
-    ///     The <see cref="AnimatedTilemapFrame"/> element that was located.
+    /// The <see cref="AnimatedTilemapFrame"/> element that was located.
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of 
-    ///     <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
+    /// Thrown if the specified index is less than zero or is greater than or equal to the total number of 
+    /// <see cref="AnimatedTilemapFrame"/> elements in this <see cref="AnimatedTilemap"/>.
     /// </exception>
     public AnimatedTilemapFrame GetFrame(int frameIndex)
     {
@@ -491,21 +480,19 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// Gets the <see cref="AnimatedTilemapFrame"/> element at the specified index in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to locate.
-    /// </param>
+    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to locate.</param>
     /// <param name="frame">
-    ///     When this method returns <see langword="true"/>, contains the <see cref="AnimatedTilemapFrame"/> located;
-    ///    otherwise, <see langword="null"/>.
+    /// When this method returns <see langword="true"/>, contains the <see cref="AnimatedTilemapFrame"/> located;
+    /// otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="AnimatedTilemapFrame"/> element was located; otherwise, 
-    ///     <see langword="false"/>.  This method returns <see langword="false"/> when the specified index is less than
-    ///     zero or is greater than or equal to the total number of <see cref="AnimatedTilemapFrame"/> elements in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// <see langword="true"/> if the <see cref="AnimatedTilemapFrame"/> element was located; otherwise, 
+    /// <see langword="false"/>.  This method returns <see langword="false"/> when the specified index is less than
+    /// zero or is greater than or equal to the total number of <see cref="AnimatedTilemapFrame"/> elements in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </returns>
     public bool TryGetFrame(int index, out AnimatedTilemapFrame? frame)
     {
@@ -520,17 +507,15 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
     }
 
     /// <summary>
-    ///     Removes the <see cref="AnimatedTilemapFrame"/> element at the specified index from this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// Removes the <see cref="AnimatedTilemapFrame"/> element at the specified index from this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the <see cref="AnimatedTilemapFrame"/> element to remove.
-    /// </param>
+    /// <param name="index">The index of the <see cref="AnimatedTilemapFrame"/> element to remove.</param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="AnimatedTilemapFrame"/> was removed successfully; otherwise, 
-    ///     <see langword="false"/>.  This method returns <see langword="false"/> when the specified index is less than 
-    ///     zero or is greater that or equal to the total number of <see cref="AnimatedTilemapFrame"/> elements in this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// <see langword="true"/> if the <see cref="AnimatedTilemapFrame"/> was removed successfully; otherwise, 
+    /// <see langword="false"/>.  This method returns <see langword="false"/> when the specified index is less than 
+    /// zero or is greater that or equal to the total number of <see cref="AnimatedTilemapFrame"/> elements in this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </returns>
     public bool RemoveFrame(int index)
     {
@@ -550,85 +535,48 @@ public sealed class AnimatedTilemap : IEnumerable<AnimatedTilemapFrame>
 
 
     /// <summary>
-    ///     Draws this <see cref="AnimatedTilemap"/> using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
+    /// Draws this <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate location to render this <see cref="AnimatedTilemap"/> at.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering this <see cref="AnimatedTilemap"/>.
-    /// </param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="AnimatedTilemap"/> at.</param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="AnimatedTilemap"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color) =>
         Draw(spriteBatch, position, color, Vector2.One, 0.0f);
 
     /// <summary>
-    ///     Draws this <see cref="AnimatedTilemap"/> using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
+    /// Draws this <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering this 
+    /// <see cref="AnimatedTilemap"/>.
     /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate location to render this <see cref="AnimatedTilemap"/> at.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering this <see cref="AnimatedTilemap"/>.
-    /// </param>
-    /// <param name="scale">
-    ///     The amount of scaling to apply when rendering this <see cref="AnimatedTilemap"/>.
-    /// </param>
-    /// <param name="layerDepth">
-    ///     The layer depth to apply when rendering this <see cref="AnimatedTilemap"/>.
-    /// </param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="AnimatedTilemap"/> at.</param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="AnimatedTilemap"/>.</param>
+    /// <param name="scale">The amount of scaling to apply when rendering this <see cref="AnimatedTilemap"/>.</param>
+    /// <param name="layerDepth">The layer depth to apply when rendering this <see cref="AnimatedTilemap"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float scale, float layerDepth) =>
         Draw(spriteBatch, position, color, new Vector2(scale, scale), layerDepth);
 
     /// <summary>
-    ///     Draws this <see cref="AnimatedTilemap"/> using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
+    /// Draws this <see cref="AnimatedTilemap"/> using the <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/>.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
-    ///     <see cref="AnimatedTilemap"/>.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering the 
+    /// <see cref="AnimatedTilemap"/>.
     /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate location to render the <see cref="AnimatedTilemap"/> at.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering the <see cref="AnimatedTilemap"/>.
-    /// </param>
-    /// <param name="scale">
-    ///     The amount of scaling to apply when rendering the <see cref="AnimatedTilemap"/>.
-    /// </param>
-    /// <param name="layerDepth">
-    ///     The layer depth to apply when rendering the <see cref="AnimatedTilemap"/>.
-    /// </param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="AnimatedTilemap"/> at.</param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="AnimatedTilemap"/>.</param>
+    /// <param name="scale">The amount of scaling to apply when rendering this <see cref="AnimatedTilemap"/>.</param>
+    /// <param name="layerDepth">The layer depth to apply when rendering this <see cref="AnimatedTilemap"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, Vector2 scale, float layerDepth) =>
         spriteBatch.Draw(this, position, color, scale, layerDepth);
 
-    /// <summary>
-    ///     Returns an enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
-    ///     <see cref="AnimatedTilemap"/>.  The order of elements in the enumeration is from first frame to last frame.
-    /// </summary>
-    /// <returns>
-    ///     An enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
-    ///     <see cref="AnimatedTilemap"/>.
-    /// </returns>
+    /// <inheritdoc/>
     public IEnumerator<AnimatedTilemapFrame> GetEnumerator() => _frames.GetEnumerator();
 
-    /// <summary>
-    ///     Returns an enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
-    ///     <see cref="AnimatedTilemap"/>.  The order of elements in the enumeration is from first frame to last frame.
-    /// </summary>
-    /// <returns>
-    ///     An enumerator used to iterate through all of the <see cref="AnimatedTilemapFrame"/> elements in this 
-    ///     <see cref="AnimatedTilemap"/>.
-    /// </returns>
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

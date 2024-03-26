@@ -10,139 +10,117 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGame.Aseprite;
 
 /// <summary>
-///     Defines a <see cref="Tileset"/> with a source image and named <see cref="TextureRegion"/> elements that 
-///     represent  the tiles.
+/// Defines a <see cref="Tileset"/> with a source image and named <see cref="TextureRegion"/> elements that 
+/// represent  the tiles.
 /// </summary>
 /// <remarks>
-///     A <see cref="Tileset"/> is similar in function to a <see cref="RawTextureAtlas"/> in that it uses a single 
-///     source image and has named <see cref="TextureRegion"/> for sections within that image.  The difference is that 
-///     a <see cref="Tileset"/> auto generates the <see cref="TextureRegion"/> elements into a grid like structure and 
-///     the accessor for each <see cref="TextureRegion"/> is by location id or column and row only.
+/// A <see cref="Tileset"/> is similar in function to a <see cref="RawTextureAtlas"/> in that it uses a single 
+/// source image and has named <see cref="TextureRegion"/> for sections within that image.  The difference is that 
+/// a <see cref="Tileset"/> auto generates the <see cref="TextureRegion"/> elements into a grid like structure and 
+/// the accessor for each <see cref="TextureRegion"/> is by location id or column and row only.
 /// </remarks>
 public sealed class Tileset
 {
     private TextureRegion[] _regions;
 
     /// <summary>
-    ///     Gets the name assigned to this <see cref="Tileset"/>.
+    /// Gets the name assigned to this <see cref="Tileset"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the source texture image used by this <see cref="Tileset"/>.
+    /// Gets the source texture image used by this <see cref="Tileset"/>.
     /// </summary>
     public Texture2D Texture { get; }
 
     /// <summary>
-    ///     Gets the width, in pixels, of each tile in this <see cref="Tileset"/>.
+    /// Gets the width, in pixels, of each tile in this <see cref="Tileset"/>.
     /// </summary>
     public int TileWidth { get; }
 
     /// <summary>
-    ///     Gets the height, in pixels of each tile in this <see cref="Tileset"/>.
+    /// Gets the height, in pixels of each tile in this <see cref="Tileset"/>.
     /// </summary>
     public int TileHeight { get; }
 
     /// <summary>
-    ///     Gets the total number of rows in this <see cref="Tileset"/>.
+    /// Gets the total number of rows in this <see cref="Tileset"/>.
     /// </summary>
     public int RowCount { get; }
 
     /// <summary>
-    ///     Gets the total number of columns in this <see cref="Tileset"/>.
+    /// Gets the total number of columns in this <see cref="Tileset"/>.
     /// </summary>
     public int ColumnCount { get; }
 
     /// <summary>
-    /// G   ets the total number of tiles in this <see cref="Tileset"/>.
+    /// Gets the total number of tiles in this <see cref="Tileset"/>.
     /// </summary>
     public int TileCount { get; }
 
     /// <summary>
-    ///     Gets a read-only span of the <see cref="TextureRegion"/> elements that represent the tiles in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets a read-only span of the <see cref="TextureRegion"/> elements that represent the tiles in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
     public ReadOnlySpan<TextureRegion> Tiles => _regions;
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> of the tile at the specified index in this <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> of the tile at the specified index in this <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tile to locate.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="TextureRegion"/> for the tile located.
-    /// </returns>
+    /// <param name="index">The index of the tile to locate.</param>
+    /// <returns>The <see cref="TextureRegion"/> for the tile located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of tiles in 
-    ///     this <see cref="Tileset"/>.
+    /// Thrown if the specified index is less than zero or is greater than or equal to the total number of tiles in 
+    /// this <see cref="Tileset"/>.
     /// </exception>
     public TextureRegion this[int index] => GetTile(index);
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="column">
-    ///     The column of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
-    /// <param name="row">
-    ///     The row of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="TextureRegion"/> for the tile located.
-    /// </returns>
+    /// <param name="column">The column of the tile to locate in this <see cref="Tileset"/>.</param>
+    /// <param name="row">The row of the tile to locate in this <see cref="Tileset"/>.</param>
+    /// <returns>The <see cref="TextureRegion"/> for the tile located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if either the column or row specified are less than zero or if either are greater than or equal to 
-    ///     the total number of columns or rows in this <see cref="Tileset"/>.
+    /// Thrown if either the column or row specified are less than zero or if either are greater than or equal to 
+    /// the total number of columns or rows in this <see cref="Tileset"/>.
     /// </exception>
     public TextureRegion this[int column, int row] => GetTile(column, row);
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> for the tile at the specified column and row location in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> for the tile at the specified column and row location in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="location">
-    ///     The column and row location of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="TextureRegion"/> for the tile located.
-    /// </returns>
+    /// <param name="location">The column and row location of the tile to locate in this <see cref="Tileset"/>.</param>
+    /// <returns>The <see cref="TextureRegion"/> for the tile located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if either the column or row in the location specified are less than zero or if either are greater 
-    ///     than or equal to the total number of columns or rows in this <see cref="Tileset"/>.
+    /// Thrown if either the column or row in the location specified are less than zero or if either are greater 
+    /// than or equal to the total number of columns or rows in this <see cref="Tileset"/>.
     /// </exception>
     public TextureRegion this[Point location] => GetTile(location);
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Tileset"/> class.
+    /// Initializes a new instance of the <see cref="Tileset"/> class.
     /// </summary>
     /// <remarks>
-    ///     The <see cref="TextureRegion"/> elements for each tile in this <see cref="Tileset"/> are auto-generated 
-    ///     based on the <paramref name="tileWidth"/> and <paramref name="tileHeight"/> specified.  Both of these values
-    ///     must be greater than zero and the width of the <paramref name="texture"/> must divide evenly by
-    ///     the <paramref name="tileWidth"/> and the height of the <paramref name="texture"/> must divide evenly by the
-    ///     <paramref name="tileHeight"/>
+    /// The <see cref="TextureRegion"/> elements for each tile in this <see cref="Tileset"/> are auto-generated 
+    /// based on the <paramref name="tileWidth"/> and <paramref name="tileHeight"/> specified.  Both of these values
+    /// must be greater than zero and the width of the <paramref name="texture"/> must divide evenly by
+    /// the <paramref name="tileWidth"/> and the height of the <paramref name="texture"/> must divide evenly by the
+    /// <paramref name="tileHeight"/>
     /// </remarks>
-    /// <param name="name">
-    ///     The name to assign the <see cref="Tileset"/>.
-    /// </param>
-    /// <param name="texture">
-    ///     The source texture used by this <see cref="Tileset"/>.
-    /// </param>
-    /// <param name="tileWidth">
-    ///     The width, in pixels, of each tile in this <see cref="Tileset"/>.
-    /// </param>
-    /// <param name="tileHeight">
-    ///     The height, in pixels, of each tile in this <see cref="Tileset"/>.
-    /// </param>
+    /// <param name="name">The name to assign the <see cref="Tileset"/>.</param>
+    /// <param name="texture">The source texture used by this <see cref="Tileset"/>.</param>
+    /// <param name="tileWidth">The width, in pixels, of each tile in this <see cref="Tileset"/>.</param>
+    /// <param name="tileHeight">The height, in pixels, of each tile in this <see cref="Tileset"/>.</param>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the <paramref name="tileWidth"/> or <paramref name="tileHeight"/> values are less than one.
+    /// Thrown if the <paramref name="tileWidth"/> or <paramref name="tileHeight"/> values are less than one.
     /// </exception>
     /// <exception cref="ArgumentException">
-    ///     Thrown if the width of the <paramref name="texture"/> does not divide evenly by the 
-    ///     <paramref name="tileWidth"/> specified or if the height of the <paramref name="texture"/> does not divide 
-    ///     evenly by the <paramref name="tileHeight"/> specified.
+    /// Thrown if the width of the <paramref name="texture"/> does not divide evenly by the 
+    /// <paramref name="tileWidth"/> specified or if the height of the <paramref name="texture"/> does not divide 
+    /// evenly by the <paramref name="tileHeight"/> specified.
     /// </exception>
     public Tileset(string name, Texture2D texture, int tileWidth, int tileHeight)
     {
@@ -192,17 +170,13 @@ public sealed class Tileset
     }
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> of the tile at the specified index in this <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> of the tile at the specified index in this <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tile to locate.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="TextureRegion"/> for the tile located.
-    /// </returns>
+    /// <param name="index">The index of the tile to locate.</param>
+    /// <returns>The <see cref="TextureRegion"/> for the tile located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if the specified index is less than zero or is greater than or equal to the total number of tiles in 
-    ///     this <see cref="Tileset"/>.
+    /// Thrown if the specified index is less than zero or is greater than or equal to the total number of tiles in 
+    /// this <see cref="Tileset"/>.
     /// </exception>
     public TextureRegion GetTile(int index)
     {
@@ -215,37 +189,27 @@ public sealed class Tileset
     }
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="location">
-    ///     The column and row location of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="TextureRegion"/> for the tile located.
-    /// </returns>
+    /// <param name="location">The column and row location of the tile to locate in this <see cref="Tileset"/>.</param>
+    /// <returns>The <see cref="TextureRegion"/> for the tile located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if either the column or row in the specified location are less than zero or if either are greater 
-    ///     than or equal to the total number of columns or rows respectively.
+    /// Thrown if either the column or row in the specified location are less than zero or if either are greater 
+    /// than or equal to the total number of columns or rows respectively.
     /// </exception>
     public TextureRegion GetTile(Point location) => GetTile(location.X, location.Y);
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="column">
-    ///     The column of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
-    /// <param name="row">
-    ///     The row of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="TextureRegion"/> for the tile located.
-    /// </returns>
+    /// <param name="column">The column of the tile to locate in this <see cref="Tileset"/>.</param>
+    /// <param name="row">The row of the tile to locate in this <see cref="Tileset"/>.</param>
+    /// <returns>The <see cref="TextureRegion"/> for the tile located.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    ///     Thrown if either the column or row specified are less than zero or if either are greater than or equal to 
-    ///     the total number of columns or rows in this <see cref="Tileset"/>.
+    /// Thrown if either the column or row specified are less than zero or if either are greater than or equal to 
+    /// the total number of columns or rows in this <see cref="Tileset"/>.
     /// </exception>
     public TextureRegion GetTile(int column, int row)
     {
@@ -254,20 +218,18 @@ public sealed class Tileset
     }
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> of the tile at the specified index in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> of the tile at the specified index in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="index">
-    ///     The index of the tile to locate.
-    /// </param>
+    /// <param name="index">The index of the tile to locate.</param>
     /// <param name="tile">
-    ///     When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> of the tile 
-    ///     located; otherwise, <see langword="null"/>.
+    /// When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> of the tile 
+    /// located; otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if a tile was located at the specified index; otherwise, <see langword="false"/>.  
-    ///     This method returns <see langword="false"/> if the specified index is less than zero or is greater than or 
-    ///     equal to the total number of tiles in this <see cref="Tileset"/>.
+    /// <see langword="true"/> if a tile was located at the specified index; otherwise, <see langword="false"/>.  
+    /// This method returns <see langword="false"/> if the specified index is less than zero or is greater than or 
+    /// equal to the total number of tiles in this <see cref="Tileset"/>.
     /// </returns>
     public bool TryGetTile(int index, [NotNullWhen(true)] out TextureRegion? tile)
     {
@@ -283,44 +245,38 @@ public sealed class Tileset
     }
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="location">
-    ///     The column and row location of the tile to locate in this <see cref="Tileset"/>.
-    ///     </param>
+    /// <param name="location">The column and row location of the tile to locate in this <see cref="Tileset"/>.</param>
     /// <param name="tile">
-    ///     When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> of the tile 
-    ///     located; otherwise, <see langword="null"/>.
+    /// When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> of the tile 
+    /// located; otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if a tile was located at the specified column and row location; otherwise 
-    ///     <see langword="false"/>.  This method return <see langword="false"/> if the column or row in the location 
-    ///     specified is less than zero or if either are greater than or equal to the total number of columns or rows
-    ///     in this <see cref="Tileset"/>.
+    /// <see langword="true"/> if a tile was located at the specified column and row location; otherwise 
+    /// <see langword="false"/>.  This method return <see langword="false"/> if the column or row in the location 
+    /// specified is less than zero or if either are greater than or equal to the total number of columns or rows
+    /// in this <see cref="Tileset"/>.
     /// </returns>
     public bool TryGetTile(Point location, [NotNullWhen(true)] out TextureRegion? tile) =>
         TryGetTile(location.X, location.Y, out tile);
 
     /// <summary>
-    ///     Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
-    ///     <see cref="Tileset"/>.
+    /// Gets the <see cref="TextureRegion"/> for the tile at the specified column and row in this 
+    /// <see cref="Tileset"/>.
     /// </summary>
-    /// <param name="column">
-    ///     The column of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
-    /// <param name="row">
-    ///     The row of the tile to locate in this <see cref="Tileset"/>.
-    /// </param>
+    /// <param name="column">The column of the tile to locate in this <see cref="Tileset"/>.</param>
+    /// <param name="row">The row of the tile to locate in this <see cref="Tileset"/>.</param>
     /// <param name="tile">
-    ///     When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> of the tile 
-    ///     located; otherwise, <see langword="null"/>.
+    /// When this method returns <see langword="true"/>, contains the <see cref="TextureRegion"/> of the tile 
+    /// located; otherwise, <see langword="null"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if a tile was located at the specified column and row; otherwise 
-    ///     <see langword="false"/>.  This method return <see langword="false"/> if the column or row in the location 
-    ///     specified is less than zero or if either are greater than or equal to the total number of columns or rows 
-    ///     in this <see cref="Tileset"/>.
+    /// <see langword="true"/> if a tile was located at the specified column and row; otherwise 
+    /// <see langword="false"/>.  This method return <see langword="false"/> if the column or row in the location 
+    /// specified is less than zero or if either are greater than or equal to the total number of columns or rows 
+    /// in this <see cref="Tileset"/>.
     /// </returns>
     public bool TryGetTile(int column, int row, [NotNullWhen(true)] out TextureRegion? tile)
     {

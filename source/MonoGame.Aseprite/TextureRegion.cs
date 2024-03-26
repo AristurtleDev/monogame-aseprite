@@ -15,62 +15,54 @@ public class TextureRegion
     private Dictionary<string, Slice> _objects = new();
 
     /// <summary>
-    ///     Gets the name assigned to this <see cref="TextureRegion"/>.
+    /// Gets the name assigned to this <see cref="TextureRegion"/>.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    ///     Gets the source texture used by this <see cref="TextureRegion"/>.
+    /// Gets the source texture used by this <see cref="TextureRegion"/>.
     /// </summary>
     public Texture2D Texture { get; }
 
     /// <summary>
-    ///     Gets the rectangular bounds that define the location and width and height extents, in pixels, of the region
-    ///     within the source texture that is represented by this <see cref="TextureRegion"/>.
+    /// Gets the rectangular bounds that define the location and width and height extents, in pixels, of the region
+    /// within the source texture that is represented by this <see cref="TextureRegion"/>.
     /// </summary>
     public Rectangle Bounds { get; }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="TextureRegion"/> class.
+    /// Initializes a new instance of the <see cref="TextureRegion"/> class.
     /// </summary>
-    /// <param name="name">
-    ///     The name to assign the <see cref="TextureRegion"/>.
-    /// </param>
-    /// <param name="texture">
-    ///     The source texture image this region is from.
-    /// </param>
-    /// <param name="bounds">
-    ///     The rectangular bounds of this region within the source texture.
-    /// </param>
+    /// <param name="name">The name to assign the <see cref="TextureRegion"/>.</param>
+    /// <param name="texture">The source texture image this region is from.</param>
+    /// <param name="bounds">The rectangular bounds of this region within the source texture.</param>
     public TextureRegion(string name, Texture2D texture, Rectangle bounds) =>
         (Name, Texture, Bounds) = (name, texture, bounds);
 
 
     /// <summary>
-    ///     Creates and adds a new <see cref="Slice"/> element to this <see cref="TextureRegion"/>.
+    /// Creates and adds a new <see cref="Slice"/> element to this <see cref="TextureRegion"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name to assign the <see cref="Slice"/> that is created by this method.  The name must be
-    ///     unique across all <see cref="Slice"/> elements in this <see cref="TextureRegion"/>.
+    /// The name to assign the <see cref="Slice"/> that is created by this method.  The name must be
+    /// unique across all <see cref="Slice"/> elements in this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="bounds">
-    ///     The bounds to assign the <see cref="Slice"/> created by this method.  This should be relative to the bounds
-    ///     of this <see cref="TextureRegion"/>.
+    /// The bounds to assign the <see cref="Slice"/> created by this method.  This should be relative to the bounds
+    /// of this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="origin">
-    ///     The x- and y-coordinate origin point to assign the <see cref="Slice"/> created by this method.
-    ///     This should be relative to the upper-left corner of the bounds of this <see cref="TextureRegion"/>.
+    /// The x- and y-coordinate origin point to assign the <see cref="Slice"/> created by this method.
+    /// This should be relative to the upper-left corner of the bounds of this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="color">
-    ///     A <see cref="Microsoft.Xna.Framework.Color"/> value to assign the <see cref="Slice"/> created
-    ///     by this method.
+    /// A <see cref="Microsoft.Xna.Framework.Color"/> value to assign the <see cref="Slice"/> created
+    /// by this method.
     /// </param>
-    /// <returns>
-    ///     The <see cref="Slice"/> created by this method.
-    /// </returns>
+    /// <returns>The <see cref="Slice"/> created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if this <see cref="TextureRegion"/> already contains a <see cref="Slice"/> with the
-    ///     specified name.
+    /// Thrown if this <see cref="TextureRegion"/> already contains a <see cref="Slice"/> with the
+    /// specified name.
     /// </exception>
     public Slice CreateSlice(string name, Rectangle bounds, Vector2 origin, Color color)
     {
@@ -80,34 +72,32 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Creates and adds a new <see cref="NinePatchSlice"/> element to this <see cref="TextureRegion"/>.
+    /// Creates and adds a new <see cref="NinePatchSlice"/> element to this <see cref="TextureRegion"/>.
     /// </summary>
     /// <param name="name">
-    ///     The name to assign the <see cref="NinePatchSlice"/> that is created by this method.  The name must be
-    ///     unique across all <see cref="Slice"/> elements in this <see cref="TextureRegion"/>.
+    /// The name to assign the <see cref="NinePatchSlice"/> that is created by this method.  The name must be
+    /// unique across all <see cref="Slice"/> elements in this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="bounds">
-    ///     The bounds to assign the <see cref="NinePatchSlice"/> created by this method.  This should be relative to 
-    ///     the bounds of this <see cref="TextureRegion"/>.
+    /// The bounds to assign the <see cref="NinePatchSlice"/> created by this method.  This should be relative to 
+    /// the bounds of this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="centerBounds">
-    ///     The center bounds to assign the <see cref="NinePatchSlice"/> created by this method.  This should be
-    ///     relative to the <paramref name="bounds"/>.
+    /// The center bounds to assign the <see cref="NinePatchSlice"/> created by this method.  This should be
+    /// relative to the <paramref name="bounds"/>.
     /// </param>
     /// <param name="origin">
-    ///     The x- and y-coordinate origin point to assign the <see cref="NinePatchSlice"/> created by this method.
-    ///     This should be relative to the upper-left corner of the bounds of this <see cref="TextureRegion"/>.
+    /// The x- and y-coordinate origin point to assign the <see cref="NinePatchSlice"/> created by this method.
+    /// This should be relative to the upper-left corner of the bounds of this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="color">
-    ///     A <see cref="Microsoft.Xna.Framework.Color"/> value to assign the <see cref="NinePatchSlice"/> created
-    ///     by this method.
+    /// A <see cref="Microsoft.Xna.Framework.Color"/> value to assign the <see cref="NinePatchSlice"/> created
+    /// by this method.
     /// </param>
-    /// <returns>
-    ///     The <see cref="NinePatchSlice"/> created by this method.
-    /// </returns>
+    /// <returns>The <see cref="NinePatchSlice"/> created by this method.</returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown if this <see cref="TextureRegion"/> already contains a <see cref="Slice"/> with the
-    ///     specified name.
+    /// Thrown if this <see cref="TextureRegion"/> already contains a <see cref="Slice"/> with the
+    /// specified name.
     /// </exception>
     public NinePatchSlice CreateNinePatchSlice(string name, Rectangle bounds, Rectangle centerBounds, Vector2 origin, Color color)
     {
@@ -127,17 +117,13 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/>.
+    /// Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/>.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the <see cref="Slice"/> element to locate.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Slice"/> element located.
-    /// </returns>
+    /// <param name="name">The name of the <see cref="Slice"/> element to locate.</param>
+    /// <returns>The <see cref="Slice"/> element located.</returns>
     /// <exception cref="KeyNotFoundException">
-    ///     Thrown if this <see cref="TextureRegion"/> does not contain a <see cref="Slice"/> element with the specified
-    ///     name.
+    /// Thrown if this <see cref="TextureRegion"/> does not contain a <see cref="Slice"/> element with the specified
+    /// name.
     /// </exception>
     public Slice GetSlice(string name)
     {
@@ -150,36 +136,30 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/>.
+    /// Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/>.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the <see cref="Slice"/> element to locate.
-    /// </param>
+    /// <param name="name">The name of the <see cref="Slice"/> element to locate.</param>
     /// <param name="slice">
-    ///     When this method returns <see langword="true"/>, contains the <see cref="Slice"/> located; otherwise,
-    ///     <see langword="null"/>
+    /// When this method returns <see langword="true"/>, contains the <see cref="Slice"/> located; otherwise,
+    /// <see langword="null"/>
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="Slice"/> was located; otherwise, <see langword="false"/>.
-    ///     This method returns <see langword="false"/> if this <see cref="TextureRegion"/> does not contain
-    ///     a <see cref="Slice"/> element with the specified name.
+    /// <see langword="true"/> if the <see cref="Slice"/> was located; otherwise, <see langword="false"/>.
+    /// This method returns <see langword="false"/> if this <see cref="TextureRegion"/> does not contain
+    /// a <see cref="Slice"/> element with the specified name.
     /// </returns>
     public bool TryGetSlice(string name, out Slice? slice) => _objects.TryGetValue(name, out slice);
 
     /// <summary>
-    ///     Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/> as the
-    ///     type specified.
+    /// Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/> as the
+    /// type specified.
     /// </summary>
     /// <typeparam name="T">
-    ///     The type to return the located <see cref="Slice"/> element as.  Must derived from the base type 
-    ///     <see cref="Slice"/>.
+    /// The type to return the located <see cref="Slice"/> element as.  Must derived from the base type 
+    /// <see cref="Slice"/>.
     /// </typeparam>
-    /// <param name="name">
-    ///     The name of the <see cref="Slice"/> element to locate.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Slice"/> element located as the type specified.
-    /// </returns>
+    /// <param name="name">The name of the <see cref="Slice"/> element to locate.</param>
+    /// <returns>The <see cref="Slice"/> element located as the type specified.</returns>
     public T GetSlice<T>(string name) where T : Slice
     {
         if (_objects.TryGetValue(name, out Slice? slice))
@@ -191,24 +171,22 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/> as the
-    ///     type specified.
+    /// Returns the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/> as the
+    /// type specified.
     /// </summary>
     /// <typeparam name="T">
-    ///     The type to return the located <see cref="Slice"/> element as.  Must derived from the base type 
-    ///     <see cref="Slice"/>.
+    /// The type to return the located <see cref="Slice"/> element as.  Must derived from the base type 
+    /// <see cref="Slice"/>.
     /// </typeparam>
-    /// <param name="name">
-    ///     The name of the <see cref="Slice"/> element to locate.
-    /// </param>
+    /// <param name="name">The name of the <see cref="Slice"/> element to locate.</param>
     /// <param name="slice">
-    ///     When this method returns <see langword="true"/>, contains the <see cref="Slice"/> located; otherwise,
-    ///     <see langword="null"/>
+    /// When this method returns <see langword="true"/>, contains the <see cref="Slice"/> located; otherwise,
+    /// <see langword="null"/>
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="Slice"/> was located; otherwise, <see langword="false"/>.
-    ///     This method returns <see langword="false"/> if this <see cref="TextureRegion"/> does not contain
-    ///     a <see cref="Slice"/> element with the specified name.
+    /// <see langword="true"/> if the <see cref="Slice"/> was located; otherwise, <see langword="false"/>.
+    /// This method returns <see langword="false"/> if this <see cref="TextureRegion"/> does not contain
+    /// a <see cref="Slice"/> element with the specified name.
     /// </returns>
     public bool TryGetSlice<T>(string name, out T? slice) where T : Slice
     {
@@ -225,145 +203,117 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Removes the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/>.
+    /// Removes the <see cref="Slice"/> element with the specified name from this <see cref="TextureRegion"/>.
     /// </summary>
-    /// <param name="name">
-    ///     The name of the <see cref="Slice"/> element to remove.
-    /// </param>
+    /// <param name="name">The name of the <see cref="Slice"/> element to remove.</param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="Slice"/> element was successfully removed; otherwise,
-    ///     <see langword="false"/>.  This method returns <see langword="false"/> when this <see cref="TextureRegion"/>
-    ///     does not have a <see cref="Slice"/> element with the specified name.
+    /// <see langword="true"/> if the <see cref="Slice"/> element was successfully removed; otherwise,
+    /// <see langword="false"/>.  This method returns <see langword="false"/> when this <see cref="TextureRegion"/>
+    /// does not have a <see cref="Slice"/> element with the specified name.
     /// </returns>
     public bool RemoveSlice(string name) => _objects.Remove(name);
 
     /// <summary>
-    ///     Removes all <see cref="Slice"/> elements from this <see cref="TextureRegion"/>.
+    /// Removes all <see cref="Slice"/> elements from this <see cref="TextureRegion"/>.
     /// </summary>
     public void RemoveAllSlices() => _objects.Clear();
 
     /// <summary>
-    ///     Draws this <see cref="TextureRegion"/> instance using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// Draws this <see cref="TextureRegion"/> instance using the 
+    /// <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
     /// <param name="destinationRectangle">
-    ///     A rectangular bound that defines the destination to render this <see cref="TextureRegion"/> into.
+    /// A rectangular bound that defines the destination to render this <see cref="TextureRegion"/> into.
     /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="TextureRegion"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color) =>
         spriteBatch.Draw(this, destinationRectangle, color);
 
     /// <summary>
-    ///     Draws this <see cref="TextureRegion"/> instance using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// Draws this <see cref="TextureRegion"/> instance using the 
+    /// <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.</param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="TextureRegion"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color) =>
         spriteBatch.Draw(this, position, color);
 
     /// <summary>
-    ///     Draws this <see cref="TextureRegion"/> using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// Draws this <see cref="TextureRegion"/> instance using the 
+    /// <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.</param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="TextureRegion"/>.</param>
     /// <param name="rotation">
-    ///     The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
+    /// The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="origin">
-    ///     The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
+    /// The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
     /// </param>
-    /// <param name="scale">
-    ///     The amount of scaling to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="scale">The amount of scaling to apply when rendering this <see cref="TextureRegion"/>.</param>
     /// <param name="effects">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
-    ///     flipping when rendering this <see cref="TextureRegion"/>.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    /// flipping when rendering this <see cref="TextureRegion"/>.
     /// </param>
-    /// <param name="layerDepth">
-    ///     The layer depth to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="layerDepth">The layer depth to apply when rendering this <see cref="TextureRegion"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth) =>
         spriteBatch.Draw(this, position, color, rotation, origin, scale, effects, layerDepth);
 
     /// <summary>
-    ///     Draws this <see cref="TextureRegion"/> using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// Draws this <see cref="TextureRegion"/> instance using the 
+    /// <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
-    /// <param name="position">
-    ///     The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.
-    /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="position">The x- and y-coordinate location to render this <see cref="TextureRegion"/> at.</param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="TextureRegion"/>.</param>
     /// <param name="rotation">
-    ///     The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
+    /// The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="origin">
-    ///     The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
+    /// The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
     /// </param>
-    /// <param name="scale">
-    ///     The amount of scaling to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="scale">The amount of scaling to apply when rendering this <see cref="TextureRegion"/>.</param>
     /// <param name="effects">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
-    ///     flipping when rendering this <see cref="TextureRegion"/>.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    /// flipping when rendering this <see cref="TextureRegion"/>.
     /// </param>
-    /// <param name="layerDepth">
-    ///     The layer depth to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="layerDepth">The layer depth to apply when rendering this <see cref="TextureRegion"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth) =>
         spriteBatch.Draw(this, position, color, rotation, origin, scale, effects, layerDepth);
 
     /// <summary>
-    ///     Draws this <see cref="TextureRegion"/> using the 
-    ///     <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
+    /// Draws this <see cref="TextureRegion"/> instance using the 
+    /// <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> provided.
     /// </summary>
     /// <param name="spriteBatch">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use for rendering.
     /// </param>
     /// <param name="destinationRectangle">
-    ///     A rectangular bound that defines the destination to render this <see cref="TextureRegion"/> into.
+    /// A rectangular bound that defines the destination to render this <see cref="TextureRegion"/> into.
     /// </param>
-    /// <param name="color">
-    ///     The color mask to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="color">The color mask to apply when rendering this <see cref="TextureRegion"/>.</param>
     /// <param name="rotation">
-    ///     The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
+    /// The amount of rotation, in radians, to apply when rendering this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="origin">
-    ///     The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
+    /// The x- and y-coordinate point of origin to apply when rendering this <see cref="TextureRegion"/>.
     /// </param>
     /// <param name="effects">
-    ///     The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
-    ///     flipping when rendering this <see cref="TextureRegion"/>.
+    /// The <see cref="Microsoft.Xna.Framework.Graphics.SpriteEffects"/> to apply for horizontal and vertical axis 
+    /// flipping when rendering this <see cref="TextureRegion"/>.
     /// </param>
-    /// <param name="layerDepth">
-    ///     The layer depth to apply when rendering this <see cref="TextureRegion"/>.
-    /// </param>
+    /// <param name="layerDepth">The layer depth to apply when rendering this <see cref="TextureRegion"/>.</param>
     public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth) =>
         spriteBatch.Draw(this, destinationRectangle, color, rotation, origin, effects, layerDepth);
 

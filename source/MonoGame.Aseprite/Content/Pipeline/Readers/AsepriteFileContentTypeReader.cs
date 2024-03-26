@@ -12,7 +12,6 @@ internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<Aseprite
 {
     protected override AsepriteFile Read(ContentReader reader, AsepriteFile? existingInstance)
     {
-
         if (existingInstance is not null)
         {
             return existingInstance;
