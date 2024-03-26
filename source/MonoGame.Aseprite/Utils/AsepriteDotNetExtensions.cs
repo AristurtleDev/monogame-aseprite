@@ -12,9 +12,18 @@ using AseTexture = AsepriteDotNet.Texture;
 
 namespace MonoGame.Aseprite.Utils;
 
-internal static class AsepriteDotNetExtensions
+/// <summary>
+/// Defines extension methods for translating between AsepriteDotNet types to MonoGame types.
+/// </summary>
+public static class AsepriteDotNetExtensions
 {
-    internal static Texture2D ToTexture2D(this AseTexture texture, GraphicsDevice device)
+    /// <summary>
+    /// Converts an AsepriteDotNet Texture to a MonoGame Texture2D object.
+    /// </summary>
+    /// <param name="texture">The AsepriteDotNet texture to convert.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <returns>The converted MonoGame Texture2D object.</returns>
+    public static Texture2D ToTexture2D(this AseTexture texture, GraphicsDevice device)
     {
         Texture2D texture2D = new Texture2D(device, texture.Size.Width, texture.Size.Height);
         texture2D.Name = texture.Name;
@@ -22,10 +31,31 @@ internal static class AsepriteDotNetExtensions
         return texture2D;
     }
 
-    internal unsafe static Color ToXnaColor(this AseColor color) => Unsafe.As<AseColor, Color>(ref color);
+    /// <summary>
+    /// Converts an AsepriteDotNet color to a MonoGame Color object.
+    /// </summary>
+    /// <param name="color">The AsepriteDotNet color to convert.</param>
+    /// <returns>The converted MonoGame Color object.</returns>
+    public unsafe static Color ToXnaColor(this AseColor color) => Unsafe.As<AseColor, Color>(ref color);
 
-    internal static Point ToXnaPoint(this AsePoint point) => new Point(point.X, point.Y);
+    /// <summary>
+    /// Converts an AsepriteDotNet point to a MonoGame Point object.
+    /// </summary>
+    /// <param name="point">The AsepriteDotNet point to convert.</param>
+    /// <returns>The converted MonoGame Point object.</returns>
+    public static Point ToXnaPoint(this AsePoint point) => new Point(point.X, point.Y);
 
-    internal static Vector2 ToXnaVector2(this AsePoint point) => new Vector2(point.X, point.Y);
-    internal static Rectangle ToXnaRectangle(this AseRectangle rect) => new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+    /// <summary>
+    /// Converts an AsepriteDotNet point to a MonoGame Vector2 object.
+    /// </summary>
+    /// <param name="point">The AsepriteDotNet point to convert.</param>
+    /// <returns>The converted MonoGame Vector2 object.</returns>
+    public static Vector2 ToXnaVector2(this AsePoint point) => new Vector2(point.X, point.Y);
+
+    /// <summary>
+    /// Converts an AsepriteDotNet rectangle to a MonoGame Rectangle object.
+    /// </summary>
+    /// <param name="rect">The AsepriteDotNet rectangle to convert.</param>
+    /// <returns>The converted MonoGame Rectangle object.</returns>
+    public static Rectangle ToXnaRectangle(this AseRectangle rect) => new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
 }
