@@ -33,18 +33,6 @@ internal class AsepriteFileContentImporter : ContentImporter<AsepriteFileImportR
 {
     public override AsepriteFileImportResult Import(string path, ContentImporterContext context)
     {
-        byte[] data = File.ReadAllBytes(path);
-        AsepriteFile aseFile;
-
-        try
-        {
-            aseFile = AsepriteFile.Load(path);
-        }
-        catch (InvalidOperationException ex)
-        {
-            throw new ContentImportException(ex.Message, path);
-        }
-
-        return new(data, aseFile);
+        return new AsepriteFileImportResult(path);
     }
 }

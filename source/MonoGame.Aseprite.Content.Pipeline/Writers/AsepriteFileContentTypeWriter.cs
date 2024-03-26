@@ -28,10 +28,11 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 namespace MonoGame.Aseprite.Content.Pipeline.Writers;
 
 [ContentTypeWriter]
-internal sealed class AsepriteFileContentTypeWriter : ContentTypeWriter<AsepriteFileImportResult>
+internal sealed class AsepriteFileContentTypeWriter : ContentTypeWriter<AsepriteFileProcessResult>
 {
-    protected override void Write(ContentWriter writer, AsepriteFileImportResult content)
+    protected override void Write(ContentWriter writer, AsepriteFileProcessResult content)
     {
+        writer.Write(content.Name);
         writer.Write(content.Data.Length);
         writer.Write(content.Data);
     }

@@ -24,8 +24,6 @@ SOFTWARE.
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Aseprite.Sprites;
-using MonoGame.Aseprite.Tilemaps;
 
 namespace MonoGame.Aseprite;
 

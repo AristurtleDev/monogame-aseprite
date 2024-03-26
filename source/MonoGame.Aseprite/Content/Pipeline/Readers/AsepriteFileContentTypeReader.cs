@@ -22,8 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ---------------------------------------------------------------------------- */
 
+using AsepriteDotNet.Aseprite;
+using AsepriteDotNet.IO;
 using Microsoft.Xna.Framework.Content;
-using MonoGame.Aseprite.Content.Readers;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Readers;
 
@@ -37,10 +38,11 @@ internal sealed class AsepriteFileContentTypeReader : ContentTypeReader<Aseprite
             return existingInstance;
         }
 
+        string name = reader.ReadString();
         int len = reader.ReadInt32();
         byte[] data = reader.ReadBytes(len);
 
         using MemoryStream stream = new(data);
-        return AsepriteFileReader.ReadStream(reader.AssetName, stream);
+        return AsepriteFileLoader.FromStream(name, stream);
     }
 }

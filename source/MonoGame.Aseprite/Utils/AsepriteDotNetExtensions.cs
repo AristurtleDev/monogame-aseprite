@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using AseColor = AsepriteDotNet.Common.Rgba32;
+using AsePoint = AsepriteDotNet.Common.Point;
+using AseRectangle = AsepriteDotNet.Common.Rectangle;
+using AseTexture = AsepriteDotNet.Texture;
 
 namespace MonoGame.Aseprite.Utils;
 
