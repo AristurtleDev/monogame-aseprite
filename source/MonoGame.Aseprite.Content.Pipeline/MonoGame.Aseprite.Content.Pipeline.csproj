@@ -27,6 +27,6 @@
         
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" PrivateAssets="All" />
 
-        <PackageReference Include="AsepriteDotNet" Version="1.4.1" />
+        <PackageReference Include="AsepriteDotNet" Version="1.7.2" />
     </ItemGroup>
 </Project>
