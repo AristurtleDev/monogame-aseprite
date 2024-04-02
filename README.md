@@ -4,7 +4,7 @@
 A Cross Platform C# Library That Adds Support For Aseprite Files in MonoGame Projects.
 
 [![build-and-test](https://github.com/AristurtleDev/monogame-aseprite/actions/workflows/main.yml/badge.svg)](https://github.com/AristurtleDev/monogame-aseprite/actions/workflows/main.yml)
-[![NuGet 6.0.0](https://img.shields.io/nuget/v/MonoGame.Aseprite?color=blue&style=flat-square)](https://www.nuget.org/packages/MonoGame.Aseprite/6.0.0)
+[![NuGet 6.0.1](https://img.shields.io/nuget/v/MonoGame.Aseprite?color=blue&style=flat-square)](https://www.nuget.org/packages/MonoGame.Aseprite/6.0.1)
 [![License: MIT](https://img.shields.io/badge/📃%20license-MIT-blue?style=flat)](LICENSE)
 [![Twitter](https://img.shields.io/badge/%20-Share%20On%20Twitter-555?style=flat&logo=twitter)](https://twitter.com/intent/tweet?text=MonoGame.Aseprite%20by%20%40aristurtledev%0A%0AA%20cross-platform%20C%23%20library%20that%20adds%20support%20for%20Aseprite%20files%20in%20MonoGame%20projects.%20https%3A%2F%2Fgithub.com%2FAristurtleDev%2Fmonogame-aseprite%0A%0A%23monogame%20%23aseprite%20%23dotnet%20%23csharp%20%23oss%0A)
 
@@ -29,7 +29,7 @@ A Cross Platform C# Library That Adds Support For Aseprite Files in MonoGame Pro
 # Installation
 Install via NuGet
 ```
-dotnet add package MonoGame.Aseprite --version 6.0.0
+dotnet add package MonoGame.Aseprite --version 6.0.1
 ```
 
 # Usage

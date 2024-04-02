@@ -20,16 +20,7 @@
         <PackageProjectUrl>https://github.com/AristurtleDev/monogame-aseprite</PackageProjectUrl>
         <PackageIcon>nuget-icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>
-            Version 5.1.3
-            - Added `MonoGame.Aseprite.Configuration`
-            -   When set to `false` this will assume frame index gets from the `AsepriteFile` start at index 1 and not 0.
-            - Removed `MonoGame.Aserpite.Configuration`
-            - Moved `ZeroIndexedFrames` to be property of `AsepriteFile`
-            - Added unit testing for `AsepriteFile.ZeroIndexedFrames` functionality
-            - Added proper support for new tile rotation introduced in Aseprite 1.3
-            - Read Old Palette Chunk for Indexed mode due to Aseprite 1.3.5 file spec change
-        </PackageReleaseNotes>
+        <PackageReleaseNotes>Updates internal version of AsepriteDotNet to 1.7.2 to resolve critical bugs when processing.</PackageReleaseNotes>
         <PackageTags>MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryBranch>main</RepositoryBranch>
