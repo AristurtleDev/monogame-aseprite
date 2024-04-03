@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <!-- Project level compilation properties -->
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <!-- Project References -->
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\AsepriteDotNet\source\AsepriteDotNet\AsepriteDotNet.csproj" />
+      <ProjectReference Include="..\..\..\FNA\FNA.Core.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -128,7 +128,7 @@ public class TextureAtlas : IEnumerable<TextureRegion>
     /// </exception>
     /// <returns>The <see cref="TextureRegion"/> created by this method.</returns>
     public TextureRegion CreateRegion(string name, Point location, Point size) =>
-        CreateRegion(name, new Rectangle(location, size));
+        CreateRegion(name, new Rectangle(location.X, location.Y, size.X, size.Y));
 
     /// <summary>
     /// Creates a new <see cref="TextureRegion"/> and adds it to this <see cref="TextureAtlas"/>.
