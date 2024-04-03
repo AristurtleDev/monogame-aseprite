@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <!-- Project level compilation properties -->
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <!-- Project level package properties -->
+    <PropertyGroup>
+        <PackageId>MonoGame.Aseprite.FNA</PackageId>
+        <Description>
+            MonoGame.Aseprite is a cross-platform C# library that adds support to MonoGame projects for
+            Aseprite (.asepirte/.ase) files.
+        </Description>
+    </PropertyGroup>
+
+    <!-- Includes for NuGets -->
+    <ItemGroup>
+        <None Include="..\..\.images\\nuget-icon.png" Pack="true" PackagePath="" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="" />
+        <None Include="$(OutDir)Monogame.Aseprite.xml" Pack="true" PackagePath="lib\net6.0" />
+    </ItemGroup>
+
+    <!-- Project References -->
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\AsepriteDotNet\source\AsepriteDotNet\AsepriteDotNet.csproj" />
+      <ProjectReference Include="..\..\..\FNA\FNA.Core.csproj" />
+    </ItemGroup>
+
+</Project>
