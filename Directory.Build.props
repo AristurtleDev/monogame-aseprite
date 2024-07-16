@@ -20,7 +20,7 @@
         <NeutralLanguage>en</NeutralLanguage>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Version>6.0.5</Version>
+        <Version>6.0.6</Version>
     </PropertyGroup>
 
     <!-- Setup Code Analysis using the .editorconfig file -->
