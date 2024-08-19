@@ -2,7 +2,7 @@
 
     <!-- Project level compilation properties -->
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net8.0</TargetFrameworks>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
@@ -19,14 +19,14 @@
     <ItemGroup>
         <None Include="..\..\.images\\nuget-icon.png" Pack="true" PackagePath="" />
         <None Include="..\..\README.md" Pack="true" PackagePath="" />
-        <None Include="$(OutDir)Monogame.Aseprite.xml" Pack="true" PackagePath="lib\net6.0" />
-        <None Include="..\..\.artifacts\bin\source\MonoGame.Aseprite.Content.Pipeline\$(Configuration)\net6.0\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
+        <None Include="$(OutDir)Monogame.Aseprite.xml" Pack="true" PackagePath="lib\net8.0" />
+        <None Include="..\..\.artifacts\bin\source\MonoGame.Aseprite.Content.Pipeline\$(Configuration)\net8.0\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
     </ItemGroup>
 
     <!-- NuGet Package References -->
     <ItemGroup>
         <PackageReference Include="AsepriteDotNet" Version="1.8.3" />
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" PrivateAssets="All" />
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" PrivateAssets="All" />
     </ItemGroup>
 
     <!-- Allow Test project to access internals -->

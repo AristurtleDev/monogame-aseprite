@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\.artifacts\bin\source\MonoGame.Aseprite.Content.Pipeline\Debug\net6.0\MonoGame.Aseprite.Content.Pipeline.dll
+/reference:..\..\..\.artifacts\bin\source\MonoGame.Aseprite.Content.Pipeline\Debug\net8.0\MonoGame.Aseprite.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 

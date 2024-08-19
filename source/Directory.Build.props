@@ -20,7 +20,7 @@
         <PackageProjectUrl>https://github.com/AristurtleDev/monogame-aseprite</PackageProjectUrl>
         <PackageIcon>nuget-icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Updates internal version of AsepriteDotNet to 1.7.4 to resolve critical bug when processing.</PackageReleaseNotes>
+        <PackageReleaseNotes>Updated for MonoGame 3.8.2.1105 and net8.0</PackageReleaseNotes>
         <PackageTags>MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryBranch>main</RepositoryBranch>
