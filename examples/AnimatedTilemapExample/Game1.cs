@@ -47,7 +47,7 @@ public class Game1 : Game
         /// Create an animated tilemap from the file based on all frames.
         /// 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        _animatedTilemap = aseFile.CreateAnimatedTilemap(GraphicsDevice);
+        _animatedTilemap = aseFile.CreateAnimatedTilemap(GraphicsDevice, onlyVisibleLayers: true);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///

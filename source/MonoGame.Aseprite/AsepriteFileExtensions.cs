@@ -3,6 +3,7 @@
 // See LICENSE file in the project root for full license information.
 
 using AsepriteDotNet.Aseprite;
+using AsepriteDotNet.Aseprite.Types;
 using AsepriteDotNet.Processors;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite.Utils;
@@ -48,13 +49,86 @@ public static class AsepriteFileExtensions
     /// Thrown if <paramref name="frameIndex"/> is less than zero or greater than or equal to the total number of
     /// frames in the aseprite file.
     /// </exception>
+#pragma warning disable CS0618
+    [Obsolete("This method will be removed in a future release.  Users should switch to the other CreateSprite methods instead", false)]
     public static Sprite CreateSprite(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
 
         options ??= ProcessorOptions.Default;
-        AseSprite aseSprite = SpriteProcessor.Process(aseFile, frameIndex, options);
+        return CreateSprite(aseFile, device, frameIndex, options.OnlyVisibleLayers, options.IncludeBackgroundLayer, options.IncludeTilemapLayers);
+    }
+#pragma warning restore CS0618
+
+    /// <summary>
+    /// Creates a new <see cref="Sprite"/> from the specified frame index of the provided aseprite file instance.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="frameIndex">The index of the frame in the aseprite file to create the sprite from.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only visible layers should be processed.</param>
+    /// <param name="includeBackgroundLayer">Indicates whether the layer assigned as the background layer should be processed.</param>
+    /// <param name="includeTilemapLayers">Indicates whether tilemap layers should be processed.</param>
+    /// <returns>The <see cref="Sprite"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if the <paramref name="aseFile"/> parameter is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if <paramref name="frameIndex"/> is less than zero or greater than or equal to the total number of
+    /// frames in the aseprite file.
+    /// </exception>
+    public static Sprite CreateSprite(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = false)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+
+        List<string> layers = new List<string>();
+        for (int i = 0; i < aseFile.Layers.Length; i++)
+        {
+            AsepriteLayer layer = aseFile.Layers[i];
+            if (onlyVisibleLayers && !layer.IsVisible) { continue; }
+            if (!includeBackgroundLayer && layer.IsBackgroundLayer) { continue; }
+            if (!includeTilemapLayers && layer is AsepriteTilemapLayer) { continue; }
+            layers.Add(layer.Name);
+        }
+
+        return CreateSprite(aseFile, device, frameIndex, layers);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="Sprite"/> from the specified frame index of the provided aseprite file instance.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="frameIndex">The index of the frame in the aseprite file to create the sprite from.</param>
+    /// <param name="layers">
+    /// A collection containing the name of the layers to process.  Only cels on a layer who's name matches a name in
+    /// this collection will be processed.
+    /// </param>
+    /// <returns>The <see cref="Sprite"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if the <paramref name="aseFile"/> parameter is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if <paramref name="frameIndex"/> is less than zero or greater than or equal to the total number of
+    /// frames in the aseprite file.
+    /// </exception>
+    public static Sprite CreateSprite(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ICollection<string> layers)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        AseSprite aseSprite = SpriteProcessor.Process(aseFile, frameIndex, layers);
         Texture2D texture = aseSprite.Texture.ToTexture2D(device);
         TextureRegion region = new TextureRegion(texture.Name, texture, texture.Bounds);
 
@@ -80,13 +154,91 @@ public static class AsepriteFileExtensions
     /// 
     /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
     /// </exception>
+#pragma warning disable CS0618
+    [Obsolete("This method will be removed in a future release.  Users should switch to the other CreateTextureAtlas methods instead", false)]
     public static TextureAtlas CreateTextureAtlas(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
 
         options ??= ProcessorOptions.Default;
-        AseTextureAtlas aseAtlas = TextureAtlasProcessor.Process(aseFile, options);
+        return CreateTextureAtlas(aseFile, device, options.OnlyVisibleLayers, options.IncludeBackgroundLayer, options.IncludeTilemapLayers, options.MergeDuplicateFrames, options.BorderPadding, options.Spacing, options.InnerPadding);
+    }
+#pragma warning restore CS0618
+
+    /// <summary>
+    /// Creates a new <see cref="TextureAtlas"/> from the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only visible layers should be processed.</param>
+    /// <param name="includeBackgroundLayer">Indicates whether the layer assigned as the background layer should be processed.</param>
+    /// <param name="includeTilemapLayers">Indicates whether tilemap layers should be processed.</param>
+    /// <param name="mergeDuplicateFrames">Indicates whether duplicates frames should be merged.</param>
+    /// <param name="borderPadding">The amount of transparent pixels to add to the edge of the generated texture.</param>
+    /// <param name="spacing">The amount of transparent pixels to add between each texture region in the generated texture.</param>
+    /// <param name="innerPadding">The amount of transparent pixels to add around the edge of each texture region in the generated texture.</param>
+    /// <returns>The <see cref="TextureAtlas"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if the <paramref name="aseFile"/> parameter is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
+    /// </exception>
+    public static TextureAtlas CreateTextureAtlas(this AsepriteFile aseFile,
+                                                  GraphicsDevice device,
+                                                  bool onlyVisibleLayers = true,
+                                                  bool includeBackgroundLayer = false,
+                                                  bool includeTilemapLayers = false,
+                                                  bool mergeDuplicateFrames = true,
+                                                  int borderPadding = 0,
+                                                  int spacing = 0,
+                                                  int innerPadding = 0)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        List<string> layers = new List<string>();
+        for (int i = 0; i < aseFile.Layers.Length; i++)
+        {
+            AsepriteLayer layer = aseFile.Layers[i];
+            if (onlyVisibleLayers && !layer.IsVisible) { continue; }
+            if (!includeBackgroundLayer && layer.IsBackgroundLayer) { continue; }
+            if (!includeTilemapLayers && layer is AsepriteTilemapLayer) { continue; }
+            layers.Add(layer.Name);
+        }
+
+        return CreateTextureAtlas(aseFile, device, layers, mergeDuplicateFrames, borderPadding, spacing, innerPadding);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="TextureAtlas"/> from the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="layers">
+    /// A collection containing the name of the layers to process.  Only cels on a layer who's name matches a name in
+    /// this collection will be processed.
+    /// </param>
+    /// <param name="mergeDuplicateFrames">Indicates whether duplicates frames should be merged.</param>
+    /// <param name="borderPadding">The amount of transparent pixels to add to the edge of the generated texture.</param>
+    /// <param name="spacing">The amount of transparent pixels to add between each texture region in the generated texture.</param>
+    /// <param name="innerPadding">The amount of transparent pixels to add around the edge of each texture region in the generated texture.</param>
+    /// <returns>The <see cref="TextureAtlas"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if the <paramref name="aseFile"/> parameter is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
+    /// </exception>
+    public static TextureAtlas CreateTextureAtlas(this AsepriteFile aseFile, GraphicsDevice device, ICollection<string> layers, bool mergeDuplicateFrames = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        AseTextureAtlas aseAtlas = TextureAtlasProcessor.Process(aseFile, layers, mergeDuplicateFrames, borderPadding, spacing, innerPadding);
         Texture2D texture = aseAtlas.Texture.ToTexture2D(device);
         TextureAtlas atlas = new TextureAtlas(texture.Name, texture);
         GenerateRegions(atlas, aseAtlas);
@@ -107,13 +259,91 @@ public static class AsepriteFileExtensions
     /// 
     /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
     /// </exception>
+#pragma warning disable CS0618
+    [Obsolete("This method will be removed in a future release.  Users should switch to the other CreateSpriteSheet methods instead", false)]
     public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
 
         options ??= ProcessorOptions.Default;
-        AseSpriteSheet aseSheet = SpriteSheetProcessor.Process(aseFile, options);
+        return CreateSpriteSheet(aseFile, device, options.OnlyVisibleLayers, options.IncludeBackgroundLayer, options.IncludeTilemapLayers, options.MergeDuplicateFrames, options.BorderPadding, options.Spacing, options.InnerPadding);
+    }
+#pragma warning restore CS0618
+
+    /// <summary>
+    /// Creates a new <see cref="SpriteSheet"/> from the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only visible layers should be processed.</param>
+    /// <param name="includeBackgroundLayer">Indicates whether the layer assigned as the background layer should be processed.</param>
+    /// <param name="includeTilemapLayers">Indicates whether tilemap layers should be processed.</param>
+    /// <param name="mergeDuplicateFrames">Indicates whether duplicates frames should be merged.</param>
+    /// <param name="borderPadding">The amount of transparent pixels to add to the edge of the generated texture.</param>
+    /// <param name="spacing">The amount of transparent pixels to add between each texture region in the generated texture.</param>
+    /// <param name="innerPadding">The amount of transparent pixels to add around the edge of each texture region in the generated texture.</param>
+    /// <returns>The <see cref="SpriteSheet"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if the <paramref name="aseFile"/> parameter is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
+    /// </exception>
+    public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile,
+                                                 GraphicsDevice device,
+                                                 bool onlyVisibleLayers = true,
+                                                 bool includeBackgroundLayer = false,
+                                                 bool includeTilemapLayers = false,
+                                                 bool mergeDuplicateFrames = true,
+                                                 int borderPadding = 0,
+                                                 int spacing = 0,
+                                                 int innerPadding = 0)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        List<string> layers = new List<string>();
+        for (int i = 0; i < aseFile.Layers.Length; i++)
+        {
+            AsepriteLayer layer = aseFile.Layers[i];
+            if (onlyVisibleLayers && !layer.IsVisible) { continue; }
+            if (!includeBackgroundLayer && layer.IsBackgroundLayer) { continue; }
+            if (!includeTilemapLayers && layer is AsepriteTilemapLayer) { continue; }
+            layers.Add(layer.Name);
+        }
+
+        return CreateSpriteSheet(aseFile, device, layers, mergeDuplicateFrames, borderPadding, spacing, innerPadding);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="SpriteSheet"/> from the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="layers">
+    /// A collection containing the name of the layers to process.  Only cels on a layer who's name matches a name in
+    /// this collection will be processed.
+    /// </param>
+    /// <param name="mergeDuplicateFrames">Indicates whether duplicates frames should be merged.</param>
+    /// <param name="borderPadding">The amount of transparent pixels to add to the edge of the generated texture.</param>
+    /// <param name="spacing">The amount of transparent pixels to add between each texture region in the generated texture.</param>
+    /// <param name="innerPadding">The amount of transparent pixels to add around the edge of each texture region in the generated texture.</param>
+    /// <returns>The <see cref="SpriteSheet"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if the <paramref name="aseFile"/> parameter is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
+    /// </exception>
+    public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile, GraphicsDevice device, ICollection<string> layers, bool mergeDuplicateFrames = true, int borderPadding = 0, int spacing = 0, int innerPadding = 0)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        AseSpriteSheet aseSheet = SpriteSheetProcessor.Process(aseFile, layers, mergeDuplicateFrames, borderPadding, spacing, innerPadding);
         Texture2D texture = aseSheet.TextureAtlas.Texture.ToTexture2D(device);
         TextureAtlas atlas = new TextureAtlas(texture.Name, texture);
         GenerateRegions(atlas, aseSheet.TextureAtlas);
@@ -135,8 +365,6 @@ public static class AsepriteFileExtensions
                 }
             });
         }
-
-
         return sheet;
     }
 
@@ -234,13 +462,74 @@ public static class AsepriteFileExtensions
     /// 
     /// throw if <paramref name="device"/> is <see langword="null"/>.
     /// </exception>
+#pragma warning disable CS0618
+    [Obsolete("This method will be removed in a future release.  Users should switch to the other CreateTilemap methods instead", false)]
     public static Tilemap CreateTilemap(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
 
         options ??= ProcessorOptions.Default;
-        AseTilemap aseTilemap = TilemapProcessor.Process(aseFile, frameIndex, options);
+        return CreateTilemap(aseFile, device, frameIndex, options.OnlyVisibleLayers);
+    }
+#pragma warning restore CS0618
+
+    /// <summary>
+    /// Creates a new <see cref="Tilemap"/> from a specified frame in the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="frameIndex">The index of the frame with the tilemap.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only visible layers should be processed.</param>
+    /// <returns>The <see cref="Tilemap"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="aseFile"/> is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// throw if <paramref name="device"/> is <see langword="null"/>.
+    /// </exception>
+    public static Tilemap CreateTilemap(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, bool onlyVisibleLayers = true)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        List<string> layers = new List<string>();
+        for (int i = 0; i < aseFile.Layers.Length; i++)
+        {
+            AsepriteLayer layer = aseFile.Layers[i];
+            if (layer is not AsepriteTilemapLayer) { continue; }
+            if (onlyVisibleLayers && !layer.IsVisible) { continue; }
+            layers.Add(layer.Name);
+        }
+
+        return CreateTilemap(aseFile, device, frameIndex, layers);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="Tilemap"/> from a specified frame in the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="frameIndex">The index of the frame with the tilemap.</param>
+    /// <param name="layers">
+    /// A collection containing the name of the layers to process.  Only cels on a layer who's name matches a name in
+    /// this collection will be processed.
+    /// </param>
+    /// <returns>The <see cref="Tilemap"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="aseFile"/> is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// throw if <paramref name="device"/> is <see langword="null"/>.
+    /// </exception>
+    public static Tilemap CreateTilemap(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, ICollection<string> layers)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        AseTilemap aseTilemap = TilemapProcessor.Process(aseFile, frameIndex, layers);
         Tilemap tilemap = new Tilemap(aseTilemap.Name);
         Dictionary<int, Tileset> tilesets = GenereateTilesets(device, aseTilemap);
 
@@ -282,13 +571,72 @@ public static class AsepriteFileExtensions
     /// 
     /// throw if <paramref name="device"/> is <see langword="null"/>.
     /// </exception>
+#pragma warning disable CS0618
+    [Obsolete("This method will be removed in a future release.  Users should switch to the other AnimatedTilemap methods instead", false)]
     public static AnimatedTilemap CreateAnimatedTilemap(this AsepriteFile aseFile, GraphicsDevice device, ProcessorOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
         ArgumentNullException.ThrowIfNull(device);
 
         options ??= ProcessorOptions.Default;
-        AseAnimatedTilemap aseAnimatedTilemap = AnimatedTilemapProcessor.Process(aseFile, options);
+        return CreateAnimatedTilemap(aseFile, device, options.OnlyVisibleLayers);
+    }
+#pragma warning restore CS0618
+
+    /// <summary>
+    /// Creates a new <see cref="AnimatedTilemap"/> from the all frames in the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="onlyVisibleLayers">Indicates whether only visible layers should be processed.</param>
+    /// <returns>the <see cref="AnimatedTilemap"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="aseFile"/> is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// throw if <paramref name="device"/> is <see langword="null"/>.
+    /// </exception>
+    public static AnimatedTilemap CreateAnimatedTilemap(this AsepriteFile aseFile, GraphicsDevice device, bool onlyVisibleLayers = true)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        List<string> layers = new List<string>();
+        for (int i = 0; i < aseFile.Layers.Length; i++)
+        {
+            AsepriteLayer layer = aseFile.Layers[i];
+            if (layer is not AsepriteTilemapLayer) { continue; }
+            if (onlyVisibleLayers && !layer.IsVisible) { continue; }
+            layers.Add(layer.Name);
+        }
+
+        return CreateAnimatedTilemap(aseFile, device, layers);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="AnimatedTilemap"/> from the all frames in the provided aseprite file.
+    /// </summary>
+    /// <param name="aseFile">The aseprite file instance.</param>
+    /// <param name="device">The graphics device used to create graphical resources.</param>
+    /// <param name="layers">
+    /// A collection containing the name of the layers to process.  Only cels on a layer who's name matches a name in
+    /// this collection will be processed.
+    /// </param>
+    /// <returns>the <see cref="AnimatedTilemap"/> created by this method.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="aseFile"/> is <see langword="null"/>.
+    /// 
+    /// -or-
+    /// 
+    /// throw if <paramref name="device"/> is <see langword="null"/>.
+    /// </exception>
+    public static AnimatedTilemap CreateAnimatedTilemap(this AsepriteFile aseFile, GraphicsDevice device, ICollection<string> layers)
+    {
+        ArgumentNullException.ThrowIfNull(aseFile);
+        ArgumentNullException.ThrowIfNull(device);
+
+        AseAnimatedTilemap aseAnimatedTilemap = AnimatedTilemapProcessor.Process(aseFile, layers);
         AnimatedTilemap animatedTilemap = new AnimatedTilemap(aseAnimatedTilemap.Name);
         Dictionary<int, Tileset> tilesets = new Dictionary<int, Tileset>();
 
@@ -333,7 +681,6 @@ public static class AsepriteFileExtensions
 
         return animatedTilemap;
     }
-
 
     private static void GenerateRegions(TextureAtlas atlas, AseTextureAtlas aseAtlas)
     {
