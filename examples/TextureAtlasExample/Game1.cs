@@ -51,8 +51,18 @@ public class Game1 : Game
         ///
         /// Create a texture atlas from the aseprite file
         /// 
+        /// The onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, mergeDuplicateLayers, borderPadding,
+        /// spacing, and innerPadding parameters used below are optional.  Their default values are shown.
+        /// 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        _atlas = aseFile.CreateTextureAtlas(GraphicsDevice);
+        _atlas = aseFile.CreateTextureAtlas(GraphicsDevice,
+                                            onlyVisibleLayers: true,
+                                            includeBackgroundLayer: false,
+                                            includeTilemapLayers: false,
+                                            mergeDuplicateFrames: true,
+                                            borderPadding: 0,
+                                            spacing: 0,
+                                            innerPadding: 0);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///

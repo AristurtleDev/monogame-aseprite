@@ -48,8 +48,15 @@ public class Game1 : Game
         ///
         /// Create a sprite from any frame in the aseprite file
         /// 
+        /// The onlyVisibleLayers, includeBackgroundLayer, includeTilemapLayers, parameters used below are optional.  
+        /// Their default values are shown.
+        /// 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        _sprite = aseFile.CreateSprite(GraphicsDevice, 0);
+        _sprite = aseFile.CreateSprite(GraphicsDevice,
+                                       0,
+                                       onlyVisibleLayers: true,
+                                       includeBackgroundLayer: false,
+                                       includeTilemapLayers: false);
     }
 
     protected override void Draw(GameTime gameTime)

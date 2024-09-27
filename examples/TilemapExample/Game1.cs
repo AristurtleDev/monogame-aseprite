@@ -45,8 +45,10 @@ public class Game1 : Game
         ///
         /// Create a tilemap from the file based on the frame the tilemap is on.
         /// 
+        /// The onlyVisibleLayers parameter is optional. It's default value is shown
+        /// 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        _tilemap = aseFile.CreateTilemap(GraphicsDevice, frameIndex: 0);
+        _tilemap = aseFile.CreateTilemap(GraphicsDevice, frameIndex: 0, onlyVisibleLayers: true);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///
