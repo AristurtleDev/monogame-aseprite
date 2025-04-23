@@ -17,8 +17,8 @@
 
     <!-- Includes for the icons and README.md that are in the <PackageIcon> and <PackageReadMeFile> tags above -->
     <ItemGroup>
-        <None Include="..\..\.nuget\img\icon.png" Pack="true" PackagePath="" />
-        <None Include="..\..\.\.nuget\README.md" Pack="true" PackagePath="" />
+        <None Include="..\..\.images\nuget-icon.png" Pack="true" PackagePath="" />
+        <None Include="..\..\.\README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <!-- NuGet Package References -->
