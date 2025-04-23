@@ -17,7 +17,7 @@
 
     <!-- Includes for NuGets -->
     <ItemGroup>
-        <None Include="..\..\.images\\nuget-icon.png" Pack="true" PackagePath="" />
+        <None Include="..\..\.images\nuget-icon.png" Pack="true" PackagePath="" />
         <None Include="..\..\README.md" Pack="true" PackagePath="" />
         <None Include="$(OutDir)Monogame.Aseprite.xml" Pack="true" PackagePath="lib\net8.0" />
         <None Include="..\..\.artifacts\bin\source\MonoGame.Aseprite.Content.Pipeline\$(Configuration)\net8.0\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
