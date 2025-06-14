@@ -20,7 +20,7 @@
         <PackageProjectUrl>https://github.com/AristurtleDev/monogame-aseprite</PackageProjectUrl>
         <PackageIcon>nuget-icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Updated for MonoGame 3.8.3 and net8.0</PackageReleaseNotes>
+        <PackageReleaseNotes>Updated for MonoGame 3.8.4 and net8.0</PackageReleaseNotes>
         <PackageTags>MonoGame;Aseprite;import;processes;read;write;sprite;animation;tileset;tilemap;spritesheet;pipeline;mgcb</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryBranch>main</RepositoryBranch>
