@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
 
-    <!-- Set the project category used by the root Directory.Build.props -->
-    <PropertyGroup>
-        <ProjectCategory>source</ProjectCategory>
-    </PropertyGroup>
-
-    <!-- We're a library, always generate a documentation file -->
-    <!-- (suck it prime) -->
-    <PropertyGroup>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
+    <!-- Import the root prop last -->
+    <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
 
     <!-- Common NuGet Package Settings -->
     <PropertyGroup>
+        <ArtifactsPath>$(SolutionDirectory).artifacts/src</ArtifactsPath>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Copyright>Copyright © 2024 Christopher Whitley</Copyright>
         <Authors>Christopher Whitley and contributors</Authors>
         <Company>Aristurtle</Company>
@@ -28,6 +22,4 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
-    <!-- Import the root prop last -->
-    <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
 </Project>
