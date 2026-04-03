@@ -7,7 +7,7 @@ name: "Pull Request Validation"
 on:
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   test:
