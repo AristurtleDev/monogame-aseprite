@@ -1,0 +1,75 @@
+################################################################################
+### Build MonoGame.Aseprite (Release)
+### Builds, tests, and packs the MonoGame.Aseprite source libraries.
+### Once the build job finishes, the deploy job uploads the nupkg files to NuGet.
+###
+###     - Can be triggered manually with workflow_dispatch
+###     - Allows specifying a branch (defaults to develop)
+###     - Version numbers are determined by the project properties on the branch
+################################################################################
+name: "Create Release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build from (e.g., main, develop)'
+        required: true
+        type: string
+        default: 'main'
+
+jobs:
+  build:
+    name: "Build MonoGame.Aseprite"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build MonoGame.Aseprite
+        run: dotnet build source/MonoGame.Aseprite/MonoGame.Aseprite.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Build MonoGame.Aseprite.Content.Pipeline
+        run: dotnet build source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Pack MonoGame.Aseprite
+        run: dotnet pack source/MonoGame.Aseprite/MonoGame.Aseprite.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Pack MonoGame.Aseprite.Content.Pipeline
+        run: dotnet pack source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: ./.artifacts/src/**/*.nupkg
+
+  deploy:
+    name: "Deploy NuGets"
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: ./.artifacts
+
+      - name: Push Packages to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          for PACKAGE in .artifacts/**/*.nupkg; do
+            dotnet nuget push "$PACKAGE" --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key "$NUGET_API_KEY"
+          done

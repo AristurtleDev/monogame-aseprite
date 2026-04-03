@@ -6,21 +6,12 @@
         <SolutionDirectory>$(MSBuildThisFileDirectory)</SolutionDirectory>
     </PropertyGroup>
 
-    <!-- Standardize build output locations -->
-    <PropertyGroup>
-        <BaseArtifactsPath>$(SolutionDirectory).artifacts/</BaseArtifactsPath>
-        <BaseArtifactsPathSuffix>$(ProjectCategory)/$(MSBuildProjectName)</BaseArtifactsPathSuffix>
-        <BaseIntermediateOutputPath>$(BaseArtifactsPath)obj/$(BaseArtifactsPathSuffix)</BaseIntermediateOutputPath>
-        <BaseOutputPath>$(BaseArtifactsPath)bin/$(BaseArtifactsPathSuffix)</BaseOutputPath>
-        <PackageOutputPath>$(BaseArtifactsPath)pkg/$(BaseArtifactsPathSuffix)/$(Configuration)/</PackageOutputPath>
-    </PropertyGroup>
-
     <!-- Standardize compilation settings -->
     <PropertyGroup>
         <NeutralLanguage>en</NeutralLanguage>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Version>6.3.1</Version>
+        <Version>6.3.2</Version>
     </PropertyGroup>
 
     <!-- Setup Code Analysis using the .editorconfig file -->

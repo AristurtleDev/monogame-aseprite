@@ -1,0 +1,30 @@
+################################################################################
+### Pull Request Validation
+### Runs unit tests on pull requests targeting the develop branch.
+################################################################################
+name: "Pull Request Validation"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: "Run Tests"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build MonoGame.Aseprite
+        run: dotnet build source/MonoGame.Aseprite/MonoGame.Aseprite.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Test MonoGame.Aseprite.Content.Pipeline
+        run: dotnet build source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
