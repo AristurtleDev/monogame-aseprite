@@ -19,8 +19,16 @@ internal sealed class AsepriteFileContentTypeWriter : ContentTypeWriter<Aseprite
     }
 
     public override string GetRuntimeType(TargetPlatform targetPlatform) =>
+#if KNI
+        "MonoGame.Aseprite.AsepriteFile, KNI.Aseprite";
+#else
         "MonoGame.Aseprite.AsepriteFile, MonoGame.Aseprite";
+#endif
 
     public override string GetRuntimeReader(TargetPlatform targetPlatform) =>
+#if KNI
+        "MonoGame.Aseprite.Content.Pipeline.Readers.AsepriteFileContentTypeReader, KNI.Aseprite";
+#else
         "MonoGame.Aseprite.Content.Pipeline.Readers.AsepriteFileContentTypeReader, MonoGame.Aseprite";
+#endif
 }

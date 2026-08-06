@@ -40,11 +40,23 @@ jobs:
       - name: Build MonoGame.Aseprite.Content.Pipeline
         run: dotnet build source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
 
+      - name: Build KNI.Aseprite
+        run: dotnet build source/MonoGame.Aseprite/KNI.Aseprite.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Build KNI.Aseprite.Content.Pipeline
+        run: dotnet build source/MonoGame.Aseprite.Content.Pipeline/KNI.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
+
       - name: Pack MonoGame.Aseprite
         run: dotnet pack source/MonoGame.Aseprite/MonoGame.Aseprite.csproj --nologo --verbosity minimal --configuration Release
 
       - name: Pack MonoGame.Aseprite.Content.Pipeline
         run: dotnet pack source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Pack KNI.Aseprite
+        run: dotnet pack source/MonoGame.Aseprite/KNI.Aseprite.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Pack KNI.Aseprite.Content.Pipeline
+        run: dotnet pack source/MonoGame.Aseprite.Content.Pipeline/KNI.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4

@@ -1,0 +1,49 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{CF520A36-B1B8-4CFA-9835-C3345A65D57B}"
+	ProjectSection(SolutionItems) = preProject
+		source\Directory.Build.props = source\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KNI.Aseprite", "source\MonoGame.Aseprite\KNI.Aseprite.csproj", "{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KNI.Aseprite.Content.Pipeline", "source\MonoGame.Aseprite.Content.Pipeline\KNI.Aseprite.Content.Pipeline.csproj", "{49903681-88CC-4B14-AD02-C475E78D4CE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{780173B6-AA4D-40B8-ADA6-D99531857B64}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49903681-88CC-4B14-AD02-C475E78D4CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B5D9570E-E9BF-482B-BD73-8EA6EC4330F8} = {CF520A36-B1B8-4CFA-9835-C3345A65D57B}
+		{49903681-88CC-4B14-AD02-C475E78D4CE2} = {CF520A36-B1B8-4CFA-9835-C3345A65D57B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84BC520A-20B4-4708-B7A3-A07D78D4D5DE}
+	EndGlobalSection
+EndGlobal

@@ -4,6 +4,7 @@
     <PropertyGroup>
         <TargetFrameworks>net8.0</TargetFrameworks>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <DefineConstants>$(DefineConstants);FNA</DefineConstants>
     </PropertyGroup>
 
     <!-- Project References -->
