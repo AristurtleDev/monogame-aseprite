@@ -11,6 +11,7 @@
         <NeutralLanguage>en</NeutralLanguage>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Version>6.4.0</Version>
         <MonoGameVersion>3.8.5</MonoGameVersion>
         <KNIVersion>4.2.9001</KNIVersion>
     </PropertyGroup>
