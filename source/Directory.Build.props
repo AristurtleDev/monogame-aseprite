@@ -22,4 +22,17 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
+    <ItemGroup Condition="!$(DefineConstants.Contains('FNA')) AND !$(DefineConstants.Contains('KNI'))">
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="$(MonoGameVersion)" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup Condition="$(DefineConstants.Contains('KNI'))">
+        <PackageReference Include="nkast.Xna.Framework" Version="$(KNIVersion)" />
+        <PackageReference Include="nkast.Xna.Framework.Audio" Version="$(KNIVersion)" />
+        <PackageReference Include="nkast.Xna.Framework.Content" Version="$(KNIVersion)" />
+        <PackageReference Include="nkast.Xna.Framework.Game" Version="$(KNIVersion)" />
+        <PackageReference Include="nkast.Xna.Framework.Graphics" Version="$(KNIVersion)" />
+        <PackageReference Include="nkast.Xna.Framework.Input" Version="$(KNIVersion)" />
+    </ItemGroup>
+
 </Project>

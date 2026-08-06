@@ -11,7 +11,8 @@
         <NeutralLanguage>en</NeutralLanguage>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Version>6.3.2</Version>
+        <MonoGameVersion>3.8.4.1</MonoGameVersion>
+        <KNIVersion>4.2.9001</KNIVersion>
     </PropertyGroup>
 
     <!-- Setup Code Analysis using the .editorconfig file -->

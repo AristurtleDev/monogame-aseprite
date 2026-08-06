@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <!-- Project level compilation properties -->
     <PropertyGroup>
@@ -7,11 +7,12 @@
 
     <!-- Project level package properties -->
     <PropertyGroup>
-        <PackageId>MonoGame.Aseprite.Content.Pipeline</PackageId>
+        <DefineConstants>$(DefineConstants);KNI</DefineConstants>
+        <PackageId>KNI.Aseprite.Content.Pipeline</PackageId>
         <Description>
-            MonoGame.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the MonoGame
-            MGCB Editor for importing Aseprite (.ase | .aseprite) files to be used in a MonoGame project using the
-            MonoGame.Aseprite library.
+            KNI.Aseprite.Content.Pipeline is a cross-platform C# library that adds an extension to the KNI
+            MGCB Editor for importing Aseprite (.ase | .aseprite) files to be used in a KNI project using the
+            KNI.Aseprite library.
         </Description>
     </PropertyGroup>
 
@@ -24,6 +25,7 @@
     <!-- NuGet Package References -->
     <ItemGroup>
         <PackageReference Include="AsepriteDotNet" Version="1.9.1" />
-        <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="$(MonoGameVersion)" PrivateAssets="All" />
+        <PackageReference Include="nkast.Xna.Framework.Content.Pipeline" Version="$(KNIVersion)" />
+        <PackageReference Include="nkast.Xna.Framework.Content.Pipeline.Graphics" Version="$(KNIVersion)" />
     </ItemGroup>
 </Project>

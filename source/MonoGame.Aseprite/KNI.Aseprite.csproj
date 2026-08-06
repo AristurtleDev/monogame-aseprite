@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <!-- Project level compilation properties -->
     <PropertyGroup>
@@ -8,9 +8,10 @@
 
     <!-- Project level package properties -->
     <PropertyGroup>
-        <PackageId>MonoGame.Aseprite</PackageId>
+        <DefineConstants>$(DefineConstants);KNI</DefineConstants>
+        <PackageId>KNI.Aseprite</PackageId>
         <Description>
-            MonoGame.Aseprite is a cross-platform C# library that adds support to MonoGame projects for
+            KNI.Aseprite is a cross-platform C# library that adds support to KNI projects for
             Aseprite (.asepirte/.ase) files.
         </Description>
     </PropertyGroup>
@@ -19,8 +20,8 @@
     <ItemGroup>
         <None Include="..\..\.images\nuget-icon.png" Pack="true" PackagePath="" />
         <None Include="..\..\README.md" Pack="true" PackagePath="" />
-        <None Include="$(OutDir)Monogame.Aseprite.xml" Pack="true" PackagePath="lib\net8.0" />
-        <None Include="..\..\.artifacts\src\bin\MonoGame.Aseprite.Content.Pipeline\release\Monogame.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
+        <None Include="$(OutDir)KNI.Aseprite.xml" Pack="true" PackagePath="lib\net8.0" />
+        <None Include="..\..\.artifacts\src\bin\KNI.Aseprite.Content.Pipeline\release\KNI.Aseprite.Content.Pipeline.dll" Pack="true" PackagePath="content" />
     </ItemGroup>
 
     <!-- NuGet Package References -->
@@ -31,11 +32,11 @@
     <!-- Allow Test project to access internals -->
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>MonoGame.Aseprite.Tests</_Parameter1>
+            <_Parameter1>KNI.Aseprite.Tests</_Parameter1>
         </AssemblyAttribute>
 
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>MonoGame.Aseprite.Content.Pipeline</_Parameter1>
+            <_Parameter1>KNI.Aseprite.Content.Pipeline</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 

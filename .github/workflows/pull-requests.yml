@@ -28,3 +28,9 @@ jobs:
 
       - name: Test MonoGame.Aseprite.Content.Pipeline
         run: dotnet build source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Build KNI.Aseprite
+        run: dotnet build source/MonoGame.Aseprite/KNI.Aseprite.csproj --nologo --verbosity minimal --configuration Release
+
+      - name: Build KNI.Aseprite.Content.Pipeline
+        run: dotnet build source/MonoGame.Aseprite.Content.Pipeline/KNI.Aseprite.Content.Pipeline.csproj --nologo --verbosity minimal --configuration Release
