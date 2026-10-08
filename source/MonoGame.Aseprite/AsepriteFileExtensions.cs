@@ -82,6 +82,10 @@ public static class AsepriteFileExtensions
     /// Thrown if <paramref name="frameIndex"/> is less than zero or greater than or equal to the total number of
     /// frames in the aseprite file.
     /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if the aseprite file contains only a background layer and <paramref name="includeBackgroundLayer"/> is
+    /// <see langword="false"/>.
+    /// </exception>
     public static Sprite CreateSprite(this AsepriteFile aseFile, GraphicsDevice device, int frameIndex, bool onlyVisibleLayers = true, bool includeBackgroundLayer = false, bool includeTilemapLayers = false)
     {
         ArgumentNullException.ThrowIfNull(aseFile);
@@ -98,6 +102,7 @@ public static class AsepriteFileExtensions
             layers.Add(layer.Name);
         }
 
+        ThrowIfOnlyBackgroundLayerWasExcluded(aseFile, layers, includeBackgroundLayer);
         return CreateSprite(aseFile, device, frameIndex, layers);
     }
 
@@ -186,6 +191,10 @@ public static class AsepriteFileExtensions
     /// 
     /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
     /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if the aseprite file contains only a background layer and <paramref name="includeBackgroundLayer"/> is
+    /// <see langword="false"/>.
+    /// </exception>
     public static TextureAtlas CreateTextureAtlas(this AsepriteFile aseFile,
                                                   GraphicsDevice device,
                                                   bool onlyVisibleLayers = true,
@@ -209,6 +218,7 @@ public static class AsepriteFileExtensions
             layers.Add(layer.Name);
         }
 
+        ThrowIfOnlyBackgroundLayerWasExcluded(aseFile, layers, includeBackgroundLayer);
         return CreateTextureAtlas(aseFile, device, layers, mergeDuplicateFrames, borderPadding, spacing, innerPadding);
     }
 
@@ -291,6 +301,10 @@ public static class AsepriteFileExtensions
     /// 
     /// Thrown if the <paramref name="device"/> parameter is <see langword="null"/>.
     /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if the aseprite file contains only a background layer and <paramref name="includeBackgroundLayer"/> is
+    /// <see langword="false"/>.
+    /// </exception>
     public static SpriteSheet CreateSpriteSheet(this AsepriteFile aseFile,
                                                  GraphicsDevice device,
                                                  bool onlyVisibleLayers = true,
@@ -314,6 +328,7 @@ public static class AsepriteFileExtensions
             layers.Add(layer.Name);
         }
 
+        ThrowIfOnlyBackgroundLayerWasExcluded(aseFile, layers, includeBackgroundLayer);
         return CreateSpriteSheet(aseFile, device, layers, mergeDuplicateFrames, borderPadding, spacing, innerPadding);
     }
 
@@ -731,5 +746,15 @@ public static class AsepriteFileExtensions
         }
 
         return result;
+    }
+
+    private static void ThrowIfOnlyBackgroundLayerWasExcluded(AsepriteFile aseFile, List<string> layers, bool includeBackgroundLayer)
+    {
+        if (layers.Count != 0 || includeBackgroundLayer || aseFile.Layers.Length != 1 || !aseFile.Layers[0].IsBackgroundLayer)
+        {
+            return;
+        }
+
+        throw new InvalidOperationException("The Aseprite file contains only a background layer, which is excluded by default. Set includeBackgroundLayer to true to process it.");
     }
 }
