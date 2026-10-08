@@ -4,4 +4,8 @@
 
 namespace MonoGame.Aseprite.Content.Pipeline;
 
-internal record AsepriteFileImportResult(string FilePath);
+/// <summary>
+/// The result from the aseprite file content importer.
+/// </summary>
+/// <param name="FilePath">The file path to the aseprite file.</param>
+public record AsepriteFileImportResult(string FilePath);

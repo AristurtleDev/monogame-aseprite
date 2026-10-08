@@ -8,11 +8,17 @@ using MonoGame.Aseprite.Content.Pipeline.Processors;
 
 namespace MonoGame.Aseprite.Content.Pipeline.Importers;
 
+/// <summary>
+/// Imports the contents of an Aseprite file for processing.
+/// </summary>
 [ContentImporter(".ase", ".aseprite", DisplayName = "Aseprite File Importer - MonoGame.Aseprite", DefaultProcessor = nameof(AsepriteFileContentProcessor))]
-internal class AsepriteFileContentImporter : ContentImporter<AsepriteFileImportResult>
+public class AsepriteFileContentImporter : ContentImporter<AsepriteFileImportResult>
 {
-    public override AsepriteFileImportResult Import(string path, ContentImporterContext context)
+    /// <inheritdoc/>
+    /// <param name="filename">The path to the Aseprite file to import</param>
+    /// <param name="context">Contains information for importing a game asset, such as a logger interface</param>
+    public override AsepriteFileImportResult Import(string filename, ContentImporterContext context)
     {
-        return new AsepriteFileImportResult(path);
+        return new AsepriteFileImportResult(filename);
     }
 }

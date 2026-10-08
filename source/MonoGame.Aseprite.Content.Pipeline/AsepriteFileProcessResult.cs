@@ -4,4 +4,10 @@
 
 namespace MonoGame.Aseprite.Content.Pipeline;
 
-internal record AsepriteFileProcessResult(string Name, bool PremultiplyAlpha, byte[] Data);
+/// <summary>
+/// Represents the result of processing an aseprite file after importing.
+/// </summary>
+/// <param name="Name">The name of the Aseprite file.</param>
+/// <param name="PremultiplyAlpha"><see langword="true"/> if alpha was premultiplied; otherwise, <see langword="false"/>.</param>
+/// <param name="Data">The data result from processing.</param>
+public record AsepriteFileProcessResult(string Name, bool PremultiplyAlpha, byte[] Data);
