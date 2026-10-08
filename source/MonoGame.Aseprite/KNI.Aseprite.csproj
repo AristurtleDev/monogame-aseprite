@@ -2,7 +2,6 @@
 
     <!-- Project level compilation properties -->
     <PropertyGroup>
-        <TargetFrameworks>net8.0</TargetFrameworks>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
