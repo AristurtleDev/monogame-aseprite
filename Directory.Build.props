@@ -3,6 +3,7 @@
 
     <!-- Set the root directory as the solution directory -->
     <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
         <SolutionDirectory>$(MSBuildThisFileDirectory)</SolutionDirectory>
     </PropertyGroup>
 

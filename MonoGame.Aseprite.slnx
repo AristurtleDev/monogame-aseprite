@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/source/">
+    <Project Path="source/MonoGame.Aseprite.Content.Pipeline/MonoGame.Aseprite.Content.Pipeline.csproj" />
+    <Project Path="source/MonoGame.Aseprite/MonoGame.Aseprite.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MonoGame.Aseprite.Tests/MonoGame.Aseprite.Tests.csproj" />
+  </Folder>
+</Solution>

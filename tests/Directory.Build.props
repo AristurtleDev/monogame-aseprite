@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+    <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
+
+    <PropertyGroup>
+        <ArtifactsPath>$(SolutionDirectory).artifacts/tests</ArtifactsPath>
+        <ProjectCategory>tests</ProjectCategory>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <IsPackable>false</IsPackable>
+        <NoWarn>NU1701;CA1707;CS0067;CS0168;CS0414;CS0618;CS0169;CS1591;CS1723;CS8632;CA2200;CS1574;CS1572;CS1573;xUnit2013;xUnit2000;CS0693</NoWarn>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MonoGame.Framework.DesktopGL"
+                          Version="$(MonoGameVersion)"
+                          PrivateAssets="All" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="NSubstitute"
+                          Version="6.2.0" />
+
+        <PackageReference Include="xunit"
+                          Version="2.6.2"
+                          IsImplicitlyDefined="true" />
+
+        <PackageReference Include="Microsoft.NET.Test.Sdk"
+                          Version="18.10.1"
+                          IsImplicitlyDefined="true" />
+
+        <PackageReference Include="xunit.runner.visualstudio"
+                          Version="4.0.0"
+                          IsImplicitlyDefined="true"
+                          IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive"
+                          PrivateAssets="all" />
+
+        <PackageReference Include="coverlet.collector"
+                          Version="10.1.0"
+                          IsImplicitlyDefined="true"
+                          IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive"
+                          PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+
+</Project>

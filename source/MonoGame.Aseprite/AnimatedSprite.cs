@@ -81,10 +81,19 @@ public sealed class AnimatedSprite : Sprite
     public int FrameCount => _animationTag.FrameCount;
 
     /// <summary>
+    /// Gets the zero-based index of the current frame within this <see cref="AnimatedSprite"/>'s animation tag.
+    /// </summary>
+    /// <remarks>
+    /// This index can be passed to <see cref="SetFrame"/> to restore the current frame. It differs from
+    /// <see cref="AnimationFrame.FrameIndex"/>, which identifies the source texture region in the sprite sheet.
+    /// </remarks>
+    public int CurrentFrameIndex => _currentIndex;
+
+    /// <summary>
     /// Gets the source <see cref="AnimationFrame"/> of the current frame of animation for this  
     /// <see cref="AnimatedSprite"/>.
     /// </summary>
-    public AnimationFrame CurrentFrame => _animationTag.Frames[_currentIndex];
+    public AnimationFrame CurrentFrame => GetFrame(_currentIndex);
 
     /// <summary>
     /// Gets or Sets an <see cref="Action"/> method to invoke at the start of each frame of animation.
@@ -194,11 +203,23 @@ public sealed class AnimatedSprite : Sprite
     }
 
     /// <summary>
+    /// Gets an animation frame by its zero-based index within this <see cref="AnimatedSprite"/>'s animation tag.
+    /// </summary>
+    /// <param name="frameIndex">
+    /// The zero-based index of the frame to retrieve. Use <see cref="FrameCount"/> to determine the valid range.
+    /// </param>
+    /// <returns>The animation frame at the specified index.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if <paramref name="frameIndex"/> is less than zero or greater than or equal to <see cref="FrameCount"/>.
+    /// </exception>
+    public AnimationFrame GetFrame(int frameIndex) => _animationTag.GetFrame(frameIndex);
+
+    /// <summary>
     /// Sets the current frame of animation for this <see cref="AnimatedSprite"/>.
     /// </summary>
     /// <param name="frameIndex">
-    /// The index of the frame to set. Value must be greater than zero and less than the total count of frames. You 
-    /// can use <see cref="FrameCount"/> to determine the total number of frames.
+    /// The zero-based index of the frame to set within this <see cref="AnimatedSprite"/>'s animation tag. Use
+    /// <see cref="FrameCount"/> to determine the valid range.
     /// </param>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="frameIndex"/> value provided is less than zero or is greater than or equal to
